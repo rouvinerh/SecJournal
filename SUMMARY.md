@@ -442,9 +442,10 @@
 
 ## 🐍 Evasion
 
-* [Evasion](evasion/evasion-readme/README.md)
-  * [Windows Fundamentals](evasion/evasion-readme/evasion-windows-fundamentals.md)
-  * [Detection](evasion/evasion-readme/evasion-detection.md)
+* [Evasion](evasion/README.md)
+  * [Windows Fundamentals](evasion/evasion-windows-fundamentals.md)
+  * [Detection](evasion/evasion-detection.md)
+  * [Malware Techniques](evasion/evasion-techniques)
 
 ## 🔺 Adversary Emulation
 
