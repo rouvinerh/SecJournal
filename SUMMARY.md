@@ -445,7 +445,7 @@
 * [Evasion](evasion/README.md)
   * [Windows Fundamentals](evasion/evasion-windows-fundamentals.md)
   * [Detection](evasion/evasion-detection.md)
-  * [Malware Techniques](evasion/evasion-techniques)
+  * [Malware Techniques](evasion/evasion-techniques.md)
 
 ## 🔺 Adversary Emulation
 
