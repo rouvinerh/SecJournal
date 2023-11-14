@@ -112,6 +112,7 @@
 ## ✍ Writeups
 
 * [HTB Season 2](writeups/htb-season-2/README.md)
+  * [Download](writeups/htb-season-2/download.md)
   * [Intentions](writeups/htb-season-2/intentions.md)
   * [Gofer](writeups/htb-season-2/gofer.md)
 * [HTB Season 1](writeups/htb-season-1/README.md)
