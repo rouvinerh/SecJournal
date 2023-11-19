@@ -115,6 +115,7 @@
   * [Download](writeups/htb-season-2/download.md)
   * [Intentions](writeups/htb-season-2/intentions.md)
   * [Gofer](writeups/htb-season-2/gofer.md)
+  * [Sandworm](writeups/htb-season-2/sandworm.md)
 * [HTB Season 1](writeups/htb-season-1/README.md)
   * [Inject](writeups/htb-season-1/inject.md)
   * [Agile](writeups/htb-season-1/agile.md)
