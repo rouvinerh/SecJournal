@@ -149,6 +149,7 @@
     * [Blocky](writeups/hackthebox/easy/blocky.md)
     * [Blunder](writeups/hackthebox/easy/blunder.md)
     * [Bounty](writeups/hackthebox/easy/bounty.md)
+    * [Broker](writeups/hackthebox/easy/broker.md)
     * [Buff](writeups/hackthebox/easy/buff.md)
     * [Cap](writeups/hackthebox/easy/cap.md)
     * [Curling](writeups/hackthebox/easy/curling.md)
