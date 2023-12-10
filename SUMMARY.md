@@ -112,6 +112,7 @@
 ## ✍ Writeups
 
 * [HTB Season 2](writeups/htb-season-2/README.md)
+  * [Authority](writeups/htb-season-2/authority.md)
   * [Cybermonday](writeups/htb-season-2/cybermonday.md)
   * [Download](writeups/htb-season-2/download.md)
   * [Intentions](writeups/htb-season-2/intentions.md)
