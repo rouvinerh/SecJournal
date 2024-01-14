@@ -120,6 +120,7 @@
   * [Pilgrimage](writeups/htb-season-2/pilgrimage.md)
   * [Sandworm](writeups/htb-season-2/sandworm.md)
   * [Sau](writeups/htb-season-2/sau.md)
+  * [Zipping](writeups/htb-season-2/zipping.md)
 * [HTB Season 1](writeups/htb-season-1/README.md)
   * [Agile](writeups/htb-season-1/agile.md)
   * [Busqueda](writeups/htb-season-1/busqueda.md)
