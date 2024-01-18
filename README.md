@@ -11,12 +11,10 @@ coverY: 28
 This is just a compilation of notes and knowledge I gained from CTFs, courses, interning and university. Also serves as a small portfolio for me.
 
 {% hint style="info" %}
-During the semester, I am learning about Malware Development and AV/EDR evasion techniques. Will be uploading my code on Github in the future.
+Currently, I am learning about **Malware Development** and **AV/EDR evasion techniques**. Will be uploading my code on Github in the future.
 {% endhint %}
 
 ## Content
-
-Stuff I've written when I had the time.
 
 ### About CTFs
 
@@ -38,9 +36,11 @@ Stuff I've written when I had the time.
 
 {% embed url="https://rouvin.gitbook.io/active-directory/ad" %}
 
-### HackTheBox Writeups
+### Writeups
 
-Machine writeups make up the the majority of this entire Gitbook.
+Writeups from HTB and PGP make up the majority of this Gitbook.
+
+#### HackTheBox
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
 
@@ -48,7 +48,7 @@ Machine writeups make up the the majority of this entire Gitbook.
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-1" %}
 
-### Proving Grounds Practice Writeups
+#### Proving Grounds Practice
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
 
@@ -68,6 +68,6 @@ Machine writeups make up the the majority of this entire Gitbook.
 
 ## Disclaimer
 
-I do not claim to be the most correct, the best, or even remotely good at security and/or pentesting. I'm just a guy that is really into security and wants to learn as much as possible.
+I do not claim to be the most correct, the best, or even remotely good at security. I'm just a guy that is really into security and wants to learn as much as possible.
 
 I do not condone any illegal activity done using any methods in this notebook. All of the concepts listed here are for **educational purposes** only. What you decide to do with these skills is on you (basically, you can't sue me, not that I was using ground-breaking techniques anyway).
