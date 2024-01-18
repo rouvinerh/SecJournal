@@ -66,7 +66,7 @@ Machine writeups make up the the majority of this entire Gitbook.
 
 **This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
 
-### Disclaimer
+## Disclaimer
 
 I do not claim to be the most correct, the best, or even remotely good at security and/or pentesting. I'm just a guy that is really into security and wants to learn as much as possible.
 
