@@ -10,6 +10,7 @@ I have a rough plan of what to write, but I'll add on as I learn:
 * Detection
   * Types of detection
   * How EDR works (in-depth)
+  * Bypassing AVs using combinations of techniques
 * Payloads
   * Encrypting shellcode
   * Where to put shellcode
@@ -17,11 +18,9 @@ I have a rough plan of what to write, but I'll add on as I learn:
 * Evasion
   * Process Injection
   * DLL Injection
+  * API Hashing
+  * PPID Spoofing
+  * Module Stomping
   * Etc....too many techniques
-
-Prerequisites:
-
-* C and C++ skills (especially about pointers and structs).
-* Rough understanding of assembly and how addresses work.
 
 I'll likely create a Github repository with all the code I created too. Again, these are just my notes, and its all public information anyway.
