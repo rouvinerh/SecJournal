@@ -2,7 +2,7 @@
 
 ## 👋 Welcome
 
-* [Hello!](README.md)
+* [SecJournal](README.md)
 * [About Me](welcome/about-me.md)
 
 ## 👨💻 Blogs
