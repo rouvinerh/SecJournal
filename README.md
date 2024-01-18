@@ -4,71 +4,65 @@ cover: >-
 coverY: 28
 ---
 
-# Hello!
+# SecJournal
 
-## Hello!
+## What's this?
 
-### What's this?
+This is just a compilation of notes and knowledge I gained from CTFs, courses, interning and university. Also serves as a small portfolio for me.
 
-This is just a compilation of notes and knowledge I gained from scouring the Internet, self-practicing, going for courses, interning and learning from college. Also serves as a small portfolio for me.
+{% hint style="info" %}
+During the semester, I am learning about Malware Development and AV/EDR evasion techniques. Will be uploading my code on Github in the future.
+{% endhint %}
 
-#### Basic Knowledge
+## Content
 
-I wrote these when starting my journey in Infosec. It covers stuff that is more beginner-friendly to intermediate level.
+Stuff I've written when I had the time.
 
-**CTF:**
+### About CTFs
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started/ctfs" %}
 
-**Networking Knowledge:**
+### Networking Stuff
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/networks/networking" %}
 
-**Web Vulnerabilities:**
+### Web Vulns
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-services" %}
 
-**Buffer Overflows:**
+### Buffer Overflows
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows/buffer-overflows" %}
 
-**Active Directory & Kerberos:**
+### Active Directory
 
 {% embed url="https://rouvin.gitbook.io/active-directory/ad" %}
 
-#### Writeups
+### HackTheBox Writeups
 
-Here's the writeups to machines I've done on HTB or PGP (which I'm still finding the time to actually write out), and it is the **main bulk** of content here. Nowadays, I don't do as many boxes as I did in the past, but I will still do some machines because its fun to me. Also, I will try my best to take part in the new HTB Season thing.
-
-**HackTheBox:**
+Machine writeups make up the the majority of this entire Gitbook.
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
 
-**Proving Grounds Practice:**
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-2" %}
+
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-1" %}
+
+### Proving Grounds Practice Writeups
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
 
-#### Scams / Malware
+### Misc. Blogs
 
-Sometimes I receive some form of phishing emails, or I find malware that's being distributed on the web. I like to delve into them too, just to see how they work and how the threat actors model the scam. If there's malware, I try to reverse engineer it too.
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/blogs/my-blogs" %}
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/scam" %}
-
-#### In-Depth
-
-Some of the stuff I've picked up from interning with red / pentesting teams, as well as my own research and courses done. A bit more technical and less friendly, but still the same fun.
-
-**Defence Evasion:**
+### Defence Evasion
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/evasion/" %}
 
-**Red Teaming and Emulation:**
+## Red Teaming
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
-
-{% hint style="info" %}
-The Evasion and Emulation parts are a Work in Progress. Will fill it in when I have the time.
-{% endhint %}
 
 **This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
 
@@ -77,5 +71,3 @@ The Evasion and Emulation parts are a Work in Progress. Will fill it in when I h
 I do not claim to be the most correct, the best, or even remotely good at security and/or pentesting. I'm just a guy that is really into security and wants to learn as much as possible.
 
 I do not condone any illegal activity done using any methods in this notebook. All of the concepts listed here are for **educational purposes** only. What you decide to do with these skills is on you (basically, you can't sue me, not that I was using ground-breaking techniques anyway).
-
-If I wrote anything wrongly or inaccurately, please do let me know or submit a PR!

@@ -37,5 +37,3 @@ The motivation to create this book is to giveback to the community which I have 
 I do not claim to be the most correct, the best, or even remotely good at security and/or pentesting. I'm just a guy that is really into security and wants to learn as much as possible.
 
 I do not condone any illegal activity done using any methods in this notebook. All of the concepts listed here are for **educational purposes** only. What you decide to do with these skills is on you (basically, you can't sue me, not that I was using ground-breaking techniques anyway).
-
-If I wrote anything wrongly or inaccurately, please do let me know or submit a PR!

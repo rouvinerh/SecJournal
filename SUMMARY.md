@@ -5,10 +5,6 @@
 * [Hello!](README.md)
 * [About Me](welcome/about-me.md)
 
-## ✅ To-Do
-
-* [To Add](to-do/to-add.md)
-
 ## 👨💻 Blogs
 
 * [My Blogs](blogs/my-blogs/README.md)

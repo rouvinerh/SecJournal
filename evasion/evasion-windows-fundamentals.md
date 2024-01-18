@@ -129,6 +129,12 @@ Here's how the flow goes for file creation:
 
 It is possible for applications to invoke `syscall` to NTAPI directly.
 
+### Syscalls
+
+Windows system calls, or just syscalls are instructions that allows for **temporary transition from user mode to kernel mode**. This is useful when user-mode applications need to do kernel stuff, such as Microsoft Word saving a file on the document. They are also the functions called when a WinAPI function is used. For example, `NtCreateUserProcess` is called when `CreateProcess` is used.
+
+Kernel mode provides an application with full access to the computer, allowing for the execution of actions that are difficult to achieve using WinAPIs. Most notably, they can be used in droppers to avoid detection when executing malicious payloads. More on syscalls and their usage will be covered in other sections.
+
 ## Tools
 
 One can find out what each process is doing, what DLLs it has loaded, what functions it is calling and how the memory is mapped using tools like x64dbg or Process Hacker.
@@ -146,3 +152,5 @@ One can find out what each process is doing, what DLLs it has loaded, what funct
 {% embed url="https://learn.microsoft.com/en-us/windows/win32/procthread/about-processes-and-threads" %}
 
 {% embed url="https://en.wikipedia.org/wiki/Microsoft_Windows_library_files" %}
+
+{% embed url="https://redops.at/en/blog/direct-syscalls-a-journey-from-high-to-low" %}
