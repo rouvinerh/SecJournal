@@ -60,7 +60,7 @@ Machine writeups make up the the majority of this entire Gitbook.
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/evasion/" %}
 
-## Red Teaming
+### Red Teaming
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
 
