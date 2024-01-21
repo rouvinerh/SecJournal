@@ -109,6 +109,7 @@
 
 * [HTB Season 2](writeups/htb-season-2/README.md)
   * [Authority](writeups/htb-season-2/authority.md)
+  * [Bookworm](writeups/htb-season-1/bookworm.md)
   * [Cybermonday](writeups/htb-season-2/cybermonday.md)
   * [Download](writeups/htb-season-2/download.md)
   * [Gofer](writeups/htb-season-2/gofer.md)
