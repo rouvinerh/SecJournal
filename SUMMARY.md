@@ -242,6 +242,7 @@
     * [Celestial](writeups/hackthebox/medium/celestial.md)
     * [Chaos](writeups/hackthebox/medium/chaos.md)
     * [Chatterbox](writeups/hackthebox/medium/chatterbox.md)
+    * [Clicker](writeups/hackthebox/medium/clicker.md)
     * [Cronos](writeups/hackthebox/medium/cronos.md)
     * [Devoops](writeups/hackthebox/medium/devoops.md)
     * [dynstr](writeups/hackthebox/medium/dynstr.md)
