@@ -303,6 +303,7 @@
     * [TheNotebook](writeups/hackthebox/medium/thenotebook.md)
     * [Time](writeups/hackthebox/medium/time.md)
     * [Timing](writeups/hackthebox/medium/timing.md)
+    * [Unattended](writeups/hackthebox/medium/unattended.md)
     * [Undetected](writeups/hackthebox/medium/undetected.md)
     * [Unicode](writeups/hackthebox/medium/unicode.md)
     * [Union](writeups/hackthebox/medium/union.md)

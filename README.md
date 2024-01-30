@@ -11,7 +11,9 @@ coverY: 28
 This is just a compilation of notes and knowledge I gained from CTFs, courses, interning and university. Also serves as a small portfolio for me.
 
 {% hint style="info" %}
-Currently, I am learning about **Malware Development** and **AV/EDR evasion techniques**. Will be uploading my code on Github in the future.
+Currently, I am learning more **web stuff** in preparation for **OSWE**, which I plan to start in May during summer break.
+
+**Malware Development** will be put on hold.
 {% endhint %}
 
 ## Content
