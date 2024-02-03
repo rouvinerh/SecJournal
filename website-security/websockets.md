@@ -1,16 +1,16 @@
 # WebSockets
 
-Websockets is a communication protocol that provide for a full-duplex (two-way) interactive communication session between the user's browser and a server. With this, we can send messages to a server and receive responses without having to poll the server for a reply.
+Websockets is a communication protocol that provide a full-duplex (two-way) interactive communication session between the user's browser and a server. With this, we can send messages to a server and receive responses without having to poll the server for a reply.
 
-This is commonly used in the 'chat' feature in websites, such as raising enquiries to a chatbot or customer service employee. They also allow for users to performactions and stuff. Virtually any web security vulnerability that arises with regular HTTP can also arise in relation to WebSockets communications.
+This is commonly used in the 'chat' feature in websites, such as raising enquiries to a chatbot or customer service employee. Virtually any web security vulnerability that arises with regular HTTP can also arise in relation to WebSockets communications.
 
-## How it Works
+## Websocket
 
 This is how the connection is typically established:
 
 <figure><img src="../.gitbook/assets/image (4000).png" alt=""><figcaption></figcaption></figure>
 
-A WebSocket handhsake request can be issued like this:
+A WebSocket handshake request can be as follows:
 
 ```http
 GET /chat HTTP/1.1
@@ -23,7 +23,7 @@ Upgrade: websocket
 # Taken from HackTricks
 ```
 
-Then the website would send a reply like this:
+The website's response can be as such:
 
 ```http
 HTTP/1.1 101 Switching Protocols
@@ -33,15 +33,15 @@ Sec-WebSocket-Accept: 0FFP+2nmNIf/h+4BP36k9uzrYGk=
 # Taken from HackTricks
 ```
 
-When the protocols are switched, a channel is opened for bi-directional communications and would remain open until either side closes the channel and the connection terminates.&#x20;
+When the protocols are switched, a channel is opened for bi-directional communications and would remain open until either side closes the channel and the connection terminates. This no longer uses the `http://` wrapper, and instead uses `ws://`.
 
-The exploitation happens when we intercept and change the traffic that is being sent through the WebSocket, and this can be done using Burpsuite. For example, we can use this to exploit XSS, SQL Injection, or even Command Injection in some rare cases.
+Traffic sent through the socket can be manipulated using Burpsuite and payloads can be added. Depending on how the websocket application processes information, vulnerabilities like XSS, SQLI and Command Injection are all possible.
 
 The most common attack however is **Cross-Site Websocket hijacking**, which involves exploitation of the cookie that is used to identify a user. Sometimes, these cookies could be tagged to each unique user, and stealing it allows for impersonation of another user and reading of sensitive information.
 
 ## Example
 
-This is the lab we will be using for this example:
+This is the lab I completed:
 
 {% embed url="https://portswigger.net/web-security/websockets/cross-site-websocket-hijacking/lab" %}
 
@@ -61,4 +61,4 @@ We can manipulate this by sending a basic XSS script that would retrieve the inf
 </script>
 ```
 
-Then, our Burpsuite host would receive a callback that would contain all the data from another user's session.&#x20;
+Then, our Burpsuite host would receive a callback that would contain all the data from another user's session.

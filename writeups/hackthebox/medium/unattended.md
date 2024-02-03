@@ -190,7 +190,8 @@ function getTplFromID($conn) {
         while($row = $result->fetch_assoc()) {
                 $ret = $row['name'];
         }
-        ### Blind injection is set up here, whereby if there are issues with the query, ### it returns 25.
+        ### Blind injection is set up here, whereby if there are issues with the query,
+        ### it returns 25.
         } else {
                 $ret = 'main';
         }
@@ -749,3 +750,5 @@ guly@unattended:~$ ./uinitrd c0m3s3f0ss34nt4n1
 This hash allowed me to `su` to `root`:
 
 ![](../../../.gitbook/assets/unattended-image-7.png)
+
+Rooted? I don't know why that worked. I read the writeup from 0xdf to find out why, and it was way more complex than I thought. This machine was for more OSWE prep, so I don't really want to dive into the specifics here.

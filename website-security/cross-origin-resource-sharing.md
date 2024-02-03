@@ -1,24 +1,22 @@
 # Cross-Origin Resource Sharing
 
-Cross-Origin Resource Sharing (CORS), is an exploit of a misconfigured website policy that dictates which external sources the website is allowed to interact with. This was created many years ago, initially to potentially malicious cross-domain interactions.
+Cross-Origin Resource Sharing (CORS), is an exploit of a misconfigured website policy that dictates which external sources the website is allowed to interact with. 
 
 ## Same-Origin Policy
 
-The policy governing the resources accessible would look something like this:
+The policy governing accessible resources looks something like this:
 
 <figure><img src="../.gitbook/assets/image (2341).png" alt=""><figcaption></figcaption></figure>
 
-This would determine what kind of information a website is able to extract from another website. The policy can be used to protect user information, as it prevents other websites from stealing or reading information from users, for example.&#x20;
+This determines what kind of information a website is able to extract from another website. The policy can be used to protect user information, as it prevents other websites from stealing or reading information from users. 
 
-How this works is that it controls what kind of JS code is loaded across websites. For example, it would not allow the loading of user information on external websites.&#x20;
+A website without CORS could be tricked into loading malicious JS code by attackers to do bad things.
 
 ## Access-Control-Allow-Origin
 
-This is a HTTP heaer that is included within a HTTP request from one website to another, and its purpose is to identify what an external website is allowed to access. The web browser would compare this header with the requesting website's orign to determine if the permission should be granted.&#x20;
+A HTTP header that is included within requests made from one website to another. It is used to identify what an external website is allowed to access. The web browser would compare this header with the requesting website's origin to determine if the permission should be granted.
 
-For example, if the wesite has the Origin header as http://example.com and could access the credentials of a user, then there would be a header like `access-control-allow-credentials: true`
-
-The usage of a wildcard \* is common as well.&#x20;
+If the website has a Origin header of `http://example.com` and was allowed to access the credentials of a user, then this is included in the request: `access-control-allow-credentials: true`
 
 ### Pre-Flight Checks
 
@@ -34,7 +32,7 @@ This could potentially be useful for enumeration and seeing what's really allowe
 
 ## Exploitation
 
-Generally, we would want to find methods of which the website is loading other websites in requests and see if there are misconfigured policies present on the website.
+Find methods where the website is loading other websites in requests and see if there are misconfigured policies present on the website.
 
 Afterwards, malicious JS code can be used to load things that would be inaccessible to regular users but not the website, as shown below.
 
