@@ -66,7 +66,7 @@
 
 * [Web](website-security/web-vulnerabilities.md)
 * [SQL Injection](website-security/sql-injection.md)
-  * [Portswigger Labs](website-security/sql-injection/portswigger-writeup.md)
+  * [Portswigger Labs](website-security/sql-injection/sql-injection-portswigger-writeup.md)
 * [Access Control](website-security/access-control.md)
   * [Portswigger Labs](website-security/access-control/portswigger-writeup.md)
 * [Authentication Bypass](website-security/authentication-bypass.md)
@@ -132,6 +132,7 @@
   * [Gofer](writeups/htb-season-2/gofer.md)
   * [Intentions](writeups/htb-season-2/intentions.md)
   * [Pilgrimage](writeups/htb-season-2/pilgrimage.md)
+  * [RegistryTwo](writeups/htb-season-2/registrytwo.md)
   * [Sandworm](writeups/htb-season-2/sandworm.md)
   * [Sau](writeups/htb-season-2/sau.md)
   * [Zipping](writeups/htb-season-2/zipping.md)
