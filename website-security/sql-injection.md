@@ -8,13 +8,11 @@ Structured Query Language (SQL) is a language used to communicate and interact w
 
 SQL Injection on the other hand, is the injection of SQL queries to manipulate the database into executing queries to extract data or even achieve command execution.
 
-SQL Injection is a simple vulnerability, but it's gold and still very applicable, even today (unfortunately).
-
 <figure><img src="../.gitbook/assets/image (2254).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
 
 ## Basic Injection
 
-It occurs when user input is not sanitised and passed into queries. The SQL syntax is kind of like English, and suppose we have a query like this:
+It occurs when user input is not sanitised, queries don't use parameterised variables and input is passed into queries. SQL syntax is kind of like English, so suppose have a query like this:
 
 ```sql
 SELECT * FROM products WHERE category = 'Gifts' AND released = 1
@@ -27,7 +25,7 @@ It uses the `SELECT` verb to retrieve data, and the other variables are as follo
 2. `category` and `released` are the column names within `products`
 3. `WHERE` and `AND` used to specify extra conditions to filter data.
 
-Easy right? Now, suppose that we have a login page that takes in a username and password from t he user. It then authenticates users based on this query:
+Easy right? Now, suppose that a website has a login page that takes in a username and password from the user. It then authenticates users based on this query:
 
 ```sql
 SELECT 'password@12345' FROM password WHERE username = 'tim'
@@ -35,7 +33,7 @@ SELECT 'password@12345' FROM password WHERE username = 'tim'
 # if false, deny access
 ```
 
-Now, what were to happen if we key in `' OR 1=1 -- -`? This is what the resultant query would look like:
+Now, what were to happen if a user keys in `' OR 1=1 -- -`? The resultant query (in a poorly designed application) would look like:
 
 ```sql
 SELECT '' OR 1=1-- - FROM password WHERE username = 'tim'
@@ -43,13 +41,11 @@ SELECT '' OR 1=1-- - FROM password WHERE username = 'tim'
 # this would grant us access!
 ```
 
-The first quote 'escapes' the string, and the `-- -` comments the rest of the query. Then, OR used to create a fake logical expression, followed by `1=1` which is a true statement.
+The first quote 'escapes' the string, and the `-- -` comments the rest of the query. OR is used to create a fake logical expression, followed by `1=1` which is a true statement.
 
 > For logical OR, `statement1 OR statement2` returns true if **either statement 1 or 2 is true**. For logical AND, it requires **both statements to be true** to return true.
 
-This is the most basic SQL Injection, using `' OR 1=1--` to get pass a simple login that does not validate user input.
-
-Once we have identified the SQL Injection vulnerability, we maybe could want to exfiltrate information information from the database about this.&#x20;
+This is a basic SQL Injection technique, using `' OR 1=1--` to bypass a simple login that does not validate user input.
 
 ## UNION Injection
 
@@ -62,7 +58,7 @@ UNION SELECT username, password FROM users
 
 There are a few requirements for this to work:
 
-* Individual Queries must return the **same number of columns.**
+* Individual queries (on the LEFT and RIGHT of UNION) must return the **same number of columns.**
 * Data types in each column **must be compatible between individual queries.**
   * In other words, make sure that username and password are both strings, not integers.
 
@@ -80,17 +76,17 @@ One method for determining how many columns there are is brute forcing the possi
 # etc...
 ```
 
-A query with the correct number of columns would be processed without errors. This can be indicated by the response HTTP code, if we get a 404, then we have entered the wrong number of columns.
+A query with the correct number of columns would be processed without errors. This can be indicated by the response HTTP code. For example, if a 404 is returned, then the wrong number of columns has been entered.
 
-The reason for using `NULL` is because it is **convertible to every commonly used data type**. This means it's kind of compatible with all of them. 
+The reason for using `NULL` is because it is **convertible to every commonly used data type**. This means it's kind of compatible with all of them.
 
 <figure><img src="../.gitbook/assets/image (2955).png" alt=""><figcaption><p><em>Usage of SQL Injection in URL to retrieve all user information</em></p></figcaption></figure>
 
 ## Blind Injection
 
-All the earlier vulnerabilities return a visible query or output on the screen. But what if it doesn't? The backend database could simply process the request without printing it out on the screen. This is where Blind SQLI can be used to play 'hangman' with the database.
+All the earlier vulnerabilities return the query's result. But what if it doesn't? The backend database could simply process the request without printing it out on the screen via exception handling. This is where Blind SQLI is used to play 'hangman' with the database.
 
-There are 2 types of Blind SQL Injection, **time-based and boolean-based.** 
+There are 2 types of Blind SQL Injection, **time-based and boolean-based.**
 
 ### Boolean-Based&#x20;
 
@@ -107,21 +103,18 @@ From here, one can retrieve data character by character:
 
 {% code overflow="wrap" %}
 ```sql
-and SELECT <common table name> -- -
-# start to enumerate possible table names in database
-AND SELECT <username> from users -- -
 # start to guess possible usernames from a table
 AND SUBSTRING((SELECT password from users where username = 'Administrator'), 1, <num>) =/>a/<' s
 ```
 {% endcode %}
 
-The SUBSTRING command, which would each character position indicated by \<num> until a 'true' condition is returned.
+The SUBSTRING command, which would each character position indicated by `<num>` until a 'true' condition is returned.
 
 ### Time-Based
 
-Now, suppose that we don't even have a visible boolean condition of which we can guess characters with.
+Now, suppose that the website does not have a visual difference on true or false queries, thus preventing us from guessing characters.
 
-The `sleep()` function within SQL Databases can be used. A `true` condition would call `sleep()`, and one can measure the amount of time taken for the response to be returned:
+The `sleep` function within SQL Databases can be used. A `true` condition would call `sleep()`, and one can measure the amount of time taken for the response to be returned:
 
 {% code overflow="wrap" %}
 ```sql
