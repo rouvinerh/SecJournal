@@ -1,3 +1,0 @@
-# XXE Injectionn
-
-WIP!
