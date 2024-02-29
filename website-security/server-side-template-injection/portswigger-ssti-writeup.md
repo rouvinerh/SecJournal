@@ -123,4 +123,4 @@ ${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI()
 
 ![](../../.gitbook/assets/portswigger-ssti-writeup-image-12.png)
 
-Converting this to ASCII and submitting that solves the lab. I will dive into this exploit...another time. WIP!
+Converting this to ASCII and submitting that solves the lab. I will dive into this exploit...another time.

@@ -6,7 +6,7 @@ JWT tokens are basically cookies, used for session handling or authentication wi
 
 Each JWT token contains the following:
 
-![Taken from https://supertokens.com/blog/what-is-jwt](../.gitbook/assets/jwt-image.png)
+![Taken from https://supertokens.com/blog/what-is-jwt](../../.gitbook/assets/jwt-image.png)
 
 The first part is self-explanatory, it contains the algorithm used. The payload contains the actual data sent to the server. And lastly is the signature. The JWT token is heavily reliant on the signature, the only protection mechanism to ensure no forged tokens are used. The entire thing is then encoded with `base64` and used in web applications.
 

@@ -12,7 +12,7 @@ Template injection works because websites fail to take in the data as just text,
 
 To test for this, follow this flowchart from Hacktricks:
 
-<figure><img src="../.gitbook/assets/image (2580).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2580).png" alt=""><figcaption></figcaption></figure>
 
 Generally, I try to identify what backend the website runs on (PHP, Ruby, etc.) and see if there are portions where **user-input is displayed** to run my tests on. This includes usernames, posts made to forums, etc.
 
@@ -22,15 +22,15 @@ The HTB machine Doctor uses SSTI for the initial access step.
 
 The machine has a secret page that allows for posts by the user to be made with a **title** and **content.** We do not know the template engine being used yet.
 
-<figure><img src="../.gitbook/assets/image (1798).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1798).png" alt=""><figcaption></figcaption></figure>
 
 I tested for SSTI. I tested a few payloads and made a new post:
 
-<figure><img src="../.gitbook/assets/image (718).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (718).png" alt=""><figcaption></figcaption></figure>
 
 The 49 present indicates that it worked, and that the other payload was not processed. Further testing with `{{7*'7'}}`would shows this:
 
-<figure><img src="../.gitbook/assets/image (3164).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3164).png" alt=""><figcaption></figcaption></figure>
 
 From here, based on the flowchart, the website is running on either Jinja2 or Twig. A payload from PayloadAllTheThings can then be used:
 

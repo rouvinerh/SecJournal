@@ -11,7 +11,7 @@ Cross-Site Scripting, or XSS, is a vulnerability that allows attackers to exploi
 
 The most common way of testing for XSS is to call the Javascript alert function. For example, the script tags of HTML can be used :`<script>alert(1)</script>`, which produces this window:
 
-<figure><img src="../.gitbook/assets/image (2545).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2545).png" alt=""><figcaption></figcaption></figure>
 
 Browsers and websites allow users to interact with them and perform actions through Javascript. XSS would work via injecting malicious Javascript code to execute on a user's browser.
 
@@ -25,7 +25,7 @@ There are 3 types of XSS:
 
 Reflected XSS is the simplest form of the exploit. This occurs when a malicious script is reflected off a web application and onto the victim's browser. This script is normally activated through a link or action on the website and would be redirected to the next user.
 
-<figure><img src="../.gitbook/assets/image (3766).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3766).png" alt=""><figcaption></figcaption></figure>
 
 An example would be as follows:
 
@@ -47,7 +47,7 @@ The reliance on the user makes the impacts of XSS less severe compared to the ot
 
 Stored XSS means that the malicious script is stored on the website itself. Each time a user visits the page that the script is on, it would execute. Stored XSS has much more severe impacts, as it only requires users visit the page with the payload. This can be in the form of a blog post comment, editing the website page to have hidden Javascript, etc.
 
-<figure><img src="../.gitbook/assets/image (1684).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1684).png" alt=""><figcaption></figcaption></figure>
 
 Here's an example of XSS from the HTB machine, Extension:
 
@@ -59,11 +59,11 @@ How this payload works is through rendering an **image** tag and having a script
 
 When inputted, the victim would view the Issues and be served this payload. This results in the victim's browser making a callback to the attacker machine. On the attacker machine, this is received on a `nc` listener.
 
-<figure><img src="../.gitbook/assets/image (1246).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1246).png" alt=""><figcaption></figcaption></figure>
 
 This confirms that the XSS is working properly. For this machine, the payload can be modified to include information about a hidden directory that only the victim can access:
 
-<figure><img src="../.gitbook/assets/image (1714).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1714).png" alt=""><figcaption></figcaption></figure>
 
 Stored XSS is much more dangerous because it stores the script on the page itself and exploiting every user that visits it. In the above example, XSS was used to steal information about a directory that only the user could visit. In other cases, stuff like authorisation cookies or passwords can be stolen by attackers.
 

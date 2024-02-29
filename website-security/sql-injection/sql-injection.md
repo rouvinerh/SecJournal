@@ -8,7 +8,7 @@ Structured Query Language (SQL) is a language used to communicate and interact w
 
 SQL Injection on the other hand, is the injection of SQL queries to manipulate the database into executing queries to extract data or even achieve command execution.
 
-<figure><img src="../.gitbook/assets/image (2254).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2254).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
 
 ## Basic Injection
 
@@ -80,7 +80,7 @@ A query with the correct number of columns would be processed without errors. Th
 
 The reason for using `NULL` is because it is **convertible to every commonly used data type**. This means it's kind of compatible with all of them.
 
-<figure><img src="../.gitbook/assets/image (2955).png" alt=""><figcaption><p><em>Usage of SQL Injection in URL to retrieve all user information</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2955).png" alt=""><figcaption><p><em>Usage of SQL Injection in URL to retrieve all user information</em></p></figcaption></figure>
 
 ## Blind Injection
 

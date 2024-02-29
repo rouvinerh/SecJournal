@@ -458,6 +458,25 @@ function handleResponse() {
 
 What this does is send a HTTP request when the user views the comment via executing Javascript.
 
-## Expert Labs
+## Lab 24: AngularJS Sandbox Escape w/o Strings
 
-WIP! Done in the future when I have the time. 
+To solve this, call `alert()`. This lab uses AngularJS as indicated by the `ng-app` tags:
+
+![](../../.gitbook/assets/portswigger-xss-writeup-image-20.png)
+
+Here's the code that processes the search:
+
+```js
+angular.module('labApp', []).controller('vulnCtrl',function($scope, $parse) {
+    $scope.query = {};
+    var key = 'search';
+    $scope.query[key] = 'thisismystring';
+    $scope.value = $parse(key)($scope.query);
+});
+
+<h1 ng-controller=vulnCtrl>0 search results for {{value}}</h1>
+```
+
+So this doesn't use `eval`, which means I don't have any strings in AngularJS. 
+
+WIP!

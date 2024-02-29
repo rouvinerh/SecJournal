@@ -29,18 +29,18 @@ When testing for this, I ask myself the following questions:
 
 This is a web application uses a JWT token to authenticate a session.
 
-<figure><img src="../.gitbook/assets/image (3231).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3231).png" alt=""><figcaption></figcaption></figure>
 
 JWT Tokens are basically `base64` encoded strings separated into 3 different portions, the header, payload and signature. If one has the private string / key used by the server, the signature (and hence token) can be forged.
 
-<figure><img src="../.gitbook/assets/image (2325).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2325).png" alt=""><figcaption></figcaption></figure>
 
 This particular application runs on Flask, and `flask-unsign` can be used to brute force the cookie:
 
-<figure><img src="../.gitbook/assets/image (2896).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2896).png" alt=""><figcaption></figcaption></figure>
 
 This allows me to forge any token and hence pass in any data I want. In this case, the username `blue` was the admin of the page, hence I created a cookie for that user and logged in.
 
-<figure><img src="../.gitbook/assets/image (1588).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1588).png" alt=""><figcaption></figcaption></figure>
 
 The swopping of cookies done using Javascript in the browser console with `developer.cookie='cookiehere'`.

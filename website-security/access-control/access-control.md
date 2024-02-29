@@ -12,4 +12,4 @@ There are 2 types of vertical access controls.
 
 Broken access controls can be exploited in various ways. In some applications, the `/admin` directory is not protected and one can still send requests. In others, IDOR can be exploited.
 
-In general, never rely on obfuscation alone for access control, follow the 'Least privilege' principle by denying access to resources by default. 
+In general, never rely on obfuscation alone for access control, follow the 'Least privilege' principle by denying access to resources by default.

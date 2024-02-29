@@ -6,7 +6,7 @@ Deserialization vulnerabilities occur when a website handles and decodes **unsan
 
 Here's a workflow diagram of how objects could be processed in a web application:
 
-<figure><img src="../.gitbook/assets/image (2597).png" alt=""><figcaption><p><em>Taken from Portswigger Web Security Academy</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2597).png" alt=""><figcaption><p><em>Taken from Portswigger Web Security Academy</em></p></figcaption></figure>
 
 Suppose that a PHP website (that I have the source code to) checks for a `user_cookie` variable, and not present, it would call `serialize()` to create it. If present, it calls `unserialize()` to process it and check for variables like `usernames`.
 
@@ -20,11 +20,11 @@ This kind of attack mainly leads to RCE or DoS conditions on a website.
 
 The HTB machine, Time, has a deserialization in Java making use of CVE-2021-12384. The machine has a JSON beautifier web application.
 
-<figure><img src="../.gitbook/assets/image (2458).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2458).png" alt=""><figcaption></figcaption></figure>
 
 If some non-JSON input is entered, it returns this error
 
-<figure><img src="../.gitbook/assets/image (1970).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1970).png" alt=""><figcaption></figcaption></figure>
 
 So, the website uses Jackson to execute the function. Jackson is vulnerable to CVE-2019-12384 for this particular machine, which is an RCE exploit involving passing a specific JSON object for RCE:
 

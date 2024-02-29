@@ -6,7 +6,7 @@ description: ;ping+-c+10.10.10.10+1#
 
 Command Injection is a critical vulnerability that results in attackers being able to inject commands on a machine form the website. 
 
-<figure><img src="../.gitbook/assets/image (807).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (807).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
 
 ## Exploitation
 
@@ -32,7 +32,7 @@ There are tons of payload cheatsheets online, and the one at Hacktricks is very 
 
 This vulnerability is quite easy confirm:
 
-<figure><img src="../.gitbook/assets/image (3767).png" alt=""><figcaption><p><em>Look at Cmd parameter</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (3767).png" alt=""><figcaption><p><em>Look at Cmd parameter</em></p></figcaption></figure>
 
 ## Blind Injection
 

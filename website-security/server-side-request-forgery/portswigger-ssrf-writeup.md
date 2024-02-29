@@ -124,3 +124,29 @@ Burp Intruder can do this:
 After the brute force is done, Collaborator receives this:
 
 ![](../../.gitbook/assets/portswigger-ssrf-writeup-image-9.png)
+
+## Lab 7: Whitelist-based Input Filter
+
+To solve this lab, delete the user `carlos` using `http://localhost/admin`. This lab has an anti-SSRF feature.
+
+When checking stock, this is the URL visited:
+
+![](../../.gitbook/assets/portswigger-ssrf-writeup-image-10.png)
+
+Based on the the whitelist portion of Portswigger Academy, it states that we can embed credentials or use the `#` character to bypass certain checks:
+
+![](../../.gitbook/assets/portswigger-ssrf-writeup-image-11.png)
+
+This lab supports using credentials, and I just needed to set the domain to the default one. So based on this, I can use `http://username@stock.weliketoshop.net` to still visit `stock.weliketoshop.net` and append data.
+
+Within the `username` parameter, I used `localhost:80`, since it followed the password convention. Next, it was still visiting `stock.weliketoshop.net`, so I used a double-URL encoded `#` character before the `@` character.
+
+![](../../.gitbook/assets/portswigger-ssrf-writeup-image-12.png)
+
+Without the `#` character, there was an error, indicating that the machine may be 'removing' the valid domain to parse the rest of the URL.
+
+As such, I just included the directory to visit at the back, and it solved the lab.
+
+```
+http://localhost:80%2523@stock.weliketoshop.net/admin/delete?username=carlos
+```

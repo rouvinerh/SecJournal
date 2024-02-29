@@ -8,7 +8,7 @@ This is commonly used in the 'chat' feature in websites, such as raising enquiri
 
 This is how the connection is typically established:
 
-<figure><img src="../.gitbook/assets/image (4000).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4000).png" alt=""><figcaption></figcaption></figure>
 
 A WebSocket handshake request can be as follows:
 

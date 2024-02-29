@@ -13,7 +13,7 @@ The difference between the two is that **arbitrary read is only used to READ fil
 
 {% endhint %}
 
-<figure><img src="../.gitbook/assets/image (125).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (125).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
 
 ## ../
 
@@ -30,7 +30,7 @@ http://example.com?url=http://google.com
 http://example.com?url=file://../../../../../../../etc/passwd
 ```
 
-<figure><img src="../.gitbook/assets/image (1694).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1694).png" alt=""><figcaption></figcaption></figure>
 
 Naturally, this is dangerous since it gives attackers access to files that could have sensitive information (like SSH private keys).
 
@@ -69,7 +69,7 @@ If there is a check on the **file extension** of files read, then one can trunca
 
 ### Nested Sequences
 
-Sometimes, a website could block `../` character sequences. In this case, one can use  `....//`, which is equals to `../../`. 
+Sometimes, a website could block `../` character sequences. In this case, one can use  `....//`, which is equals to `../../`.
 
 ### Downloading Files
 

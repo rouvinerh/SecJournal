@@ -8,7 +8,7 @@ Caches were developed in order to reduce the workload of servers when handling l
 
 It is faster to store a copy on a cache server for frequently requested pages / resources:
 
-<figure><img src="../.gitbook/assets/image (341).png" alt=""><figcaption><p><em>Taken from Portswigger Web Security Academy</em></p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (341).png" alt=""><figcaption><p><em>Taken from Portswigger Web Security Academy</em></p></figcaption></figure>
 
 To determine if there is a cached response within the cache, **cache keys** are used. This identifies whether a 'new copy' needs to be retrieved from the back-end server. The cache key typically contains the request line and the HTTP Host header. The components that aren't included in it are considered 'unkeyed'.
 
