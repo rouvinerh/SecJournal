@@ -139,6 +139,8 @@
 
 ## ✍ Writeups
 
+* [HTB Season 3](writeups/htb-season-3/README.md)
+  * [Visual](writeups/htb-season-3/htb-visual.md)
 * [HTB Season 2](writeups/htb-season-2/README.md)
   * [Authority](writeups/htb-season-2/authority.md)
   * [Bookworm](writeups/htb-season-1/bookworm.md)

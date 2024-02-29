@@ -1,6 +1,6 @@
 # OAuth Authentication
 
-OAuth 2.0 is a popular authentication framework used for allowing **signing in via other providers**. For example, 'Sign in with Google/Facebook` uses OAuth. It provides a framework websites to share information and credentials, and sometimes there are implementation errors that lead to possible exploits. 
+OAuth 2.0 is a popular authentication framework used for allowing **signing in via other providers**. For example, 'Sign in with Google/Facebook' uses OAuth. It provides a framework websites to share information and credentials, and sometimes there are implementation errors that lead to possible exploits. 
 
 ## OAuth
 
