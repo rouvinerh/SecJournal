@@ -65,6 +65,7 @@
 ## 🖱 Website Security
 
 * [Web](website-security/web-vulnerabilities.md)
+  * [MVC Framework](website-security/mvc/mvcframework.md)
 * [SQL Injection](website-security/sql-injection/sql-injection.md)
   * [Portswigger Labs](website-security/sql-injection/sql-injection-portswigger-writeup.md)
 * [Access Control](website-security/access-control/access-control.md)
@@ -358,6 +359,7 @@
     * [Multimaster](writeups/hackthebox/insane/multimaster.md)
     * [pivotapi](writeups/hackthebox/insane/pivotapi.md)
     * [Sekhmet](writeups/hackthebox/insane/sekhmet.md)
+    * [Sink](writeups/hackthebox/insane/htb-sink.md)
     * [Sizzle](writeups/hackthebox/insane/sizzle.md)
 * [Proving Grounds Practice](writeups/proving-grounds-practice/README.md)
   * [Windows](writeups/proving-grounds-practice/windows/README.md)
