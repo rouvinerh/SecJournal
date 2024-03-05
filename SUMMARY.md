@@ -355,6 +355,7 @@
     * [BrainFuck](writeups/hackthebox/insane/brainfuck.md)
     * [Derailed](writeups/hackthebox/insane/derailed.md)
     * [Fighter](writeups/hackthebox/insane/fighter.md)
+    * [Fulcrum](writeups/hackthebox/insane/htb-fulcrum.md)
     * [Hathor](writeups/hackthebox/insane/hathor.md)
     * [Multimaster](writeups/hackthebox/insane/multimaster.md)
     * [pivotapi](writeups/hackthebox/insane/pivotapi.md)
