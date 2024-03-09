@@ -687,7 +687,7 @@ Fun box!
 
 Just made this for fun.
 
-### Initial RCE:
+### Initial RCE
 
 ```python
 import threading
