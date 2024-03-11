@@ -357,6 +357,7 @@
     * [Anubis](writeups/hackthebox/insane/anubis.md)
     * [APT](writeups/hackthebox/insane/apt.md)
     * [BrainFuck](writeups/hackthebox/insane/brainfuck.md)
+    * [Crossfit](writeups/hackthebox/insane/htb-crossfit.md)
     * [Derailed](writeups/hackthebox/insane/derailed.md)
     * [Fighter](writeups/hackthebox/insane/fighter.md)
     * [Fulcrum](writeups/hackthebox/insane/htb-fulcrum.md)

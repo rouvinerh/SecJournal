@@ -109,7 +109,7 @@ Using this password, I could `ssh` in as `martin`:
 
 ## Privilege Escalation
 
-## Gitea --> DB --> Tom Password
+### Gitea --> DB --> Tom Password
 
 Now I can start enumerating the machine. Firstly, there are some files within the `/var/www/` directory worth taking a look at:
 
