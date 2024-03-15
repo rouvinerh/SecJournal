@@ -44,7 +44,7 @@ PORT     STATE SERVICE    VERSION
 |_ssl-date: TLS randomness does not represent time
 ```
 
-### SQL Creds --> RCE
+### SQL Creds -> RCE
 
 I enumerated the PostGreSQL instance, and found that the default credentials of `postgres:postgres` worked.&#x20;
 
@@ -60,7 +60,7 @@ We can then use a Metasploit module to get a reverse shell as this user.&#x20;
 
 ## Privilege Escalation
 
-### SUID Binaries --> Root
+### SUID Binaries -> Root
 
 Ran a search on what SUID binaries there were, and found that `find` was one of them:
 

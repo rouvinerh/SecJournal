@@ -19,7 +19,7 @@ PORT      STATE SERVICE
 
 This is a continuation of the original Craft machine, and it appears that SMB is open for this machine. The last machine was pretty minimalist, so I think we might need this later.&#x20;
 
-### ODT Macro Fail --> NTLM Steal
+### ODT Macro Fail -> NTLM Steal
 
 The website is largely the same as the previous one. However, when we try to upload a ODT file, we get some additional information:
 
@@ -80,7 +80,7 @@ Use the "--show --format=netntlmv2" options to display all of the cracked passwo
 Session completed.
 ```
 
-### SMB Shares --> Upload Web Shell
+### SMB Shares -> Upload Web Shell
 
 There wasn't SSH or WinRM open on the system, so instead, let's try to enumerate SMB using these credentials.
 
@@ -132,7 +132,7 @@ We can then easily get a reverse shell by downloading `nc.exe` onto the machine 
 
 This time, the `apache` user had no abusable privileges, and there was nothing much about the current user.
 
-### RunasCs.exe --> Lateral Movement Fail
+### RunasCs.exe -> Lateral Movement Fail
 
 We still had `thecybergeek` password, and this is abusable using `RunasCs.exe`.&#x20;
 
@@ -157,7 +157,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Disabled
 
 The user had nothing interesting though.
 
-### MySQL Arbitrary Write --> WerTrigger
+### MySQL Arbitrary Write -> WerTrigger
 
 I checked the ports open on the machine, and found quite a few such as HTTPS and MySQL not publicly facing:
 

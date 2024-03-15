@@ -113,7 +113,7 @@ We can add `megacorp.local` and the `multimaster.megacorp.local` domains to our 
 
 SMB does not allow us to access anything without credentials for this machine.&#x20;
 
-### Employee Hub --> SQL Injection
+### Employee Hub -> SQL Injection
 
 Port 80 shows us a dashboard of some sorts:
 
@@ -274,7 +274,7 @@ egre55
 
 Then, we can attempt to use password spraying to find a valid user.&#x20;
 
-### Spray Fail --> SID Brute --> Shell
+### Spray Fail -> SID Brute -> Shell
 
 For some reason, none of these users were valid.&#x20;
 
@@ -676,7 +676,7 @@ IPv4 TCP   127.0.0.1:46973                     LISTENING 5032 Code
 
 For some reason, Visual Studio was running a lot of processes and even had some ports open for it.&#x20;
 
-### VS Code --> Cyork Shell
+### VS Code -> Cyork Shell
 
 There were loads of processes run as Code, so let's take a look at that. The VS Code directory had some files within it.&#x20;
 
@@ -762,7 +762,7 @@ This exploit was weird, as it took me ages to get a shell, but I eventually did.
 
 <figure><img src="../../../.gitbook/assets/image (862).png" alt=""><figcaption></figcaption></figure>
 
-### Inetpub DLL --> Credentials
+### Inetpub DLL -> Credentials
 
 This user has access to the `inetpub` directory:
 
@@ -831,7 +831,7 @@ type Web.config
 <!--
   For more information on how to configure your ASP.NET application, please visit
   https://go.microsoft.com/fwlink/?LinkId=301879
-  -->
+  ->
 <configuration>
   <connectionStrings></connectionStrings>
   <appSettings>
@@ -891,7 +891,7 @@ type Web.config
     </handlers>
   </system.webServer>
 </configuration>
-<!--ProjectGuid: D8123343-8775-434A-9C4D-36B26C118E91-->
+<!--ProjectGuid: D8123343-8775-434A-9C4D-36B26C118E91->
 ```
 
 The `Web.Config` file doesn't seem to use it, making it weirder. I downloaded this file back to my machien for some reverse engineering. Since it was a DLL file, we can open it up in DnSpy.exe.
@@ -912,7 +912,7 @@ We can then `evil-winrm` in as this user:
 
 <figure><img src="../../../.gitbook/assets/image (1366).png" alt=""><figcaption></figcaption></figure>
 
-### GenericWrite --> Jorden Shell
+### GenericWrite -> Jorden Shell
 
 From the Bloodhond we did earlier, we can see that this user has `GenericWrite` privileges over `jorden`:
 
@@ -999,7 +999,7 @@ Session completed.
 
 <figure><img src="../../../.gitbook/assets/image (892).png" alt=""><figcaption></figcaption></figure>
 
-### Server Operators --> Root
+### Server Operators -> Root
 
 `jorden` has loads of privileges available and is part of a lot of groups:
 

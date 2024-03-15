@@ -36,7 +36,7 @@ PORT      STATE SERVICE
 49706/tcp open  unknown
 ```
 
-### FTP --> AS-REP Roast
+### FTP -> AS-REP Roast
 
 Whenever there's an FTP port open, we can check for anonymous access, and it works for this machine:
 
@@ -327,7 +327,7 @@ I tried searching for 'Password' and found it here!
 
 <figure><img src="../../../.gitbook/assets/image (1131).png" alt=""><figcaption></figcaption></figure>
 
-### MS-SQL Access --> PrintSpoof Fail
+### MS-SQL Access -> PrintSpoof Fail
 
 Now that we have creds for `svc_oracle`, let's try to access the database as it. However, it appears that this `svc_oracle` user is not present anywhere within the domain users, and only `svc_mssql` is.&#x20;
 
@@ -389,7 +389,7 @@ Now, we can upload `PrintSpoofer.exe` to the machine.&#x20;
 
 However, this just doesn't work for some reason. I think the author must've patched the usage of PrintSpoofer, because in theory it would lead to an automatic root shell.&#x20;
 
-### Port Forward --> WinRM Fail
+### Port Forward -> WinRM Fail
 
 I noted that it was not possible for me to connect back to my host, probably due to firewall rules blocking inbound WinRM connections. We can read the rules using `Get-NetFirewallRules`. Again, it's all in Spanish.&#x20;
 
@@ -456,7 +456,7 @@ mssqlproxy - Copyright 2020 BlackArrow
 
 The connection kept cutting out when I connected via this method, so this again, doesn't work.&#x20;
 
-### Remote Powershell --> Keepass Crack
+### Remote Powershell -> Keepass Crack
 
 My last option was to use `base64` encoded Powershell commands to run stuff on the machine (at this point I was looking at a writeup). 0xdf used this in his Unintended Methods part of his writeup:
 
@@ -555,7 +555,7 @@ Then, we can upload PowerView.ps1 and run the same commands with `superfume` thi
 
 <figure><img src="../../../.gitbook/assets/image (3057).png" alt=""><figcaption></figcaption></figure>
 
-### Developer RE --> Creds
+### Developer RE -> Creds
 
 Within the main `C:\` directory, there's a Developers file:
 
@@ -720,7 +720,7 @@ We can then grab access to the user `jari.`
 
 <figure><img src="../../../.gitbook/assets/image (3504).png" alt=""><figcaption></figcaption></figure>
 
-### ForceChangePassword  --> Account Operators
+### ForceChangePassword  -> Account Operators
 
 This new user is part of a new group:
 

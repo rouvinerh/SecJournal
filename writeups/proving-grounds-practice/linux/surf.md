@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### Surfing Blog --> Login Bypass
+### Surfing Blog -> Login Bypass
 
 Port 80 took so long to load I didn't bother with it. Instead, I started with a `gobuster` scan:
 
@@ -53,7 +53,7 @@ The `auth_status` cookie is just a `base64` encoded string of `{'success':'false
 
 <figure><img src="../../../.gitbook/assets/image (2658).png" alt=""><figcaption></figcaption></figure>
 
-### SSRF --> RCE
+### SSRF -> RCE
 
 Within the website, there isn't much functionality, but there is a 'Check Server Status' function:
 

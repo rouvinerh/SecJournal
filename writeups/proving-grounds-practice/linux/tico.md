@@ -49,7 +49,7 @@ Port 80 had a Markdown Editor:
 
 Again, there was nothing interesting with this. We could try XSS injection or something, but there's no hint that a user is viewing this.&#x20;
 
-### NodeBB --> Admin Takeover
+### NodeBB -> Admin Takeover
 
 Port 8080 had a NodeBB instance:
 
@@ -79,7 +79,7 @@ Replace the `uid` value with '1', and then let the requests pass through. We can
 
 <figure><img src="../../../.gitbook/assets/image (3365).png" alt=""><figcaption></figcaption></figure>
 
-### Arbitrary File Write --> Root
+### Arbitrary File Write -> Root
 
 We can access the admin dashboard to see the plugins:
 

@@ -42,7 +42,7 @@ PORT      STATE SERVICE
 
 For this particular machine, Port 8080 and 1433 are both public facing. Also, there's an unknown port 1337 (likely HTTP).
 
-### Port 8080 --> Tossed Salad
+### Port 8080 -> Tossed Salad
 
 Port 8080 shows a blog page:
 
@@ -50,7 +50,7 @@ Port 8080 shows a blog page:
 
 There wasn't much functionality within this website, so I moved on to port 1337 instead. There was a sign in, but we don't have any credentials yet.&#x20;
 
-### Port 1337 IIS --> Hidden Files
+### Port 1337 IIS -> Hidden Files
 
 This port just shows the default IIS server page:
 
@@ -103,7 +103,7 @@ This is just the password in binary, which can be converted online:
 
 With this, we can login as the administrator using `admin:@dm!n_P@ssW0rd!` on the blog service on port 8080.
 
-### Credentials --> MSSQL Access
+### Credentials -> MSSQL Access
 
 The dashboard can be accessed at `/admin`.
 
@@ -239,7 +239,7 @@ SMB         10.129.77.179   445    MANTIS           [+] htb.local\james:J@m3s_P@
 
 ## Privilege Escalation
 
-### Bloodhound --> Deadend
+### Bloodhound -> Deadend
 
 I initially tried to gather more information about the domain via `bloodhound` to see if this user had privileges over other users.
 

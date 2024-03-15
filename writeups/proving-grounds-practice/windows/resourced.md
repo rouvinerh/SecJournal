@@ -35,7 +35,7 @@ PORT      STATE SERVICE
 
 This is an AD machine.&#x20;
 
-### SMB Guest Creds --> Creds
+### SMB Guest Creds -> Creds
 
 `enum4linux` allowed for null credentials, and it listed a lot of users along with a password!
 
@@ -96,7 +96,7 @@ G.Goldberg
 
 However, none of the passwords worked with any user other than `v.ventz`. This user also did not appear to be within the Remote Management Group because we were unable to `evil-winrm` in.
 
-### SMB Shares --> Secrets Dumping
+### SMB Shares -> Secrets Dumping
 
 WIth our credentials, we were able to access some SMB shares, with one sticking out:
 
@@ -235,7 +235,7 @@ G.Goldberg:des-cbc-md5:3e20fd1a25687673
 
 Loads of hashes available. Now the question is which user is part of the Remote Management Group?&#x20;
 
-### Bloodhound --> Shell
+### Bloodhound -> Shell
 
 We can use `bloodhound-python` to query the domain using the existing credentials we have.&#x20;
 
@@ -271,7 +271,7 @@ Then, we can grab the user flag.
 
 ## Privilege Escalation
 
-### GenericAll --> DA Fail
+### GenericAll -> DA Fail
 
 When viewing the outbound privileges that this user has, we see that they have GenericAll permissions over the DC:
 

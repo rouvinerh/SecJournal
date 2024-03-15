@@ -30,7 +30,7 @@ PORT      STATE SERVICE
 
 Lots of ports here. FTP doesn't allow for anonymous access.&#x20;
 
-### SMB Access --> WP Creds
+### SMB Access -> WP Creds
 
 `smbmap` shows that there are a few shares we can access:
 
@@ -100,7 +100,7 @@ $ cat passwords.txt
    Password: FeltHeadwallWight357
 ```
 
-### Web Enumeration --> WP RCE
+### Web Enumeration -> WP RCE
 
 Port 80 shows the default XAMPP page:
 
@@ -126,7 +126,7 @@ Then, we can get a reverse shell by downloading `nc.exe` onto the machine and ex
 
 ## Privilege Escalation
 
-### AlwaysInstallElevated --> SYSTEM
+### AlwaysInstallElevated -> SYSTEM
 
 I ran `winPEAS.exe` to enumerate the machine for me. It picked up on AlwaysInstallElevated being misconfigured:
 

@@ -108,7 +108,7 @@ Surprisingly, both work. However, this would lead to nowhere as I still cannot a
 
 I found out later that this method was unintended, and it did work for a while before being patched.
 
-### SNMP Brute --> James PW
+### SNMP Brute -> James PW
 
 I was a bit stuck here, so I referred to a writeup. Turns out, SNMP is open on this machine.&#x20;
 
@@ -305,7 +305,7 @@ There's no `/bin/bash` within this machine.
 
 ## Privilege Escalation
 
-### Database Creds --> SSH
+### Database Creds -> SSH
 
 We can find a `config.py` file within `/app/app`.
 

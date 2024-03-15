@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 We can start proxying traffic through Burpsuite.
 
-### Web Enumeration --> SSH Creds
+### Web Enumeration -> SSH Creds
 
 Visiting the website itself shows a domain we need to add:
 
@@ -46,7 +46,7 @@ Using these creds, we can `ssh` in as the user:
 
 ## Privilege Escalation
 
-### Keepass Dump --> CVE-2023-32784
+### Keepass Dump -> CVE-2023-32784
 
 Within the user's directory, there's one `zip` file present:
 
@@ -129,7 +129,7 @@ kpcli:/> ls
 passcodes/
 ```
 
-### Keepass PPX Key --> Root SSH Key
+### Keepass PPX Key -> Root SSH Key
 
 There are quite a few entries within this Keepass instance:
 

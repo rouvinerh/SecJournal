@@ -14,7 +14,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### OpenOffice Macros --> Shell
+### OpenOffice Macros -> Shell
 
 The HTTP site was a Lorem Ipsum website:
 

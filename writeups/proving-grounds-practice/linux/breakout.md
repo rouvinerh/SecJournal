@@ -16,7 +16,7 @@ PORT      STATE    SERVICE
 80/tcp    open     http
 ```
 
-### Web Enum --> GraphQL
+### Web Enum -> GraphQL
 
 Port 80 reveals a Gitlab instance:
 
@@ -47,7 +47,7 @@ I tried their PoC of accessing Gitlab using `/-/graphql-explorer`, and it worked
 
 <figure><img src="../../../.gitbook/assets/image (1538).png" alt=""><figcaption></figcaption></figure>
 
-### GraphQL User Enum  --> User Login
+### GraphQL User Enum  -> User Login
 
 The CVE above mentions that this allows us to enumerate users using this query:
 
@@ -83,7 +83,7 @@ Successfully Authenticated
 
 ## Privilege Escalation
 
-### LinPEAS --> SSH Key
+### LinPEAS -> SSH Key
 
 I ran `linpeas.sh` and it found some potential SSH keys.&#x20;
 
@@ -112,7 +112,7 @@ We know that there are 2 users on the machine, and I tested with both. Using thi
 
 <figure><img src="../../../.gitbook/assets/image (3590).png" alt=""><figcaption></figcaption></figure>
 
-### Pspy --> Symlink Exploit
+### Pspy -> Symlink Exploit
 
 `linpeas.sh` didn't reveal much, so I ran a `pspy64` instead. I found some interesting processes involving zip files:
 

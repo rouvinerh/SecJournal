@@ -86,7 +86,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/05/08 07:43:25 Starting gobuster in directory enumeration mode
 ===============================================================
-/dev                  (Status: 301) [Size: 310] [--> http://siteisup.htb/dev/]
+/dev                  (Status: 301) [Size: 310] [-> http://siteisup.htb/dev/]
 ```
 
 Another `gobuster` scan using few different wordlists reveals there's a `.git` repository present:

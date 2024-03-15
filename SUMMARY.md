@@ -352,6 +352,7 @@
     * [Talkative](writeups/hackthebox/hard/talkative.md)
     * [Unobtainium](writeups/hackthebox/hard/unobtainium.md)
     * [Vessel](writeups/hackthebox/hard/vessel.md)
+    * [Zipper](writeups/hackthebox/hard/htb-zipper.md)
   * [Insane](writeups/hackthebox/insane/README.md)
     * [Absolute](writeups/hackthebox/insane/absolute.md)
     * [Anubis](writeups/hackthebox/insane/anubis.md)

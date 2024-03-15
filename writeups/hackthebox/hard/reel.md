@@ -195,7 +195,7 @@ Using this password, we can `ssh` in as `tom`.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (1277).png" alt=""><figcaption></figcaption></figure>
 
-### Bloodhound --> WriteOwner
+### Bloodhound -> WriteOwner
 
 The user `tom` is part of multiple AD groups:
 
@@ -301,7 +301,7 @@ Afterwards, we can `ssh` in as `claire` using this password.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (3812).png" alt=""><figcaption></figcaption></figure>
 
-### WriteDacl --> Admin Creds
+### WriteDacl -> Admin Creds
 
 The user `claire` is part of another group.
 

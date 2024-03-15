@@ -121,7 +121,7 @@ So the API takes the calculated hashed password of the user and passes it for au
 
 This was when I got stuck.
 
-### 2nd Order SQL Injection --> API Login
+### 2nd Order SQL Injection -> API Login
 
 The only point of weakness seems to be that 'Genre' updating feature, so I went straight into that. When viewing the payload used my `sqlmap`, I realised it was being sent without the spaces accounted for:
 
@@ -237,7 +237,7 @@ Sending the correct parameters resulted in a successful login as `greg`, which g
 
 <figure><img src="../../.gitbook/assets/image (1431).png" alt=""><figcaption></figcaption></figure>
 
-### Admin API --> RCE
+### Admin API -> RCE
 
 We can grab the `token` value we were returned on the successful login. Now, we need to find the directory about 'image editing'. We can repeat the above request in a browser, and then check the `/admin` directory, which now works properly:
 
@@ -366,7 +366,7 @@ When we run it both the Intruder instances, we would get a few requests to our P
 
 ## Privilege Escalation
 
-### Git Repo --> Greg Creds
+### Git Repo -> Greg Creds
 
 I noticed that the web directory had a `.git` folder:
 
@@ -451,7 +451,7 @@ We can then `su` to `greg`.
 
 <figure><img src="../../.gitbook/assets/image (428).png" alt=""><figcaption></figcaption></figure>
 
-### Scanner Group --> Root Flag
+### Scanner Group -> Root Flag
 
 We are part of the `scanner` group, and I used `find` to see what files we own:
 
@@ -631,7 +631,7 @@ for h in hashes:
 
 This would eventually get the correct hash out for us to submit.
 
-### Key Brute Force --> Root Shell
+### Key Brute Force -> Root Shell
 
 I felt a bit weird just capturing the root flag, so let's modify our script a bit more to get the private SSH key of the `root` user.&#x20;
 

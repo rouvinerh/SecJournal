@@ -1,5 +1,5 @@
 ---
-description: LFI --> BOF --> RCE (Writeup used)
+description: LFI -> BOF -> RCE (Writeup used)
 ---
 
 # Retired
@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### LFI --> activate\_license Binary
+### LFI -> activate\_license Binary
 
 When we visit port 80, there's an obvious LFI present:
 
@@ -56,12 +56,12 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/05/10 23:19:47 Starting gobuster in directory enumeration mode
 ===============================================================
-/index.php            (Status: 302) [Size: 0] [--> /index.php?page=default.html]
+/index.php            (Status: 302) [Size: 0] [-> /index.php?page=default.html]
 /default.html         (Status: 200) [Size: 11414]
-/assets               (Status: 301) [Size: 162] [--> http://10.129.227.96/assets/]
-/css                  (Status: 301) [Size: 162] [--> http://10.129.227.96/css/]
+/assets               (Status: 301) [Size: 162] [-> http://10.129.227.96/assets/]
+/css                  (Status: 301) [Size: 162] [-> http://10.129.227.96/css/]
 /beta.html            (Status: 200) [Size: 4144]
-/js                   (Status: 301) [Size: 162] [--> http://10.129.227.96/js/]
+/js                   (Status: 301) [Size: 162] [-> http://10.129.227.96/js/]
 ```
 
 `beta.html` contained a file upload that did nothing, but it revealed some information regarding an `activate_license` application present:
@@ -270,11 +270,11 @@ When run, our `gdb` window shows that it crashes with a pattern of length 2000.
 ```
 [----------------------------------registers-----------------------------------]
 RAX: 0x2d6 
-RBX: 0x7fffffffde98 --> 0x7fffffffe1ff ("/home/kali/htb/retired/activate_license")
+RBX: 0x7fffffffde98 -> 0x7fffffffe1ff ("/home/kali/htb/retired/activate_license")
 RCX: 0x0 
 RDX: 0x0 
 RSI: 0x5555555592a0 ("[+] activated license: AAA%AAsAABAA$AAnAACAA-AA(AADAA;AA)AAEAAaAA0AAFAAbAA1AAGAAcAA2AAHAAdAA3AAIAAeAA4AAJAAfAA5AAKAAgAA6AALAAhAA7AAMAAiAA8AANAAjAA9AAOAAkAAPAAlAAQAAmAARAAoAASAApAATAAqAAUAArAAVAAtAAWAA"...)
-RDI: 0x7fffffffd580 --> 0x7ffff7cb0e70 (<__funlockfile>:        mov    rdi,QWORD PTR [rdi+0x88])
+RDI: 0x7fffffffd580 -> 0x7ffff7cb0e70 (<__funlockfile>:        mov    rdi,QWORD PTR [rdi+0x88])
 RBP: 0x4e73413873416973 ('siAs8AsN')
 RSP: 0x7fffffffdd18 ("AsjAs9AsOAskAsPAslAsQAsmAsRAsoAsSAspAsTAsqAsUAsrAsVAstAsWAsuAsXAsvAsYAswAsZAsxAsyAszAB%ABsABBAB$ABnABCAB-AB(ABDAB;AB)ABEABaAB0ABFABbAB1ABGABcAB2ABHABdAB3ABIABeAB4ABJABfAB5ABKABgAB6\377\177")
 RIP: 0x5555555555c0 (<activate_license+643>:    ret)
@@ -283,9 +283,9 @@ R9 : 0x7ffff7dcd580 (<__memcpy_ssse3+320>:      movaps xmm1,XMMWORD PTR [rsi+0x1
 R10: 0x0 
 R11: 0x202 
 R12: 0x0 
-R13: 0x7fffffffdeb0 --> 0x7fffffffe22c ("COLORFGBG=15;0")
+R13: 0x7fffffffdeb0 -> 0x7fffffffe22c ("COLORFGBG=15;0")
 R14: 0x0 
-R15: 0x7ffff7ffd020 --> 0x7ffff7ffe2e0 --> 0x555555554000 --> 0x10102464c457f
+R15: 0x7ffff7ffd020 -> 0x7ffff7ffe2e0 -> 0x555555554000 -> 0x10102464c457f
 EFLAGS: 0x10206 (carry PARITY adjust zero sign trap INTERRUPT direction overflow)
 [-------------------------------------code-------------------------------------]
    0x5555555555b9 <activate_license+636>:       call   0x5555555550b0 <printf@plt>

@@ -31,7 +31,7 @@ PORT   STATE SERVICE VERSION
 
 We don't need to add a domain to visit this site. I still added `zipping.htb` as standard HTB practice.
 
-### Web Enumeration --> Zip File LFI
+### Web Enumeration -> Zip File LFI
 
 The website was a watch store:
 
@@ -246,7 +246,7 @@ if (isset($_GET['id'])) {
 
 The regex there looks quite hard to bypass, and combined with the fact that the box name is Zipper, it's obvious that this isn't the intended method.&#x20;
 
-### Null Byte Bypass --> RCE&#x20;
+### Null Byte Bypass -> RCE&#x20;
 
 SQL Injection failed, so it's back to the Zip file method. This is the code that checks whether or not there's a valid file in the zip:
 
@@ -295,7 +295,7 @@ We can then visit that site and get a shell (without the `.pdf` at the end):
 
 ## Privilege Escalation
 
-### Sudo Privileges --> Stock Binary&#x20;
+### Sudo Privileges -> Stock Binary&#x20;
 
 When checking `sudo` privileges, this is what I see:
 
@@ -396,7 +396,7 @@ Amount: 1
 The stock has been updated correctly.
 ```
 
-### Shared Library Exploit --> Root
+### Shared Library Exploit -> Root
 
 The `ltrace` output from earlier shows this:
 

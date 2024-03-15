@@ -72,7 +72,7 @@ PORT     STATE SERVICE VERSION
 
 Port 5132 seems to have loads of errors, asking for a username and password.&#x20;
 
-### Web Enum --> GraphQL Creds
+### Web Enum -> GraphQL Creds
 
 Port 80 just shows this page:
 
@@ -161,7 +161,7 @@ We aren't allowed to read any message. Anyways, using this password we can `ssh`
 
 I was still curious about the messaging thing and wanted to read the other messages, so I headed to `/opt/depreciated/messaging`, which was the directory revealed in our detailed `nmap` scan.
 
-### Messages --> Root Creds
+### Messages -> Root Creds
 
 There are some files present here:
 

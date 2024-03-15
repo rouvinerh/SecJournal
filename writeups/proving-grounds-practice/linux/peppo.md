@@ -20,7 +20,7 @@ PORT      STATE  SERVICE
 
 Port 113 was something new.
 
-### Ident --> SSH
+### Ident -> SSH
 
 I wanted to enumerate the Ident instance running on port 113 first. We can run `ident-user-enum` to check which users are present:
 
@@ -63,7 +63,7 @@ However, we can use `ed` to spawn a better shell and change this.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (3084).png" alt=""><figcaption></figcaption></figure>
 
-### Docker Group --> Root
+### Docker Group -> Root
 
 The user is part of the `docker` group, which means we can easily get `root`. First check the images present:
 

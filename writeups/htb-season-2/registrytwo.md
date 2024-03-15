@@ -44,7 +44,7 @@ PORT     STATE SERVICE            VERSION
 
 We can take note of the `webhosting.htb` domain and add it to the `/etc/hosts` file.&#x20;
 
-### Initial Enumeration --> Fuzz Params
+### Initial Enumeration -> Fuzz Params
 
 We have to add `www.webhosting.htb` to our `/etc/hosts` file to view the HTTPS application:
 
@@ -157,7 +157,7 @@ Now we need to experiment with what's the right `aud` parameter to stop getting 
 
 <figure><img src="../../.gitbook/assets/image (4103).png" alt=""><figcaption></figcaption></figure>
 
-### API Fuzz --> Dump Repository
+### API Fuzz -> Dump Repository
 
 Visiting `v2/_catalog` returned one repository:
 
@@ -369,7 +369,7 @@ fa7536dd895ade2421a9a0fcf6e16485323f9e2e45e917b1ff18b0f648974626.tar.gz
 ff3a5c916c92643ff77519ffa742d3ec61b7f591b6b7504599d95a4a41134e28.tar.gz
 ```
 
-### Source Code Review --> Tomcat Bypass
+### Source Code Review -> Tomcat Bypass
 
 The first file contained some SQL credentials, and mention of RMI:
 
@@ -431,7 +431,7 @@ Using this, we can set the `s_IsLoggedInUserRoleManager` session attribute to `t
 
 <figure><img src="../../.gitbook/assets/image (4113).png" alt=""><figcaption></figcaption></figure>
 
-### More Reviewing --> RMIClient LFI
+### More Reviewing -> RMIClient LFI
 
 The key question in my head was around the `rmiHost` parameter and where we had to use it. Since we had access to the Reconfigure panel as the manager of the site, this only gave us one more thing to work with, which was this panel:
 
@@ -496,7 +496,7 @@ Closing connection
 
 <figure><img src="../../.gitbook/assets/image (4115).png" alt=""><figcaption></figcaption></figure>
 
-### App --> RMI Client --> Read User Creds
+### App -> RMI Client -> Read User Creds
 
 This shell was within a very restricted docker container. Checking the services present, we can see that there are loads of other ports:
 
@@ -586,7 +586,7 @@ With that password, we can `ssh` in as the `developer` user:
 
 ## Privilege Escalation
 
-### Pspy --> JAR File Analysis
+### Pspy -> JAR File Analysis
 
 I ran `pspy64` on the machine, and found that the `root` user was running a `.jar` file:
 
@@ -652,7 +652,7 @@ Extracting from this file reveals that it contains the configurations that we ne
 
 <figure><img src="../../.gitbook/assets/image (4120).png" alt=""><figcaption></figcaption></figure>
 
-### Hijack Configuration --> Read Root Creds
+### Hijack Configuration -> Read Root Creds
 
 Since `root` is executing the `quarantine.jar` file, and the quarantine has to scan all of the files present within a specified directory, we can modify it such that it is able to read and copy the entire `/root` directory, which includes the flag.&#x20;
 

@@ -18,7 +18,7 @@ PORT     STATE SERVICE
 
 We have to add `app.microblog.htb` and `microblog.htb` to our `/etc/hosts` file to view port 80.&#x20;
 
-### Microblog --> Blog Creation
+### Microblog -> Blog Creation
 
 Port 80 reveals a blogging service called Microblog:
 
@@ -66,7 +66,7 @@ Upgrade-Insecure-Requests: 1
 id=02nc8ktv0kk4&txt=test
 ```
 
-### Sunny Code Review --> LFI
+### Sunny Code Review -> LFI
 
 When checking the application, it seems that we have a `sunny` subdomain.
 
@@ -172,7 +172,7 @@ id=/etc/passwd&header=test
 
 This means that the code for new blogs are **all the same**. This means that the 'Pro' user portion is also present on our test blog. Also, it is worth noting that after a few minutes, our new blog and user is deleted from the browser as part of the cleanup script.
 
-### App Code Review --> Find Path
+### App Code Review -> Find Path
 
 Let's take a look at the main site that is creating new subdomains.&#x20;
 
@@ -219,7 +219,7 @@ It seems that when the new site is created, it is **writeable** for a while. Not
 
 After looking through all the code, the 'Pro' user method seems to be the correct way. The ProUser method would allow us to use `bulletproof.php` to upload files, of which we can probably upload some kind of PHP reverse shell and execute it. Now, we need to find out how to manipulate the Redis database to make ourselves Pro.
 
-### Redis Manipulation --> RCE
+### Redis Manipulation -> RCE
 
 While researching possible exploits, I found that it was possible to use SSRF to manipulate the Redis database.&#x20;
 
@@ -294,7 +294,7 @@ And then we can get a reverse shell:
 
 ## Privilege Escalation
 
-### Pspy --> Cooper Creds
+### Pspy -> Cooper Creds
 
 Within the machine, if we run `pspy64`, we would eventually see this:
 
@@ -304,7 +304,7 @@ We can use these credentials to access the user via `ssh`.&#x20;
 
 <figure><img src="../../.gitbook/assets/image (2015).png" alt=""><figcaption></figcaption></figure>
 
-### Format String --> Root Creds
+### Format String -> Root Creds
 
 When we check `sudo` privileges, we can see the user can run a Python script:
 

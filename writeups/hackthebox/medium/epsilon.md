@@ -80,7 +80,7 @@ aws_secret_access_key='OsK0o/glWwcjk2U3vVEowkvq5t4EiIreB+WdFo1A'
 region_name='us-east-1'
 ```
 
-### AWS Lambda --> Token Forgery
+### AWS Lambda -> Token Forgery
 
 Now, we have some secret keys and some additional information. Searching about how to interact with this AWS instance using a CLI brought this resource up:
 

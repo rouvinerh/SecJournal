@@ -92,7 +92,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /.htpasswd            (Status: 403) [Size: 162]
 /.htaccess            (Status: 403) [Size: 162]
 /config.php           (Status: 200) [Size: 0]
-/css                  (Status: 301) [Size: 178] [--> http://10.129.96.75/css/]
+/css                  (Status: 301) [Size: 178] [-> http://10.129.96.75/css/]
 /firewall.php         (Status: 200) [Size: 13]
 /index.php            (Status: 200) [Size: 1220]
 /index.php            (Status: 200) [Size: 1220]
@@ -120,7 +120,7 @@ With that, we can SSH into the machine.
 
 ## Privilege Escalation
 
-### Command Injection --> Sudo
+### Command Injection -> Sudo
 
 There's another user on the machine:
 

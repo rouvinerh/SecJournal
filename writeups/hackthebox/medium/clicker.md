@@ -71,7 +71,7 @@ PORT      STATE SERVICE  VERSION
 
 Lots of RPC ports, and NFS is open on port 2049. We can also add `clicker.htb` to the `/etc/hosts` file.&#x20;
 
-### NFS --> Source Code
+### NFS -> Source Code
 
 We can first check whether we can mount anything on NFS. A quick `showmount` shows that we can:
 
@@ -350,7 +350,7 @@ drwxr-xr-x 18 root root 4096 Sep  5 19:19 ..
 drwxr-x---  7 jack jack 4096 Sep  6 12:30 jack
 ```
 
-### RE SUID Binary --> Arbitrary Read
+### RE SUID Binary -> Arbitrary Read
 
 I searched for all files on the system owned by this user.
 
@@ -452,7 +452,7 @@ Using the above, we can `ssh` in as `jack`:
 
 <figure><img src="../../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Privileges --> Root
+### Sudo Privileges -> Root
 
 I checked `sudo` privileges, and found that `jack` can execute `monitor.sh` as `root`:
 

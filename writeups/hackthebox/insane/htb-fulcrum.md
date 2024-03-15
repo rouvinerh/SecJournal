@@ -53,7 +53,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kerne
 
 Port 80 and 9999 had bad gateways, so I was left with port 4, port 88 and port 56423.
 
-### Web Enum --> XXE LFI
+### Web Enum -> XXE LFI
 
 Port 4 had a really basic page:
 
@@ -238,7 +238,7 @@ while True:
 
 There's a short delay in-between files, but otherwise it works. Just start a Python HTTP server in another terminal, and there will be GET requests sent to that server. 
 
-### File Enum --> Port 4 LFI
+### File Enum -> Port 4 LFI
 
 For this, `nmap` stated that this was an `nginx` server, so I took a look at those files. However, reading `/etc/nginx/sites-available/default` took too long.
 
@@ -265,7 +265,7 @@ A lucky guess gave me `/var/www/api/index.php` as a readable file:
 ?>
 ```
 
-### RCE --> Webserver
+### RCE -> Webserver
 
 Now that I had a working LFI script, I wanted to view the service on port 4. Guessing led me to `/var/www/uploads/index.php`.
 
@@ -340,11 +340,11 @@ I included a zero-click exploit script at the end!
 
 {% endhint %}
 
-## WebServer --> File
+## WebServer -> File
 
 Surprising to see AD here.
 
-### Powershell Creds --> WebUser Pivot
+### Powershell Creds -> WebUser Pivot
 
 First thing I noticed was this `.ps1` file in the folder the shell spawned in:
 
@@ -440,7 +440,7 @@ $ ./chisel server --port 8000 --reverse
 
 Can use `proxychains -q` to remove those debug messages if you desire.
 
-### AD Enum --> BTables Creds
+### AD Enum -> BTables Creds
 
 This user had no particularly interesting permissions, or files in their directory.
 
@@ -553,7 +553,7 @@ postalcode            : 12345
 
 `++FileServerLogon12345++` was the password. However, this user was not present on my current machine.
 
-### Network Enum --> Pivot to File
+### Network Enum -> Pivot to File
 
 I enumerated all computer objects within this network, which revealed 2 more.
 
@@ -593,9 +593,9 @@ Then, I could `evil-winrm` in and finally grab the user flag:
 
 ![](../../../.gitbook/assets/htb-fulcrum-image-10.png)
 
-## File --> DC
+## File -> DC
 
-### Enumeration --> Shares
+### Enumeration -> Shares
 
 This `FILE` server was empty. Most of the file system was just default Windows. As such, I tried to use the credentials I had to access the shares on the DC, which was something the CRTE lab taught me to do.
 
@@ -617,7 +617,7 @@ The command completed successfully.
 
 These were default shares, but honestly there was nothing else to look at anymore, so I went for it.
 
-### Shares Enum --> Admin Creds
+### Shares Enum -> Admin Creds
 
 The `sysvol` share had a ton of `.ps1` files:
 

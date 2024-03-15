@@ -102,7 +102,7 @@ PORT      STATE SERVICE VERSION
 | http-methods:
 ```
 
-### Web Enum --> Source Code
+### Web Enum -> Source Code
 
 Port 17445 had some kind of ticket creator:
 
@@ -157,7 +157,7 @@ total 32
 drwxr-xr-x 4 kali kali  4096 Feb  2  2021 src
 ```
 
-### Source Code Analysis --> SQLI RCE
+### Source Code Analysis -> SQLI RCE
 
 The source code was in Java and for the application running on port 17445. I looked thorugh the files and found this within `src/main/java/com/issue/tracker/issues/IssueController.java`:
 

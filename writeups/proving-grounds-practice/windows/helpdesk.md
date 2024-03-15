@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 RDP is available.
 
-### ManageEngine RCE --> SYSTEM
+### ManageEngine RCE -> SYSTEM
 
 Port 8080 hosts a really vulnerable looking software:
 

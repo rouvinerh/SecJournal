@@ -18,7 +18,7 @@ PORT      STATE SERVICE
 49703/tcp open  unknown
 ```
 
-### Windcorp --> SSTI&#x20;
+### Windcorp -> SSTI&#x20;
 
 `crackmapexec` can be used to enumerate domain name.&#x20;
 
@@ -93,7 +93,7 @@ Using this, we can get a reverse shell easily.&#x20;
 
 ## Localadmin Creds
 
-### Cert Rq --> Port Forwarding
+### Cert Rq -> Port Forwarding
 
 Perhaps the first thing we notice is that we are already the SYSTEM user. This is a little early for an Insane machine, so it's probably one of the hosts in the domain. I thought that there would be a flag within the administrator's desktop, but instead I got a certificate:
 
@@ -220,7 +220,7 @@ Afterwards, we can add `softwareportal.windcorp.htb` within our `/etc/hosts` fil
 
 <figure><img src="../../../.gitbook/assets/image (846).png" alt=""><figcaption></figcaption></figure>
 
-### VNC --> Responder Creds
+### VNC -> Responder Creds
 
 Within the software present on the page, we can see that there is a VNC service available.
 

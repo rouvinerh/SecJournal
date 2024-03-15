@@ -42,7 +42,7 @@ PORT      STATE SERVICE VERSION
 
 First thing I took note of was the outdated Wordpress site on port 80.
 
-### Wordpress --> RCE
+### Wordpress -> RCE
 
 I ran a `wpscan` on the port 80 application.&#x20;
 

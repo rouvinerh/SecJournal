@@ -53,7 +53,7 @@ Checking the page source reveals this is a Laravel application.
 
 <figure><img src="../../../.gitbook/assets/image (550).png" alt=""><figcaption></figcaption></figure>
 
-### SQLI Login Bypass --> RCE
+### SQLI Login Bypass -> RCE
 
 Earlier, we also found an `admin.cronos.htb` through DNS. When visited, it just shows a login page:
 

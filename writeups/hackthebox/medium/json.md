@@ -46,7 +46,7 @@ Password:
 ftp: Login failed
 ```
 
-### Port 80 --> Enumeration
+### Port 80 -> Enumeration
 
 Port 80 just shows us a login for HackTheBox:
 
@@ -126,7 +126,7 @@ Interesting. I tried to login via the normal method and it worked! We can see th
 
 The dashboard was static, so there wasn't much to do here.
 
-### Deseralisation --> RCE
+### Deseralisation -> RCE
 
 As per the deobfuscated JS code, there's an `/api/Account` endpoint within the site. When I logged in the normal way above, I saw one request sent to there.&#x20;
 

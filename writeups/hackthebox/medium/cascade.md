@@ -173,7 +173,7 @@ Grab the user flag.
 
 ## Privilege Escalation
 
-### CascAudit.exe --> ArkSvc Creds
+### CascAudit.exe -> ArkSvc Creds
 
 We can first enumerate what groups this user is part of:
 

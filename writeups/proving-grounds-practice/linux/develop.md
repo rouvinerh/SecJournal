@@ -154,7 +154,7 @@ Firstly, we have some mention of a blacklist and whitelist preventing RCE. Next,
 
 Lastly, we have `login.php` form, which uses the username concatenated with the MD5 of the password. This authentication mechanism is vulnerable to PHP type juggling since `===` is not used, hence magic hashes can be used to bypass the login.&#x20;
 
-### Magic Hashes --> LFI SSH
+### Magic Hashes -> LFI SSH
 
 The `.git` repository seems to be for the service running on port 8080:
 

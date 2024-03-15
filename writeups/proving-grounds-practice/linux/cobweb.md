@@ -24,7 +24,7 @@ PORT     STATE  SERVICE
 
 Quite a few ports open.&#x20;
 
-### FTP --> access.log
+### FTP -> access.log
 
 We can check whether FTP accepts anonymous logins, which it does!
 
@@ -66,7 +66,7 @@ $ cat access.log
 
 The other files weren't so interesting.&#x20;
 
-### Source Code Review --> Eval + SQL Injection
+### Source Code Review -> Eval + SQL Injection
 
 Port 80 reveals a standard login:
 
@@ -174,7 +174,7 @@ stty raw -echo;fg
 
 <figure><img src="../../../.gitbook/assets/image (3732).png" alt=""><figcaption></figcaption></figure>
 
-### Screen Capabilities --> Root
+### Screen Capabilities -> Root
 
 We can run `bash linpeas.sh` to enumerate for us. It didn't reveal anything obvious besides this SUID binary:
 

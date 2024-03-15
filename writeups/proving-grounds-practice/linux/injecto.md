@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8080/tcp open  http-proxy
 ```
 
-### Web Enum --> PHP LFI
+### Web Enum -> PHP LFI
 
 Port 80 shows a simple quiz application:
 
@@ -62,7 +62,7 @@ Here's the PHP code:
 ?>
 ```
 
-### Source Code Review --> Deserialisation
+### Source Code Review -> Deserialisation
 
 We can read the `index.php` file of the `nginx` configuration here:
 
@@ -125,7 +125,7 @@ Getting reverse shell using the usual `bash` one-liner is easy:
 
 ## Privilege Escalation
 
-### Curl SUID --> Overwrite /etc/passwd
+### Curl SUID -> Overwrite /etc/passwd
 
 I searched for SUID binaries, and found that `curl` was one of them:
 

@@ -39,7 +39,7 @@ Using the above PoC, we can get a shell on the Docker Container:
 
 ## Privilege Escalation
 
-### Mount --> Docker Escape
+### Mount -> Docker Escape
 
 We can use `fdisk` to check the drives that are available:
 

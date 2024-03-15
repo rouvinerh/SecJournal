@@ -76,8 +76,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/05/09 11:20:29 Starting gobuster in directory enumeration mode
 ===============================================================
-/assets               (Status: 301) [Size: 327] [--> http://hostmaster.dyna.htb/assets/]
-/nic                  (Status: 301) [Size: 324] [--> http://hostmaster.dyna.htb/nic/]
+/assets               (Status: 301) [Size: 327] [-> http://hostmaster.dyna.htb/assets/]
+/nic                  (Status: 301) [Size: 324] [-> http://hostmaster.dyna.htb/nic/]
 ```
 
 `/nic`? Loading it shows nothing, so let's do another `gobuster` scan.&#x20;

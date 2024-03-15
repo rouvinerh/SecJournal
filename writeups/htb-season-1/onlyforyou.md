@@ -323,7 +323,7 @@ We can crack these hashes on CrackStation.
 
 With this password, we can `ssh` in as `john`! Then, we can grab the user flag.
 
-### Gogs and Sudo --> Root
+### Gogs and Sudo -> Root
 
 Since we have the password of the user, we can check `sudo` privileges.
 

@@ -69,7 +69,7 @@ This directory just contains some interesting files:
 
 <figure><img src="../../../.gitbook/assets/image (2799).png" alt=""><figcaption></figcaption></figure>
 
-### Source Code Review --> RCE Point
+### Source Code Review -> RCE Point
 
 These appear to be files for the application hosted at the other directory of `/internal`. One of the files `users/views.py` contains some interesting information:
 
@@ -107,7 +107,7 @@ However, when trying to exploit this thing, the `internal` website does not seem
 
 This made me think more about WHERE exactly this site is being hosted.
 
-### Svn --> Domain Discovery
+### Svn -> Domain Discovery
 
 Earlier we saw the `/svn` directory and just enumerated it as per normal. However, 'svn' is short for Subversion, which is a version control application that can be enumerated with the command `svn`.
 
@@ -150,7 +150,7 @@ Index: todo
 
 There's a hidden domain here! We can add that to our `/etc/hosts` file and enumerate that.
 
-### Internal Website --> Account Takeover
+### Internal Website -> Account Takeover
 
 The website led us to this login page:
 
@@ -176,7 +176,7 @@ Maybe we can change the username to something else, so I changed it to `admin` a
 
 <figure><img src="../../../.gitbook/assets/image (3091).png" alt=""><figcaption></figcaption></figure>
 
-### LFI Firewall Rules --> Shell
+### LFI Firewall Rules -> Shell
 
 The administrator had a few things different, such as the 'Submissions' function being replaced with a submission reviewer:
 
@@ -268,7 +268,7 @@ The user flag is within the `/var/www` directory.&#x20;
 
 ## Privilege Escalation
 
-### MongoDB Creds --> Root
+### MongoDB Creds -> Root
 
 We can enumerate the ports that are listening on the host since `nmap` only picked up on HTTP port 80.
 

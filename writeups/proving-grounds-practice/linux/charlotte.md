@@ -66,7 +66,7 @@ const user = process.env.DEATH_STAR_USERNAME
 const pass = process.env.DEATH_STAR_PASSWORD
 ```
 
-### Web Enumeration --> Admin Creds
+### Web Enumeration -> Admin Creds
 
 Port 80 hosted a basic page with a login:
 
@@ -185,7 +185,7 @@ With this, we can login and view the port 8000 service.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (1765).png" alt=""><figcaption></figcaption></figure>
 
-### Prototype Pollution --> RCE
+### Prototype Pollution -> RCE
 
 Now that we have access to this service, we can do some basic source code review. Earlier, we saw that this application uses some libraries and packages. We can find their specific versions within `package.json`:
 
@@ -265,7 +265,7 @@ It didn't work at first, and upon sending a GET request to `/reset`, it worked!
 
 ## Privilege Escalation
 
-### Cron --> User --> Root
+### Cron -> User -> Root
 
 When we view the `/etc/crontab` file, we can see that the user `sebastian` is executing a JS file periodically:
 

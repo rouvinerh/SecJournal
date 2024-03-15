@@ -34,7 +34,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/01/21 22:06:14 Starting gobuster in directory enumeration mode
 ===============================================================
-/design               (Status: 301) [Size: 323] [--> http://10.129.99.48/sparklays/design/]
+/design               (Status: 301) [Size: 323] [-> http://10.129.99.48/sparklays/design/]
 ```
 
 I also ran a `feroxbuster` scan to leverage on its recursive scans, and found some more directories.
@@ -64,7 +64,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 /.html                (Status: 403) [Size: 309]
 /.php                 (Status: 403) [Size: 308]
-/uploads              (Status: 301) [Size: 331] [--> http://10.129.99.48/sparklays/design/uploads/]                                                                                       
+/uploads              (Status: 301) [Size: 331] [-> http://10.129.99.48/sparklays/design/uploads/]                                                                                       
 /design.html          (Status: 200) [Size: 72]
 ```
 

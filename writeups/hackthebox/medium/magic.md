@@ -6,7 +6,7 @@ Nmap scan:
 
 <figure><img src="../../../.gitbook/assets/image (2418).png" alt=""><figcaption></figcaption></figure>
 
-### Login Bypass --> File Upload RCE
+### Login Bypass -> File Upload RCE
 
 The web application shows us some random images as a form of portfolio.
 

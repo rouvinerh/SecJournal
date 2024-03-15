@@ -140,7 +140,7 @@ PORT      STATE SERVICE       VERSION
 |_http-title: Site doesn't have a title (text/html; Charset=utf-8).
 ```
 
-### Wordlist + Brute Force --> Creds + RCE
+### Wordlist + Brute Force -> Creds + RCE
 
 Port 80 hosted a portfolio page for Jane Foster:
 
@@ -215,7 +215,7 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 shadow
 
 ## Privilege Escalation
 
-### Shadow Group --> Thor Creds
+### Shadow Group -> Thor Creds
 
 We are part of the `shadow` group, meaning we can read `/etc/shadow`:
 
@@ -240,7 +240,7 @@ We can then `ssh` in as `thor`:
 
 <figure><img src="../../../.gitbook/assets/image (1066).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Webmin --> Webmin RCE
+### Sudo Webmin -> Webmin RCE
 
 `thor` can restart the Webmin instance as `root`:
 

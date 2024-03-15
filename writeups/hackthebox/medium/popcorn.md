@@ -47,8 +47,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /index                (Status: 200) [Size: 177]
 /.html                (Status: 403) [Size: 285]
 /index.html           (Status: 200) [Size: 177]
-/torrent              (Status: 301) [Size: 314] [--> http://10.129.36.23/torrent/]
-/rename               (Status: 301) [Size: 313] [--> http://10.129.36.23/rename/]
+/torrent              (Status: 301) [Size: 314] [-> http://10.129.36.23/torrent/]
+/rename               (Status: 301) [Size: 313] [-> http://10.129.36.23/rename/]
 /.html                (Status: 403) [Size: 285]
 ```
 

@@ -30,7 +30,7 @@ Again, phone numbers are unique here. This made me think about every little deta
 
 There wasn't much more on the website, and we were just left with FTP and SSH.
 
-### FTP Brute Force --> SSH Key
+### FTP Brute Force -> SSH Key
 
 I took a look at this tweet regarding BadCorp:
 
@@ -109,7 +109,7 @@ Session completed.
 
 ## Privilege Escalation
 
-### Backup SUID --> Reverse Engineering
+### Backup SUID -> Reverse Engineering
 
 I searched for SUID binaries within the machine and found one that stood out:
 
@@ -128,7 +128,7 @@ Wrong Password !!!
 
 I didn't recognise this `backup` binary, so I downloaded it back to my machine and opened it up in `ghidra`.&#x20;
 
-### Ghidra + Ltrace --> Command Injection
+### Ghidra + Ltrace -> Command Injection
 
 I first ran the binary with `ltrace`:
 

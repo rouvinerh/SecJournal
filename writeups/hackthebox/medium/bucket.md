@@ -32,7 +32,7 @@ Service Info: Host: 127.0.1.1
 
 We can add `bucket.htb` to our `/etc/hosts` file to visit the web application.
 
-### Web Enum --> S3 Bucket Shell Upload
+### Web Enum -> S3 Bucket Shell Upload
 
 The website was looked to be a custom platform:
 
@@ -99,7 +99,7 @@ This worked! Now we can easily gain a reverse shell:
 
 ## Privilege Escalation
 
-### Project Files --> DynamoDB SSH Creds
+### Project Files -> DynamoDB SSH Creds
 
 We cannot read the user flag yet. Within the `/var/www` file, there is another `bucket-app` file:
 
@@ -213,7 +213,7 @@ It seems that we have some credentials. The third one worked, and I could `su` t
 
 <figure><img src="../../../.gitbook/assets/image (4166).png" alt=""><figcaption></figcaption></figure>
 
-### Bucket-App PD4ML LFI --> Root SSH Key
+### Bucket-App PD4ML LFI -> Root SSH Key
 
 Now that we are `roy`, we can access the `bucket-app` file:
 

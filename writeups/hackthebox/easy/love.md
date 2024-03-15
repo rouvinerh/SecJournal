@@ -24,7 +24,7 @@ Checking the certificate on port 443 reveals a hidden sub-domain.
 
 We can add this to the `/etc/hosts` file and view it.
 
-### SSRF --> Authenticated RCE
+### SSRF -> Authenticated RCE
 
 The sub-domain found reveals this:
 

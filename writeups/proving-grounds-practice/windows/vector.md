@@ -40,7 +40,7 @@ C? When we view the page source, there's also this part here:
 		AES-256-CBC-PKCS7 ciphertext: 4358b2f77165b5130e323f067ab6c8a92312420765204ce350b1fbb826c59488
 		
 		Victor's TODO: Need to add authentication eventually..
-	-->
+	->
 </form>
 ```
 
@@ -54,7 +54,7 @@ If we remove some characters, then it loads something else.
 
 That's literally all of the enumeration that is possible to do.
 
-### Paddling Oracle Attack --> RDP&#x20;
+### Paddling Oracle Attack -> RDP&#x20;
 
 The first thing we can note is the AES mode used, which is CBC. This mode is insecure against a paddle oracle attack. For this application, it appears that when a parameter `c` (short for ciphertext) is submitted, we get a '1' if it has valid padding, else we get a '0'. This explains why the ciphertext, when submitted returns a '1'. This confirms that we need to use this attack to get the ciphertext out.&#x20;
 
@@ -126,7 +126,7 @@ We can then grab the user flag.
 
 ## Privilege Escalation
 
-### WinPEAS --> Admin Shell
+### WinPEAS -> Admin Shell
 
 I downloaded and ran `winPEASx64.exe` on the machine, and found this output:
 

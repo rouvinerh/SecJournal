@@ -36,7 +36,7 @@ PORT      STATE SERVICE VERSION
 
 Based on the box name, we are likely dealing with a Flask application here.&#x20;
 
-### Web Enum --> JWT Exploit
+### Web Enum -> JWT Exploit
 
 Port 5555 just shows us a login page:
 
@@ -129,7 +129,7 @@ When we load the request in a Browser, we would see the admin dashboard:
 
 <figure><img src="../../../.gitbook/assets/image (3997).png" alt=""><figcaption></figcaption></figure>
 
-### Config --> SSH Creds
+### Config -> SSH Creds
 
 At the bottom, we can see users making posts about the configuration files:
 
@@ -151,7 +151,7 @@ We can then try each password with `ssh`, finding that `john:NezukoCh@n` works.
 
 ## Privilege Escalation
 
-### Calculator Backup --> Root
+### Calculator Backup -> Root
 
 Within the user's directories, there's a `calc.bak` file present:
 

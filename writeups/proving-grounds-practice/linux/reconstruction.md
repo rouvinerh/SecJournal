@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8080/tcp open  http-proxy
 ```
 
-### Anonymous FTP --> Wireshark Password
+### Anonymous FTP -> Wireshark Password
 
 FTP allows anonymous logins:
 
@@ -61,7 +61,7 @@ And within that PCAP file, we can find a request that has a password that seems 
 
 <figure><img src="../../../.gitbook/assets/image (2213).png" alt=""><figcaption></figcaption></figure>
 
-### Web Enum --> LFI
+### Web Enum -> LFI
 
 Port 8000 hosted the same Flask application:
 
@@ -108,7 +108,7 @@ If we use the `base64` encoded string of `/etc/passwd`, we get another unique er
 
 Now there's an error saying there's no file or directory triggered by the newline character. This means we have LFI on the server if we use `echo -n`!
 
-### Werkzeug PIN Calculation --> RCE
+### Werkzeug PIN Calculation -> RCE
 
 Since we have LFI on the Werkzeug server, we can actually calculate the PIN required.&#x20;
 
@@ -200,7 +200,7 @@ We can `su` to `jack` using the commented password.
 
 <figure><img src="../../../.gitbook/assets/image (1769).png" alt=""><figcaption></figcaption></figure>
 
-### Powershell --> Root Creds
+### Powershell -> Root Creds
 
 Within the home directory of the user, I enumerated the directories present and noticed that there was a Powershell directory:
 

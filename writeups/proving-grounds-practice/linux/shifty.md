@@ -120,7 +120,7 @@ We would get a shell on our listener port:
 
 ## Privilege Escalation
 
-### Encrypted Files --> Root SSH
+### Encrypted Files -> Root SSH
 
 There was a `backup.py` file within `/opt/backups`:
 

@@ -73,7 +73,7 @@ PORT     STATE SERVICE       VERSION
 
 We can add all the domain names into our `/etc/hosts` file.&#x20;
 
-### SMB Shares --> Ansible Creds
+### SMB Shares -> Ansible Creds
 
 SMB allowed access to a few shares with no credentials:
 
@@ -202,7 +202,7 @@ pWm_@dm!N_!23 (for login)
 DevT3st@123 (for ldap)
 ```
 
-### Web Enumeration --> Responder
+### Web Enumeration -> Responder
 
 Port 80 just shows an IIS Server. Port 8443 uses TLS and redirects me a login at `/pwm/private/login`:
 
@@ -222,7 +222,7 @@ With this, we can `evil-winrm` in to the machine:
 
 ## Privilege Escalation
 
-### ESC1 + Add Computer --> Reset DA Password
+### ESC1 + Add Computer -> Reset DA Password
 
 Within the machine, there are some certificates available:
 

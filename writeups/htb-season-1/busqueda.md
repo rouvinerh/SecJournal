@@ -154,7 +154,7 @@ svc@busqueda:/var/www/app/.git$ sudo /usr/bin/python3 /opt/scripts/system-checku
 
 With this, we can try to access the Gitea instance at port 3000 via port forwarding.
 
-### Gitea --> Root shell
+### Gitea -> Root shell
 
 We can port foward via `chisel`.
 

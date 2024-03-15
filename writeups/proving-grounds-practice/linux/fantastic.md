@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 3000/tcp open  ppp
 ```
 
-### Grafana LFI + Decrypt Password --> SSH Creds
+### Grafana LFI + Decrypt Password -> SSH Creds
 
 Port 3000 was running Grafana:
 
@@ -89,7 +89,7 @@ With the password, I tested Grafana and SSH, and it worked for the `sysadmin` us
 
 ## Privilege Escalation
 
-### Disk Group --> Read SSH Key
+### Disk Group -> Read SSH Key
 
 We are part of the `disk` group, meaning we actually have full access to the file system through `debugfs`. First, let's check the different devices available:
 

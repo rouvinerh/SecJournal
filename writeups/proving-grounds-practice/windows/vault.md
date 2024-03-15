@@ -118,7 +118,7 @@ Then, we can `evil-winrm` in:
 
 ## Privilege Escalation
 
-### Server Operators --> DA
+### Server Operators -> DA
 
 Our current user was part of the Server Operators group:
 

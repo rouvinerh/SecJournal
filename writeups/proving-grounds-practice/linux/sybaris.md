@@ -62,7 +62,7 @@ The most interesting thing was the Redis instance because it was a version that 
 
 Port 80 was full of Rabbit Holes, nothing was useful about it.
 
-### FTP Creds --> RCE
+### FTP Creds -> RCE
 
 The FTP service allowed for anonymous access:
 
@@ -103,7 +103,7 @@ We can then easily get a reverse shell.&#x20;
 
 ## Privilege Escalation
 
-### Cronjob --> Library Hijack
+### Cronjob -> Library Hijack
 
 I ran a `linpeas.sh` scan, and found this `cronjob` running:
 

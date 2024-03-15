@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### Port 80 --> SQL Injection
+### Port 80 -> SQL Injection
 
 Port 80 just hosts this image:
 

@@ -73,7 +73,7 @@ Java Mantainer
 
 `.ser` seems to be an important file. There was also mention of a 'dashboard app\`, which was likely one of the web applications hosted on this.&#x20;
 
-### Web Enumeration --> Web Creds
+### Web Enumeration -> Web Creds
 
 Port 80 hosted a corporate website:
 
@@ -167,7 +167,7 @@ public UserDetailsService userDetailsService() {
 
 <figure><img src="../../../.gitbook/assets/image (1417).png" alt=""><figcaption></figcaption></figure>
 
-### Source Code --> Deserialisation RCE
+### Source Code -> Deserialisation RCE
 
 There was some functionality for this, so let's read the source code to find how it checks status and saves the current values. The code for this can be found within `DashboardController.java`:
 
@@ -274,7 +274,7 @@ This would generate a serialised object that we can use. Afterwards, place this 
 
 ## Privilege Escalation
 
-### Sudoedit Double Wildcard --> Arbitrary Write
+### Sudoedit Double Wildcard -> Arbitrary Write
 
 I checked our `sudo` privileges, and saw this:
 

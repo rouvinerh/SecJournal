@@ -32,7 +32,7 @@ PORT      STATE SERVICE
 
 Does not allow anonymous logins.
 
-### RFI --> User Shell
+### RFI -> User Shell
 
 Port 4443 and 8080 host the same service:
 
@@ -85,7 +85,7 @@ We can then grab the user flag.
 
 ## Privilege Escalation
 
-### Cronjob --> SYSTEM Shell
+### Cronjob -> SYSTEM Shell
 
 The `C:\` directory contained a `Backup` folder that looked interesting:
 

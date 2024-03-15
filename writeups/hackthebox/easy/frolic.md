@@ -166,9 +166,9 @@ objdump -TC /lib/i386-linux-gnu/libc.so.6 | grep "exit"
 For each of these addresses, we would need to find the final address by adding the offset to the base address. This would give the following:
 
 ```
-exit() --> 0xb7e479d0
-system() --> 0xb7e53da0
-/bin/sh --> 0xb7f74a0b
+exit() -> 0xb7e479d0
+system() -> 0xb7e53da0
+/bin/sh -> 0xb7f74a0b
 ```
 
 Afterwards, we need to fuzz the binary to find the number of junk characters required via `pattern_offset.rb`.

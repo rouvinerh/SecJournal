@@ -57,24 +57,24 @@ That being said, threads are allowed to have their own security contexts, which 
 
 Almost all computers today use virtual memory, which allows for a larger range of accessible memory buffer that is larger than the available physical memory. Virtual memory relies on **pages**, which are 4KB chunks that divide the whole memory range. If the memory supply is small, the memory manager saves pages of physical memory to a disk file. Pages of data or code are shifted between the memory and the disk when needed.
 
-TLDR --> Allows for more memory without physical limitations, mapping chunks of memory to disk files allows for 'secondary memory'.
+TLDR -> Allows for more memory without physical limitations, mapping chunks of memory to disk files allows for 'secondary memory'.
 
 Pages have 3 states:
 
-* Free --> Page is free to be reserved or committed. However, this cannot be read from or written to.
-* Reserved --> Reserved for future use. Page is not accessible yet, and there is no physical storage.
-* Committed --> Memory charges have been allocated from the overall size of RAM and paging files on disk. The page is accessible and is controlled by one of the memory protection constants. When the process using this page terminates, the page is made free again.
+* Free -> Page is free to be reserved or committed. However, this cannot be read from or written to.
+* Reserved -> Reserved for future use. Page is not accessible yet, and there is no physical storage.
+* Committed -> Memory charges have been allocated from the overall size of RAM and paging files on disk. The page is accessible and is controlled by one of the memory protection constants. When the process using this page terminates, the page is made free again.
 
 There are quite a few memory constants represented as integers:
 
-* `PAGE_EXECUTE_READWRITE` --> `0x40` enables RWX of memory. Discouraged since memory being both WX is not common.
-* `PAGE_READONLY` --> `0x02` enables R of memory.
-* `PAGE_NOACCESS` --> `0x01` disables all access.
+* `PAGE_EXECUTE_READWRITE` -> `0x40` enables RWX of memory. Discouraged since memory being both WX is not common.
+* `PAGE_READONLY` -> `0x02` enables R of memory.
+* `PAGE_NOACCESS` -> `0x01` disables all access.
 
 Memory has some protection as well. These don't make memory exploits impossible, but certainly a lot harder:
 
-* DEP (NX) --> Prevents memory from being executed within a certain region.
-* ASLR (PIE) --> Randomly arranges address space positions of key data areas of a process, including base of the executable.
+* DEP (NX) -> Prevents memory from being executed within a certain region.
+* ASLR (PIE) -> Randomly arranges address space positions of key data areas of a process, including base of the executable.
 
 Here's an illustration of how the memory works:
 

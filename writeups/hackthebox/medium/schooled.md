@@ -30,7 +30,7 @@ PORT      STATE SERVICE VERSION
 
 I added `schooled.htb` to the `/etc/hosts` file as per standard HTB practice.
 
-### Web Enum --> Moodle XSS
+### Web Enum -> Moodle XSS
 
 The website was for an educational institution:
 
@@ -107,7 +107,7 @@ After replacing the cookie, I got access to the 'Manuel Phillips' user, who I pr
 
 ![](../../../.gitbook/assets/schooled-image-5.png)
 
-### Teacher --> Manager --> RCE
+### Teacher -> Manager -> RCE
 
 There was nothing inherently interesting about a teacher's account, however there is one CVE to go from a teacher to the site manager.
 
@@ -173,7 +173,7 @@ Then, a reverse shell is easy.
 
 ## Privilege Escalation
 
-### Database Creds --> User Hash
+### Database Creds -> User Hash
 
 There were 2 users on this machine:
 

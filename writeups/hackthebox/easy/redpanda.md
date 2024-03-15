@@ -27,8 +27,8 @@ When we search for something, it shows our result back on the screen:
 
 There are a few possibilities in my mind:
 
-* XSS --> But there's no users present to 'view' our requests
-* SQL Injection --> Might have a database present, but not typical for non-logins.&#x20;
+* XSS -> But there's no users present to 'view' our requests
+* SQL Injection -> Might have a database present, but not typical for non-logins.&#x20;
 * SSTI
 
 When we use `${7*7}`, we get a unique error:

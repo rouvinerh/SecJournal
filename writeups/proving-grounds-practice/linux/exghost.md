@@ -44,7 +44,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /uploads              (Status: 301) [Size: 320] [--> http://192.168.183.183/uploads/]
 ```
 
-### FTP Brute Force --> Wireshark
+### FTP Brute Force -> Wireshark
 
 Anonymous credentials don't work with this FTP system, and because we had no other choice, I started brute forcing the FTP login with `hydra`. This took quite a while, but eventually I found some credentials:
 
@@ -130,7 +130,7 @@ Megapixels                      : 0.065
 </pre>
 ```
 
-### File Upload --> Exiftool RCE
+### File Upload -> Exiftool RCE
 
 It appears that the website is accepting images, and then running `exiftool` on it as a response. This version of `exiftool` is vulnerable to an RCE exploit.&#x20;
 
@@ -158,7 +158,7 @@ After uploading it, we would get a shell as `www-data`:
 
 ## Privilege Escalation
 
-### Sudo Exploit --> Root
+### Sudo Exploit -> Root
 
 I ran a `linpeas.sh` scan on the machine. This found that `sudo` was outdated:
 

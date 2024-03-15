@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 We can proxy traffic through Burpsuite.&#x20;
 
-### Web Enum --> XPath Injection
+### Web Enum -> XPath Injection
 
 The website is for a car repair service:
 
@@ -80,7 +80,7 @@ The first password works for `bob`:
 
 ## Privilege Escalation
 
-### SUID Binary --> Arbitrary Read
+### SUID Binary -> Arbitrary Read
 
 I searched for SUID binaries and the first result stood out:
 

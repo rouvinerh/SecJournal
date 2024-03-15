@@ -30,7 +30,7 @@ We had no credentials and weak default credentials didn't work. Port 80 hosted a
 
 Directory, subdomain and other web scans all didn't find anything. So this was an obvious rabbit hole.
 
-### UDP Ports --> SNMP Enum
+### UDP Ports -> SNMP Enum
 
 I did another UDP scan in case I missed some stuff:
 
@@ -200,7 +200,7 @@ Now, we can grab the user flag and also a reverse shell as the user.
 
 ## Privilege Escalation
 
-### SNMP Processes --> Injection
+### SNMP Processes -> Injection
 
 I ran a LinPEAS scan on the machine to enumerate for me, and didn't find anything interesting. I wanted to see the processes that were running on the machine, and this could be done using `snmpwalk` as we did earlier. This is because `root` is probably running SNMP here.
 

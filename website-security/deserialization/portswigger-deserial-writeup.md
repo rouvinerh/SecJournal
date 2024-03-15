@@ -541,7 +541,7 @@ PortSwigger has provided a simple Java program for serialising objects on Github
 
 {% embed url="https://replit.com/@portswigger/java-serialization-example" %}
 
-### Code Analysis --> Create Object
+### Code Analysis -> Create Object
 
 Starting with `ProductTemplate`, the class has a string variable of `id`. This `id` variable is passed to a SQL query:
 

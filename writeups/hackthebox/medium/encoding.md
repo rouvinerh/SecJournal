@@ -50,10 +50,10 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 2023/01/30 08:43:21 Starting gobuster in directory enumeration mode
 ===============================================================
 /index.php            (Status: 200) [Size: 0]
-/v2                   (Status: 301) [Size: 319] [--> http://api.haxtables.htb/v2/]
-/v1                   (Status: 301) [Size: 319] [--> http://api.haxtables.htb/v1/]
+/v2                   (Status: 301) [Size: 319] [-> http://api.haxtables.htb/v2/]
+/v1                   (Status: 301) [Size: 319] [-> http://api.haxtables.htb/v1/]
 /utils.php            (Status: 200) [Size: 0]
-/v3                   (Status: 301) [Size: 319] [--> http://api.haxtables.htb/v3/]
+/v3                   (Status: 301) [Size: 319] [-> http://api.haxtables.htb/v3/]
 ```
 
 There was a `utils.php` file, which could be something. Also there were lots of different versions for stuff. Interesting.
@@ -114,8 +114,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 /.php                 (Status: 403) [Size: 278]
 /index.php            (Status: 200) [Size: 1999]
-/assets               (Status: 301) [Size: 315] [--> http://haxtables.htb/assets/]
-/includes             (Status: 301) [Size: 317] [--> http://haxtables.htb/includes/]
+/assets               (Status: 301) [Size: 315] [-> http://haxtables.htb/assets/]
+/includes             (Status: 301) [Size: 317] [-> http://haxtables.htb/includes/]
 /handler.php          (Status: 200) [Size: 38]
 ```
 
@@ -208,7 +208,7 @@ curl -X POST -H 'Content-Type: application/json' -d "{\"action\": \"str2hex\",\"
 
 Then we can simply run it and download all the files present on it. Now we can do some Git reviewing
 
-### Git Reviewing --> RCE
+### Git Reviewing -> RCE
 
 From the `git log` command, we can find this output:
 

@@ -101,7 +101,7 @@ I ran `john` on the hashes, and managed to crack one of them to get `funkymonkey
 
 With this and a username, we can `ssh` into the machine as `marcus`. Then, grab the user flag.
 
-### CVE-2021-41091 --> Root Shell
+### CVE-2021-41091 -> Root Shell
 
 Within the `/var/mail` folder, there's some mail for `marcus`:
 

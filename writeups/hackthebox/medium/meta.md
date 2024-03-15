@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 We have to add `artcorp.htb` to our `/etc/hosts` file to view port 80.
 
-### ArtCorp --> Subdomain Fuzzing
+### ArtCorp -> Subdomain Fuzzing
 
 The webpage was a start-up website:
 

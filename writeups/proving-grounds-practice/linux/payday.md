@@ -21,7 +21,7 @@ PORT    STATE SERVICE
 995/tcp open  pop3
 ```
 
-### CS-Cart --> RCE
+### CS-Cart -> RCE
 
 Port 80 was running InternetShop CS-Cart, which looks really vulnerable:
 
@@ -58,7 +58,7 @@ http://pentestmonkey.net/tools/web-shells/php-reverse-shell
 edit IP && PORT
 Upload to file manager
 change the extension from .php to .phtml
-visit http://[victim]/skins/shell.phtml --> Profit. ...! 
+visit http://[victim]/skins/shell.phtml -> Profit. ...! 
 ```
 
 We can then access `admin.php` with the same credentials:
@@ -81,7 +81,7 @@ And we would get a reverse shell:
 
 ## Privilege Escalation
 
-### Weak Creds --> Root
+### Weak Creds -> Root
 
 We can `su` to the user `patrick` using the password `patrick`. This user can run `sudo` for everything:
 

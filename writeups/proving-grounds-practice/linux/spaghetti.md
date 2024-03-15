@@ -70,7 +70,7 @@ Port 8080 was running a non-vulnerable version of Postfix, with a login page:
 
 I had no credentials, so let's move on first.
 
-### IRC --> Source Code --> RCE
+### IRC -> Source Code -> RCE
 
 I used `nc` to first enumerate the IRC server. Initially when connecting, it tells me that it cannot resolve my hostname, which we can fix by using `NICK`.&#x20;
 
@@ -163,7 +163,7 @@ The parameters are not sanitised at all. As such, we can attempt to chain comman
 
 ## Privilege Escalation
 
-### Cronjob --> MySQL Shell Injection
+### Cronjob -> MySQL Shell Injection
 
 I ran `linpeas.sh` to enumerate, and it picked up on a cronjob running:
 

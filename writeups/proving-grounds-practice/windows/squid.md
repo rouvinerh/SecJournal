@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 
 Only one port is open.
 
-### Squid Proxy --> FoxyProxy
+### Squid Proxy -> FoxyProxy
 
 The port was a Squid Proxy instance. When visited in a browser, this is all we see:
 
@@ -32,7 +32,7 @@ Afterwards, we can use `proxychains` to scan the machine again to find more port
 
 <figure><img src="../../../.gitbook/assets/image (1658).png" alt=""><figcaption></figcaption></figure>
 
-### Default Creds --> SQL RCE
+### Default Creds -> SQL RCE
 
 There's a PHPMyAdmin instance present on the page, and we can login using `root` as the username with no password.
 

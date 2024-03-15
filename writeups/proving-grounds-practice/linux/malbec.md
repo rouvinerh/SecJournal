@@ -47,7 +47,7 @@ PORT     STATE SERVICE VERSION
 
 Port 2121 is FTP it seems.
 
-### FTP --> Buffer Overflow
+### FTP -> Buffer Overflow
 
 FTP allowed for anonymous access and it only had one file:
 
@@ -131,7 +131,7 @@ Done!
 
 ## Privilege Escalation
 
-### SUID Binary --> Malicious Library
+### SUID Binary -> Malicious Library
 
 I ran a `linpeas.sh` scan on the machine, and it found a few interesting things.  Firstly, `root` is running `ldconfig` periodically:
 

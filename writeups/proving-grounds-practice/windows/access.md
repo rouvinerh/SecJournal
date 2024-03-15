@@ -58,7 +58,7 @@ Service Info: Host: SERVER; OS: Windows; CPE: cpe:/o:microsoft:windows
 
 We can take note of the domain name `access.offsec` and add it to our `/etc/hosts` file.&#x20;
 
-### Port 80 --> File Upload Fail
+### Port 80 -> File Upload Fail
 
 Port 80 hosted an event site:
 
@@ -108,7 +108,7 @@ $ curl http://access.offsec/uploads/cmd.php%2500
 <?php system($_REQUEST['cmd']); ?>
 ```
 
-### .htaccess Overwrite --> RCE
+### .htaccess Overwrite -> RCE
 
 I found this pretty weird, why would NOT be executing PHP? I googled for what can block PHP execution on websites, and it brought me to this page detailing about how the `.htaccess` file can do that:
 
@@ -137,7 +137,7 @@ Then, we can get a reverse shell using `nc64.exe`.
 
 ## Privilege Escalation
 
-### Kerberoast --> svc\_mssql Shell
+### Kerberoast -> svc\_mssql Shell
 
 We cannot grab the user flag just yet. Within the `C:\Users` directory, there's another service user present:
 
@@ -200,7 +200,7 @@ Then, download another copy of `nc64.exe` and execute it to get another reverse 
 
 <figure><img src="../../../.gitbook/assets/image (981).png" alt=""><figcaption></figcaption></figure>
 
-### SeManageVolumePrivilege --> WerTrigger
+### SeManageVolumePrivilege -> WerTrigger
 
 This user has the SeManageVolumePrivilege enabled:
 

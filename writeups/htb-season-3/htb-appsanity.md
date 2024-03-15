@@ -79,7 +79,7 @@ The `portal` subdomain just brought me to this separate login page:
 
 ![](../../.gitbook/assets/htb-appsanity-image-4.png)
 
-### Doctor Account --> Cookie Reuse
+### Doctor Account -> Cookie Reuse
 
 When checking the requests proxied, I noticed that there was an `AccType` parameter in the POST request to Sign Up as a new user. 
 
@@ -101,7 +101,7 @@ There was nothing inherently interesting about this patient function, but by re-
 
 ![](../../.gitbook/assets/htb-appsanity-image-9.png)
 
-### Doctor Panel --> File Upload + SSRF
+### Doctor Panel -> File Upload + SSRF
 
 I took a look around the portal, and found some interesting functions. The most interesting was the file upload function:
 
@@ -154,7 +154,7 @@ This shell works on port 21:
 
 ## Privilege Escalation
 
-### Examination Panel --> DnSpy --> DevDoc
+### Examination Panel -> DnSpy -> DevDoc
 
 The `svc_exampanel` user had one interesting file within their directory:
 
@@ -271,7 +271,7 @@ Using this password, I could `evil-winrm` in as the `devdocs` user:
 
 ![](../../.gitbook/assets/htb-appsanity-image-21.png)
 
-### Binary Analysis --> DLL Hijacking
+### Binary Analysis -> DLL Hijacking
 
 When checking the `C:\Program Files` directory, I found an `ReportManagement` directory:
 

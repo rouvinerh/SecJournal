@@ -15,7 +15,7 @@ PORT      STATE SERVICE
 50051/tcp open  unknown
 ```
 
-### Port 50051 --> gRPC
+### Port 50051 -> gRPC
 
 I've never seen port 50051 open on a HTB machine before, so I ran a detailed `nmap` scan too:
 
@@ -91,7 +91,7 @@ There are specific tools that are used to interact with this software, and we ca
 
 The tool worked, which means this is indeed gRPC running.
 
-### SimpleApp Enum --> SQL Injection
+### SimpleApp Enum -> SQL Injection
 
 This thing was running a 'SimpleApp' application, and we can enumerate it to see the default values accepted, create a user and login.
 
@@ -285,7 +285,7 @@ We had credentials for this user, and it works with `ssh`.
 
 ## Privilege Escalation
 
-### PyLoad --> CVE-2023-0297 RCE
+### PyLoad -> CVE-2023-0297 RCE
 
 When checking `netstat` output, we can see that port 8000 is open on the machine:
 

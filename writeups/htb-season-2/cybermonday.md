@@ -31,7 +31,7 @@ PORT   STATE SERVICE VERSION
 
 We can add this host to our `/etc/hosts` file.
 
-### Web Enumeration --> Misconfigured Nginx Alias LFI
+### Web Enumeration -> Misconfigured Nginx Alias LFI
 
 The website shows a shop:
 
@@ -136,7 +136,7 @@ REDIS_BLACKLIST=flushall,flushdb
 
 We seem to have an `APP_KEY` variable that might be handy later. Redis is also present on the machine.&#x20;
 
-### Source Code Review --> Admin Takeover
+### Source Code Review -> Admin Takeover
 
 There were quite a lot of files from the repository.&#x20;
 
@@ -268,7 +268,7 @@ I appended `isAdmin=1` to the end of the POST parameters and updated my user's p
 
 <figure><img src="../../.gitbook/assets/image (4189).png" alt=""><figcaption></figcaption></figure>
 
-### Admin Dashboard --> Webhook Subdomain
+### Admin Dashboard -> Webhook Subdomain
 
 The changelog of the administrator's dashboard was the most interesting:
 
@@ -298,7 +298,7 @@ It's worth noting that the JWT token stored contains our user ID and our usernam
 
 There should be a way to spoof this token or get the secret required.&#x20;
 
-### Algorithm Confusion --> Webhooks Access
+### Algorithm Confusion -> Webhooks Access
 
 I did a few scans using different wordlists via `gobuster`, and found some interesting stuff:
 
@@ -398,7 +398,7 @@ Using this token, we can then access the `/webhooks` endpoint:
 
 <figure><img src="../../.gitbook/assets/image (4198).png" alt=""><figcaption></figcaption></figure>
 
-### Redis SSRF --> Deserialisation RCE
+### Redis SSRF -> Deserialisation RCE
 
 > Had some help here.
 
@@ -639,7 +639,7 @@ Upon refreshing the page, I got a shell as `www-data`:
 
 ## Privilege Escalation 1
 
-### Docker Escape --> MySQL
+### Docker Escape -> MySQL
 
 We are in a Docker container, so let's look for ways to escape this thing. I first checked the environment variables, and there were quite a few:
 
@@ -791,7 +791,7 @@ MySQL [webhooks_api]> select * from webhooks;
 
 Not much here though.
 
-### Docker Registry --> Source Code --> LFI
+### Docker Registry -> Source Code -> LFI
 
 There are likely more hosts present on the 172.18.0.0/24 subnet, which is the subnet the Docker container is on (read `/etc/hosts` file). To enumerate this, we can change our `chisel` command to use the SOCKS proxy instead of just port forwarding 1 port:
 
@@ -1037,7 +1037,7 @@ With this password, we can finally `ssh` in as the user and read the user flag:
 
 ## Privilege Esclation 2
 
-### Sudo Privileges --> Docker-Compose YML File
+### Sudo Privileges -> Docker-Compose YML File
 
 `john` has can run `sudo` for one command:
 

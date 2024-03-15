@@ -35,7 +35,7 @@ PORT      STATE SERVICE
 
 We can enumerate the HTTP page.
 
-### HTTP --> PDF Analysis
+### HTTP -> PDF Analysis
 
 Page is some kind of company website.
 
@@ -225,7 +225,7 @@ $ crackmapexec smb 10.129.95.154 -u files/users -p NewIntelligenceCorpUser9876
 [+] intelligence.htb\Tiffany.Molina:NewIntelligenceCorpUser9876
 ```
 
-### Tiffany SMB --> Poison DNS
+### Tiffany SMB -> Poison DNS
 
 We cannot login using `evil-winrm` with this, so let's enumerate the SMB shares.&#x20;
 

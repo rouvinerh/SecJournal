@@ -157,7 +157,7 @@ The reason we split the string by `*` is because of the weird string it generate
 
 We cannot read the user's flag yet.&#x20;
 
-### CouchDB --> User Creds
+### CouchDB -> User Creds
 
 The user was called `homer`, and they were running some processes:
 
@@ -209,7 +209,7 @@ With this, we can `ssh` in as `homer` using the password from the other fields:
 
 <figure><img src="../../../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Pip --> Root
+### Sudo Pip -> Root
 
 When checking `sudo` privileges, we see that we can run `pip install` as `root`:
 

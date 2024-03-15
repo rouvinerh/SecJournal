@@ -18,7 +18,7 @@ PORT    STATE SERVICE
 
 We have to add `laboratory.htb` to our `/etc/hosts` file to access the web ports.&#x20;
 
-### Laboratory --> Gitlab RCE
+### Laboratory -> Gitlab RCE
 
 The website is some kind of company page for coding services:
 
@@ -98,7 +98,7 @@ I only wanted to use this because I was lazy to set up the Docker containers req
 
 ## Privilege Escalation
 
-### GitLab Rails --> SSH Key
+### GitLab Rails -> SSH Key
 
 This shell was spawned within a container, and there weren't any users in the `home` directory.
 
@@ -195,7 +195,7 @@ Using this, we can `ssh` in as the user and grab the user flag:
 
 <figure><img src="../../../.gitbook/assets/image (2690).png" alt=""><figcaption></figcaption></figure>
 
-### Ghidra --> SUID Exploit
+### Ghidra -> SUID Exploit
 
 I ran a `linpeas.sh` scan on the machine and found some interesting SUID binaries:
 

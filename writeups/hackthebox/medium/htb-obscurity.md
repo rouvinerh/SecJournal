@@ -48,13 +48,13 @@ PORT     STATE SERVICE    VERSION
 |     <!-- 
 |     Easy Profile Template
 |     http://www.templatemo.com/tm-467-easy-profile
-|     <!-- stylesheet css -->
+|     <!-- stylesheet css ->
 |     <link rel="stylesheet" href="css/bootstrap.min.css">
 |     <link rel="stylesheet" href="css/font-awesome.min.css">
 |     <link rel="stylesheet" href="css/templatemo-blue.css">
 |     </head>
 |     <body data-spy="scroll" data-target=".navbar-collapse">
-|     <!-- preloader section -->
+|     <!-- preloader section ->
 |     <!--
 |     <div class="preloader">
 |_    <div class="sk-spinner sk-spinner-wordpress">
@@ -69,12 +69,12 @@ SF:n\t<meta\x20http-equiv=\"X-UA-Compatible\"\x20content=\"IE=Edge\">\n\t<
 SF:meta\x20name=\"viewport\"\x20content=\"width=device-width,\x20initial-s
 SF:cale=1\">\n\t<meta\x20name=\"keywords\"\x20content=\"\">\n\t<meta\x20na
 SF:me=\"description\"\x20content=\"\">\n<!--\x20\nEasy\x20Profile\x20Templ
-SF:ate\nhttp://www\.templatemo\.com/tm-467-easy-profile\n-->\n\t<!--\x20st
-SF:ylesheet\x20css\x20-->\n\t<link\x20rel=\"stylesheet\"\x20href=\"css/boo
+SF:ate\nhttp://www\.templatemo\.com/tm-467-easy-profile\n->\n\t<!--\x20st
+SF:ylesheet\x20css\x20->\n\t<link\x20rel=\"stylesheet\"\x20href=\"css/boo
 SF:tstrap\.min\.css\">\n\t<link\x20rel=\"stylesheet\"\x20href=\"css/font-a
 SF:wesome\.min\.css\">\n\t<link\x20rel=\"stylesheet\"\x20href=\"css/templa
 SF:temo-blue\.css\">\n</head>\n<body\x20data-spy=\"scroll\"\x20data-target
-SF:=\"\.navbar-collapse\">\n\n<!--\x20preloader\x20section\x20-->\n<!--\n<
+SF:=\"\.navbar-collapse\">\n\n<!--\x20preloader\x20section\x20->\n<!--\n<
 SF:div\x20class=\"preloader\">\n\t<div\x20class=\"sk-spinner\x20sk-spinner
 SF:-wordpress\">\n")%r(HTTPOptions,10FC,"HTTP/1\.1\x20200\x20OK\nDate:\x20
 SF:Mon,\x2002\x20Oct\x202023\x2015:53:30\nServer:\x20BadHTTPServer\nLast-M
@@ -86,18 +86,18 @@ SF:ntent=\"IE=Edge\">\n\t<meta\x20name=\"viewport\"\x20content=\"width=dev
 SF:ice-width,\x20initial-scale=1\">\n\t<meta\x20name=\"keywords\"\x20conte
 SF:nt=\"\">\n\t<meta\x20name=\"description\"\x20content=\"\">\n<!--\x20\nE
 SF:asy\x20Profile\x20Template\nhttp://www\.templatemo\.com/tm-467-easy-pro
-SF:file\n-->\n\t<!--\x20stylesheet\x20css\x20-->\n\t<link\x20rel=\"stylesh
+SF:file\n->\n\t<!--\x20stylesheet\x20css\x20->\n\t<link\x20rel=\"stylesh
 SF:eet\"\x20href=\"css/bootstrap\.min\.css\">\n\t<link\x20rel=\"stylesheet
 SF:\"\x20href=\"css/font-awesome\.min\.css\">\n\t<link\x20rel=\"stylesheet
 SF:\"\x20href=\"css/templatemo-blue\.css\">\n</head>\n<body\x20data-spy=\"
 SF:scroll\"\x20data-target=\"\.navbar-collapse\">\n\n<!--\x20preloader\x20
-SF:section\x20-->\n<!--\n<div\x20class=\"preloader\">\n\t<div\x20class=\"s
+SF:section\x20->\n<!--\n<div\x20class=\"preloader\">\n\t<div\x20class=\"s
 SF:k-spinner\x20sk-spinner-wordpress\">\n");
 ```
 
 Really long, but there's a custom HTTP server called `BadHTTPServer` running.
 
-### Web Enumeration --> Source Code Review
+### Web Enumeration -> Source Code Review
 
 The website was a blog of some sorts:
 
@@ -402,7 +402,7 @@ www-data@obscure:/home/robert$ cat check.txt
 Encrypting this file with your key should result in out.txt, make sure your key is correct!
 ```
 
-### Encryption Exploit --> User Shell
+### Encryption Exploit -> User Shell
 
 Here's the script contents:
 
@@ -542,7 +542,7 @@ Afterwards, we can `ssh` in as `robert`.
 
 ![](../../../.gitbook/assets/htb-obscurity-image-4.png)
 
-### Sudo Privileges --> PATH Hijack
+### Sudo Privileges -> PATH Hijack
 
 The user has some `sudo` privileges:
 
@@ -648,7 +648,7 @@ We can then easily get `root`:
 
 Rooted!
 
-### Intended Root --> Race Condition
+### Intended Root -> Race Condition
 
 The above was not the intended method, so let's take a look at the script. The script opens `/etc/shadow`, and then puts the password in a separate file while it does `sleep`.
 

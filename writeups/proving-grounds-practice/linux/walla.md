@@ -66,7 +66,7 @@ PORT      STATE SERVICE    VERSION
 |_  256 024f99ec856d794388b2b57cf091fe74 (ED25519)
 ```
 
-### Weak Creds --> Web Console
+### Weak Creds -> Web Console
 
 I took a look at port 8081 first, and found that it had a HTTP login:
 
@@ -103,7 +103,7 @@ Grab the user flag from the home directory of `walter`.
 
 ## Privilege Escalation
 
-### Sudo Privileges --> Module RCE
+### Sudo Privileges -> Module RCE
 
 I ran a `linpeas.sh` scan to enumerate for me. Here's the interesting output:
 

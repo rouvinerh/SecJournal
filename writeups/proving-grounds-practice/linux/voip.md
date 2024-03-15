@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8000/tcp open  http-alt
 ```
 
-### Initial Enumeration --> Digest Leak
+### Initial Enumeration -> Digest Leak
 
 Port 80 had a login page:
 
@@ -156,7 +156,7 @@ With this, we can login to port 80 as `adm_sip`.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (3780).png" alt=""><figcaption></figcaption></figure>
 
-### Audio File --> SSH Creds
+### Audio File -> SSH Creds
 
 We can view the CDR (Call Data Records) and find that one of them is raw, which allows us to download it:
 

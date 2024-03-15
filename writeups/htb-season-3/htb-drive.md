@@ -34,7 +34,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 I added that domain to the `/etc/hosts` file. 
 
-### Web Enumeration --> User Password
+### Web Enumeration -> User Password
 
 The website advertised an online file management system called 'Doodle Drive'. 
 
@@ -109,7 +109,7 @@ Using this password, I could `ssh` in as `martin`:
 
 ## Privilege Escalation
 
-### Gitea --> DB --> Tom Password
+### Gitea -> DB -> Tom Password
 
 Now I can start enumerating the machine. Firstly, there are some files within the `/var/www/` directory worth taking a look at:
 
@@ -250,7 +250,7 @@ Using `johnmayer7` allows us to `su` to `tom`.
 
 ![](../../.gitbook/assets/htb-drive-image-10.png)
 
-### Format String Vulnerability --> Stack Canary (unused)
+### Format String Vulnerability -> Stack Canary (unused)
 
 The next part of this machine was glaringly obvious.
 
@@ -327,7 +327,7 @@ Enter Username:
 Enter password for 0x924e6ebdabc8dd00:
 ```
 
-### Ghidra --> SQL Injection
+### Ghidra -> SQL Injection
 
 I took a pause here and used `ghidra` to disassemble the `main` function.
 

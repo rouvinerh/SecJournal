@@ -116,7 +116,7 @@ We can then `ssh` in as `ray`:
 
 ## Privilege Escalation
 
-### Apache-Restart --> Root Creds
+### Apache-Restart -> Root Creds
 
 Within the `/opt` directory, there's this file present:
 

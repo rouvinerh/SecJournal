@@ -19,7 +19,7 @@ PORT      STATE    SERVICE
 
 We might need to exploit SMTP to 'forward' messages.&#x20;
 
-### SMB Shares --> Teamviewer Creds
+### SMB Shares -> Teamviewer Creds
 
 There's one share readable with NULL credentials.
 
@@ -145,7 +145,7 @@ $ smbmap -H 192.168.157.157 -u fox -p iparalipomenidellabatracomiomachia
         fox                                                     READ, WRITE     Home Directories
 ```
 
-### New Shares --> Forward Shell
+### New Shares -> Forward Shell
 
 This `print$` share has some interesting stuff:
 
@@ -276,7 +276,7 @@ This password works for `fox`.&#x20;
 
 <figure><img src="../../../.gitbook/assets/image (3455).png" alt=""><figcaption></figcaption></figure>
 
-### Dosbox SUID --> Root
+### Dosbox SUID -> Root
 
 We can use the `-X` option after finding the user's password:
 

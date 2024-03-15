@@ -52,7 +52,7 @@ $ sudo nmap -n -sV --script "ldap* and not brute" 10.129.95.180
 
 It seems the domain is `EGOTISTICAL-BANK.LOCAL`.&#x20;
 
-### Bank Usernames --> ASREP-Roast
+### Bank Usernames -> ASREP-Roast
 
 This was a bank company website:
 

@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 We have to add `jupiter.htb` to our `/etc/hosts` file to view port 80.
 
-### Web Enum --> Subdomain&#x20;
+### Web Enum -> Subdomain&#x20;
 
 The website was a typical corporate site:
 
@@ -96,7 +96,7 @@ Then, we would catch a reverse shell on a listener port:
 
 We are a low privilege user here, so we cannot grab any user flags just yet.&#x20;
 
-### Network Simulation --> RCE
+### Network Simulation -> RCE
 
 There is something in the machine killing upgraded `pty` shells, and I don't know what. Anyways, I ran a `pspy64` within the machine to find out if any processes were being run as the user.
 
@@ -191,7 +191,7 @@ We can drop our public key into the `authorized_keys` folder to upgrade our shel
 
 <figure><img src="../../../.gitbook/assets/image (1505).png" alt=""><figcaption></figcaption></figure>
 
-### Jupyter --> Jovian Shell
+### Jupyter -> Jovian Shell
 
 Now, we need to gain access to the other user, which might have other privileges that we need. Running `netstat` shows that there are multiple ports open with possible services:
 

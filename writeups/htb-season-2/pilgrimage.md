@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 We have to add `pilgrimage.htb` to our `/etc/hosts` file to view the web application.&#x20;
 
-### Image Shrinker --> .git
+### Image Shrinker -> .git
 
 The website offers a service to shrink images.
 
@@ -65,7 +65,7 @@ $ ls
 assets  dashboard.php  index.php  login.php  logout.php  magick  register.php  vendor
 ```
 
-### Image Magick --> LFI
+### Image Magick -> LFI
 
 One of the files is the `magick` binary, which is probably referring to Image Magick. Running it with the `--version` flag reveals that this is using an oudated version of it:
 
@@ -203,7 +203,7 @@ Then, we can `ssh` as the user `emily`.
 
 ## Privilege Escalation
 
-### Pspy64 --> Binwalk RCE
+### Pspy64 -> Binwalk RCE
 
 Running `pspy64` would show this process:
 

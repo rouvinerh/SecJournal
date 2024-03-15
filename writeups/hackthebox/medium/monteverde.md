@@ -31,7 +31,7 @@ PORT      STATE SERVICE
 49697/tcp open  unknown
 ```
 
-### Username List --> User Creds
+### Username List -> User Creds
 
 With `enum4linux` and null credentials, we can enumerate the possible users and the domain name:
 

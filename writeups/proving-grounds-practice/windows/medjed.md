@@ -181,7 +181,7 @@ PORT      STATE SERVICE       VERSION
 
 Loads of enumeration to do. This box was full of rabbit holes to enumerate.
 
-### Port 45332 --> PHPInfo
+### Port 45332 -> PHPInfo
 
 This page was some kind of quiz thing:
 
@@ -223,7 +223,7 @@ There were also no disabled functions, which was great:
 
 We might need some additional information from here later.&#x20;
 
-### Rabbit Hole --> Port 8000
+### Rabbit Hole -> Port 8000
 
 Port 8000 had a BarracudaServer instance:
 
@@ -235,7 +235,7 @@ It appears that we can set the administrator for this machine:
 
 Apart from that, we could not do anything else on this website after running directory scans on it.&#x20;
 
-### Rabbit Hole --> FTP Anonymous
+### Rabbit Hole -> FTP Anonymous
 
 Port 30021 allowed for anonymous access via FTP.&#x20;
 
@@ -275,7 +275,7 @@ drwxr-xr-x 1 ftp ftp              0 Nov 03  2020 vendor
 
 There wasn't much in this entire directory, as it included loads of random files and what not. I didn't know what to do with all of it, so I moved on first.
 
-### Port 33033 --> Login Bypass
+### Port 33033 -> Login Bypass
 
 This website had a corporate page of some sorts:
 
@@ -305,7 +305,7 @@ Once we reset this, we can login to view the dashboard:
 
 <figure><img src="../../../.gitbook/assets/image (801).png" alt=""><figcaption></figcaption></figure>
 
-### SQL Injection --> RCE
+### SQL Injection -> RCE
 
 Within the "Edit" function, we can see that there's a Request Profile SLUG option at the bottom:
 
@@ -339,7 +339,7 @@ We can then download `nc64.exe` onto the machine and get a reverse shell:
 
 ## Privilege Escalation
 
-### WinPEAS --> Insecure Service Binary
+### WinPEAS -> Insecure Service Binary
 
 I ran `winPEAS.exe` to enumerate for me. Firstly, we can find some credentials:
 

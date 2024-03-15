@@ -95,7 +95,7 @@ by Ben "epi" Risher 🤓                 ver: 2.7.1
 
 We found a login page!
 
-### SQL Injection --> RCE
+### SQL Injection -> RCE
 
 The login page looked quite vulnerable to some stuff:
 
@@ -197,7 +197,7 @@ Take note to rename the shell to `REV.PS1` since the web request sent is in caps
 
 ## Privilege Escalation
 
-### Write Batch --> Decoder Shell
+### Write Batch -> Decoder Shell
 
 The box is a well patched machine:
 
@@ -318,7 +318,7 @@ After waiting for a while, we would get a `decoder` shell:
 
 <figure><img src="../../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
 
-### Driver Exploit --> SYSTEM
+### Driver Exploit -> SYSTEM
 
 Basic enumeration of this user indicates that `decoder` has no special privileges over the machine. I couldn't run lots of scripts because AppLocker or Defender was present on the machine:
 
@@ -362,7 +362,7 @@ Then, run the exploit:
 
 <figure><img src="../../../.gitbook/assets/image (64).png" alt=""><figcaption></figcaption></figure>
 
-### Root.exe + DLL RE --> Flag
+### Root.exe + DLL RE -> Flag
 
 Within the administrator's desktop, there wasn't a `root.txt` flag. Instead, there was an `.exe` file with a `.dll` library.&#x20;
 

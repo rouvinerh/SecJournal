@@ -17,7 +17,7 @@ PORT    STATE SERVICE
 
 Rsync was the only thing available.
 
-### Rsync Enum --> SSH
+### Rsync Enum -> SSH
 
 Hacktricks has a whole page for RSync we can follow:
 
@@ -79,7 +79,7 @@ Then, we can `ssh` in:
 
 ## Privilege Escalation
 
-### Fail2ban --> Root
+### Fail2ban -> Root
 
 The user is able to edit the `fail2ban` configuration files to execute commands as `root` since `fox` is part of that group.&#x20;
 

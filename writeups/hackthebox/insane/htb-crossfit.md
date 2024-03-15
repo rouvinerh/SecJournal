@@ -39,7 +39,7 @@ Service Info: Host: Cross
 
 Added `crossfit.htb` to my `/etc/hosts` file. Also noted that the cert name had a wildcard, meaning there is possibly multiple subdomains. 
 
-### SSL Enumeration --> Subdomain
+### SSL Enumeration -> Subdomain
 
 The web page did not load anything useful, so I turned to enumerating the SSL cert for FTP. Using `openssl`, I can connect to this certificate and find the email address associated with it:
 
@@ -56,7 +56,7 @@ verify return:1
 
 `gym-club.crossfit.htb` is the next step. 
 
-### Web Enum --> XSS
+### Web Enum -> XSS
 
 The website was a fitness and sport promoting one:
 
@@ -130,7 +130,7 @@ data = {
 r = requests.post(URL + '/blog-single.php', data=data, headers=headers, verify=False, proxies=proxies)
 ```
 
-### CORS(?) --> Subdomain Fuzzing
+### CORS(?) -> Subdomain Fuzzing
 
 Using this, I was able to inject payload. However, I was unable to steal any cookies, nor was I able to view anything that was interesting.
 
@@ -245,7 +245,7 @@ Eventually, this output something interesting:
 
 It seems there's an FTP Account Manager on the website.
 
-### XSS + CSRF --> FTP Account
+### XSS + CSRF -> FTP Account
 
 I was able to view the new account page by visiting `http://ftp.crossfit.htb/accounts/create`. Here's the form required:
 
@@ -362,7 +362,7 @@ Using this, I can now login and  enumerate the FTP server:
 
 ![](../../../.gitbook/assets/htb-crossfit-image-10.png)
 
-### FTP Write --> Webshell
+### FTP Write -> Webshell
 
 From the above image, I can only write to `development-test`. This directory also includes all of the other web applications, and they are all in PHP. I cannot reach `development-test` from my machine, so I probably gotta use the XSS + CSRF exploit.
 
@@ -397,7 +397,7 @@ Finally. The `cmd.php` shell is cleared pretty fast, but getting a reverse shell
 
 ## Privilege Escalation
 
-### Ansible Playbooks --> User Password
+### Ansible Playbooks -> User Password
 
 I ran `linpeas.sh`, and it picked up on a few interesting things:
 
@@ -677,7 +677,7 @@ Afterwards, I need to upload any file via FTP This is because the `send_update.p
 
 ![](../../../.gitbook/assets/htb-crossfit-image-16.png)
 
-### Basic Enum --> Ghidra RE
+### Basic Enum -> Ghidra RE
 
 I ran `pspy64` and `linpeas.sh` to enumerate stuff as this user, and was initially particularly interested in the `staff` group.
 

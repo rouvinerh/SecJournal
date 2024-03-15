@@ -15,7 +15,7 @@ PORT      STATE    SERVICE
 80/tcp    open     http
 ```
 
-### Notebook --> JWT Spoof
+### Notebook -> JWT Spoof
 
 The website is a notebook website:
 
@@ -38,7 +38,8 @@ Accept-Encoding: gzip, deflate
 Referer: http://10.129.71.99/70e7d57d-8987-4075-9a28-2c9075219c68/notes
 Connection: close
 Cookie: auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NzA3MC9wcml2S2V5LmtleSJ9.eyJ1c2VybmFtZSI6InRlc3QxMjMiLCJlbWFpbCI6InRlc3RAd2Vic2l0ZS5jb20iLCJhZG1pbl9jYXAiOjB9.HOnHZHkqdPXbWn4LJrSgF4-DX0UXztaiQxefbsp0DteIvaQUtOMkAGgTvvZex0QU63vcrnXwQRTj5MLfMp1JyFHUWIS5J9slqqhXGsNNSOBQHmHlvptTLa8mvJCZJJAqymKCxGswa41Nu7hb20W3Ksi7iQSg9JcZoy9WeFV9lbEhBiSrler_H1LiSzkF-x4vegERnJiGkZ4hK_2LjVObeeY3ZCQcJWjCH3Cuo2YG1rVas4h0YBinnSq9ANvUsovpLolovsOUP4TNDPzIlccMjmhU0R_yhh5WItg0uG_PiQaACryT3G2_PYw5PRj_Dj5COrHtzYaT2NES2q54WecSJOWfD7RUW6o-yB4SFC_lJVqfqE3DljujJwGcOf8SP43kAf1z_VLGKuUkHceOsvU60aEDZDcgnJB4LTuIjqunIVzZ22lnlfHDGe1zJza8bpUVk-2xDDmqj1F3bBsCMQOXnmMmffBpSFPjsTyBwZM2F3kNEmopZiHr1S1UzeMolW98gzIrwGM8jx1lMOV76SNlK6vGP-q_UoFOg8F07aB6ClPqtbw83cyQZLn2kME40XDBzZgNgbzXmZXfnBg83mkWis9KQhOL8FJ3MPha7h0tfSnsiUXV2s7vATWXlrydpQL6gsWsuWt-cn6CQGEPAX0svar_9K8Pyd08NDJJpNdVfmg; uuid=70e7d57d-8987-4075-9a28-2c9075219c68
-Upgrade-Insecure-Requests: 1
+Upgrade-Insecure-Requests: 1
+
 ```
 {% endcode %}
 

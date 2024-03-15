@@ -17,7 +17,7 @@ PORT      STATE SERVICE
 
 This box likely has some API exploitation, so we can start proxying traffic through Burp.&#x20;
 
-### API --> RCE
+### API -> RCE
 
 Port 13337 shows some basic documentation for an API:
 

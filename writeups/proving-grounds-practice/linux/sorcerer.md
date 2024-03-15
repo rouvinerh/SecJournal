@@ -55,7 +55,7 @@ PORT      STATE SERVICE VERSION
 
 NFS and Port 7742 look the most promising.
 
-### NFS Enumeration --> Dead End
+### NFS Enumeration -> Dead End
 
 I first enumerated NFS to see if there was anything to mount:
 
@@ -66,7 +66,7 @@ Export list for 192.168.168.100:
 
 There was nothing, so let's move on.
 
-### Web Enumeration --> Zipfiles
+### Web Enumeration -> Zipfiles
 
 Port 7742 just shows us a login page:
 
@@ -152,7 +152,7 @@ Afterwards. we can just `ssh` in:
 
 ## Privilege Escalation
 
-### SUID Binary --> Root Shell
+### SUID Binary -> Root Shell
 
 I did a search for SUID binaries on the machine:
 

@@ -50,7 +50,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/05/02 10:34:16 Starting gobuster in directory enumeration mode
 ===============================================================
-/wp                   (Status: 301) [Size: 321] [--> http://10.129.1.185/webservices/wp/]
+/wp                   (Status: 301) [Size: 321] [-> http://10.129.1.185/webservices/wp/]
 ```
 
 It seems that `robots.txt` left this Wordpress site out. Let's investigate that first then.

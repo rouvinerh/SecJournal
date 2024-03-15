@@ -39,7 +39,7 @@ PORT      STATE SERVICE
 
 An AD machine.&#x20;
 
-### Initial Enumeration --> Creds
+### Initial Enumeration -> Creds
 
 Port 80 hosted a default IIS server:
 
@@ -98,7 +98,7 @@ At the very end of the file, we can find some credentials:
 
 This user's SAM Account Name is listed as `fmcsorley`, but we cannot use these credentials to `evil-winrm` in it seems. &#x20;
 
-### Davtest --> RCE
+### Davtest -> RCE
 
 Since we have credentials, we can try to place files on the website such as ASPX reverse shells (since this is running IIS). We can test these credentials with `davtest`:
 
@@ -179,7 +179,7 @@ Then, we can easily get a reverse shell as this user.&#x20;
 
 ## Privilege Escalation
 
-### LAPS--> Administrator Creds
+### LAPS-> Administrator Creds
 
 On the machine, LAPS is installed.&#x20;
 

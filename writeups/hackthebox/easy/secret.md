@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 3000/tcp open  ppp
 ```
 
-### DumbDocs --> Code Analysis
+### DumbDocs -> Code Analysis
 
 Port 80 was some kind of documentation website.
 
@@ -97,7 +97,7 @@ router.get('/logs', verifytoken, (req, res) => {
 
 The `/logs` endpoint takes the filename and passes it to `exec` without sanitisation. This means that this is vulnerable to RCE.
 
-### Token Spoof --> RCE
+### Token Spoof -> RCE
 
 Now that we can spoof tokens and we found our RCE point, we can exploit this system. First, let's create a new user and then get the token:
 

@@ -25,7 +25,7 @@ PORT      STATE SERVICE
 49159/tcp open  unknown
 ```
 
-### HP Power Manager --> RCE
+### HP Power Manager -> RCE
 
 Port 80 is running HP Power Manager and it looks vulnerable:
 

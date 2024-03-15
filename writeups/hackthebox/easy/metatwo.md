@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 FTP doesn't support anonymous logins, so let's move on to port 80. We have to add `metapress.htb` to access it.&#x20;
 
-### Metapress --> SQLI --> XXE&#x20;
+### Metapress -> SQLI -> XXE&#x20;
 
 The website was a blog of some sorts:
 

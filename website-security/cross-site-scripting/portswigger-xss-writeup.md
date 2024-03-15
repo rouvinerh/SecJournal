@@ -160,7 +160,7 @@ The `window.location.search` function searches the URL for the `storeId` paramet
 
 The above was a result of adding a `storeId` GET parameter to the URL. Using this, I just have to use a value of `<script>alert(1)</script>`, which will be passed to `document.write` and hence executed.
 
-## Lab 11: AngularJS Expression with angle brackets and double quotes HTML-encoded --> SSTI
+## Lab 11: AngularJS Expression with angle brackets and double quotes HTML-encoded -> SSTI
 
 The hint here is that AngularJS expressions were used, and interestingly using `{{7*7}}` results in 49 being displayed:
 

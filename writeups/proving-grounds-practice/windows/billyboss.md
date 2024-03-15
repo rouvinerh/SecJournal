@@ -34,7 +34,7 @@ To avoid making this long:
 * SMB did not accept null credentials and had nothing there.
 * The rest of the ports were pretty useless.
 
-### Default Creds --> Nexus RCE
+### Default Creds -> Nexus RCE
 
 Port 8081 had a Nexus Repository Manager that was running:
 
@@ -68,7 +68,7 @@ Then, we can execute the script once to download `nc.exe` onto the machine, and 
 
 ## Privilege Escalation
 
-### SeImpersonatePrivilege --> Admin Shell
+### SeImpersonatePrivilege -> Admin Shell
 
 The user has `SeImpersonatePrivilege` enabled:
 

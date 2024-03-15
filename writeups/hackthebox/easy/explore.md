@@ -144,7 +144,7 @@ Network Distance: 2 hops
 
 Port 59777 seems to be returning some stuff.&#x20;
 
-### EFS LFI --> SSH Creds
+### EFS LFI -> SSH Creds
 
 The other ports weren't returning anything interesting. When we visit port 59777, it returns a short response.
 
@@ -256,7 +256,7 @@ Android Download Music  Pictures      Ringtones dianxinos
 
 ## Privilege Escalation
 
-### ADB Debug --> Root
+### ADB Debug -> Root
 
 Earlier, we found port 5555 on the machine and it was being filtered. Based on Hacktricks, port 555 is the Android Debug Bridge service:
 

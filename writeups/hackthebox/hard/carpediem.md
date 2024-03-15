@@ -39,7 +39,7 @@ ID           Response   Lines    Word       Chars       Payload
 000000048:   200        462 L    2174 W     31090 Ch    "portal"
 ```
 
-### Admin Bypass --> File Upload
+### Admin Bypass -> File Upload
 
 This was running some motorcycle store portal:
 
@@ -156,7 +156,7 @@ Then, we can get an easy reverse shell.
 
 ## Docker Escape
 
-### MySQL Creds --> Chisel
+### MySQL Creds -> Chisel
 
 When looking around the Docker container, we can find some MySQL Creds:
 
@@ -334,7 +334,7 @@ This host was running Trudesk on port 8118 (which is exactly what the MongoDB in
 
 We don't have valid credentials (yet), so we can't login.
 
-### Reset Password --> Ticket Enum
+### Reset Password -> Ticket Enum
 
 Since we have access toe the MongoDB for Trudesk, we can just reset the password for the administrator.
 
@@ -355,7 +355,7 @@ Interesting! We can download Zoiper from here:
 
 {% embed url="https://www.zoiper.com/" %}
 
-### Zoiper --> SSH
+### Zoiper -> SSH
 
 We can download and install Zoiper via `sudo dpkg -i <zoiper>.deb`. Then, we can run `zoiper5` to launch it:
 
@@ -387,7 +387,7 @@ Using this, we can easily SSH in as `hflaccus`.
 
 ## Privilege Escalation
 
-### Sniffing --> Weak TLS
+### Sniffing -> Weak TLS
 
 I ran a LinPEAS scan on the machine, there's some interesting output:
 
@@ -533,7 +533,7 @@ First, drop a reverse shell as `/tmp/shell.sh`, then append the `/var/www/html/b
 
 <figure><img src="../../../.gitbook/assets/image (3384).png" alt=""><figcaption></figcaption></figure>
 
-### CVE-2022-0492 --> Rooted!
+### CVE-2022-0492 -> Rooted!
 
 Now that we are `root` on the Docker, let's try to find a way to escape this. When this box was published, there was a new Docker breakout technique related to `cgroups`. This is in-line with when the box was released.
 

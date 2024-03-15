@@ -16,7 +16,7 @@ PORT   STATE SERVICE
 
 We have to add `shibboleth.htb` to our `/etc/hosts` file before we can view the web application.&#x20;
 
-### FlexStart --> Bare Metal BMC
+### FlexStart -> Bare Metal BMC
 
 The web application is a typical corporate page:
 
@@ -67,8 +67,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/06/27 15:30:39 Starting gobuster in directory enumeration mode
 ===============================================================
-/assets               (Status: 301) [Size: 317] [--> http://shibboleth.htb/assets/]
-/forms                (Status: 301) [Size: 316] [--> http://shibboleth.htb/forms/]
+/assets               (Status: 301) [Size: 317] [-> http://shibboleth.htb/assets/]
+/forms                (Status: 301) [Size: 316] [-> http://shibboleth.htb/forms/]
 /server-status        (Status: 403) [Size: 279]
 Progress: 217816 / 220561 (98.76%)===============================================================
 2023/06/27 15:31:07 Finished
@@ -95,7 +95,7 @@ PORT    STATE         SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 2.40 seconds
 ```
 
-### IPMI Exploit --> Zabbix Creds
+### IPMI Exploit -> Zabbix Creds
 
 Hacktricks uses both Metasploit and `ipmitool` to run certain exploits on this, and we can try all of the exploits there. First, we can enumerate the version and other information:
 
@@ -170,7 +170,7 @@ There was nothing in the machine as the `zabbix` user. However, attempting to do
 
 <figure><img src="../../../.gitbook/assets/image (3473).png" alt=""><figcaption></figcaption></figure>
 
-### Pspy --> MySQL Exploit
+### Pspy -> MySQL Exploit
 
 I found some interesting processes using `pspy64` here:
 

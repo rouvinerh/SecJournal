@@ -18,7 +18,7 @@ PORT      STATE    SERVICE
 
 We can start proxying traffic through Burp.&#x20;
 
-### Web Enum --> Magic Hashes
+### Web Enum -> Magic Hashes
 
 Port 80 presents a corporate web page with a Login:
 
@@ -36,7 +36,7 @@ Default credentials don't work here. Brute forcing also doesn't work. Since this
 
 This works because the `Location` header points to `dashboard.php` now.&#x20;
 
-### Orders --> SSTI
+### Orders -> SSTI
 
 The dashboard is simple.
 
@@ -68,7 +68,7 @@ This confirms that SSTI works and we have RCE on the machine. Sending this paylo
 
 ## Privilege Escalation
 
-### Redis Creds --> RCE
+### Redis Creds -> RCE
 
 Within the user's directory, there was a Redis related file that contained a hash:
 

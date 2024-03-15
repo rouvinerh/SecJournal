@@ -24,7 +24,7 @@ PORT      STATE SERVICE
 
 Lots of ports open.
 
-### PHP Gallery --> RFI + RCE
+### PHP Gallery -> RFI + RCE
 
 Port 80 was running a Simple PHP Photo Gallery instance:
 
@@ -59,7 +59,7 @@ To exploit this, we can just host a PHP reverse shell from PentestMonkey and mak
 
 ## Privilege Escalation
 
-### SQL Creds --> Michael Shell
+### SQL Creds -> Michael Shell
 
 Within the `/var/www/html` file, there's a `db.php` folder that contains MySQL credentials:
 
@@ -128,7 +128,7 @@ Then, just use `su`:
 
 Grab the user flag.
 
-### Writeable /etc/passwd --> Root
+### Writeable /etc/passwd -> Root
 
 `michael` owns `/etc/passwd`. This is findable by running `linpeas.sh`:
 

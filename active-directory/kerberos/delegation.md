@@ -82,18 +82,18 @@ The service can act on behalf of the client in the network **simply by using its
 
 With this setting enabled, all we need are credentials for the user. Now suppose that we are on `WEB` machine and want to access the files on the `DB` machine, and we can do so using a web login form. This is how the requests are formed:
 
-1. **AS REQ -->** `WEB` machine requests for TGT from `DC`. This part requires the credentials of the user to be correct in order to authenticate to the KDC.
-2. **AS REP -->** `DC` sends the `web_user` TGT to the `WEB` machine as a reply after verifying that we have the right credentials.&#x20;
-3. **TGS REQ 1 -->** The `WEB` machine would send a TGS REQ, specifying a target SPN such as `HTTP/db.corp.local`. This would be sent along with the TGT.
-4. **TGS REP 1 -->** The KDC notices that we have Unconstrained Delegation set. As such, the resulting HTTP Service Ticket sent back has the `ok-as-delegate` flag set in the reply. This would inform the `WEB` machine that the service is suitable as a delegate. The KDC sends back the TGS required.&#x20;
-5. **TGS REQ 2 -->** The `WEB` machine sends another request to the DC with the TGT and SPN of `krbtgt/corp.local`. `WEB` also asks for a **forwarded TGT** to be sent to the service. The **forwarded flag** of the ticket has been set to true for this.
-6. **TGS REP 2 -->** The KDC expects this request as a follow-up because the Unconstrained setting is enabled, and it expects the **forwarded flag of the TGT to be set to true**. It checks for this, and then it sends back an `encTGSRep` and an **authenticator string** that also has the **forwarded flag set to true**.&#x20;
-7. **AP REQ (HTTP) --> This part happens when we send a request to the resource** (such as `ls \\db\c$` or visiting a particular resource). Using the encrypted TGS REP, the `WEB` machine sends the Service Ticket for `HTTP/db.corp.local` and an Authenticator string received from TGS REP 2. The session key and TGT are present within the `krb-cred` structure, and other information is decrypted here.
-8. **TGS REQ 3 -->** The `DB` machine sends a regular TGS REQ on behalf of the `WEB` user with the authenticator string required. This time, it requests using SPN of `cifs/db.corp.local`.&#x20;
-9. **TGS REP 3 -->** The `DC` replies to `DB` with a basic TGS REP and sends over another `encTGSRep` for the `WEB` user and SPN of `cifs`.&#x20;
-10. **AP REQ (SMB) -->** Another AP REQ through SMB is sent on behalf of the `WEB` user. This time, it presents the `cifs` ticket + authenticator strings.&#x20;
-11. **AP REP (SMB) -->** The `cifs` service sends an AP REP through SMB, which contains an ST for `cifs/db.corp.local` encrypted with the session key.&#x20;
-12. **AP REP (HTTP) -->** The `cifs/db.corp.local` ST is sent back to the `WEB` machine, and this establishes mutual authentication between the `WEB` and `DB` machines. Thus, we can access the file system or other resources of the `DB` machine from `WEB` after this final reply.
+1. **AS REQ ->** `WEB` machine requests for TGT from `DC`. This part requires the credentials of the user to be correct in order to authenticate to the KDC.
+2. **AS REP ->** `DC` sends the `web_user` TGT to the `WEB` machine as a reply after verifying that we have the right credentials.&#x20;
+3. **TGS REQ 1 ->** The `WEB` machine would send a TGS REQ, specifying a target SPN such as `HTTP/db.corp.local`. This would be sent along with the TGT.
+4. **TGS REP 1 ->** The KDC notices that we have Unconstrained Delegation set. As such, the resulting HTTP Service Ticket sent back has the `ok-as-delegate` flag set in the reply. This would inform the `WEB` machine that the service is suitable as a delegate. The KDC sends back the TGS required.&#x20;
+5. **TGS REQ 2 ->** The `WEB` machine sends another request to the DC with the TGT and SPN of `krbtgt/corp.local`. `WEB` also asks for a **forwarded TGT** to be sent to the service. The **forwarded flag** of the ticket has been set to true for this.
+6. **TGS REP 2 ->** The KDC expects this request as a follow-up because the Unconstrained setting is enabled, and it expects the **forwarded flag of the TGT to be set to true**. It checks for this, and then it sends back an `encTGSRep` and an **authenticator string** that also has the **forwarded flag set to true**.&#x20;
+7. **AP REQ (HTTP) -> This part happens when we send a request to the resource** (such as `ls \\db\c$` or visiting a particular resource). Using the encrypted TGS REP, the `WEB` machine sends the Service Ticket for `HTTP/db.corp.local` and an Authenticator string received from TGS REP 2. The session key and TGT are present within the `krb-cred` structure, and other information is decrypted here.
+8. **TGS REQ 3 ->** The `DB` machine sends a regular TGS REQ on behalf of the `WEB` user with the authenticator string required. This time, it requests using SPN of `cifs/db.corp.local`.&#x20;
+9. **TGS REP 3 ->** The `DC` replies to `DB` with a basic TGS REP and sends over another `encTGSRep` for the `WEB` user and SPN of `cifs`.&#x20;
+10. **AP REQ (SMB) ->** Another AP REQ through SMB is sent on behalf of the `WEB` user. This time, it presents the `cifs` ticket + authenticator strings.&#x20;
+11. **AP REP (SMB) ->** The `cifs` service sends an AP REP through SMB, which contains an ST for `cifs/db.corp.local` encrypted with the session key.&#x20;
+12. **AP REP (HTTP) ->** The `cifs/db.corp.local` ST is sent back to the `WEB` machine, and this establishes mutual authentication between the `WEB` and `DB` machines. Thus, we can access the file system or other resources of the `DB` machine from `WEB` after this final reply.
 
 That's a lot to take in. Here's a packet capture from ATTL4S regarding this subject (take note he uses different machines here, but the concept is roughly the same):
 
@@ -158,10 +158,10 @@ In the interest of keeping this page shorter, I won't be covering the full reque
 
 The differences are in the TGS REQ and TGS REP to the `cifs` service with the S4U2Proxy extension. It's the same up the point AFTER the AP REQ (HTTP) part:
 
-1. **TGS REQ 3 -->** This takes the machine's TGT + authenticator string and sends a request for SPN `cifs/db.corp.local`. Additionally, the user's ST is sent too. This request would have the RBCD and Constrained Delegation flags set to **true**. The user's ST also has the **forwardable** flag set to **true**.&#x20;
-2. **TGS REP 3 -->** The DC checks whether the current `WEB` machine is able to delegate to the service requested (whether `WEB` can delegate to `DB`). It then responds with the user's ST + Session Key.&#x20;
-3. **AP REQ (SMB) -->** The `WEB` machine sends an AP REQ through SMB on behalf of the user.&#x20;
-4. **AP REP (SMB) -->** The AP REP would send the ST back, and it would sent the **AP REP (HTTP)** back to the `WEB` machine. This would complete the authentication process.
+1. **TGS REQ 3 ->** This takes the machine's TGT + authenticator string and sends a request for SPN `cifs/db.corp.local`. Additionally, the user's ST is sent too. This request would have the RBCD and Constrained Delegation flags set to **true**. The user's ST also has the **forwardable** flag set to **true**.&#x20;
+2. **TGS REP 3 ->** The DC checks whether the current `WEB` machine is able to delegate to the service requested (whether `WEB` can delegate to `DB`). It then responds with the user's ST + Session Key.&#x20;
+3. **AP REQ (SMB) ->** The `WEB` machine sends an AP REQ through SMB on behalf of the user.&#x20;
+4. **AP REP (SMB) ->** The AP REP would send the ST back, and it would sent the **AP REP (HTTP)** back to the `WEB` machine. This would complete the authentication process.
 
 This is deemed more secure than Unconstrained Delegation because it no longer allows servers to cache the TGTs of other users, but rather it allows the user to request a TGS for another user using their own TGT.&#x20;
 
@@ -198,7 +198,7 @@ There are other ways to enumerate this with Powershell and what not. How the exp
 
 The above command would return the ticket that we can use to `createnetonly` and access the file system of `dc-2` via `cifs/dc-2`.&#x20;
 
-Here's what `Rubeus` is basically doing: Obtain TGS using TGT (passed in) for user via S4U2Self to current machine --> Build S4U2Proxy request to obtain TGS for user to service required. This works because we have the initial TGT obtained.&#x20;
+Here's what `Rubeus` is basically doing: Obtain TGS using TGT (passed in) for user via S4U2Self to current machine -> Build S4U2Proxy request to obtain TGS for user to service required. This works because we have the initial TGT obtained.&#x20;
 
 ### Protocol Transition
 
@@ -212,17 +212,17 @@ This would make use of the S4U2Self extension, and we can technically invoke S4U
 
 There are bigger differences in the requests made using this method:
 
-1. **TGS REQ 1 (S4U2Self) -->** The `WEB` machine would request for the user's fowardable ST for itself using S4U2Self. This is because the initial authentication uses NTLM, and there are no STs sent by the client.&#x20;
-2. **TGS REP 1 (S4U2Self) -->** The `DC` verifies that the `WEB` machine has the `TRUSTED_TO_AUTH_FOR_DELEGATION` flag and responds by sending back the user's ST. The ST that is sent back is **forwadable** thanks to S4U2Self.&#x20;
+1. **TGS REQ 1 (S4U2Self) ->** The `WEB` machine would request for the user's fowardable ST for itself using S4U2Self. This is because the initial authentication uses NTLM, and there are no STs sent by the client.&#x20;
+2. **TGS REP 1 (S4U2Self) ->** The `DC` verifies that the `WEB` machine has the `TRUSTED_TO_AUTH_FOR_DELEGATION` flag and responds by sending back the user's ST. The ST that is sent back is **forwadable** thanks to S4U2Self.&#x20;
 
 <figure><img src="../../.gitbook/assets/image (3672).png" alt=""><figcaption></figcaption></figure>
 
 
 
-3. **TGS REQ 2 (S4U2Proxy) -->** Uses the `WEB` TGT + the user's forwardable ST and requests for a TGS for `cifs` or other services on another machine like `DB`.&#x20;
-4. **TGS REP 3 (S4U2Proxy) -->** DC checks if `WEB` can delegate to `DB`. Then, it also checks if the additional ticket is forwadable. Afterwards, it responds with the user's ST + `encTGSRep`. If this ticket is not marked as forwardable, then there would have been an error. The KDC **would try for RBCD as a 'fallback'**.&#x20;
-5. **AP REQ (SMB) -->** AP REQ through SMB on behalf of the user, and this uses the `cifs` TGS it received earlier.
-6. **AP REP (SMB) -->** AP REP through SMB that sends an ST for the `cifs` service on `DB`. Afterwards, this is sent via the **AP REP (HTTP)** to grant access to the services.
+3. **TGS REQ 2 (S4U2Proxy) ->** Uses the `WEB` TGT + the user's forwardable ST and requests for a TGS for `cifs` or other services on another machine like `DB`.&#x20;
+4. **TGS REP 3 (S4U2Proxy) ->** DC checks if `WEB` can delegate to `DB`. Then, it also checks if the additional ticket is forwadable. Afterwards, it responds with the user's ST + `encTGSRep`. If this ticket is not marked as forwardable, then there would have been an error. The KDC **would try for RBCD as a 'fallback'**.&#x20;
+5. **AP REQ (SMB) ->** AP REQ through SMB on behalf of the user, and this uses the `cifs` TGS it received earlier.
+6. **AP REP (SMB) ->** AP REP through SMB that sends an ST for the `cifs` service on `DB`. Afterwards, this is sent via the **AP REP (HTTP)** to grant access to the services.
 
 ### Abuse of Protocol Transition
 
@@ -263,12 +263,12 @@ This method of authentication is closely related to the classic Constrained Dele
 
 It is largely the same as the Constrained Delegation Protocol Transition method of authenticating, with a few differences:
 
-1. **TGS REQ 1 (S4U2Self) -->** Sends the `WEB` TGT and requests for the user's forwadable ST using S4U2Self.&#x20;
-2. **TGS REP 1 (S4U2Self) -->** DC checks that the `TRUSTED_TO_AUTH_FOR_DELEGATION` flag is **NOT ENABLED.** Reponds with the user's **NON-FORWADABLE ST.** This is because the `WEB` machine is not trusted.&#x20;
-3. **TGS REQ 2 (S4U2Proxy) -->** Takes `WEB` TGT + User's non-forwadable ST from S4U2Self and requests for the `cifs/DB` service. **Both the RBCD and Constrained Delegation bits are set!!!**
-4. **TGS REP 2 (S4U2Proxy) -->** DC verifies that RBCD bit is set, and checks whether `WEB` can delegate to `DB` via the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute. In RBCD, **invoking S4U2Proxy with a non forwardable ST results in a forwadable ST.** With classic Constrained Delegation, this would have failed. The DC then responds with the user's ST + Session Key.&#x20;
-5. **AP REQ (SMB) -->** Same as above.
-6. **AP REP (SMB) -->** Same as above. The resulting ST for `cifs/DB` is sent through the **AP-REP (HTTP)**.&#x20;
+1. **TGS REQ 1 (S4U2Self) ->** Sends the `WEB` TGT and requests for the user's forwadable ST using S4U2Self.&#x20;
+2. **TGS REP 1 (S4U2Self) ->** DC checks that the `TRUSTED_TO_AUTH_FOR_DELEGATION` flag is **NOT ENABLED.** Reponds with the user's **NON-FORWADABLE ST.** This is because the `WEB` machine is not trusted.&#x20;
+3. **TGS REQ 2 (S4U2Proxy) ->** Takes `WEB` TGT + User's non-forwadable ST from S4U2Self and requests for the `cifs/DB` service. **Both the RBCD and Constrained Delegation bits are set!!!**
+4. **TGS REP 2 (S4U2Proxy) ->** DC verifies that RBCD bit is set, and checks whether `WEB` can delegate to `DB` via the `msDS-AllowedToActOnBehalfOfOtherIdentity` attribute. In RBCD, **invoking S4U2Proxy with a non forwardable ST results in a forwadable ST.** With classic Constrained Delegation, this would have failed. The DC then responds with the user's ST + Session Key.&#x20;
+5. **AP REQ (SMB) ->** Same as above.
+6. **AP REP (SMB) ->** Same as above. The resulting ST for `cifs/DB` is sent through the **AP-REP (HTTP)**.&#x20;
 
 ### Abuse
 
@@ -337,8 +337,8 @@ There are other methods of abuse located all over the internet, in cheatsheets o
 
 To prevent such attacks, we can do a few things:
 
-* Protected Users Group --> Users part of this group would cause the KDC to not set the STs given to be FORWADABLE or PROXIFIABLE.
-* Flag account as **sensitive** --> This bit would cause TGTs and STs obtained by this account to not be forwadable or proxifiable even when requested.&#x20;
+* Protected Users Group -> Users part of this group would cause the KDC to not set the STs given to be FORWADABLE or PROXIFIABLE.
+* Flag account as **sensitive** -> This bit would cause TGTs and STs obtained by this account to not be forwadable or proxifiable even when requested.&#x20;
 
 <figure><img src="../../.gitbook/assets/image (2885).png" alt=""><figcaption></figcaption></figure>
 

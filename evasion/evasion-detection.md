@@ -48,9 +48,9 @@ In short, the security solution can see the exact parameters that is being passe
 
 EDRs in particular do 3 things:
 
-* Data Gathering --> Gather information from endpoint devices, which includes logs, processes being executed and so on.
-* Data Logging --> Logs all the data in real-time.
-* Detection --> The main purpose of it.
+* Data Gathering -> Gather information from endpoint devices, which includes logs, processes being executed and so on.
+* Data Logging -> Logs all the data in real-time.
+* Detection -> The main purpose of it.
 
 The reason EDRs are relatively harder to bypass is because of its continuous monitoring and collection of information from all endpoints in a network. In specific, they use machine learning to determine the root cause of all incidents.
 

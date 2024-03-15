@@ -154,7 +154,7 @@ With these credentials, we can login to the Icinga Web instance!
 
 <figure><img src="../../.gitbook/assets/image (2457).png" alt=""><figcaption></figcaption></figure>
 
-### Icinga as Matthew --> RCE
+### Icinga as Matthew -> RCE
 
 I looked around, and determined that this was running **Icinga Web 2 Version 2.9.2**, which could be useful later. On the original page that gave us the directory traversal exploit, there was another RCE exploit, but I'm not sure how to exploit it yet.
 

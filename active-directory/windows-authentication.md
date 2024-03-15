@@ -71,10 +71,10 @@ Microsoft provides an Interface for the SSPs (SSPI) to integrate applications wi
 
 There are 4 major categories for the functions provided:
 
-1. Package Management --> Handles packages
-2. Credential Management --> Handles credentials of principals
-3. Context Management --> Creates security context
-4. Message Support --> Ensures message **integrity and privacy** during message exchanges.
+1. Package Management -> Handles packages
+2. Credential Management -> Handles credentials of principals
+3. Context Management -> Creates security context
+4. Message Support -> Ensures message **integrity and privacy** during message exchanges.
 
 ### Authentication
 
@@ -97,8 +97,8 @@ This security context is used to create an access token, which is the thing requ
 
 There are 2 main types of sessions that are created:
 
-1. Interactive --> Credentials given
-2. Non-interactive --> Credentials not given
+1. Interactive -> Credentials given
+2. Non-interactive -> Credentials not given
 
 #### Interactive
 
@@ -148,8 +148,8 @@ If the access token matches what is required, then access is granted, else it is
 
 There are 2 types of tokens:
 
-1. Primary (process tokens) --> Every process has aprimary token, and when a new process is created, the default action is to inherit the primary token of the parent process.
-2. Impersonation (thread tokens) --> Enable a thread to run with a different security context (and hence token).
+1. Primary (process tokens) -> Every process has aprimary token, and when a new process is created, the default action is to inherit the primary token of the parent process.
+2. Impersonation (thread tokens) -> Enable a thread to run with a different security context (and hence token).
 
 ### Impersonation + Abuse
 
@@ -177,8 +177,8 @@ Windows API allows us to manipulate access tokens, such as duplicating it, or sp
 
 There are 2 common ways of which token exploits happen:
 
-1. Token Impersonation --> Duplicate target token and use it to spawn a new process (such as Cobalt Strike's / Meterpreter's `steal_token` command).&#x20;
-2. Process Injection --> Inject payload (reverse shell shel code) into the process where the token we want is at (Meterpreter's `migrate` function allows us to run our shell in the `mmc.exe` of another user).&#x20;
+1. Token Impersonation -> Duplicate target token and use it to spawn a new process (such as Cobalt Strike's / Meterpreter's `steal_token` command).&#x20;
+2. Process Injection -> Inject payload (reverse shell shel code) into the process where the token we want is at (Meterpreter's `migrate` function allows us to run our shell in the `mmc.exe` of another user).&#x20;
 
 ### RunAs.exe
 

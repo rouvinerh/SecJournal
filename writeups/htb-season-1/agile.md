@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 We need to add `superpass.htb` to our `/etc/hosts` file to access port 80.
 
-### SuperPassword --> LFI
+### SuperPassword -> LFI
 
 The website advertised a password manager.
 
@@ -57,7 +57,7 @@ We can grab the SECRET\_KEY variable from here and be able to spoof our own cook
 app.config['SECRET_KEY'] = 'MNOHFl8C4WLc3DQTToeeg8ZT7WpADVhqHHXJ50bPZY6ybYKEr76jNvDfsWD'
 ```
 
-### Cookie Spoofing --> SSH Creds
+### Cookie Spoofing -> SSH Creds
 
 Now that we have the SECRET\_KEY, we can decrypt the cookie.
 
@@ -90,7 +90,7 @@ Then we can easily grab the user flag.
 
 ## Privilege Escalation
 
-### Chrome Debugging --> Edwards
+### Chrome Debugging -> Edwards
 
 I ran a LinPEAS scan and thsi was the one thing that stood out the most:
 

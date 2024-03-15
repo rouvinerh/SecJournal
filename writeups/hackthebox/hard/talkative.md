@@ -64,7 +64,7 @@ We now have a very simple RCE on the machine. We can get a reverse shell using a
 
 <figure><img src="../../../.gitbook/assets/image (3819).png" alt=""><figcaption></figcaption></figure>
 
-### Docker Enum --> Bolt Creds
+### Docker Enum -> Bolt Creds
 
 We can take a look within this Docker and see if we can find any sensitive files. Within the `/root` directory, we can find some files regarding Bolt:
 
@@ -176,7 +176,7 @@ Then, we need to head to Maintenance > Clear Cache, and reload the main page aft
 
 <figure><img src="../../../.gitbook/assets/image (1979).png" alt=""><figcaption></figcaption></figure>
 
-### Docker Escape --> User&#x20;
+### Docker Escape -> User&#x20;
 
 We had access to yet another Docker container. However, there was really nothing here that I could find or exploit. I tried to `ssh` to `172.17.0.1` as `saul`, and it worked surprisingly.
 

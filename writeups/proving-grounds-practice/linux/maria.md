@@ -124,7 +124,7 @@ ftp> ls
 -rw-r--r--    1 0        0            3442 Sep 21  2018 automysqlbackup
 ```
 
-### Wordpress LFI --> SQL Creds
+### Wordpress LFI -> SQL Creds
 
 I ran an `nmap` script against Wordpress and it found this:
 
@@ -206,7 +206,7 @@ DBHOST=localhost
 
 With this, we can login to the MySQL instance.
 
-### MySQL Enum --> WP Plugins --> Reset Mail
+### MySQL Enum -> WP Plugins -> Reset Mail
 
 ```
 $ mysql -h 192.168.243.167 -u backup -pEverydayAndEverynight420
@@ -279,7 +279,7 @@ From here, we can easily get a reverse shell.
 
 ## Privilege Escalation
 
-### Cronjob --> Binary Hijack
+### Cronjob -> Binary Hijack
 
 I ran `pspy64` to enumerate the processes that were being run, and it found this:
 

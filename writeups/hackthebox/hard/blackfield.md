@@ -88,7 +88,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-### Bloodhound --> Change Password
+### Bloodhound -> Change Password
 
 This user had no access to any new shares. However, we can use `bloodhound-python` to find more information about the domain and this user.&#x20;
 

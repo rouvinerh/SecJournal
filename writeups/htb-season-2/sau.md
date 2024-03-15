@@ -19,7 +19,7 @@ PORT      STATE    SERVICE
 
 Port 80 is being filtered, while port 55555 is open.&#x20;
 
-### Request Baskets SSRF --> Mailtrail RCE
+### Request Baskets SSRF -> Mailtrail RCE
 
 Port 55555 hosted an application that is able to collect and inspect HTTP requests:
 
@@ -67,7 +67,7 @@ We would get a reverse shell as `puma`:
 
 ## Privilege Escalation
 
-### Sudo Systemctl --> Root
+### Sudo Systemctl -> Root
 
 The user is able to run a command using `sudo`:
 

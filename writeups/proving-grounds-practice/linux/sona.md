@@ -15,7 +15,7 @@ PORT     STATE SERVICE
 8081/tcp open  blackice-icecap
 ```
 
-### Telnet Creds --> Nexus RCE
+### Telnet Creds -> Nexus RCE
 
 Port 8081 was hosting a vulnerable version of Nexus Repository Manager:
 
@@ -166,7 +166,7 @@ I had a lot of trouble getting a shell on this machine for some reason. Eventual
 
 ## Privilege Escalation
 
-### Cronjob --> Python Module Hijack
+### Cronjob -> Python Module Hijack
 
 I ran a `linpeas.sh` scan on the machine and found an interesting permission set:
 

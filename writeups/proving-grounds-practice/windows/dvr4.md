@@ -28,7 +28,7 @@ PORT      STATE SERVICE
 
 SSH is open on this Windows machine, so let's take note of that.&#x20;
 
-### Argus Surveillance --> LFI SSH Key
+### Argus Surveillance -> LFI SSH Key
 
 Port 8080 hosted an Argus Surveillance instance:
 
@@ -92,7 +92,7 @@ Using this, we can `ssh` into the machine as `viewer`:
 
 ## Privilege Escalation
 
-### Password Decryption --> SYSTEM Shell
+### Password Decryption -> SYSTEM Shell
 
 I tested the LFI in reading the administrator flag, and it actually worked:
 

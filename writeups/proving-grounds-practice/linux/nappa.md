@@ -65,7 +65,7 @@ drwxr-xr-x    2 0        0            4096 Nov 06  2020 vendor
 
 There was some config files and what not, but there's nothing in it at all. Moving on!
 
-### Web Enumeration --> Password
+### Web Enumeration -> Password
 
 Port 80 was a ForumOnRails instance:
 
@@ -81,7 +81,7 @@ I decided to look into the page source for the Login, Register and Forgot Passwo
 
 We can then login as the admin email and password of `it0jNc6L/r090Q==`.&#x20;
 
-### More Page Source Reading --> RCE
+### More Page Source Reading -> RCE
 
 The administrator had access to the `/serverinfo` page:
 
@@ -103,7 +103,7 @@ Then, we can send stuff to this to get a request within Burp, which can give us 
 
 ## Privilege Escalation
 
-### Base32Key --> Root
+### Base32Key -> Root
 
 The user's file had a few files:
 

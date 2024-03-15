@@ -16,7 +16,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-### FTP --> Subdomain + Source Code
+### FTP -> Subdomain + Source Code
 
 FTP allows for anonymous logins:
 
@@ -168,7 +168,7 @@ local: phpreverseshell.php remote: phpreverseshell.php
 5494 bytes sent in 00:00 (15.38 KiB/s)
 ```
 
-### Deserialisation --> LFI + RCE
+### Deserialisation -> LFI + RCE
 
 To exploit the LFI, I used some PHP code to generate the serialised objects needed:
 
@@ -218,7 +218,7 @@ I had to put the file there again since something cleared it, but I did get a re
 
 I upgraded the shell by dropping my public SSH key into the user's `authorized_keys` folder for easy access in case I lose this initial shell.
 
-### Sudo Docker Build --> Root
+### Sudo Docker Build -> Root
 
 The user could run `sudo` with some commands:
 

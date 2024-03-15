@@ -34,7 +34,7 @@ There was a 'Team' page, and when viewed we get some names and roles:
 
 Interesting.
 
-### SMTP Enumeration --> Phishing Link
+### SMTP Enumeration -> Phishing Link
 
 The website had nothing else to offer, so I went looking for exploits pertaining to the mail servers. I tested some usernames and departments like HR, and found HR existed on the server:
 
@@ -164,7 +164,7 @@ We can use this password to `ssh` in as `brian.moore`:
 
 ## Privilege Escalation
 
-### Mail Disclaimer --> Filter Shell
+### Mail Disclaimer -> Filter Shell
 
 I ran a `linpeas.sh` scan on the machine, and it found this interesting folder:
 
@@ -229,7 +229,7 @@ This script is triggered by sending emails, so we can send another one to the ma
 
 <figure><img src="../../../.gitbook/assets/image (2120).png" alt=""><figcaption></figcaption></figure>
 
-### Sudo Mail --> Root
+### Sudo Mail -> Root
 
 This new user can execute `mail` using `sudo`:
 

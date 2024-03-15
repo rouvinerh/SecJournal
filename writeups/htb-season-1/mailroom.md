@@ -262,7 +262,7 @@ With this, I was able to retrieve the password character by character:
 
 After repeating this a load of times and resetting the machine even more times, I was able to retrieve `69trisRulez!` as the full password. This password happens to be the password to SSH in as `tristan` as well.
 
-### Port Fowarding --> RCE
+### Port Fowarding -> RCE
 
 Now that we have access to the machine, we can do some port forwarding to make the website available for us. I used `chisel`:
 

@@ -43,7 +43,7 @@ PORT     STATE  SERVICE      VERSION
 
 We can add `muddy.ugc` to our `/etc/hosts` file.&#x20;
 
-### Web Enumeration --> LFI --> Dav Creds
+### Web Enumeration -> LFI -> Dav Creds
 
 Port 80 hosted a static looking site:
 
@@ -223,7 +223,7 @@ We can then get a reverse shell easily:
 
 ## Privilege Escalation
 
-### Cronjob --> PATH Hijack
+### Cronjob -> PATH Hijack
 
 I ran a `linpeas.sh` to enumerate possible escalation vectors, and it picked up on this:
 

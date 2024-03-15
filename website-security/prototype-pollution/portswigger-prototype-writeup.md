@@ -73,7 +73,7 @@ The above XSS payload means I have to use:
 /?__proto__[value]=data:text/javascript,alert(1)
 ```
 
-## Lab 2: Client-Side --> DOM XSS
+## Lab 2: Client-Side -> DOM XSS
 
 To solve this lab, call `alert()`. From the name of the lab, it is likely I have to pollute a prototype that is passed into a vulnerable sink.
 
@@ -233,7 +233,7 @@ Now, I just need to change the payload and deliver the exploit to the victim.
 <img src="x" onerror=document.location="https://0a9f0055042a4d69843f02aa00a80030.web-security-academy.net/#constructor[prototype][hitCallback]=alert(document.cookie)">
 ```
 
-## Lab 6: Server-side pollution --> Privilege Escalation
+## Lab 6: Server-side pollution -> Privilege Escalation
 
 To solve this lab, delete `carlos` as the `administrator` user. I am given this 'Restart node application' function:
 

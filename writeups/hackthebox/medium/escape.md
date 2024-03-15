@@ -152,7 +152,7 @@ With these credentials, we can login as `ryan.cooper`.
 
 We can grab the user flag now.
 
-### Certify.exe --> Admin NTLM
+### Certify.exe -> Admin NTLM
 
 I ran a winPEAS scan to enumerate for me. This scan found some certificates on the machine that could potentially be the PE vector.
 

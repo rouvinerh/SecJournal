@@ -23,7 +23,7 @@ PORT      STATE SERVICE
 
 Lots of ports. FTP allows for anonymous access, but just hangs.&#x20;
 
-### Web Enumeration --> Python Code Injection
+### Web Enumeration -> Python Code Injection
 
 Port 80 had the default Apache HTTP Server:
 

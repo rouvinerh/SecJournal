@@ -25,7 +25,7 @@ PORT      STATE    SERVICE
 
 A few filtered ports and just a web service. We have to add `download.htb` to our `/etc/hosts` file to view the website.&#x20;
 
-### Web Enum --> LFI Source Code
+### Web Enum -> LFI Source Code
 
 The website provides a file scanner service, indicating that there could be a file upload vulnerability:
 
@@ -316,14 +316,14 @@ This checks for the `username` and hashed `password` parameter within a cookie. 
 
 {% embed url="https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findfirst" %}
 
-### Blind Injection --> Cookie Monster Brute Force
+### Blind Injection -> Cookie Monster Brute Force
 
 Here are the facts so far and my deductions:
 
-* `.sig` , the key I found and how the token is structured --> Definitely need to use Cookie Monster somehow.
-* User is `wesley`, and hashes are unsalted and used directly for authentication --> Brute force is theoretically possible if done smartly.
+* `.sig` , the key I found and how the token is structured -> Definitely need to use Cookie Monster somehow.
+* User is `wesley`, and hashes are unsalted and used directly for authentication -> Brute force is theoretically possible if done smartly.
 * There's a SQL query that is 100% injectable, but I don't know how to exploit it at this point.
-* The cookie is not validated in any way, it takes my input directly. It checks whether a `true` condition is returned from `findFirst` from the `prisma` API module --> Blind Injection based on where it redirects us?&#x20;
+* The cookie is not validated in any way, it takes my input directly. It checks whether a `true` condition is returned from `findFirst` from the `prisma` API module -> Blind Injection based on where it redirects us?&#x20;
 
 Based on the facts above, there should be a method of which we can brute force the hash using a smartly created user cookie that is signed through Cookie Monster.&#x20;
 
@@ -415,7 +415,7 @@ When we get the full hash, we can take it to CrackStation to crack it and then u
 
 ## Privilege Escalation
 
-### LinPEAS + Pspy64 --> Postgres Creds
+### LinPEAS + Pspy64 -> Postgres Creds
 
 `linpeas.sh` picked up on a few things:
 
@@ -517,7 +517,7 @@ With this, we can login to the PostgreSQL server via `psql`.&#x20;
 
 <figure><img src="../../.gitbook/assets/image (4149).png" alt=""><figcaption></figcaption></figure>
 
-### PostGreSQL Privileges --> Postgres Shell
+### PostGreSQL Privileges -> Postgres Shell
 
 We can first enumerate the privileges we have with `\du`:
 
@@ -556,7 +556,7 @@ Then on a listener port, we would get a `postgres` shell:
 
 However, the shell dies quickly, presumably because the connection cuts out when `root` runs `su -l` again. At least I know that this works.&#x20;
 
-### TTY Hijack --> Root
+### TTY Hijack -> Root
 
 I found it rather odd that `su -l` was used instead of a regular `su`. Using `w`, we know that `root` is logged in and has a TTY shell of its own.
 

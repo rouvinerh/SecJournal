@@ -90,7 +90,7 @@ If we just click on the Install button without filling in any details, we are br
 
 There's a configuration file mentioned at the bottom of the page, and it also shows that the web page is able to interact with the SQL instance.&#x20;
 
-### Rogue MySQL LFI --> MySQL Creds
+### Rogue MySQL LFI -> MySQL Creds
 
 I did a lot more reading about `install.php` and the other components related to SQL (because SQL is publicly facing for some reason) of the admin panel and came across this CVE:
 
@@ -128,7 +128,7 @@ This grants us the MySQL creds, which we can use to login:
 
 <figure><img src="../../../.gitbook/assets/image (182).png" alt=""><figcaption></figcaption></figure>
 
-### Bugtracker Creds --> RCE
+### Bugtracker Creds -> RCE
 
 With access to the database, we can view the password of the administrator of the MantisBT instance.&#x20;
 
@@ -164,7 +164,7 @@ Then, just visit `/bugtracker/workflow_graph_img.php`, and we will receive a rev
 
 ## Privilege Escalation
 
-### Pspy Mantis Creds --> Root
+### Pspy Mantis Creds -> Root
 
 We can grab the user flag from the user `mantis`. Afterwards, we can find some interesting files within their home directory:
 

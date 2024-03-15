@@ -81,7 +81,7 @@ Note that this particular version of Gunicorn was vulnerable to **HTTP Request S
 
 {% embed url="https://security.snyk.io/vuln/SNYK-PYTHON-GUNICORN-541164" %}
 
-### Web Enum --> HTTP Request Smuggling
+### Web Enum -> HTTP Request Smuggling
 
 Port 3000 hosted a Gitea instance:
 
@@ -134,7 +134,7 @@ Transfer-Encoding:[\x0b]chunked
 X
 ```
 
-### TE.CL --> Gitea Creds --> User
+### TE.CL -> Gitea Creds -> User
 
 To test this, I wanted to create a script that would do the request smuggling. Using the `requests` module is not possible, since it automatically appends a 'valid' request.
 
@@ -250,7 +250,7 @@ Using this key, I could `ssh` in as `marcus`.
 
 ## Privilege Escalation
 
-### General Enum --> AWS
+### General Enum -> AWS
 
 Ran the usual enumeration scripts of `linpeas.sh` and `pspy64`. The first thing that stood out to me from `linpeas.sh` was that `aws` was installed on the machine:
 
@@ -261,7 +261,7 @@ Ran the usual enumeration scripts of `linpeas.sh` and `pspy64`. The first thing 
 
 Normally, HTB machines don't have this, so this is worth looking into. Earlier, I also found a `key` and `secret` variable, and various mentions of AWS in the repositories. 
 
-### AWS Enum --> David Creds
+### AWS Enum -> David Creds
 
 I found the AWS keys and stuff in the `log_management` repository. First, I listed all the services:
 

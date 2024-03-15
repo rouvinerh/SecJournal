@@ -22,7 +22,7 @@ PORT     STATE SERVICE
 
 WinRM is open, which can be used for `evil-winrm`. FTP does not accept anonymous logins, and SMB requires credentials to view.
 
-### Web Enumeration --> Blind SQL Injection
+### Web Enumeration -> Blind SQL Injection
 
 Port 450 shows us a basic login:
 
@@ -107,7 +107,7 @@ We can then login to view the dashboard:
 
 <figure><img src="../../../.gitbook/assets/image (264).png" alt=""><figcaption></figcaption></figure>
 
-### Gobuster --> C# RCE
+### Gobuster -> C# RCE
 
 I ran a `gobuster` scan on the web appliation and found a `/dev` directory:
 

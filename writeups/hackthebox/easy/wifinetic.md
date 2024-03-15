@@ -22,7 +22,7 @@ PORT   STATE SERVICE
 
 FTP is open, so we should check for anonymous access.
 
-### Anonymous FTP --> Wifi Password --> SSH
+### Anonymous FTP -> Wifi Password -> SSH
 
 There were quite a few files within this FTP server:
 

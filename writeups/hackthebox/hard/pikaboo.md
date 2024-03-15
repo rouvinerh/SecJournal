@@ -173,7 +173,7 @@ We can grab the user flag.
 
 ## Privilege Escalation
 
-### Cron --> FTP Creds --> Perl RCE
+### Cron -> FTP Creds -> Perl RCE
 
 I downloaded LinPEAS to the machine and it did the enumeration for me. Within the `cronjob` section, it found 1:
 

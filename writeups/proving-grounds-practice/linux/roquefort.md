@@ -19,7 +19,7 @@ PORT     STATE  SERVICE
 
 FTP does not allow for anonymous logins.
 
-### Web Enum --> Gitea RCE
+### Web Enum -> Gitea RCE
 
 Only port 3000 has a webpage:
 
@@ -53,7 +53,7 @@ We would then get a reverse shell:
 
 ## Privilege Escalation
 
-### Cronjob Path --> Root
+### Cronjob Path -> Root
 
 `linpeas.sh` picked up that we can write to the Systemd PATH:
 

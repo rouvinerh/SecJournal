@@ -19,7 +19,7 @@ PORT     STATE SERVICE
 
 Interestingly, WinRM is open.&#x20;
 
-### SCF Exploit --> Creds
+### SCF Exploit -> Creds
 
 Port 80 requires credentials to access.
 

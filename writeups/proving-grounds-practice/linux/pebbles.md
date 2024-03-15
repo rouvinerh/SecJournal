@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 FTP doesn't allow for anonymous connections.
 
-### Web Enum --> SQL Shell
+### Web Enum -> SQL Shell
 
 Port 80 shows a login page:
 
@@ -52,7 +52,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/07/16 11:03:22 Starting gobuster in directory enumeration mode
 ===============================================================
-/zm                   (Status: 301) [Size: 320] [--> http://192.168.157.52/zm/]
+/zm                   (Status: 301) [Size: 320] [-> http://192.168.157.52/zm/]
 ```
 
 <figure><img src="../../../.gitbook/assets/image (1048).png" alt=""><figcaption></figcaption></figure>

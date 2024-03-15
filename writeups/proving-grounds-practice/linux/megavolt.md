@@ -17,7 +17,7 @@ PORT   STATE  SERVICE
 
 We can start proxying traffic through Burp.&#x20;
 
-### OSTicket --> XSS Admin Cookie
+### OSTicket -> XSS Admin Cookie
 
 Port 80 hosted an OSTicket instance, which has a lot of vulnerabilities and exploits:
 
@@ -98,7 +98,7 @@ The script would brute force every possible directory that the PHP shell is in b
 
 ## Privilege Escalation
 
-### Sudo Tee + Wildcard --> Root
+### Sudo Tee + Wildcard -> Root
 
 We can check our `sudo` privileges on the machine:
 

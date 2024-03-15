@@ -14,17 +14,17 @@ First, one has to understand how special characters are processed by websites an
 
 {% code overflow="wrap" %}
 ```bash
-# --> comment
-$() --> subshell expression in bash that evaluates the text inside bracket as commands 
-; --> used to chain commands together e.g. id ; whoami would execute 2 commands at once
-| --> pipe used to pass output from one command to another e.g. whoami | echo
-& --> Bitwise AND Operator
-&& --> Logical AND Operator
-|| --> Logical OR Operator
-%0a --> URI encoded newline character (\n)
-> --> redirect standard output to a file # ./find_users > users.txt
-< --> redirect file contents to an executable # ./echo_name < names.txt
-${IFS} --> means " " or space character, useful when there is strict WAF checking
+# -> comment
+$() -> subshell expression in bash that evaluates the text inside bracket as commands 
+; -> used to chain commands together e.g. id ; whoami would execute 2 commands at once
+| -> pipe used to pass output from one command to another e.g. whoami | echo
+& -> Bitwise AND Operator
+&& -> Logical AND Operator
+|| -> Logical OR Operator
+%0a -> URI encoded newline character (\n)
+> -> redirect standard output to a file # ./find_users > users.txt
+< -> redirect file contents to an executable # ./echo_name < names.txt
+${IFS} -> means " " or space character, useful when there is strict WAF checking
 ```
 {% endcode %}
 

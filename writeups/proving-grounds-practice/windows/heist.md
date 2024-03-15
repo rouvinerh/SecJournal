@@ -37,7 +37,7 @@ PORT      STATE SERVICE
 
 This is an AD machine. There were no null credentials accepted by any service. Also, RDP is open.
 
-### Secure Web Browser --> NTLM Capture
+### Secure Web Browser -> NTLM Capture
 
 Port 8080 hosted a Secure Web Browser application:
 
@@ -84,7 +84,7 @@ We can then `evil-winrm` into the box:
 
 ## Privilege Escalation
 
-### Bloodhound --> ReadGMSAPassword
+### Bloodhound -> ReadGMSAPassword
 
 Remember to add this entry to the `/etc/hosts` file:
 
@@ -150,7 +150,7 @@ We can then `evil-winrm` in as this user:
 
 <figure><img src="../../../.gitbook/assets/image (3017).png" alt=""><figcaption></figcaption></figure>
 
-### SeRestorePrivilege --> RDP Shell
+### SeRestorePrivilege -> RDP Shell
 
 This service user has the SeRestorePrivilege enabled:
 

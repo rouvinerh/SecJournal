@@ -69,7 +69,7 @@ Bindings:
 
 I wasn't sure what to do with this information. I also could not connect via `rpcclient`, and there was no credentials I had. I spent quite a bit of time stuck here, and went to research more about RPC and its services.
 
-### RPC Reading --> IPv6 Address
+### RPC Reading -> IPv6 Address
 
 Here's a resource that I used to read more about RPC.&#x20;
 
@@ -103,7 +103,7 @@ Address: dead:beef::202
 
 We now have 2 more addresses!&#x20;
 
-### Re-enumeration --> SMB
+### Re-enumeration -> SMB
 
 I ran an `nmap` IPv6 scan (using `-6`) and found new ports:
 
@@ -199,7 +199,7 @@ $ impacket-secretsdump -ntds Active\ Directory/ntds.dit -system registry/SYSTEM 
 
 There was no way the machine had 2000 users, so we need to first find out which are the valid users.
 
-### User Brute --> Hash Brute
+### User Brute -> Hash Brute
 
 We can first use `grep` to retrieve the users present in the file. Each user's entry ends with `:::`, which we can use `grep` to retrieve and then `awk` to print out the first field.&#x20;
 
@@ -294,7 +294,7 @@ At line:1 char:1
 
 Windows Defender was also active on this machine because my `winpeas.exe` was deleted after.&#x20;
 
-### NTLMv1 --> Steal Hash
+### NTLMv1 -> Steal Hash
 
 I enumerated this machine manually because Defender was present. There was a Powershell History file present:
 

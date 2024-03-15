@@ -17,7 +17,7 @@ PORT     STATE SERVICE
 8000/tcp open  http-alt
 ```
 
-### Web Enum --> Hash Extension
+### Web Enum -> Hash Extension
 
 Port 80 had a website that looked rather static with nothing interesting about it:
 
@@ -319,7 +319,7 @@ mkdir ~/.ssh
 echo 'PUBLIC KEY' >> ~/.ssh/authorized_keys
 ```
 
-### Sudo Safe-Backup --> File Write
+### Sudo Safe-Backup -> File Write
 
 I checked our `sudo` privileges, and found this:
 

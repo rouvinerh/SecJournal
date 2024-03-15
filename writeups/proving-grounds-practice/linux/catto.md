@@ -64,7 +64,7 @@ PORT      STATE SERVICE VERSION
 |_http-cors: HEAD GET POST PUT DELETE PATCH
 ```
 
-### Web Enum --> GraphQL&#x20;
+### Web Enum -> GraphQL&#x20;
 
 Port 8080 shows a portfolio page:
 
@@ -145,7 +145,7 @@ We can then `ssh` in as `marcus`:
 
 ## Privilege Escalation
 
-### .bash --> Base64key Root Creds
+### .bash -> Base64key Root Creds
 
 There was a weird folder `.bash` within the user's home directory:
 

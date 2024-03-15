@@ -173,7 +173,7 @@ smb: \ZZ_ARCHIVE\> ls
 
 All of these folders were rather useless and contained nothing of interest. I tried ASREP-Roasting the users but to no avail as well. My thought process was that since we cannot use anything within the share, perhaps we have to put something there.
 
-### SCF File --> NTLM Hash
+### SCF File -> NTLM Hash
 
 In another machine [Driver ](https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox/easy/drive)on HTB, we had to create a `.scf` file that was being clicked by the user in order to capture NTLM hashes via `responder`. I tried the same thing here.
 
@@ -248,7 +248,7 @@ Session completed.
 
 However, this password cannot be used to `evil-winrm` in to the machine.
 
-### CertEnroll --> User Shell
+### CertEnroll -> User Shell
 
 With these credentials, we can actually access another share:
 
@@ -311,7 +311,7 @@ Using this, we can get a shell as Amanda:
 
 ## Privilege Escalation
 
-### Bloodhound --> Kerberoastable&#x20;
+### Bloodhound -> Kerberoastable&#x20;
 
 Before starting my enumeration within the machine, we can use `bloodhound-python` to scope what we need to do (else we'll be heading in blind).&#x20;
 
@@ -329,7 +329,7 @@ Checking the privileges of this user, we can see that they have DCSync privilege
 
 So that's the attack path. Normally, I would aim to Kerberoast remotely for both OPSEC reasons and also because `impacket` is just so easy to use. However, in our initial `nmap` scan, port 88 is not public facing. This means that we **have** to Kerberoast on the machine itself using `rubeus.exe`.&#x20;
 
-### CLM + AppLocker --> CLM Bypass
+### CLM + AppLocker -> CLM Bypass
 
 I tried to download and execute Rubeus, but this is the error I get due to AppLocker:
 

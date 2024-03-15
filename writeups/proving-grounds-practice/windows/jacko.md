@@ -53,7 +53,7 @@ PORT     STATE SERVICE       VERSION
 
 The H2 Database does have a few code execution exploits that might work.&#x20;
 
-### H2 Database --> RCE
+### H2 Database -> RCE
 
 Port 8082 shows us the login to the H2 database.
 

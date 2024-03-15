@@ -93,7 +93,7 @@ Warning: OSScan results may be unreliable because we could not find at least 1 o
 
 The first thing we notice is the domain name, which is `hathor.windcorp.htb`. This has all the ports open, so it might be the DC itself. We can add the domain name to our `/etc/hosts` file.&#x20;
 
-### Web Enum --> Default Creds
+### Web Enum -> Default Creds
 
 Port 80 shows a corporate page that is still under construction:
 
@@ -113,7 +113,7 @@ A quick Google search for mojoPortal exploits and default credentials led to thi
 
 Surprisingly, this worked!
 
-### Admin Panel --> Move RCE
+### Admin Panel -> Move RCE
 
 The administrator panel lets us edit the pages and what is shown:
 
@@ -193,7 +193,7 @@ Using this, we can get a reverse shell as `web`.&#x20;
 
 ## GinaWild Shell
 
-### Bad Passwords --> User Creds
+### Bad Passwords -> User Creds
 
 Earlier, I saw some kind of Powershell script called `Get-bADpasswords` in use, so let's find that.&#x20;
 
@@ -269,7 +269,7 @@ This is crackable:
 
 `!!!!ilovegood17` is the password here.
 
-### NTLM Ban --> Beatrice Ticket
+### NTLM Ban -> Beatrice Ticket
 
 I tried to use `crackmapexec`, but it doesn't work:
 
@@ -346,7 +346,7 @@ share
 SYSVOL
 ```
 
-### SMB Enumeration --> DLL Hijack
+### SMB Enumeration -> DLL Hijack
 
 Within the `share` share, we can find some stuff:
 
@@ -533,7 +533,7 @@ We can now grab the user flag.&#x20;
 
 ## Bpassrunner Shell
 
-### Recycle Bin --> PFX Crack
+### Recycle Bin -> PFX Crack
 
 Within the main `C:\` directory, there are some files within the Recycle Bin.&#x20;
 
@@ -621,7 +621,7 @@ So this is from the Administrator. Since we have a `.pfx` from the administrator
 
 This means that we can run 'any program' if we import this into the Certificate Store of the machine. The question is, what script do we run?
 
-### Script Hijack --> Shell
+### Script Hijack -> Shell
 
 I was still curious about the `Get-bADpasswords.ps1` script, what was the point of it? I checked the ACLs of it, and found that I could overwrite it:
 
@@ -680,7 +680,7 @@ We can simply use `cscript ./run.vbs` to run this, and we would get another reve
 
 ## Root Shell
 
-### Get-ADReplAccount --> Hashes
+### Get-ADReplAccount -> Hashes
 
 So this user is in charge of running the script that checks whether there are weak passwords. Witin the script, I found this part here:
 
@@ -723,7 +723,7 @@ Secrets
 <TRUNCATED>
 ```
 
-### Kerberos Ticket --> Shell
+### Kerberos Ticket -> Shell
 
 Using this NTLM hash, we have to request for a Kerberos ticket because NTLM hashes have been disabled.&#x20;
 

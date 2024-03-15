@@ -84,7 +84,7 @@ Afterwards, committing the changes would give us a reverse shell:
 
 ## Privilege Escalation
 
-### Sudo Gcore --> Root Creds
+### Sudo Gcore -> Root Creds
 
 The current user has some `sudo` privileges:
 

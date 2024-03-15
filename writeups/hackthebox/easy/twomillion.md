@@ -94,7 +94,7 @@ Using this, we can finally register and login to view the dashboard:
 
 <figure><img src="../../../.gitbook/assets/image (4082).png" alt=""><figcaption></figcaption></figure>
 
-### API Enumeration --> Injection
+### API Enumeration -> Injection
 
 The thing that stands out the most is the fact that thereis an ongoing database migration for the site, and that some features are unavailable. There wasn't much functionality within this site, so I visited the `/api/v1` directory that we used earlier to generate the invite code.&#x20;
 
@@ -251,7 +251,7 @@ Using that, we can `su` to `admin`.
 
 <figure><img src="../../../.gitbook/assets/image (461).png" alt=""><figcaption></figcaption></figure>
 
-### Mail --> CVE Exploit
+### Mail -> CVE Exploit
 
 This user had no `sudo` privileges, and I also did not find any files in `/opt`. Even `pspy64` didn't return anything useful. I wanted to see if this user had ownership over any other files within the system, so I used `find` to do that:
 

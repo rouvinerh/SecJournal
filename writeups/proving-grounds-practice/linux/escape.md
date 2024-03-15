@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8080/tcp open  http-proxy
 ```
 
-### Web Enumeration --> File Upload
+### Web Enumeration -> File Upload
 
 Visiting both the websites shows nothing. The page source just shows this:
 
@@ -29,7 +29,7 @@ Visiting both the websites shows nothing. The page source just shows this:
  body {
   background-image: url(jail.jpg);
  }
- -->
+ ->
 </style>
 
 <title>Escape</title>
@@ -63,7 +63,7 @@ We can get a reverse shell by loading the uploaded file:
 
 ## Privilege Escalation
 
-### SNMP --> Docker Escape
+### SNMP -> Docker Escape
 
 We spawned in a Docker container. The `/var/backups` folder contained a `.conf` file for SNMP:
 
@@ -119,7 +119,7 @@ $ snmpbulkwalk -c 53cur3M0NiT0riNg -v2c 192.168.157.113 NET-SNMP-EXTEND-MIB::nsE
 
 <figure><img src="../../../.gitbook/assets/image (3465).png" alt=""><figcaption></figcaption></figure>
 
-### LogRotate SUID --> PATH Hijack
+### LogRotate SUID -> PATH Hijack
 
 I checked for SUID binaries present within this machine:
 
@@ -199,7 +199,7 @@ export PATH=/tmp:$PATH
 
 <figure><img src="../../../.gitbook/assets/image (3579).png" alt=""><figcaption></figcaption></figure>
 
-### OpenSSL --> File Read
+### OpenSSL -> File Read
 
 Within the `/opt` directory, there's an `openssl` binary that only `tom` can execute:
 

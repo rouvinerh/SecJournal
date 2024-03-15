@@ -36,7 +36,7 @@ PORT    STATE SERVICE     VERSION
 445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: COFFEECORP)
 ```
 
-### SMTPD RCE --> Root
+### SMTPD RCE -> Root
 
 The first thing I noticed was OpenSMTPD 2.0.0, which just looks outdated. There are a handful of exploits available:
 

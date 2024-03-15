@@ -44,7 +44,7 @@ $ redis-cli -h 192.168.208.166
 NOAUTH Authentication required.
 ```
 
-### Wordpress LFI --> Redis Creds
+### Wordpress LFI -> Redis Creds
 
 I used `wpscan` on the website and found a vulnerable plugin.&#x20;
 
@@ -102,7 +102,7 @@ We can easily get a reverse shell using this RCE exploit:
 
 ## Privilege Escalation
 
-### Redis --> Alice
+### Redis -> Alice
 
 This user had extremely limited privileges over the file system. There was a user present, but I cold not even read the `/home` directory. There wasn't much else we could do besides try to execute PHP reverse shells using the LFI we had.
 
@@ -116,7 +116,7 @@ $ curl http://192.168.208.166/wp-content/plugins/site-editor/editor/extensions/p
 
 <figure><img src="../../../.gitbook/assets/image (1436).png" alt=""><figcaption></figcaption></figure>
 
-### Cronjob --> Tar Command Injection
+### Cronjob -> Tar Command Injection
 
 I ran `pspy64` on the machine to see what processes were being run.
 

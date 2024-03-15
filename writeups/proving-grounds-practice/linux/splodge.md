@@ -51,7 +51,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 There's a `.git` repository.
 
-### Git Repo --> Creds
+### Git Repo -> Creds
 
 I downloaded the `.git` repository and looked through the logs with `git log -p -2`. However, it was way too long for me to analyse. Instead, I checked out the repository and checked for passwords:
 
@@ -61,7 +61,7 @@ database/migrations/2020_10_10_015036_create_settings_table.php:            $tab
 database/seeds/DatabaseSeeder.php:            'password' => 'SplodgeSplodgeSplodge'
 ```
 
-### Web Enum + Source Code --> RCE
+### Web Enum + Source Code -> RCE
 
 Port 80 just showed us a 403 page, which was not helpful. Port 1337 did show some potential for RCE:
 
@@ -115,7 +115,7 @@ We now have RCE over the machine, and we can easily get a reverse shell on port 
 
 ## Privilege Escalation
 
-### PostgresSQL Creds --> User Shell
+### PostgresSQL Creds -> User Shell
 
 We spawned in the `/usr/share/nginx/html` folder, which had a `.env` file:
 

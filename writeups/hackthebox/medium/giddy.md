@@ -19,7 +19,7 @@ PORT     STATE SERVICE
 
 Both RDP and WinRM are accessible on this machine, which is new.&#x20;
 
-### SQLI --> Stacy Shell
+### SQLI -> Stacy Shell
 
 Port 80 just shows a cute image:
 
@@ -43,8 +43,8 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 ===============================================================
 2023/05/08 10:02:08 Starting gobuster in directory enumeration mode
 ===============================================================
-/remote               (Status: 302) [Size: 157] [--> /Remote/default.aspx?ReturnUrl=%2fremote]
-/mvc                  (Status: 301) [Size: 148] [--> http://10.129.96.140/mvc/]
+/remote               (Status: 302) [Size: 157] [-> /Remote/default.aspx?ReturnUrl=%2fremote]
+/mvc                  (Status: 301) [Size: 148] [-> http://10.129.96.140/mvc/]
 ```
 
 Visiting it reveals a Windows Powershell Web Access page:

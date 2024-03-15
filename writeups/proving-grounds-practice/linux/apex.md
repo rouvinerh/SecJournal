@@ -44,7 +44,7 @@ smb: \> ls
   OpenEMR Features.pdf                A   490355  Fri Apr  9 23:47:12 2021
 ```
 
-### Web Enumeration --> FileManager LFI
+### Web Enumeration -> FileManager LFI
 
 Port 80 shows a medical website:
 
@@ -106,7 +106,7 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 <TRUNCATED>
 ```
 
-### SQL Creds --> RCE
+### SQL Creds -> RCE
 
 Since we have LFI, we can try reading the SQL credentials that are present within OpenEMR (based on reading the OpenEMR Github repository).&#x20;
 

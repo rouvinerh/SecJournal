@@ -18,7 +18,7 @@ PORT     STATE SERVICE
 
 Based on normal HTB practice, we can add `seventeen.htb` to our `/etc/hosts` file.&#x20;
 
-### Web Ports --> Subdomain Enum
+### Web Ports -> Subdomain Enum
 
 Port 80 hosts a education based website:
 
@@ -249,7 +249,7 @@ TIC
 
 It appears there's another subdomain for an email client at `mastermailer.seventeen.htb`.&#x20;
 
-### Webmail --> RCE
+### Webmail -> RCE
 
 When we visit the new subdomain, we are presented with antoehr login page.
 

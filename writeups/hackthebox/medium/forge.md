@@ -69,7 +69,7 @@ $ curl http://admin.forge.htb/
 Only localhost is allowed
 ```
 
-### Redirect Bypass --> SSH Key
+### Redirect Bypass -> SSH Key
 
 All my attempts to access the admin panel via modifying HTTP headers didn't work. So we have to try something else.&#x20;
 
@@ -201,7 +201,7 @@ Grab the user flag.&#x20;
 
 ## Privilege Escalation
 
-### Remote Manage --> Path Hijacking
+### Remote Manage -> Path Hijacking
 
 When we check `sudo` privileges, we find that `user` is able to run a Python script as `root`.
 

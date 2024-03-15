@@ -19,7 +19,7 @@ PORT    STATE SERVICE
 
 We have to add `ssa.htb` to our `/etc/hosts` file to visit the HTTPS site.&#x20;
 
-### Secret Spy Agency --> SSTI
+### Secret Spy Agency -> SSTI
 
 The website promotes an agency for spies:
 

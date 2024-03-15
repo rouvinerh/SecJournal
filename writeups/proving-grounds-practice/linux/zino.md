@@ -94,7 +94,7 @@ We can then get a reverse shell through `nc`:
 
 ## Privilege Escalation
 
-### Cronjob Exploit --> Root
+### Cronjob Exploit -> Root
 
 I downloaded `linpeas.sh` onto the machine and ran a scan. It found a cronjob we could hijack:
 

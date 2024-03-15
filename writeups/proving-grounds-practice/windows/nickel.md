@@ -32,7 +32,7 @@ PORT      STATE SERVICE
 
 FTP doesn't accept anonymous logins and RDP is open for this machine.&#x20;
 
-### Web Enumeration --> User Creds
+### Web Enumeration -> User Creds
 
 Port 80 was weird:
 
@@ -75,7 +75,7 @@ This was a password for a user `ariah`, which works:
 
 ## Privilege Escalation
 
-### FTP PDF --> Admin Shell
+### FTP PDF -> Admin Shell
 
 There was a `C:\ftp` directory that looked interesting:
 

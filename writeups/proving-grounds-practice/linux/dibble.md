@@ -20,7 +20,7 @@ PORT      STATE SERVICE
 
 FTP accepts anonymous logins but there's nothing within it.&#x20;
 
-### Web Enum --> Admin Takeover
+### Web Enum -> Admin Takeover
 
 Port 80 shows a blog about some web exploits:
 
@@ -69,7 +69,7 @@ When we submit thiss, we get a reverse shell:
 
 ## Privilege Escalation
 
-### cp SUID --> Root
+### cp SUID -> Root
 
 `cp` is an SUID binary on this machine:
 

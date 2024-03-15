@@ -29,7 +29,7 @@ PORT   STATE SERVICE VERSION
 
 I added `visual.htb` to the `/etc/hosts` file as per standard practice.
 
-### Web Enumeration --> PreBuild RCE
+### Web Enumeration -> PreBuild RCE
 
 As expected from the name of the box, this website was Visual Studio themed.
 
@@ -136,7 +136,7 @@ SeCreateGlobalPrivilege       Create global objects          Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set Disabled
 ```
 
-### WebShell --> Service User
+### WebShell -> Service User
 
 When checking the `C:\xampp\htdocs` directory, we find that we have permissions to write there:
 
@@ -160,7 +160,7 @@ Getting a reverse shell can be done by downloading `nc.exe` onto the machine and
 
 ![](../../.gitbook/assets/htb-visual-image-4.png)
 
-### FullPowers + GodPotato --> Root
+### FullPowers + GodPotato -> Root
 
 `local service` did not have its normal full privileges:
 

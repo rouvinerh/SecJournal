@@ -93,7 +93,7 @@ PORT      STATE SERVICE     VERSION
 |_  256 c07c6f477e94cc8bf83da0a61fa92711 (ED25519)
 ```
 
-### Web Enum --> API SSH Creds
+### Web Enum -> API SSH Creds
 
 Port 8080 shows a Haiku page:
 
@@ -185,7 +185,7 @@ We can then login using the credentials for `dademola`:
 
 ## Privilege Escalation
 
-### Exposed SSH Key --> Git User
+### Exposed SSH Key -> Git User
 
 There are other users present on this machine:
 
@@ -229,7 +229,7 @@ Last login: Wed Jul 12 05:15:03 2023 from 192.168.45.208
 git> 
 ```
 
-### Cronjob --> Git Hijack
+### Cronjob -> Git Hijack
 
 I did some enumeration on the machine as `dademola` first, since there wasn't much I could do with a Git shell yet.&#x20;
 

@@ -16,7 +16,7 @@ Through my machines, I've learnt of ways to "upgrade the shell". Within the mach
 ```bash
 python3 -c 'import pty;pty.spawn("/bin/bash")'
 OR script /dev/null -c bash
-^Z (Ctrl + Z) --> Suspend process
+^Z (Ctrl + Z) -> Suspend process
 stty raw -echo; fg
 
 # for Windows

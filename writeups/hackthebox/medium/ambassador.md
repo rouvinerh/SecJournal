@@ -25,7 +25,7 @@ The only interesting thing here is the mentioning of the user `developer`:
 
 Other than that, there was not much here.
 
-### Grafana LFI --> Creds
+### Grafana LFI -> Creds
 
 Port 3000 was hosting a Grafana instance.
 
@@ -111,7 +111,7 @@ We can then login as `developer` via `ssh` using this password.
 
 ## Privilege Escalation
 
-### Consul Token --> RCE
+### Consul Token -> RCE
 
 I was wondering where that `whackywidget` dataabse came from and why it had the password for the user instead of the `grafana` database. Within the `/opt` directory, we can find some additional folders:
 

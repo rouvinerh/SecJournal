@@ -113,7 +113,7 @@ With this, we can SSH inas the `r.michaels` user.
 
 <figure><img src="../../../.gitbook/assets/image (2240).png" alt=""><figcaption></figcaption></figure>
 
-### Tar Backup --> doas
+### Tar Backup -> doas
 
 Within the user's directory, we would find a `devel` backup file.
 

@@ -44,7 +44,7 @@ PORT      STATE SERVICE
 
 `ldapsearch` returns nothing because we have no credentials.
 
-### HTTP --> Printer Creds
+### HTTP -> Printer Creds
 
 There is a HTTP port open, and when viewed, it shows a Printer Admin Panel:
 

@@ -18,7 +18,7 @@ PORT     STATE SERVICE
 
 Just 2 ports on the website.&#x20;
 
-### Web Enumeration --> WP Creds
+### Web Enumeration -> WP Creds
 
 Port 80 shows a Wordpress site:
 
@@ -97,7 +97,7 @@ With these credentials, we can login to the dashboard and begin checking out the
 
 <figure><img src="../../../.gitbook/assets/image (2109).png" alt=""><figcaption></figcaption></figure>
 
-### Arbitrary File Deletion --> RCE
+### Arbitrary File Deletion -> RCE
 
 `wpscan` revealed many different types of exploits, including an authenticated RCE. However, since we aren't the administrator of Wordpress, it's unlikely that we can directly get RCE through WP. So, I turned my attention towards exploiting phpMyAdmin.&#x20;
 
@@ -203,7 +203,7 @@ Grab the user flag.
 
 ## Privilege Escalation
 
-### Path Hijack --> Root Shell
+### Path Hijack -> Root Shell
 
 I ran a `linpeas.sh` scan and it found this:
 

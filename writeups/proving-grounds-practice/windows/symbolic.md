@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 SSH was open on this machine, which was unusual for Windows.&#x20;
 
-### WebPage to PDF --> LFI
+### WebPage to PDF -> LFI
 
 Port 80 was rather simple:
 
@@ -89,7 +89,7 @@ Using this, we can `ssh` in as the user:
 
 ## Privilege Escalation
 
-### Backup Script --> Symbolic Link Write
+### Backup Script -> Symbolic Link Write
 
 There was a `C:\backup` directory with a script in it:
 

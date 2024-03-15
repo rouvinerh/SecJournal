@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 HTTP exploits it seems.&#x20;
 
-### LaTeX Project --> LFI
+### LaTeX Project -> LFI
 
 The website is seems to be a university website:
 

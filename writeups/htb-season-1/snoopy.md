@@ -88,7 +88,7 @@ Lastly, there are some emails present:
 
 <figure><img src="../../.gitbook/assets/image (3281).png" alt=""><figcaption></figcaption></figure>
 
-### Download LFI --> DNS Vuln
+### Download LFI -> DNS Vuln
 
 On the main page, there is an option to download files. When we click that, this HTTP request is sent:
 
@@ -289,7 +289,7 @@ Afterwards, we can reset the password and see that it works here:
 
 Then we can login.
 
-### MatterMost --> SSH MITM
+### MatterMost -> SSH MITM
 
 When we login, we can see a ton of chat logs:
 
@@ -358,7 +358,7 @@ We have a credential! With this, we can `ssh` in as the user `cbrown`:
 
 No user flag yet.
 
-### Sudo Git Apply --> User
+### Sudo Git Apply -> User
 
 Checking our `sudo` privileges, we see this:
 
@@ -430,7 +430,7 @@ Afterwards, just run the `sudo` command on the `/tmp/diff` file. This would put 
 
 Grab the user flag.
 
-### Sudo Clamscan --> Root&#x20;
+### Sudo Clamscan -> Root&#x20;
 
 When checking `sudo` privileges again, I found that we can run `clamscan` as `root`.
 

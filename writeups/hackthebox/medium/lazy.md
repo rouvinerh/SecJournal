@@ -31,7 +31,7 @@ PORT   STATE SERVICE VERSION
 
 Since only port 80 is open, we can proxy the traffic through Burpsuite.
 
-### Web Enumeration --> Padding Oracle
+### Web Enumeration -> Padding Oracle
 
 The website shows a really basic company website:
 
@@ -150,7 +150,7 @@ mysshkeywithnamemitsos
 
 ## Privilege Escalation
 
-### Backup SUID --> PATH Hijack
+### Backup SUID -> PATH Hijack
 
 We don't have the user's password, so we cannot check `sudo` privileges. The user's directory has an SUID binary:
 

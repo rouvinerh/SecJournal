@@ -41,7 +41,7 @@ ftp> ls
 
 Nothing much there.
 
-### SQL Injection --> RCE
+### SQL Injection -> RCE
 
 Port 8081 was hosting an `rConfig` instance:
 
@@ -91,7 +91,7 @@ We can then grab the user flag.
 
 ## Privilege Escalation
 
-### Find SUID --> Root Shell
+### Find SUID -> Root Shell
 
 We can enumerate for SUID binaries on this machine:
 

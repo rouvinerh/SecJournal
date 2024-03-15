@@ -234,7 +234,7 @@ http://consumer.oouch.htb:5000/oauth/connect/token?code=IhKT0Gc97DNDoVQp2Urhfun5
 
 Great! Now we have credentials to access some other stuff. There's an SSH key somewhere on this  website as well.
 
-### Registering --> Steal Token
+### Registering -> Steal Token
 
 Now that we have credentials, we can register somewhere. I used `gobuster` to scan the authorization server, and found another endpoint at `/oauth/applications/register`.&#x20;
 

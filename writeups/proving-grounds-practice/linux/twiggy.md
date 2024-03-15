@@ -46,7 +46,7 @@ PORT     STATE SERVICE VERSION
 |_http-server-header: nginx/1.16.1
 ```
 
-### Salt API --> RCE
+### Salt API -> RCE
 
 Port 8000 looked the most interesting since it was only returning JSON data. Visiting it just shows a few 'clients':
 
