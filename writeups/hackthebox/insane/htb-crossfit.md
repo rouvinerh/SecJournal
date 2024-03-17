@@ -1,4 +1,4 @@
-# Crossfit
+# CrossFit
 
 ## Gaining Access
 
