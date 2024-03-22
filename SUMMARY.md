@@ -32,7 +32,6 @@
 * [Getting Started](what-is-security/getting-started/README.md)
   * [CTFs](what-is-security/getting-started/ctfs.md)
   * [Hacking](what-is-security/getting-started/hacking.md)
-  * [Distros and VMs](what-is-security/getting-started/distros-and-vms.md)
   * [Terms and Concepts](what-is-security/getting-started/terms-and-concepts/README.md)
     * [Malware](what-is-security/getting-started/terms-and-concepts/malware.md)
     * [CLI and Shells](what-is-security/getting-started/terms-and-concepts/cli-and-shells.md)
