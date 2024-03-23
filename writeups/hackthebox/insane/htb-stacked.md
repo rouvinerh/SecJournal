@@ -156,7 +156,7 @@ Starting gobuster in directory enumeration mode
 
 I found it particularly weird that the form **actually** sent a request. Most of the time, these machines have static forms that do nothing.
 
-### Finding XSS --> Mail Subdomain
+### Finding XSS -> Mail Subdomain
 
 There was no other endpoint on this website, and I ran out of ideas. As such, I focused on entering random payloads in this form field.
 
@@ -229,7 +229,7 @@ Content-Length: 0
 
 There was a `mail.stacked.htb` domain!
 
-### Mail Enum --> S3 Bucket
+### Mail Enum -> S3 Bucket
 
 I started to enumerate this instance by retrieving the page contents using this Python HTTP server for POST requests:
 
@@ -355,7 +355,7 @@ $ aws lambda invoke --function-name my-function out --log-type Tail --endpoint-u
 
 However, there was nothing I could do with this! The machine was serverless, so the container run would die after a few seconds.
 
-### Localstack + AWS --> RCE
+### Localstack + AWS -> RCE
 
 So now I know I can at least run Javascript somewhere on the machine. Researching for LocalStack RCE exploits returned these 2 pages:
 
@@ -389,7 +389,7 @@ I can then grab the user flag from `/home/localstack`.
 
 ## Privilege Escalation
 
-### Lambda Processes --> Container Root
+### Lambda Processes -> Container Root
 
 This container did not have anything useful within it. I ran `pspy64` and the processes created when I used `aws` for the initial RCE:
 
@@ -408,7 +408,7 @@ This container did not have anything useful within it. I ran `pspy64` and the pr
 2024/03/17 11:28:02 CMD: UID=0    PID=1      | /bin/bash /usr/local/bin/docker-entrypoint.sh 
 ```
 
-I noticed that there was a `.zip` file created. 
+I noticed that there was a `.zip` file created.
 
 When I invoked my function, it would do a few more commands that were pretty long.
 
@@ -434,7 +434,7 @@ Afterwards, I could become `root`:
 
 ![](../../../.gitbook/assets/htb-stacked-image-10.png)
 
-### Docker --> Root File Access
+### Docker -> Root File Access
 
 The main thing I wanted to enumerate first was `docker`, since this container was spawning other containers. It might be possible that it had an image for the machine with the flag in it.
 

@@ -30,7 +30,7 @@ PORT     STATE SERVICE VERSION
 
 Added `holiday.htb` to the `/etc/hosts` file as per normal practice.
 
-### Web Enum --> Login SQLI
+### Web Enum -> Login SQLI
 
 The website just shows a hexagon:
 
@@ -85,7 +85,7 @@ Interesting. I tested the username field a bit more, I found out that using `"OR
 
 Now `RickA` is the user. The same payload doesn't work with the `password` field. This probably means that only the username is vulnerable to SQL Injection.
 
-### SQLI --> Login Creds
+### SQLI -> Login Creds
 
 Using the fact that there are different errors on the page for valid and invalid queries, I attempt to exfiltrate the password.
 
@@ -133,7 +133,7 @@ And with that, I can login to the interface:
 
 ![](../../../.gitbook/assets/htb-holiday-image-10.png)
 
-### XSS --> Administrator
+### XSS -> Administrator
 
 In each of the booking details, there was an 'Add Note' function:
 
@@ -284,7 +284,7 @@ bash rev
 
 ## Privilege Escalation
 
-### Sudo Npm --> Root
+### Sudo Npm -> Root
 
 This user had `sudo` privileges:
 

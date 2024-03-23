@@ -92,7 +92,7 @@ A few things to note:
 * MSSQL is public-facing on port 1433
 * The domain name is `manager.htb`, and the DC name is `dc01.manager.htb`, which I added to the `/etc/hosts` file. 
 
-### Web Enum --> Deadend
+### Web Enum -> Deadend
 
 The web application shows a corporate page:
 
@@ -100,7 +100,7 @@ The web application shows a corporate page:
 
 Running a `gobuster` directory and `wfuzz` subdomain scan nothing of interest. Moving on.
 
-### SMB --> User Brute Force
+### SMB -> User Brute Force
 
 `smbmap` reveals that null sessions are allowed:
 
@@ -161,7 +161,7 @@ SMB         manager.htb     445    DC01             1118: MANAGER\ChinHae (SidTy
 SMB         manager.htb     445    DC01             1119: MANAGER\Operator (SidTypeUser)
 ```
 
-### MSSQL Login --> Website Backup
+### MSSQL Login -> Website Backup
 
 There was one user that stood out obviously. Using `crackmapexec` again, we can try to brute force a username and password combination out for SMB and the MSSQL service. There were no credentials for the SMB service, but it did find one for the MSSQL server. 
 
@@ -225,7 +225,7 @@ Using this, I could `evil-winrm` in as the `raven` user.
 
 ## Privilege Escalation
 
-### Basic Enumeration --> ESC7
+### Basic Enumeration -> ESC7
 
 This was an AD machine, so it was unlikely that the creator left behind a Windows / system exploit for the next step. I did the usual enumeration for:
 

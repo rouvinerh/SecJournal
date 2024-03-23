@@ -256,6 +256,7 @@
     * [Writeup](writeups/hackthebox/easy/writeup.md)
   * [Medium](writeups/hackthebox/medium/README.md)
     * [Ambassador](writeups/hackthebox/medium/ambassador.md)
+    * [Arkham](writeups/hackthebox/medium/htb-arkham.md)
     * [Atom](writeups/hackthebox/medium/atom.md)
     * [Backend](writeups/hackthebox/medium/backend.md)
     * [BackendTwo](writeups/hackthebox/medium/backendtwo.md)
