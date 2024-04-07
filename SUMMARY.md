@@ -142,6 +142,7 @@
 * [HTB Season 3](writeups/htb-season-3/README.md)
   * [Analytics](writeups/htb-season-3/htb-analytics.md)
   * [Appsanity](writeups/htb-season-3/htb-appsanity.md)
+  * [Codify](writeups/htb-season-3/htb-codify.md)
   * [Drive](writeups/htb-season-3/htb-drive.md)
   * [Manager](writeups/htb-season-3/htb-manager.md)
   * [Visual](writeups/htb-season-3/htb-visual.md)
