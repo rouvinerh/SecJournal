@@ -146,6 +146,7 @@
   * [Drive](writeups/htb-season-3/htb-drive.md)
   * [Hospital](writeups/htb-season-3/htb-hospital.md)
   * [Manager](writeups/htb-season-3/htb-manager.md)
+  * [Surveillance](writeups/htb-season-3/htb-surveillance.md)
   * [Visual](writeups/htb-season-3/htb-visual.md)
 * [HTB Season 2](writeups/htb-season-2/README.md)
   * [Authority](writeups/htb-season-2/authority.md)
