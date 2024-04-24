@@ -4,19 +4,24 @@
 
 My name is Rouvin. I like breaking stuff, and am really into cybersecurity.
 
-The point of this book is to document whatever I've done regarding cybersecurity for reference in future or just to look back upon.
+I made this book to document my own learning and compile my knowledge. It doubles as a small portfolio for me. 
 
 There's loads of free stuff on the Internet in general, and security is definitely part of that. I'd like to thank all the authors and experts that share knowledge online for everyone to learn from! I would have never have learned so much without them.
-
-The motivation to create this book is to giveback to the community which I have had a lot of help from (If you helped me before, thank you!). This book aims to (hopefully) help someone start out on their cybersecurity journey, or to perhaps teach others something new! Whether you're in tech or not, I hope you can learn something from here :D
 
 ## Bio
 
 * I am currently a sophomore majoring in Information Security at National University of Singapore (NUS), and will graduate in 2026.
-* Current Certifications: **CRTO, CRTE, OSCP, eJPT, CCNA, Security+.**
+* Current Certifications:
+    * **OffSec Certified Professional (OSCP)**
+    * **Certified Red Team Operator (CRTO)** from Zero-Point Security
+    * **Certified Red Team Expert (CRTE)** from Altered Security
+    * **eLearnSecurity Junior Penetration Tester (eJPT)** from INE
+    * **Cisco Certified Network Associate 200-301 (CCNA)**
+    * **CompTIA Security+**
 * I can speak English and Chinese (although the latter isn't the best).
 * I really enjoy reading about how stuff is exploited and exploiting things myself (legally).
-* Apart from security, I enjoy water sports. Currently, I'm a canoe sprint athlete representing NUS and am a canoe coach.
+* Apart from security, I enjoy water sports. Currently, I'm a canoe sprint athlete representing NUS.
+* I enjoy teaching too. Currently I work as a cybersecurity instructor and was a canoe sprint coach in the past.
 
 ## Contact Me
 
