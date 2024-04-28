@@ -4,7 +4,7 @@
 
 My name is Rouvin. I like breaking stuff, and am really into cybersecurity.
 
-I made this book to document my own learning and compile my knowledge. It doubles as a small portfolio for me. 
+I made this book to document my own learning and compile my knowledge. It doubles as a small portfolio for me.
 
 There's loads of free stuff on the Internet in general, and security is definitely part of that. I'd like to thank all the authors and experts that share knowledge online for everyone to learn from! I would have never have learned so much without them.
 

@@ -143,6 +143,7 @@
   * [Analytics](writeups/htb-season-3/htb-analytics.md)
   * [Appsanity](writeups/htb-season-3/htb-appsanity.md)
   * [Codify](writeups/htb-season-3/htb-codify.md)
+  * [Devvortex](writeups/htb-season-3/htb-devvortex.md)
   * [Drive](writeups/htb-season-3/htb-drive.md)
   * [Hospital](writeups/htb-season-3/htb-hospital.md)
   * [Manager](writeups/htb-season-3/htb-manager.md)
