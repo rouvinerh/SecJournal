@@ -113,7 +113,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
 ```
 
-This `localstack` software was probably running on the machine, and there must be a method to access it. 
+This `localstack` software was probably running on the machine, and there must be a method to access it.
 
 There was a form on the page, and submitting it sends this request:
 
