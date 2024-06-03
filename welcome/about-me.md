@@ -4,9 +4,9 @@
 
 My name is Rouvin. I like breaking stuff, and am really into cybersecurity.
 
-I made this book to document my own learning and compile my knowledge. It doubles as a small portfolio for me.
+I created this space to document my own security learning and projects. It doubles as a small portfolio for me.
 
-There's loads of free stuff on the Internet in general, and security is definitely part of that. I'd like to thank all the authors and experts that share knowledge online for everyone to learn from! I would have never have learned so much without them.
+There's loads of free stuff on the Internet in general, and security is definitely part of that. I'd like to thank all the authors and experts that share knowledge online for everyone (including me) to learn from!
 
 ## Bio
 
@@ -19,9 +19,9 @@ There's loads of free stuff on the Internet in general, and security is definite
     * **Cisco Certified Network Associate 200-301 (CCNA)**
     * **CompTIA Security+**
 * I can speak English and Chinese (although the latter isn't the best).
-* I really enjoy reading about how stuff is exploited and exploiting things myself (legally).
-* Apart from security, I enjoy water sports. Currently, I'm a canoe sprint athlete representing NUS.
-* I enjoy teaching too. Currently I work as a cybersecurity instructor and was a canoe sprint coach in the past.
+* I enjoy reading about how stuff is exploited and exploiting things myself in my free time (legally, of course).
+* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and currently am a national athlete representing Singapore.
+* I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service (DIS) on the weekends. Prior to that, I was a canoe sprint coach for National Junior College.
 
 ## Contact Me
 
