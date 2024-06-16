@@ -68,4 +68,4 @@ Agreed to publicly disclose June 2024.
 
 {% embed url="https://www.webhackingtips.com/weekly-tips/week-14-algolia-api-keys" %}
 
-{% embed url="https://www.secjuice.com/api-misconfiguration-data-breach/"}
+{% embed url="https://www.secjuice.com/api-misconfiguration-data-breach/" %}
