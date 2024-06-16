@@ -45,7 +45,7 @@ Credential Harvesting is an attack that involves stealing personal data from a u
 
 For example, one can generate a website login that is identical to the Google login page:
 
-![alt text](../../../.gitbook/assets/socialengineering-image.png)
+![](../../../.gitbook/assets/socialengineering-image.png)
 
 This page is identical to the real Google login page, so all links point to valid domains and the icons are in the same positions. One can attempt to sign in:
 

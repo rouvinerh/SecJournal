@@ -2,13 +2,13 @@
 
 ## Hello!
 
-My name is Rouvin. I love breaking things and am really into cybersecurity. Ever since I was young, I've had a child-like curiosity for dismantling things and a penchant for breaking the rules (much to my parents' dismay), so pursuing security was a natural fit for me. 
+My name is Rouvin. I love breaking things and am really into cybersecurity. Since childhood, I've been fascinated by technology, often taking apart computers and old phones physically and wondering how it works. I always put things back together in the wrong order and see if it worked. This curiosity, along with a tendency to break the rules (much to my parents' dismay), naturally led me to a career in security and hacking.
 
 I created this blog to document my own security learning and projects from university, internships or certification courses. I was inspired by the many authors and security professionals who share their knowledge online for free. Thank you for allowing me learn from you!
 
 ## Bio
 
-* I am a penultimate student majoring in Information Security at National University of Singapore (NUS), and will graduate in 2026.
+* I am a penultimate student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
 * Current Certifications:
     * **OffSec Certified Professional (OSCP)**
     * **Certified Red Team Operator (CRTO)** from Zero-Point Security

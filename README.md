@@ -34,13 +34,13 @@ My take on CTFs and Boot2Root competitions:
 
 Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts, bug bounty stuff:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-services" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-vulnerabilities" %}
 
 ### Buffer Overflows
 
 Buffer overflows and some variations of it:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows/buffer-overflows" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows/prior-knowledge" %}
 
 ### Active Directory
 
