@@ -1,3 +1,0 @@
-# Bug Bounties
-
-When I eventually get to it...

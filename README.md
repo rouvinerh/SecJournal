@@ -32,7 +32,7 @@ My take on CTFs and Boot2Root competitions:
 
 ### Web Vulnerabilities
 
-Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts, bug bounty stuff:
+Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts and disclosed bugs:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-vulnerabilities" %}
 
@@ -74,7 +74,7 @@ Stuff about OS fundamentals, malware detection mechanisms and techniques to evad
 
 ### Adversary Emulation
 
-Adversary emulation and red teaming knowledge stuff:
+Adversary emulation and red teaming knowledge:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
 

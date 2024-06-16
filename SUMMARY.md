@@ -32,6 +32,8 @@
 
 ## 🖱 Website Security
 
+* [Disclosed Bugs](website-security/disclosed-bugs/README.md)
+  * [P1: Algolia API Misconfiguration](website-security/disclosed-bugs/algolia-api.md)
 * [Web](website-security/web-vulnerabilities.md)
   * [MVC Framework](website-security/mvc/mvcframework.md)
 * [SQL Injection](website-security/sql-injection/sql-injection.md)
@@ -79,7 +81,6 @@
   * [Portswigger Labs](website-security/http-request-smuggling/portswigger-writeup.md)
 * [OAuth Authentication](website-security/oauth/oauth-authentication.md)
   * [Portswigger Labs](website-security/oauth/portswigger-writeup.md)
-* [Bug Bounties](website-security/bug-bounties.md)
 
 ## 👀 Buffer Overflows
 
