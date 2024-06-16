@@ -2,7 +2,7 @@
 
 ## Hello!
 
-My name is Rouvin. I love breaking things and am really into cybersecurity. Since childhood, I've been fascinated by technology, often taking apart computers and old phones physically and wondering how it works. I always put things back together in the wrong order to see if it still turns on. This curiosity, along with a tendency to break the rules (much to my parents' dismay), naturally led me to a career in security and hacking.
+My name is Rouvin. I love breaking things and am really into cybersecurity. Since childhood, I've been fascinated by technology, often taking apart computers and old phones physically, then wondering how it works. I always put things back together in the wrong order to see if it still turns on. This curiosity, along with a tendency to break the rules (much to my parents' dismay), naturally led me to a career in security and hacking.
 
 I created this blog to document my own security learning and projects from university, internships or certification courses. I was inspired by the many authors and security professionals who share their knowledge online for free. Thank you for allowing me learn from you!
 
