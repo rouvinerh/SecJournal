@@ -2,9 +2,9 @@
 
 The asset owners have agreed to a partial disclosure of this finding.
 
-Vector String: CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+Vector String: **CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H**
 
-Score: 9.8 (Critical)
+Score: **9.8 (Critical)**
 
 ## Discovery
 
