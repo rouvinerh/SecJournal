@@ -33,7 +33,7 @@
 ## 🖱 Website Security
 
 * [Disclosed Bugs](website-security/disclosed-bugs/README.md)
-  * [P1: Algolia API Misconfiguration](website-security/disclosed-bugs/algolia-api.md)
+  * [Algolia API Misconfiguration](website-security/disclosed-bugs/algolia-api.md)
 * [Web](website-security/web-vulnerabilities.md)
   * [MVC Framework](website-security/mvc/mvcframework.md)
 * [SQL Injection](website-security/sql-injection/sql-injection.md)
