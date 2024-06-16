@@ -12,6 +12,7 @@
     * [Fake WinRAR 0-Day](blogs/my-blogs/malware/fake-winrar-0-day.md)
     * [Github 0 Days](blogs/my-blogs/malware/github-0-days.md)
   * [Scams](blogs/my-blogs/scam/README.md)
+    * [Social Engineering](blogs/my-blogs/scam/social-engineering.md)
     * [May Chong](blogs/my-blogs/scam/may-chong.md)
     * [Liu Hongtian](blogs/my-blogs/scam/liu-hongtian.md)
     * [Packing Green](blogs/my-blogs/scam/packing-green.md)
@@ -28,13 +29,6 @@
 * [Getting Started](what-is-security/getting-started/README.md)
   * [CTFs](what-is-security/getting-started/ctfs.md)
   * [Hacking](what-is-security/getting-started/hacking.md)
-  * [Terms and Concepts](what-is-security/getting-started/terms-and-concepts/README.md)
-    * [Malware](what-is-security/getting-started/terms-and-concepts/malware.md)
-    * [CLI and Shells](what-is-security/getting-started/terms-and-concepts/cli-and-shells.md)
-    * [Social Engineering](what-is-security/getting-started/terms-and-concepts/social-engineering.md)
-    * [Metasploit Framework](what-is-security/getting-started/terms-and-concepts/metasploit-framework.md)
-    * [Passwords and Encryption](what-is-security/getting-started/terms-and-concepts/passwords-and-encryption.md)
-    * [File Transfers](what-is-security/getting-started/terms-and-concepts/file-transfers.md)
 
 ## 🖱 Website Security
 

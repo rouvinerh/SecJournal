@@ -2,15 +2,13 @@
 
 ## Hello!
 
-My name is Rouvin. I like breaking stuff, and am really into cybersecurity.
+My name is Rouvin. I love breaking things and am really into cybersecurity. Ever since I was young, I've had a child-like curiosity for dismantling things and a penchant for breaking the rules (much to my parents' dismay), so pursuing security was a natural fit for me. 
 
-I created this space to document my own security learning and projects. It doubles as a small portfolio for me.
-
-There's loads of free stuff on the Internet in general, and security is definitely part of that. I'd like to thank all the authors and experts that share knowledge online for everyone (including me) to learn from!
+I created this blog to document my own security learning and projects from university, internships or certification courses. I was inspired by the many authors and security professionals who share their knowledge online for free. Thank you for allowing me learn from you!
 
 ## Bio
 
-* I am currently a sophomore majoring in Information Security at National University of Singapore (NUS), and will graduate in 2026.
+* I am a penultimate student majoring in Information Security at National University of Singapore (NUS), and will graduate in 2026.
 * Current Certifications:
     * **OffSec Certified Professional (OSCP)**
     * **Certified Red Team Operator (CRTO)** from Zero-Point Security
@@ -19,7 +17,6 @@ There's loads of free stuff on the Internet in general, and security is definite
     * **Cisco Certified Network Associate 200-301 (CCNA)**
     * **CompTIA Security+**
 * I can speak English and Chinese (although the latter isn't the best).
-* I enjoy reading about how stuff is exploited and exploiting things myself in my free time (legally, of course).
 * Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and currently am a national athlete representing Singapore.
 * I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service (DIS) on the weekends. Prior to that, I was a canoe sprint coach for National Junior College.
 

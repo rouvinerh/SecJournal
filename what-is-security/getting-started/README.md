@@ -1,30 +1,29 @@
 # Getting Started
 
-### Author's Note
+## Author's Note
 
-There's no need to know everything on this list before even starting in security! This is just a compilation of whatever I feel is useful. I picked these up as I went along. Personally, I started doing security stuff after bits of networking and some basic C coding. This section is a bit more personalized.
+There's no need to know everything on this list before even starting in security! I personally started with learning C on my own, then venturing to networks before starting CTFs and picking up the rest along the way. YMMV!
 
-### Programming
+## Programming
 
-Programming should be a fundamental no matter which area of computing you're in. For pentesting, we do need to know code and stuff. I think that these few concepts are key if you want to get into this.&#x20;
+Programming knowledge is a must no matter which area of computing you're in. You can write your own exploit scripts, modify existing tools, do source code reviews, etc. Also, coding helps develop problem solving skills which you definitely will need.
 
-* **Javascript** for understanding websites
-* **Python** for scripting exploits
-* **C/ C++** for understanding how manual memory and stack control works
-* **Bash** for Linux
-* **Powershell** for Windows
-* **Basic SQL** for enumerating databases and carrying out basic functions&#x20;
-* **C#** for the .NET framework
-* **Assembly** for reverse engineering and low-level stuff
+Here are a list of programming languages / concepts I feel are necessary to understand:
 
-I personally didn't start with a ton of coding knowledge, just the real bare basics of for loops, recursions and stuff in C, and learnt more as I went along. If you're new to programming, I recommend starting with C. Coding in C is like driving a manual car, once you can get good at that, then any auto car (like Python) will become really easy.
+* **Python:** For scripting of exploits and automating stuff.
+* **Object Oriented Programming:** To understand how code is organised into classes and objects, which is useful when dealing with enterprise software architectures.
+* **Bash / Powershell:** The scripting languages used for Linux and Windows respectively.
+* **C:** For dealing with memory manually and understanding how memory vulnerabilities are created / exploited.
+* **Assembly:** To understand how computers execute instructions at the lowest level, useful for reverse engineering and malware analysis.
 
-### Networking
+## Computer Networks
 
-Networking is definitely one of the backbones of any security job. Understanding the basics, like routing, protocols, and the OSI Model may be applicable for you.
+To secure an organisation's network as a cybersecurity professional, you need to know how networks work in the first place! I did the Cisco Certified Network Associate (CCNA 200-301) to learn about networks using Niall Anderson's CCNA course, which I found very helpful.
 
-**Understanding how these work is key to exploiting them!** I recommend the **Cisco Certified Network Associate**. It's an entry-level networking certification, and although it does not go as in-depth, it's a good starting point for networking.&#x20;
+You need to know network layers, architectures and the different protocols at the back of your head.
 
-### Operating Systems
+## Operating Systems
 
-Understanding how the computer works would be key in spotting vulnerabilities. Generally, we need to understand how the Windows and Linux systems functions, where the important files are, and how they are usually configured. I don't think one needs to know how to code an OS from start to finish, but just a rough general understanding would do.
+This involves using the command line and knowing how Bash and `cmd.exe` works and enumerating a computer for privilege escalation vectors.
+
+On top of that, I feel that understanding how operating systems are used to manage data, how access control lists for files are dealt with, and how basic operations are carried out using system calls via POSIX or WinAPI is a plus, especially the latter for malware development!

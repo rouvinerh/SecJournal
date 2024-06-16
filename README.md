@@ -10,25 +10,41 @@ coverY: 28
 
 A compilation of security related things I do and write about!
 
+**This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
+
 ## Content
 
-### About Me
+### `whoami`
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/welcome/about-me" %}
 
+### Blogs
+
+Random things I find interesting enough to write about:
+
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/blogs/my-blogs" %}
+
 ### About CTFs
+
+My take on CTFs and Boot2Root competitions:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started/ctfs" %}
 
-### Web Vulns
+### Web Vulnerabilities
+
+Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts, bug bounty stuff:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-services" %}
 
 ### Buffer Overflows
 
+Buffer overflows and some variations of it:
+
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows/buffer-overflows" %}
 
 ### Active Directory
+
+Kerberos, Microsoft AD hacking, moving around a simulated corporate network:
 
 {% embed url="https://rouvin.gitbook.io/active-directory/ad" %}
 
@@ -50,19 +66,17 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
 
-### Misc. Blogs
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/blogs/my-blogs" %}
-
 ### Defence Evasion
+
+Stuff about OS fundamentals, malware detection mechanisms and techniques to evade them I picked up for fun:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/evasion/" %}
 
-### Red Teaming
+### Adversary Emulation
+
+Adversary emulation and red teaming knowledge stuff:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
-
-**This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
 
 ## Disclaimer
 
