@@ -22,10 +22,6 @@
   * [Random](blogs/my-blogs/random/README.md)
     * [Upgrade Shells](blogs/my-blogs/random/upgrade-shells.md)
 
-## 📔 Resources Dump
-
-* [Resources](resources-dump/resources.md)
-
 ## 🔐 What is Security
 
 * [Information Security](what-is-security/information-security.md)
@@ -39,27 +35,6 @@
     * [Metasploit Framework](what-is-security/getting-started/terms-and-concepts/metasploit-framework.md)
     * [Passwords and Encryption](what-is-security/getting-started/terms-and-concepts/passwords-and-encryption.md)
     * [File Transfers](what-is-security/getting-started/terms-and-concepts/file-transfers.md)
-
-## 🟥 Pentesting Methodology
-
-* [Methodology](pentesting-methodology/methodology/README.md)
-  * [AD Methodology](pentesting-methodology/methodology/ad-methodology.md)
-  * [Linux PE Methodology](pentesting-methodology/methodology/linux-pe-methodology.md)
-  * [Windows PE Methodology](pentesting-methodology/methodology/windows-pe-methodology.md)
-
-## 🌏 Networks
-
-* [Networking](networks/introduction.md)
-* [Addresses](networks/addresses-subnets-and-ports.md)
-* [OSI Model](networks/osi-model.md)
-* [Packets](networks/packets/README.md)
-  * [TCP / UDP](networks/packets/tcp-udp.md)
-  * [Duplex & Traffic](networks/packets/duplex-and-traffic.md)
-  * [ARP](networks/packets/arp.md)
-  * [DNS](networks/packets/dns.md)
-  * [PKI, TLS / SSL](networks/packets/pki-tls-ssl.md)
-  * [Routing Protocols](networks/packets/routing-protocols.md)
-* [Combined Knowledge](networks/combined-knowledge.md)
 
 ## 🖱 Website Security
 

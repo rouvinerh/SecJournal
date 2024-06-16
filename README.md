@@ -8,23 +8,17 @@ coverY: 28
 
 ## What's this?
 
-This is just a compilation of notes and knowledge I gained from CTFs, courses, interning and university. Also serves as a small portfolio for me.
-
-{% hint style="info" %}
-Currently, I am learning more **web stuff** in preparation for **OSWE**, which I plan to start in May during summer break.
-
-**Malware Development** will be put on hold.
-{% endhint %}
+A compilation of security related things I do and write about!
 
 ## Content
+
+### About Me
+
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/welcome/about-me" %}
 
 ### About CTFs
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started/ctfs" %}
-
-### Networking Stuff
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/networks/networking" %}
 
 ### Web Vulns
 
@@ -45,6 +39,8 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 #### HackTheBox
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
+
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-3" %}
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-2" %}
 
