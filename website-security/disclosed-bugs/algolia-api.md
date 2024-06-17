@@ -62,7 +62,7 @@ Verified in April 2024.
 
 Fixed in May 2024.
 
-Agreed to publicly disclose June 2024.
+Agreed to partial disclosure in June 2024.
 
 ## Other Resources
 
