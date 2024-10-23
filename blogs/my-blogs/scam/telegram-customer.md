@@ -16,11 +16,11 @@ Telegram Premium allows you to set custom emojis, which can be stickers, next to
 
 The contact itself also looks different from the **actual** Telegram service notifications.
 
-Here's the real one:
+Here is the real one:
 
 ![](../../../.gitbook/assets/telegram-customer-image-2.png)
 
-And here's the fake one:
+And here is the fake one:
 
 ![](../../../.gitbook/assets/telegram-customer-image-3.png)
 
@@ -60,13 +60,13 @@ This code is sent when a user is trying to login to Telegram from an unknown dev
 
 So, if I were to key in the actual code sent to my actual number, it allows a threat actor to login as me on another device. They can then do impersonate me and send messages, of which I notice they tend to promote cryptocurrency scams to the user's entire contact list.
 
-Next, let's take a look at the website requests being sent. The first thing I noted was the requesting of `/system/context.js` from this website:
+Next, I took a look at the website requests being sent. The first thing I noted was the requesting of `/system/context.js` from this website:
 
 ![](../../../.gitbook/assets/telegram-customer-image-7.png)
 
 The website uses `.ru`, hinting that it is a Russian site, so this scam is probably by a Russian threat actor.
 
-Next, I noticed that there weren't any actual HTTP requests being sent to the server. Instead, I kept getting WebSocket requests:
+Next, I noticed that there were no actual HTTP requests being sent to the server. Instead, I kept getting WebSocket requests:
 
 ![](../../../.gitbook/assets/telegram-customer-image-8.png)
 
@@ -74,7 +74,7 @@ Next, I noticed that there weren't any actual HTTP requests being sent to the se
 
 HTTP requests and WebSockets are two ways for computers to talk to each other over the internet.
 
-HTTP requests: Like sending a letter — you ask for something (like a web page), the server gets your request, sends back the information, and then the connection closes. It’s a one-time conversation.
+HTTP requests: Like sending a letter — you ask for something (like a web page), the server gets your request, sends back the information, and then the connection closes. It is a one-time conversation.
 
 WebSocket: More like a phone call — once the connection is made, it stays open, so both sides can send and receive information anytime, in real-time, without having to reconnect every time. This is great for things like chat apps or live updates.
 
@@ -90,7 +90,7 @@ Instead, I took a look at the page source using the browser's inspector tools. S
 
 {% hint style="info" %}
 
-Base64 is a way to encode data into a string of text that only uses letters, numbers, and a few symbols. It’s often used to safely send things like images or files over the internet, making sure the data doesn’t get messed up along the way. **This is not a form of encryption, it is just another way of writing data and it can be decoded**.
+Base64 is a way to encode data into a string of text that only uses letters, numbers, and a few symbols. It is often used to safely send things like images or files over the internet, making sure the data does not get messed up along the way. **This is not a form of encryption, it is just another way of writing data and it can be decoded**.
 
 {% endhint %}
 
@@ -106,5 +106,4 @@ So this form of attack is known as **phishing with account compromise**. The ini
 
 The website itself looks very similar to the real login for Telegram, and an already stressed user that wants to save their account can gloss over the domain information and page source. The user sending the message also looks convincing, with the fake verified symbol.
 
-It is important to exercise caution when receiving messages from unknown users, and especially so when these messages contain URLs for us to click. 
-
+It is important to exercise caution when receiving messages from unknown users, and especially so when these messages contain URLs for us to click.
