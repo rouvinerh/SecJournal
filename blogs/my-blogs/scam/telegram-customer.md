@@ -30,7 +30,7 @@ Now, knowing that this is clearly a scam, I took a look at the website in a virt
 
 {% hint style="info" %}
 
-A **virtual machine (VM) is like a computer inside your computer. It lets you run different operating systems or software in a separate, isolated environment, so you can test things or run programs without affecting your main system.
+A **virtual machine (VM)** is like a computer inside your computer. It lets you run different operating systems or software in a separate, isolated environment, so you can test things or run programs without affecting your main system.
 
 **Burp Suite** is a tool used by cybersecurity professionals to test the security of websites. It acts like a middleman between your browser and a website, allowing you to inspect, modify, and analyze the information being sent and received to find weaknesses or vulnerabilities.
 
