@@ -19,6 +19,7 @@
     * [Richard Spindler](blogs/my-blogs/scam/richard-spindler.md)
     * [Ukraine](blogs/my-blogs/scam/ukraine.md)
     * [Coalition Tech](blogs/my-blogs/scam/coalitiontech.md)
+    * [Telegram Customer Service](blogs/my-blogs/scam/telegram-customer.md)
   * [Exploits](blogs/my-blogs/exploits.md)
   * [Random](blogs/my-blogs/random/README.md)
     * [Upgrade Shells](blogs/my-blogs/random/upgrade-shells.md)
