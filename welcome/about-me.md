@@ -17,8 +17,8 @@ I created this blog to document my own security learning and projects from unive
     * **Cisco Certified Network Associate 200-301 (CCNA)**
     * **CompTIA Security+**
 * I can speak English and Chinese (although the latter isn't the best).
-* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and currently am a national athlete representing Singapore.
-* I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service (DIS) on the weekends. Prior to that, I was a canoe sprint coach for National Junior College.
+* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and have raced internationally for Singapore as a national athlete.
+* I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals. Prior to that, I was a canoe sprint coach for National Junior College.
 
 ## Contact Me
 
