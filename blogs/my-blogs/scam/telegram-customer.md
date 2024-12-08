@@ -2,7 +2,7 @@
 
 ## Fake Customer Service
 
-I recently received this message from a `Customer Service Assistant` user on Telegram. It claims that I 'breached regulations', I and must 'verify myself within 6 hours' or my access will be revoked.
+I recently received this message from a `Customer Service Assistant` user on Telegram. It claims that I 'breached regulations', and I must 'verify myself within 6 hours' or my access will be revoked.
 
 ![](../../../.gitbook/assets/telegram-customer-image.png)
 
@@ -80,7 +80,7 @@ WebSocket: More like a phone call — once the connection is made, it stays open
 
 The actual data is being sent to `https://kws4.web.telegram.org/`, which is a legitimate domain owned by Telegram. The data looks like a bunch of garbage characters because it is **encrypted**, and it is impossible for me to decrypt it.
 
-I wanted to dig deeper into this, but it appears that tbe traffic would be encrypted anyways, plus I did not want to enter my real phone number and risk losing my account.
+I wanted to dig deeper into this, but it appears that the traffic would be encrypted anyways, plus I did not want to enter my real phone number and risk losing my account.
 
 Instead, I took a look at the page source using the browser's inspector tools. Sometimes, people leave extra information here, like code comments or links to other sites.
 
@@ -102,7 +102,7 @@ It is always suspicious to see 'real' websites have `Base64` strings included in
 
 I could spend hours diving into each Javascript file and resource used by this website, but I think the information I have suffices to conclude that this is a fake Russian account stealer.
 
-So this form of attack is known as **phishing with account compromise**. The initial message preview tries to create a sense of urgency to get the user to perform an action. When a user is hasty and stressed, they can gloss over obvious details that reveals shows it is a scam.
+So this form of attack is known as **phishing with account compromise**. The initial message preview tries to create a sense of urgency to get the user to perform an action. When a user is hasty and stressed, they can gloss over obvious details that show it is a scam..
 
 The website itself looks very similar to the real login for Telegram, and an already stressed user that wants to save their account can gloss over the domain information and page source. The user sending the message also looks convincing, with the fake verified symbol.
 
