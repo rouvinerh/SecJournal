@@ -104,6 +104,6 @@ I could spend hours diving into each Javascript file and resource used by this w
 
 So this form of attack is known as **phishing with account compromise**. The initial message preview tries to create a sense of urgency to get the user to perform an action. When a user is hasty and stressed, they can gloss over obvious details that show it is a scam.
 
-The website itself looks very similar to the real login for Telegram, and an already stressed user that wants to save their account can gloss over the domain information and page source. The user sending the message also looks convincing, with the fake verified symbol.
+The website itself looks very similar to the real login for Telegram, and an already stressed user that wants to save their account can overlook the domain information and page source for this website. The user sending the message also looks convincing, with the fake verified symbol.
 
 It is important to exercise caution when receiving messages from unknown users, and especially so when these messages contain URLs for us to click.
