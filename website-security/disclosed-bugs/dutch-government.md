@@ -2,7 +2,7 @@
 
 Finally got around to hacking the Dutch Government!
 
-![](../../.gitbook/assets/dutch-government-image.png)
+![](../../.gitbook/assets/dutch-government-image-1.png)
 
 I am unsure if I can publicly disclose the vulnerability because technically, there are still issues with it, so I will err on the side of caution here.
 
