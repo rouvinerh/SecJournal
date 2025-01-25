@@ -14,8 +14,6 @@ I created this blog to document my own security learning and projects from unive
     * **Certified Red Team Operator (CRTO)** from Zero-Point Security
     * **Certified Red Team Expert (CRTE)** from Altered Security
     * **eLearnSecurity Junior Penetration Tester (eJPT)** from INE
-    * **Cisco Certified Network Associate 200-301 (CCNA)**
-    * **CompTIA Security+**
 * I can speak English and Chinese (although the latter isn't the best).
 * Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and have raced internationally for Singapore as a national athlete.
 * I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals. Prior to that, I was a canoe sprint coach for National Junior College.

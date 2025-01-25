@@ -34,6 +34,7 @@
 ## 🖱 Website Security
 
 * [Disclosed Bugs](website-security/disclosed-bugs/README.md)
+  * [Dutch Government](website-security/disclosed-bugs/dutch-government.md)
   * [Algolia API Misconfiguration](website-security/disclosed-bugs/algolia-api.md)
 * [Web](website-security/web-vulnerabilities.md)
   * [MVC Framework](website-security/mvc/mvcframework.md)
