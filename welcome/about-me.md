@@ -10,6 +10,7 @@ I created this blog to document my own security learning and projects from unive
 
 * I am a penultimate student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
 * Current Certifications:
+    * **OffSec Web Expert (OSWE)**
     * **OffSec Certified Professional (OSCP)**
     * **Certified Red Team Operator (CRTO)** from Zero-Point Security
     * **Certified Red Team Expert (CRTE)** from Altered Security
