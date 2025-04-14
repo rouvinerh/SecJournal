@@ -8,7 +8,7 @@
 ## 👨💻 Blogs
 
 * [My Blogs](blogs/my-blogs/README.md)
-  * [Course Reviews](blogs/my-blogs/README.md)
+  * [Course Reviews](blogs/my-blogs/reviews/README.md)
     * [OSCP Review](blogs/my-blogs/reviews/oscp-review.md)
     * [CRTO Review](blogs/my-blogs/reviews/crto-review.md)
     * [CRTE Review](blogs/my-blogs/reviews/crte-review.md)
