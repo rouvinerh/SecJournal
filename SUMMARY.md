@@ -8,6 +8,12 @@
 ## 👨💻 Blogs
 
 * [My Blogs](blogs/my-blogs/README.md)
+  * [Course Reviews](blogs/my-blogs/README.md)
+    * [OSCP Review](blogs/my-blogs/reviews/oscp-review.md)
+    * [CRTO Review](blogs/my-blogs/reviews/crto-review.md)
+    * [CRTE Review](blogs/my-blogs/reviews/crte-review.md)
+    * [OSWE Review](blogs/my-blogs/reviews/oswe-review.md)
+    * [OSED Review](blogs/my-blogs/reviews/osed-review.md)
   * [Malware](blogs/my-blogs/malware/README.md)
     * [Fake WinRAR 0-Day](blogs/my-blogs/malware/fake-winrar-0-day.md)
     * [Github 0 Days](blogs/my-blogs/malware/github-0-days.md)
