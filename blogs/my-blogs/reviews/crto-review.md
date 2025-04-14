@@ -38,7 +38,7 @@ The course **does not hold your hand**. While commands and steps were provided, 
 
 Despite the challenges, I had a great time. Working with Cobalt Strike and watching an entire domain fall under my control via its interface was always incredibly satisfying:
 
-![Taken from Cobalt Strike's User Guide](../../../../.gitbook/assets/crto-review-image-1.png)
+![Taken from Cobalt Strike's User Guide](../../../.gitbook/assets/crto-review-image-1.png)
 
 I noted that while AD attacks were taught in the course, it was merely a medium to teach red team concepts. The course taught me that red teaming is less about the attacks themselves and more about understanding OPSEC, defensive measures, and the flow of an entire engagement. I would call it a great intro to red teaming tools and practices, rather than just another AD exploitation course.
 
@@ -56,7 +56,7 @@ Again, **ATTL4S's** blogs were useful to supplement my learning about Windows an
 
 The course notes and labs are sold separately:
 
-![Taken from Zero Point Security's Website](../../../../.gitbook/assets/crto-review-image.png)
+![Taken from Zero Point Security's Website](../../../.gitbook/assets/crto-review-image.png)
 
 The course notes come with lifetime access and frequent updates. Every time the notes were updated, I learned something new by revisiting them. For £405, I felt the price was absolutely worth it for the quality of material. And of course, playing around with Cobalt Strike was fun!
 
@@ -70,7 +70,7 @@ The exam runs over **4 calendar days**, with a total of **48 hours of lab time**
 
 I felt the exam was fair, enjoyable, and rewarding. Once I submitted my flags, I received the badge within an hour.
 
-![Passed!](../../../../.gitbook/assets/crto-review-image-2.png)
+![Passed!](../../../.gitbook/assets/crto-review-image-2.png)
 
 ## Conclusion
 

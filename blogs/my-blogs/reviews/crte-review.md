@@ -4,7 +4,7 @@
 
 The lab itself was impressively large and packed with things to explore. The exam itself was alright, and the course does a fantastic job covering the requirements. Overall, a great course.
 
-![Taken from Altered Security's Website](../../../../.gitbook/assets/crte-review-image.png)
+![Taken from Altered Security's Website](../../../.gitbook/assets/crte-review-image.png)
 
 ## Introduction
 
@@ -14,7 +14,7 @@ The lab is fully patched, with defences like Microsoft defender, MDE and MDI ena
 
 One can expect to learn:
 
-![Taken From Altered Security's Website](../../../../.gitbook/assets/crte-review-image-3.png)
+![Taken From Altered Security's Website](../../../.gitbook/assets/crte-review-image-3.png)
 
 The course itself can be found here:
 
@@ -56,7 +56,7 @@ While not necessary, the course sparked my interesting in reading more about AD 
 
 The prices are based on the number of days of lab access:
 
-![Taken from Altered Security's Website](../../../../.gitbook/assets/crte-review-image-1.png)
+![Taken from Altered Security's Website](../../../.gitbook/assets/crte-review-image-1.png)
 
 Starting at US$249, it’s easily one of the best deals for the depth and quality offered. I chose the 30-day option, which fit perfectly alongside my internship. I found that 30 days was more than enough time, especially with prior knowledge of the fundamentals.
 
@@ -77,7 +77,7 @@ One key difference is that the report **must contain remediation and recommended
 
 I ended up with a report of 35 pages. I submitted my report on 22 July 2023, and got my reply on 26 July 2023 that I had passed!
 
-![Passed!](../../../../.gitbook/assets/crte-review-image-2.png)
+![Passed!](../../../.gitbook/assets/crte-review-image-2.png)
 
 ## Conclusion
 

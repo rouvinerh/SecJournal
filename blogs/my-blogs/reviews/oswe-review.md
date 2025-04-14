@@ -12,7 +12,7 @@ You can expect to read a lot of code, and the course dives into how vulnerabilit
 
 The course syllabus is as follows:
 
-![Taken from OffSec's Website](../../../../.gitbook/assets/oswe-review-image.png)
+![Taken from OffSec's Website](../../../.gitbook/assets/oswe-review-image.png)
 
 ## Pre-Requisites
 
@@ -94,7 +94,7 @@ I had quite a lot of fun during the exam, and got the passing score on the first
 
 I submitted the report and got my result back in 2 days:
 
-![Passed!](../../../../.gitbook/assets/oswe-review-image-1.png)
+![Passed!](../../../.gitbook/assets/oswe-review-image-1.png)
 
 ## Conclusion
 

@@ -14,7 +14,7 @@ The Offensive Security Certified Professional (OSCP) is one of the most recogniz
 
 The syllabus is as follows:
 
-![Taken from OffSec's Website](../../../../.gitbook/assets/oscp-review-image-1.png)
+![Taken from OffSec's Website](../../../.gitbook/assets/oscp-review-image-1.png)
 
 ## Pre-Requisites
 
@@ -58,7 +58,7 @@ The OSCP helped me secure roles and opportunities that might have been out of re
 
 The exam gives you **24 hours to score at least 70 out of 100 points**, which you can earn by exploiting standalone machines and Active Directory sets. After the exam session, you have another 24 hours to submit a professional report documenting your work. Automated tools like sqlmap and AI-based tools such as ChatGPT are not allowed. The various ways to achieve these points are outlined here:
 
-![Taken from OffSec's Website](../../../../.gitbook/assets/oscp-review-image-2.png)
+![Taken from OffSec's Website](../../../.gitbook/assets/oscp-review-image-2.png)
 
 I took the exam twice in 2022. I failed on my first attempt because I lacked a clear methodology, panicked when things went wrong, and felt uncomfortable being watched by the proctor. I also struggled with nerves and could not sleep the night before.
 
@@ -66,7 +66,7 @@ For my second attempt, I was much more prepared. I spent time practicing mock ex
 
 Writing the report was straightforward for me, as I had plenty of experience writing machine writeups for my GitBook. 2 days after submitting the report, I received the results:
 
-![Passed!](../../../../.gitbook/assets/oscp-review-image.png)
+![Passed!](../../../.gitbook/assets/oscp-review-image.png)
 
 ## Conclusion
 

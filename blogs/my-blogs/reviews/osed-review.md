@@ -10,7 +10,7 @@ The OffSec Exploit Developer (OSED) course focuses on exploit development for x8
 
 The course syllabus is as follows:
 
-![Taken from OffSec's Website](../../../../.gitbook/assets/osed-review-image.png)
+![Taken from OffSec's Website](../../../.gitbook/assets/osed-review-image.png)
 
 ## Pre-Requisites
 
@@ -74,7 +74,7 @@ Read the exam guide carefully!
 
 After submitting the report, I got my results within 24 hours:
 
-![Passed!](../../../../.gitbook/assets/osed-review-image-1.png)
+![Passed!](../../../.gitbook/assets/osed-review-image-1.png)
 
 ## Conclusion
 
