@@ -61,7 +61,7 @@ The prices are based on the number of days of lab access:
 
 Starting at US$249, it’s easily one of the best deals for the depth and quality offered. I chose the 30-day option, which fit perfectly alongside my internship. I found that 30 days was more than enough time, especially with prior knowledge of the fundamentals.
 
-## Exam and Report
+## Exam
 
 The exam consists of two phases:
 
