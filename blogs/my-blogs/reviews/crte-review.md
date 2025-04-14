@@ -16,7 +16,6 @@ One can expect to learn:
 
 ![Taken From Altered Security's Website](../../../../.gitbook/assets/crte-review-image-3.png)
 
-
 The course itself can be found here:
 
 {% embed url="https://www.alteredsecurity.com/redteamlab" %}
