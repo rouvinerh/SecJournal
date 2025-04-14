@@ -180,7 +180,7 @@ $ curl --silent --request POST --url 'http://zipper.htb/zabbix/api_jsonrpc.php' 
 
 So there's an `admin` user as well. When reading the API documentation, I found out that it can be used to execute scripts:
 
-{% embed url="https://www.zabbix.com/documentation/current/en/manual/api/reference/script" % }
+{% embed url="https://www.zabbix.com/documentation/current/en/manual/api/reference/script" %}
 
 Based on the above, I first took a look at the existing scripts:
 
