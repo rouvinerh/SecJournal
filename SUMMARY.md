@@ -8,12 +8,6 @@
 ## 👨💻 Blogs
 
 * [My Blogs](blogs/my-blogs/README.md)
-  * [Course Reviews](blogs/my-blogs/reviews/README.md)
-    * [OSCP](blogs/my-blogs/reviews/oscp-review.md)
-    * [CRTO](blogs/my-blogs/reviews/crto-review.md)
-    * [CRTE](blogs/my-blogs/reviews/crte-review.md)
-    * [OSWE](blogs/my-blogs/reviews/oswe-review.md)
-    * [OSED](blogs/my-blogs/reviews/osed-review.md)
   * [Malware](blogs/my-blogs/malware/README.md)
     * [Fake WinRAR 0-Day](blogs/my-blogs/malware/fake-winrar-0-day.md)
     * [Github 0 Days](blogs/my-blogs/malware/github-0-days.md)
@@ -29,6 +23,12 @@
   * [Exploits](blogs/my-blogs/exploits.md)
   * [Random](blogs/my-blogs/random/README.md)
     * [Upgrade Shells](blogs/my-blogs/random/upgrade-shells.md)
+* [Course Reviews](blogs/my-blogs/reviews/README.md)
+  * [OSCP](blogs/my-blogs/reviews/oscp-review.md)
+  * [CRTO](blogs/my-blogs/reviews/crto-review.md)
+  * [CRTE](blogs/my-blogs/reviews/crte-review.md)
+  * [OSWE](blogs/my-blogs/reviews/oswe-review.md)
+  * [OSED](blogs/my-blogs/reviews/osed-review.md)
 
 ## 🔐 What is Security
 
