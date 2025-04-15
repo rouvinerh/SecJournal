@@ -28,7 +28,7 @@ Some of the scripting I have done can be found here:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/sql-injection/sql-injection-portswigger-writeup" %}
 
-I also solved some Insane machines on HTB, such as CrossFit and Fulcrum. The exam required no-click exploits to be created, so learning to write JavaScript for XSS, and even setting up Python HTTP Servers to handle callbacks. I also got familiar with using the `socket` module in case the course required it. The writeups and scripts for these machines can be found here:
+I also solved some Insane machines on HTB, such as CrossFit and Fulcrum. The exam required no-click exploits to be created, so learning to write JavaScript for XSS, and even setting up Python HTTP Servers to handle callbacks was useful. I also got familiar with using the `socket` module in case the course required it. The writeups and scripts for these machines can be found here:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox/insane/htb-fulcrum" %}
 

@@ -45,7 +45,9 @@ I believe the course's value largely depends on your goals. If your goal is to o
 
 ## Exam
 
-For the exam you are given **48 hours to get at least 60 out of 100 points** by finishing the exam objectives. Another **24 hours is given to write the report**.
+For the exam you are given **48 hours to get at least 60 out of 100 points** by finishing the exam objectives. Another **24 hours is given to write the report**. There were no forms of automated exploits for this exam, and again, generative AI could not be used. I used this extension to prevent AI overviews from being shown on screen:
+
+{% embed url="https://chromewebstore.google.com/detail/bye-bye-google-ai-turn-of/imllolhfajlbkpheaapjocclpppchggc?pli=1" %}
 
 The exam itself was straightforward, and everything necessary was covered in the course materials. There were no surprises, and the difficulty was about what I expected. The 48-hour window is more than sufficient to complete the objectives. I finished most of the work on the first day and spent the beginning of the second day finalizing my answers.
 
