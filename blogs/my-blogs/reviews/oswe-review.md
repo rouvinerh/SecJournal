@@ -6,9 +6,9 @@ I enjoyed the course and found that learning source code review was genuinely us
 
 ## Introduction
 
-The OffSec Web Expert (OSWE) course is a white-box penetration testing certification. The Advanced Web Attacks and Exploitation (AWAE) course focuses on manual source code analysis, understanding logic flaws, and crafting custom exploits rather than relying on automated tools. Instead of black-box guessing at vulnerabilities, you're expected to audit real source code to identify flaws.
+The OffSec Web Expert (OSWE) is a white-box penetration testing certification. The Advanced Web Attacks and Exploitation (AWAE) course focuses on manual source code analysis, understanding logic flaws, and crafting custom exploits rather than relying on automated tools. Instead of black-box guessing at vulnerabilities, you're expected to audit real source code to identify flaws.
 
-You can expect to read a lot of code, and the course dives into how vulnerabilities are discovered and exploited at a fundamental level.
+You can expect to read a lot of code, and the course dives into how web vulnerabilities are discovered and exploited at a fundamental level.
 
 The course syllabus is as follows:
 
@@ -46,11 +46,11 @@ The purpose was to get familiar with the MVC framework and practice writing C#. 
 
 {% embed url="https://learn.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/getting-started-with-mvc/getting-started-with-mvc-part1" %}
 
-Additionally, I interned in a web application security role prior to taking the OSWE, where I audited Ruby and Typescript codebases. While I found most of my bugs through black-box testing (mainly due to my inexperience at the time), the exposure helped me get used to scanning large codebases quickly for potential issues.
+Additionally, I interned in a web application security role prior to taking the OSWE, where I audited Ruby and Typescript codebases. While I found most of my bugs through black-box testing (mainly due to my inexperience at the time), the exposure helped me get used to scanning large codebases and following application logic to see how my input was processed. Most importantly, it taught me **where to start looking, and how to determine which code blocks are important and which are not.**
 
 ### Web Vulnerabilities
 
-There were 2 resources I used to get familiar with all the web application vulnerabilities required. The first was PortSwigger Web Academy, which I used for scripting as well. This is hands down the **best possible web application exploitation training**. The labs cover just about every common vulnerability and it is **free**. As mentioned above, I also used the labs for practicing Python scripting.
+There were 2 resources I used to get familiar with all the web application vulnerabilities required. The first was PortSwigger Web Academy, which I used for scripting as well. This is hands down the **best possible web application exploitation training**. The labs cover just about every common vulnerability and it is **free**.
 
 {% embed url="https://portswigger.net/web-security" %}
 
@@ -64,7 +64,7 @@ I find these two resources complement each other perfectly. PortSwigger teaches 
 
 The course itself was a pleasure to go through, and the most fun and useful OffSec course I have done so far.
 
-The course itself goes through various 'case studies', where vulnerabilities for various softwares written in different languages were analysed. More importantly, it showcased **how** the vulnerabilities were caused by reviewing source code, and how different vulnerabilities can be changed together to achieve RCE.
+It goes through various 'case studies', where vulnerabilities for various softwares written in different languages were analysed. More importantly, it showcased **how** the vulnerabilities were caused by reviewing source code, and how different vulnerabilities can be chained together to achieve RCE.
 
 For example, in one module focusing on ManageEngine, the course walks you through how an SQL Injection was discovered, and then explores different exploitation methods to turn the vulnerability into Remote Code Execution. It even dives into filter bypass techniques, which I found especially interesting.
 
@@ -72,7 +72,7 @@ One key takeaway was learning **why certain inputs cause vulnerabilities**. I fo
 
 Since I had prior internship experience with code review, the course felt relatively straightforward to me. That said, developing an effective methodology for code review is something that only comes with experience, and the course does not enforce a specific approach.
 
-I believe that going through the course material is sufficient to develop some form of methodology.
+I believe that going through the course material is sufficient to develop some form of methodology sufficient for the exam.
 
 ## Pricing
 
@@ -82,15 +82,15 @@ Again, having done an application security role prior to the course, I can defin
 
 ## Exam
 
-For the exam you are given **48 hours to get at least 85 out of 100 points** by compromising the target applications. Another **24 hours is given to write the report**.
+For the exam you are given **48 hours to get at least 85 out of 100 points** by compromising the target applications. Another **24 hours** is given to write the report.
 
-The exam also requires users to create scripts that automate the exploit chain in any language. As with all OffSec exams, no automated exploit tools like `sqlmap` or generative AI tools can be used. For this exam I used a Chrome extension that blocked the Google AI overview that is automatically included during searches.
+The exam also requires users to create scripts that automate the exploit chain in any language, of which I used Python. As with all OffSec exams, no automated exploit tools like `sqlmap` or generative AI tools can be used. For this exam I used a Chrome extension that blocked the Google AI overview that is automatically included during searches.
 
 {% embed url="https://chromewebstore.google.com/detail/bye-bye-google-ai-turn-of/imllolhfajlbkpheaapjocclpppchggc?pli=1" %}
 
 I found that the time limit given was rather generous, and there was more than enough time to clear the objectives. My only advice is to allocate sufficient time to write and test the exploit scripts used, and to always test the scripts created. **Ensure to include the scripts within the exam report!**
 
-I had quite a lot of fun during the exam, and got the passing score on the first day. The rest of the time was for scripting and writing my report. Everything you need is in the course, and I did not need to do extensive external research. Perhaps it was my preparation and experience before taking the course.
+I had quite a lot of fun during the exam, and got the passing score on the first day. The rest of the time was for scripting and writing my report. Everything you need is in the course, and I did not need to do extensive external research. Perhaps it was my (over) preparation and experience before taking the course that allowed me to clear the objectives quickly.
 
 I submitted the report and got my result back in 2 days:
 

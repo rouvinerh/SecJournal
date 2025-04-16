@@ -24,11 +24,11 @@
   * [Random](blogs/my-blogs/random/README.md)
     * [Upgrade Shells](blogs/my-blogs/random/upgrade-shells.md)
 * [Course Reviews](blogs/my-blogs/reviews/README.md)
-  * [OSCP](blogs/my-blogs/reviews/oscp-review.md)
-  * [CRTO](blogs/my-blogs/reviews/crto-review.md)
-  * [CRTE](blogs/my-blogs/reviews/crte-review.md)
-  * [OSWE](blogs/my-blogs/reviews/oswe-review.md)
-  * [OSED](blogs/my-blogs/reviews/osed-review.md)
+  * [OSCP / PEN-200 Review](blogs/my-blogs/reviews/oscp-review.md)
+  * [Certified Red Team Operator (CRTO) Review](blogs/my-blogs/reviews/crto-review.md)
+  * [Certified Red Team Expert (CRTE) Review](blogs/my-blogs/reviews/crte-review.md)
+  * [OSWE / WEB-300 Review](blogs/my-blogs/reviews/oswe-review.md)
+  * [OSED / EXP-301 Review](blogs/my-blogs/reviews/osed-review.md)
 
 ## 🔐 What is Security
 

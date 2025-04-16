@@ -2,11 +2,11 @@
 
 ## TL;DR
 
-It was a good introduction to red teaming, and playing around with Cobalt Strike was fun.  As for the exam, I found it required external research beyond the course notes and wasn't as straightforward as expected. Understanding why each attack works and under what conditions is essential. Overall, a great course.
+It was a great introduction to red teaming, and playing around with Cobalt Strike was fun.  As for the exam, I found it required external research beyond the course notes and was not as straightforward as expected. The course does not really go through everything in detail, as students are expected to figure it out. Understanding why each attack works and under what conditions is essential.
 
 ## Introduction
 
-The Certified Red Team Operator (CRTO) course covers the **red teaming** attack lifecycle, from initial access and credential dumping to privilege escalation on Windows machines and lateral movement across them. The course is entirely self-paced and online, covering Active Directory (AD) attacks and misconfigurations. What stood out most to me was its focus on Operational Security (OPSEC) and hands-on use of Cobalt Strike to perform the attacks. 
+The Certified Red Team Operator (CRTO) course covers the **red teaming** attack lifecycle, from initial access and credential dumping to privilege escalation on Windows machines and lateral movement across them. The course is entirely self-paced and online, covering Active Directory (AD) attacks and misconfigurations. What stood out most to me was its focus on Operational Security (OPSEC) and hands-on use of Cobalt Strike to perform the attacks.
 
 CRTO is offered by Zero-Point Security, with course material created by Daniel Duggan.
 
