@@ -354,5 +354,3 @@ builder.Services.AddHealthChecks();
 app.MapHealthChecks("/admin").RequireAuthorization();
 app.UseAuthorization();
 ```
-
-Pretty interesting how easy it is to add routes.

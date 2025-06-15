@@ -34,9 +34,7 @@ Random things I find interesting enough to write about:
 
 My take on how to get into cybersecurity, about CTFs and hacking:
 
-{% content-ref url="what-is-security/getting-started/ctfs.md" %}
-[ctfs.md](what-is-security/getting-started/ctfs.md)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started" %}
 
 ### Web Vulnerabilities
 
@@ -48,17 +46,13 @@ Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writ
 
 Buffer overflows and some variations of it:
 
-{% content-ref url="buffer-overflows/prior-knowledge/" %}
-[prior-knowledge](buffer-overflows/prior-knowledge/)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows" %}
 
 ### Active Directory
 
 Kerberos, Microsoft AD hacking, moving around a simulated corporate network:
 
-{% content-ref url="active-directory/ad.md" %}
-[ad.md](active-directory/ad.md)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/active-directory" %}
 
 ### Writeups
 
@@ -66,9 +60,7 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 
 #### HackTheBox
 
-{% content-ref url="writeups/hackthebox/" %}
-[hackthebox](writeups/hackthebox/)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-3" %}
 
@@ -78,9 +70,7 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 
 #### Proving Grounds Practice
 
-{% content-ref url="writeups/proving-grounds-practice/" %}
-[proving-grounds-practice](writeups/proving-grounds-practice/)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
 
 ### Defence Evasion
 
