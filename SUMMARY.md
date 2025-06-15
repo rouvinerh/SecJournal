@@ -39,9 +39,11 @@
 
 ## 🖱️ Website Security
 
-* [Disclosed Bugs](website-security/disclosed-bugs/README.md)
-  * [Dutch Government](website-security/disclosed-bugs/dutch-government.md)
-  * [Algolia API Misconfiguration](website-security/disclosed-bugs/algolia-api.md)
+* [Bug Bounties](website-security/disclosed-bugs/README.md)
+  * [Accepted](website-security/disclosed-bugs/accepted/README.md)
+    * [Dutch Government](website-security/disclosed-bugs/accepted/dutch-government.md)
+    * [Algolia API Misconfiguration](website-security/disclosed-bugs/accepted/algolia-api.md)
+  * [Not Accepted](website-security/disclosed-bugs/not-accepted.md)
 * [Web](website-security/web-vulnerabilities.md)
   * [MVC Framework](website-security/mvc/mvcframework.md)
 * [SQL Injection](website-security/sql-injection/sql-injection.md)

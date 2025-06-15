@@ -148,7 +148,7 @@ Playing around with this some more, it appears that the 'custom' type would requ
 
 <figure><img src="../../../.gitbook/assets/image (2915).png" alt=""><figcaption></figcaption></figure>
 
-So now, we would need to create some form of script to brute force out the characters of the SECRET_KEY, because that's needed to decode the cookie and (maybe)_ get a password.
+So now, we would need to create some form of script to brute force out the characters of the SECRE&#x54;_&#x4B;EY, because that's needed to decode the cookie and (maybe)_ get a password.
 
 ### Brute Force SECRET\_KEY
 

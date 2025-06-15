@@ -1,8 +1,8 @@
 # HTTP Request Smuggling
 
-HTTP request smuggling is a technique that is used to mess up the sequence of HTTP requests a website processes. These exploits are often critical in nature, as this can allow attackers to bypass security controls and gain access to sensitive data.&#x20;
+HTTP request smuggling is a technique that is used to mess up the sequence of HTTP requests a website processes. These exploits are often critical in nature, as this can allow attackers to bypass security controls and gain access to sensitive data.
 
-## Smuggling 
+## Smuggling
 
 When HTTP requests are sent to a server, the user sends requests to a front-end server, and then forward the traffic to the back-end. Typically, there are several requests sent over the same connection for maximizing efficiency. When HTTP requests are sent one after another, the receiving server parses the HTTP request headers **to determine where one request ends and the next one begins.**
 
@@ -23,15 +23,15 @@ Generally, the manipulation of the `Content-Length` or `Transfer-Encoding` heade
   * Specifies that the request uses **chunked encoding**.
   * Terminated by with a chunk size of zero.
   * Normally, browsers do not use chunked encoding, as they are normally used for **server responses.** Take note that it is possible to sent messages using this encoding as requests.
-  
+
 The message below has 1 chunk within it:
 
 <pre class="language-http"><code class="lang-http">POST /search HTTP/1.1
 Host: normal-website.com
 Content-Type: application/x-www-form-urlencoded
 Transfer-Encoding: chunked
-<strong>
-</strong><strong>b
+
+<strong>b
 </strong>q=smuggling
 0
 </code></pre>
@@ -40,7 +40,7 @@ Since the HTTP has 2 methods for specifying the message length, there can be con
 
 ### CL.TE
 
-In this scenario, the front-end server uses the `Content-Length` header and the back-end uses the `Transfer-Encoding` header.&#x20;
+In this scenario, the front-end server uses the `Content-Length` header and the back-end uses the `Transfer-Encoding` header.
 
 To exploit this, we can send in a request like this:
 
@@ -55,7 +55,7 @@ Transfer-Encoding: chunked
 hello!!!
 ```
 
-The front-end server processes the Content-Length header and determines that the request body only contains 13 bytes of data (inclusive of `\r\n` characters) and forwards this request. The back-end then sees the request using chunked encoding, this processing the first chunk, which is stated to be 0 length and terminates the request.&#x20;
+The front-end server processes the Content-Length header and determines that the request body only contains 13 bytes of data (inclusive of `\r` characters) and forwards this request. The back-end then sees the request using chunked encoding, this processing the first chunk, which is stated to be 0 length and terminates the request.
 
 The following bytes, the 'hello' portion is left unprocessed and the back-end server would treat this as **the start of the next request in sequence.** It is prepended to the next request in the queue.
 
@@ -80,7 +80,7 @@ If the exploit works, 404 is returned, indicating that the request was changed. 
 
 ### TE.CL
 
-In this scenario, the back-end server uses the `Content-Length` header and the front-end uses the `Transfer-Encoding` header.&#x20;
+In this scenario, the back-end server uses the `Content-Length` header and the front-end uses the `Transfer-Encoding` header.
 
 We can now send this request:
 
@@ -140,4 +140,4 @@ Transfer-Encoding
 
 The point of changing the header is to find whether the front and back end server processes it differently. Sometimes, obfuscation would change how the back-end server processes it, while the front-end sees it without difference. Fuzzing and good enumeration is key to identifying the vulnerability.
 
-Depending on how the website processes information, the rest of the attack takes the same form as the CL.TE or TE.CL exploits.&#x20;
+Depending on how the website processes information, the rest of the attack takes the same form as the CL.TE or TE.CL exploits.

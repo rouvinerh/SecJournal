@@ -248,7 +248,7 @@ Within Jean's home directory, there is this laravel application running somewher
 
 <figure><img src="../../../.gitbook/assets/image (3377).png" alt=""><figcaption></figcaption></figure>
 
-Within the PHP files, there had to be some form of vulnerability that would allow me to gain RCE, so I did a basic `grep -r <term>` for common PHP shells, like system, and shell_exec._ Shell\_exec worked, as I saw this:
+Within the PHP files, there had to be some form of vulnerability that would allow me to gain RCE, so I did a basic `grep -r <term>` for common PHP shells, like system, and shel&#x6C;_&#x65;xec._ Shell\_exec worked, as I saw this:
 
 <figure><img src="../../../.gitbook/assets/image (3547).png" alt=""><figcaption></figcaption></figure>
 
