@@ -5,7 +5,7 @@
 * [SecJournal](README.md)
 * [About Me](welcome/about-me.md)
 
-## 👨💻 Blogs
+## 👨‍💻 Blogs
 
 * [My Blogs](blogs/my-blogs/README.md)
   * [Malware](blogs/my-blogs/malware/README.md)
@@ -37,7 +37,7 @@
   * [CTFs](what-is-security/getting-started/ctfs.md)
   * [Hacking](what-is-security/getting-started/hacking.md)
 
-## 🖱 Website Security
+## 🖱️ Website Security
 
 * [Disclosed Bugs](website-security/disclosed-bugs/README.md)
   * [Dutch Government](website-security/disclosed-bugs/dutch-government.md)
@@ -67,7 +67,7 @@
 * [Cross-Site Request Forgery](website-security/csrf/csrf.md)
   * [Portswigger Labs](website-security/csrf/portswigger-csrf-writeup.md)
 * [Cross-Site Scripting](website-security/cross-site-scripting/cross-site-scripting.md)
-  * [Portswigger XSS Labs](website-security/cross-site-scripting/portswigger-writeup.md)
+  * [Portswigger XSS Labs](website-security/cross-site-scripting/portswigger-xss-labs.md)
   * [Portswigger DOM-XSS Labs](website-security/cross-site-scripting/portswigger-domxss-writeup.md)
 * [JSON Web Tokens](website-security/jwt/jwt.md)
   * [Portswigger Labs](website-security/jwt/portswigger-jwt-writeup.md)
@@ -103,7 +103,7 @@
 * [Canary Bypass](buffer-overflows/canary-bypass.md)
 * [ASLR Bypass](buffer-overflows/aslr-bypass.md)
 
-## 🖥 Active Directory
+## 🖥️ Active Directory
 
 * [Active Directory](active-directory/ad.md)
 * [Tools](active-directory/tools.md)
@@ -115,7 +115,7 @@
   * [Abusing ACLs and GPOs](active-directory/acls-and-gpos/abusing-acls-and-gpos.md)
 * [LDAP](active-directory/ldap.md)
 
-## ✍ Writeups
+## ✍️ Writeups
 
 * [HTB Season 3](writeups/htb-season-3/README.md)
   * [Analytics](writeups/htb-season-3/htb-analytics.md)

@@ -1,3 +1,7 @@
+---
+icon: '0'
+---
+
 # CTFs
 
 ## CTFs
@@ -8,21 +12,16 @@ Capture-The-Flags (CTF) are computer security competitions. The most common type
 
 1. Web
    * Enumerate, scan and hack a website to get the flag!
-
 2. Forensics
    * Analysis of a file, such as disk files, log files or Wireshark packet captures to find hidden information.
    * Steganography is technically part of this, and that involves finding hidden information in images.
-
 3. Pwn / Binary Exploitation
    * Exploitation of a program running on a server by connecting to it, then sending a specific input to gain control via variations of buffer overflows.
    * The program that is running is given (`.exe` or `.elf`).
-
 4. Cryptography
    * Exploitation of an incorrectly implemented algorithm, such as RSA, to decrypt information.
-
 5. Reverse Engineering
    * Given a program or file, find out how it works and reverse engineer it to find exploitable vulnerabilities.
-
 6. Misc.
    * Could be anything, such as random scripting, OSINT, or knowledge tests on operating systems.
 

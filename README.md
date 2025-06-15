@@ -6,11 +6,17 @@ coverY: 28
 
 # SecJournal
 
-## What's this?
+What's this?
 
 A compilation of security related things I do and write about!
 
 **This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
+
+**What I am doing now (this might change!): Bug bounties and trying to get into finding bugs!**
+
+{% content-ref url="website-security/disclosed-bugs/" %}
+[disclosed-bugs](website-security/disclosed-bugs/)
+{% endcontent-ref %}
 
 ## Content
 
@@ -24,11 +30,13 @@ Random things I find interesting enough to write about:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/blogs/my-blogs" %}
 
-### About CTFs
+### Starting in InfoSec
 
-My take on CTFs and Boot2Root competitions:
+My take on how to get into cybersecurity, about CTFs and hacking:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started/ctfs" %}
+{% content-ref url="what-is-security/getting-started/ctfs.md" %}
+[ctfs.md](what-is-security/getting-started/ctfs.md)
+{% endcontent-ref %}
 
 ### Web Vulnerabilities
 
@@ -40,13 +48,17 @@ Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writ
 
 Buffer overflows and some variations of it:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows/prior-knowledge" %}
+{% content-ref url="buffer-overflows/prior-knowledge/" %}
+[prior-knowledge](buffer-overflows/prior-knowledge/)
+{% endcontent-ref %}
 
 ### Active Directory
 
 Kerberos, Microsoft AD hacking, moving around a simulated corporate network:
 
-{% embed url="https://rouvin.gitbook.io/active-directory/ad" %}
+{% content-ref url="active-directory/ad.md" %}
+[ad.md](active-directory/ad.md)
+{% endcontent-ref %}
 
 ### Writeups
 
@@ -54,7 +66,9 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 
 #### HackTheBox
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
+{% content-ref url="writeups/hackthebox/" %}
+[hackthebox](writeups/hackthebox/)
+{% endcontent-ref %}
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-3" %}
 
@@ -64,7 +78,9 @@ Writeups from HTB and PGP make up the majority of this Gitbook.
 
 #### Proving Grounds Practice
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
+{% content-ref url="writeups/proving-grounds-practice/" %}
+[proving-grounds-practice](writeups/proving-grounds-practice/)
+{% endcontent-ref %}
 
 ### Defence Evasion
 
@@ -76,7 +92,9 @@ Stuff about OS fundamentals, malware detection mechanisms and techniques to evad
 
 Adversary emulation and red teaming knowledge:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
+{% content-ref url="adversary-emulation/emulation/emulation.md" %}
+[emulation.md](adversary-emulation/emulation/emulation.md)
+{% endcontent-ref %}
 
 ## Disclaimer
 
