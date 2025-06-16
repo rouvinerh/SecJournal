@@ -12,11 +12,11 @@ A compilation of security related things I do and write about!
 
 **This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
 
-**What I am doing now (this might change!): Bug bounties and trying to get into finding bugs!**
+{% hint style="warning" %}
+In May 2025, I have decided to spend a year on bug bounties to learn and see what I can find.
+{% endhint %}
 
-{% content-ref url="website-security/disclosed-bugs/" %}
-[disclosed-bugs](website-security/disclosed-bugs/)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security" %}
 
 ## Content
 
@@ -82,9 +82,7 @@ Stuff about OS fundamentals, malware detection mechanisms and techniques to evad
 
 Adversary emulation and red teaming knowledge:
 
-{% content-ref url="adversary-emulation/emulation/emulation.md" %}
-[emulation.md](adversary-emulation/emulation/emulation.md)
-{% endcontent-ref %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation" %}
 
 ## Disclaimer
 
