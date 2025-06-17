@@ -13,7 +13,7 @@ A compilation of security related things I do and write about!
 **This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
 
 {% hint style="warning" %}
-In May 2025, I have decided to spend a year on bug bounties to learn and see what I can find.
+**What am I doing now?** I have decided to spend a year on bug bounties to learn and see what I can learn and find.
 {% endhint %}
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security" %}
