@@ -8,9 +8,9 @@ I was enumerating all the subdomains of a target, and noticed that one domain re
 
 ## Exploitation
 
-Apache 2.4.6 is severely outdated, and has a ton of vulnerabilities for DoS and HTTP Request Smuggling. I was unable to get the CVE for RCE working, but figured that using any CVE would suffice in demonstrating that it is vulnerable.
+Apache 2.4.6 is severely outdated, and has a ton of vulnerabilities for DoS and HTTP Request Smuggling. I was unable to get the CVE for RCE working, but figured that using any CVE would suffice in demonstrating that it was vulnerable.
 
-I decided to go with CVE-2024-40725, which was a HTTP Request Smuggling attack for Apache HTTP Server versions 2.4.0 to 2.4.61. This was one of the **least disruptive** attacks I could use on this.
+I decided to go with CVE-2024-40725, a HTTP Request Smuggling attack for Apache HTTP Server versions 2.4.0 to 2.4.61. This was one of the **least disruptive** attacks I could use on this.
 
 I used this payload:
 
@@ -29,7 +29,7 @@ User-Agent: smuggle-test
 Location: evil.com
 ```
 
-The response proved that it was vulnerable since it returned 2 responses:
+The response confirmed that it was vulnerable since it returned 2 responses:
 
 ![](../../../.gitbook/assets/outdated-apache-image-1.png)
 
