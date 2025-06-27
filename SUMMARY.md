@@ -44,6 +44,7 @@
     * [wkhtmltopdf LFI](website-security/disclosed-bugs/accepted/pdf-lfi.md)
     * [Algolia API Misconfiguration](website-security/disclosed-bugs/accepted/algolia-api.md)
     * [Outdated Apache](website-security/disclosed-bugs/accepted/outdated-apache.md)
+    * [GraphQL Batching DoS](website-security/disclosed-bugs/accepted/batching-dos-graphql.md)
   * [Not Accepted](website-security/disclosed-bugs/not-accepted/README.md)
     * [XSS + Open Redirect](website-security/disclosed-bugs/not-accepted/xss-open-redirect.md)
     * [Blind SSRF via HTML Injection](website-security/disclosed-bugs/not-accepted/blind-ssrf.md)

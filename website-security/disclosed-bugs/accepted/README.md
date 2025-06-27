@@ -1,3 +1,3 @@
 # Accepted
 
-For all reports that were accepted, triaged and fixed. Disclosed with permission.
+For all reports that were accepted, triaged, fixed or declared as duplicates.

@@ -33,4 +33,8 @@ The response confirmed that it was vulnerable since it returned 2 responses:
 
 ![](../../../.gitbook/assets/outdated-apache-image-1.png)
 
-Afterwards, I notified the relevant parties and this vulnerability was acknowledged!
+Afterwards, I notified the relevant parties and this vulnerability was acknowledged. 
+
+## Fix
+
+Update Apache.

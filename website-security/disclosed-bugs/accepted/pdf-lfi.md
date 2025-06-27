@@ -37,6 +37,10 @@ This confirmed the vulnerability, and I notified the relevant parties about the 
 
 A big thank you to the National Cyber Security Centre (NCSC) for promptly replying me and working with me to fix the vulnerability.
 
+## Fix
+
+Update libraries used, and validate the HTML used to generate a PDF. `wkhtmltopdf` has a sandbox mode that prevents access to local file systems or external websites that can be set to prevent future exploitation.
+
 ## Re-Testing --> Blind SSRF
 
 After they fixed it, I noted that it was actually still possible to do **blind SSRF** for port enumeration on the same endpoint. However, since they only accept P1 or P2 reports (I think?), my report was not processed. Still served as a good learning point though! I suppose client-side HTML and PDF generation will always have issues.
