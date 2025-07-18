@@ -45,7 +45,7 @@
     * [Algolia API Misconfiguration](website-security/disclosed-bugs/accepted/algolia-api.md)
     * [Outdated Apache](website-security/disclosed-bugs/accepted/outdated-apache.md)
     * [GraphQL Batching DoS](website-security/disclosed-bugs/accepted/batching-dos-graphql.md)
-    * [XSS WAF Bypass + PII Exfiltration](website-security/disclosed-bugs/accepted/reflected-xss-waf.md)
+    * [XSS WAF Bypass + PII Exfil](website-security/disclosed-bugs/accepted/reflected-xss-waf.md)
   * [Not Accepted](website-security/disclosed-bugs/not-accepted/README.md)
     * [XSS + Open Redirect](website-security/disclosed-bugs/not-accepted/xss-open-redirect.md)
     * [Blind SSRF via HTML Injection](website-security/disclosed-bugs/not-accepted/blind-ssrf.md)
