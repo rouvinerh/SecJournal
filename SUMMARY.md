@@ -46,6 +46,7 @@
     * [Outdated Apache](websec/disclosed-bugs/accepted/outdated-apache.md)
     * [GraphQL Batching DoS](websec/disclosed-bugs/accepted/batching-dos-graphql.md)
     * [XSS WAF Bypass + PII Exfil](websec/disclosed-bugs/accepted/reflected-xss-waf.md)
+    * [Email 2FA Bypass](websec/disclosed-bugs/accepted/2fa-bypass.md)
   * [Not Accepted](websec/disclosed-bugs/not-accepted/README.md)
     * [XSS + Open Redirect](websec/disclosed-bugs/not-accepted/xss-open-redirect.md)
     * [Blind SSRF via HTML Injection](websec/disclosed-bugs/not-accepted/blind-ssrf.md)
