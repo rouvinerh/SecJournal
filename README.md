@@ -16,7 +16,7 @@ A compilation of security related things I do and write about!
 **What am I doing now?** I have decided to spend a year on bug bounties to learn and see what I can learn and find.
 {% endhint %}
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/websec/disclosed-bugs" %}
 
 ## Content
 
@@ -34,25 +34,25 @@ Random things I find interesting enough to write about:
 
 My take on how to get into cybersecurity, about CTFs and hacking:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/what-is-security/getting-started" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/infosec/getting-started" %}
 
 ### Web Vulnerabilities
 
 Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts and disclosed bugs:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/web-vulnerabilities" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/websec/web-vulnerabilities" %}
 
 ### Buffer Overflows
 
 Buffer overflows and some variations of it:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/buffer-overflows" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/bof/prior-knowledge" %}
 
 ### Active Directory
 
 Kerberos, Microsoft AD hacking, moving around a simulated corporate network:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/active-directory" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/ad/ad" %}
 
 ### Writeups
 
@@ -82,7 +82,7 @@ Stuff about OS fundamentals, malware detection mechanisms and techniques to evad
 
 Adversary emulation and red teaming knowledge:
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation" %}
+{% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
 
 ## Disclaimer
 

@@ -17,5 +17,5 @@ Specifically for hackers, they can be:
 * **Grey-Hat:** White-Hats in the day, Black-Hats in the night.
 * **Hacktivists:** Groups like Anonymous, who hack to promote social agendas and beliefs. Hacks include defacing websites, doxing people, etc.
 * **State-Sponsored Threats:** Elite hackers sponsored by and acting in their home nation's interests.
-* **Script Kiddies:** Unskilled people who blindly run pre-made scripts and tools without understanding what they are doing. Uninterested in learning, more interested in looking l33t. 
+* **Script Kiddies:** Unskilled people who blindly run pre-made scripts and tools without understanding what they are doing. Uninterested in learning, more interested in looking l33t.
 * **Green Hat Hackers:** Amateur hackers, but with a clear intention to learn, separating them from script kiddies.

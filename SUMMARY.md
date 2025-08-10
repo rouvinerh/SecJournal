@@ -32,10 +32,10 @@
 
 ## 🔐 What is Security <a href="#infosec" id="infosec"></a>
 
-* [Information Security](infosec/information-security.md)
-* [Getting Started](infosec/getting-started/README.md)
-  * [CTFs](infosec/getting-started/ctfs.md)
-  * [Hacking](infosec/getting-started/hacking.md)
+* [Information Security](what-is-security/information-security.md)
+* [Getting Started](what-is-security/getting-started/README.md)
+  * [CTFs](what-is-security/getting-started/ctfs.md)
+  * [Hacking](what-is-security/getting-started/hacking.md)
 
 ## 🖱️ Website Security <a href="#websec" id="websec"></a>
 
@@ -100,28 +100,28 @@
 
 ## 👀 Buffer Overflows <a href="#bof" id="bof"></a>
 
-* [Buffer Overflows](bof/prior-knowledge/README.md)
-  * [System Architecture](bof/prior-knowledge/system-architecture.md)
-  * [Compilers, Assemblers, Debuggers and Decompilers](bof/prior-knowledge/compilers-assemblers-debuggers-and-decompilers.md)
-  * [Binary Security](bof/prior-knowledge/binary-security.md)
-  * [Address Manipulation](bof/prior-knowledge/buffer-overflow.md)
-* [OSCP BOF (OUTDATED)](bof/oscp-bof.md)
-* [Ret2Libc](bof/ret2libc.md)
-* [ROP Chaining](bof/rop-chaining.md)
-* [Canary Bypass](bof/canary-bypass.md)
-* [ASLR Bypass](bof/aslr-bypass.md)
+* [Buffer Overflows](buffer-overflows/prior-knowledge/README.md)
+  * [System Architecture](buffer-overflows/prior-knowledge/system-architecture.md)
+  * [Compilers, Assemblers, Debuggers and Decompilers](buffer-overflows/prior-knowledge/compilers-assemblers-debuggers-and-decompilers.md)
+  * [Binary Security](buffer-overflows/prior-knowledge/binary-security.md)
+  * [Address Manipulation](buffer-overflows/prior-knowledge/buffer-overflow.md)
+* [OSCP BOF (OUTDATED)](buffer-overflows/oscp-bof.md)
+* [Ret2Libc](buffer-overflows/ret2libc.md)
+* [ROP Chaining](buffer-overflows/rop-chaining.md)
+* [Canary Bypass](buffer-overflows/canary-bypass.md)
+* [ASLR Bypass](buffer-overflows/aslr-bypass.md)
 
 ## 🖥️ Active Directory <a href="#ad" id="ad"></a>
 
-* [Active Directory](ad/ad.md)
-* [Tools](ad/tools.md)
-* [Windows Authentication](ad/windows-authentication.md)
-* [Kerberos](ad/kerberos/README.md)
-  * [Delegation](ad/kerberos/delegation.md)
-  * [Attacking Kerberos](ad/kerberos/attacking-kerberos.md)
-* [ACLs and GPOs](ad/acls-and-gpos/README.md)
-  * [Abusing ACLs and GPOs](ad/acls-and-gpos/abusing-acls-and-gpos.md)
-* [LDAP](ad/ldap.md)
+* [Active Directory](active-directory/ad.md)
+* [Tools](active-directory/tools.md)
+* [Windows Authentication](active-directory/windows-authentication.md)
+* [Kerberos](active-directory/kerberos/README.md)
+  * [Delegation](active-directory/kerberos/delegation.md)
+  * [Attacking Kerberos](active-directory/kerberos/attacking-kerberos.md)
+* [ACLs and GPOs](active-directory/acls-and-gpos/README.md)
+  * [Abusing ACLs and GPOs](active-directory/acls-and-gpos/abusing-acls-and-gpos.md)
+* [LDAP](active-directory/ldap.md)
 
 ## ✍️ Writeups
 
