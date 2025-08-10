@@ -29,11 +29,11 @@ CTFs are insanely fun, and it's a great way to start cybersecurity. It's how I s
 
 ## CTF Websites
 
-### [CTF Time](https-ctftime.org-ctftime)
+### [CTF Time](../../what-is-security/getting-started/https-ctftime.org-ctftime)
 
 CTF event tracker, just sign up and join one!
 
-### [CTF Learn](ctf-learn-https-ctflearn.com)
+### [CTF Learn](../../what-is-security/getting-started/ctf-learn-https-ctflearn.com)
 
 A website to practice user created CTF challenges at your own time and pace.
 
