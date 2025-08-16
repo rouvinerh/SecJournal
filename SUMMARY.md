@@ -2,7 +2,7 @@
 
 ## 👋 Welcome
 
-* [SecJournal](README.md)
+* [Hello!](README.md)
 * [About Me](welcome/about-me.md)
 
 ## 👨‍💻 Blogs
@@ -112,7 +112,7 @@
 * [Canary Bypass](buffer-overflows/canary-bypass.md)
 * [ASLR Bypass](buffer-overflows/aslr-bypass.md)
 
-## 🖥️ Active Directory <a href="#ad" id="ad"></a>
+## 🖥️ Active Directory <a href="#a-d" id="a-d"></a>
 
 * [Active Directory](active-directory/ad.md)
 * [Tools](active-directory/tools.md)

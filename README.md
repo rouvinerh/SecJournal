@@ -4,13 +4,11 @@ cover: >-
 coverY: 28
 ---
 
-# SecJournal
+# Hello!
 
-What's this?
+## What's This?
 
-A compilation of security related things I do and write about!
-
-**This book will be updated as frequently as I can while juggling school work, and it is not meant to be a high-maintenance project.**
+This is my notebook where I document all my security-related experiences, from HackTheBox writeups, to bug bounty findings, and personal blogs about anything information security related!&#x20;
 
 {% hint style="warning" %}
 **What am I doing now?** I have decided to spend a year on bug bounties to learn and see what I can learn and find.

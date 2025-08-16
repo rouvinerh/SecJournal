@@ -2,23 +2,23 @@
 
 ## Hello!
 
-My name is Rouvin. I love breaking things and am really into cybersecurity. Since childhood, I've been fascinated by technology, often taking apart computers and old phones physically, then wondering how it works. I always put things back together in the wrong order to see if it still turns on. This curiosity, along with a tendency to break the rules (much to my parents' dismay), naturally led me to a career in security and hacking.
+My name is Rouvin. I love breaking things and am really into cybersecurity. Since childhood, I've been fascinated by technology, often taking apart computers and old phones physically, then wondering how it works. Afterward, I always put things back together in the wrong order to see if it still turns on. This curiosity, along with a tendency to break the rules (much to my parents' dismay), naturally led me to a career in security and hacking.
 
-I created this blog to document my own security learning and projects from university, internships or certification courses. I was inspired by the many authors and security professionals who share their knowledge online for free. Thank you for allowing me learn from you!
+I created this notebook to document my own security learning and projects from university, internships, and certification courses. I was inspired by the many authors and security professionals who share their knowledge online for free. Thank you for allowing me learn from you!
 
 ## Bio
 
-* I am a penultimate student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
-* Current Certifications:
-    * **OffSec Web Expert (OSWE)**
-    * **OffSec Exploit Developer (OSED)**
-    * **OffSec Certified Professional (OSCP)**
-    * **Certified Red Team Operator (CRTO)** from Zero-Point Security
-    * **Certified Red Team Expert (CRTE)** from Altered Security
-    * **eLearnSecurity Junior Penetration Tester (eJPT)** from INE
+* I am a final year student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
+* Certifications:
+  * **OffSec Web Expert (OSWE)**
+  * **OffSec Exploit Developer (OSED)**
+  * **OffSec Certified Professional (OSCP)**
+  * **Certified Red Team Operator (CRTO)** from Zero-Point Security
+  * **Certified Red Team Expert (CRTE)** from Altered Security
 * I can speak English and Chinese (although the latter isn't the best).
-* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and have raced internationally for Singapore as a national athlete.
-* I enjoy teaching too, and teach cybersecurity to youths in the Sentinel Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals. Prior to that, I was a canoe sprint coach for National Junior College.
+* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and have raced internationally repping Singapore as a national athlete.
+* I enjoy teaching too, and teach cybersecurity to youths in the Cyber Youth Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals.&#x20;
+  * Prior to that, I was a canoe sprint coach for National Junior College!&#x20;
 
 ## Contact Me
 
