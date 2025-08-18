@@ -4,7 +4,7 @@ Found a reflected XSS on a paid program, managed to bypass the WAF using PortSwi
 
 ## Discovery
 
-I was initially interested in how this company was registering accounts, proxying requests and looking at how accounts are created. I noticed that there were requests going to `company.com/locale?locale=en`.
+I was initially interested in how this company was registering accounts, proxying requests and looking at how accounts were created. I noticed that there were requests going to `company.com/locale?locale=en`.
 
 I decided to change the parameter to `locale=evil`. To my surprise, my input was reflected.
 

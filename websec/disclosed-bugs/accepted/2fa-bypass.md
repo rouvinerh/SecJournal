@@ -1,10 +1,10 @@
 # 2FA Bypass
 
-Found a 2FA bypass on a website for a VDP, and the issue has been patched. This report has been heavily redacted at the developers' request.
+I found a 2FA bypass on a website through a VDP, and the issue has been patched. This report has been heavily redacted at the developers' request.
 
 ## Discovery
 
-I attempted to register a new user on the target, and was required to enter a 2FA code to validate my email. After the right code was entered, I was redirected to a final confirmation page, and had to click 'register' to finish the process.
+I attempted to register as a new user on the target, and was required to enter a 2FA code to validate my email. After the correct code was entered, I was redirected to a final confirmation page, and had to click 'register' to finish the process.
 
 This was the POST request responsible for sending the 2FA code to my email:
 
@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ## Exploit
 
-The first thing I tried was to register a user with a fake email, since this application's functionality relied heavily on the email used in registration.
+The first thing I tried was to register a user with a fake email. This approach made sense since the application's functionality relied heavily on the email used during registration.
 
 The current flow is:
 
@@ -30,11 +30,11 @@ The current flow is:
 
 To test whether the 2FA verification was robust, I entered `evil@evil.com` as the initial email.
 
-BurpSuite was used to intercept the request in Step 2, and I changed the email specified in the POST request to `/generate-otp` to a secondary email I control. The secondary email account received the 2FA code, which was valid when entered.
+I used BurpSuite to intercept the request in Step 2. I changed the email specified in the POST request to `/generate-otp`, replacing it with a secondary email I control. The secondary email account received the 2FA code, which was valid when entered.
 
 To my surprise, when I was redirected to the final page, the initial email of `evil@evil.com` was unchanged, and I was able to register with a fake email. This meant that I was able to sign up as a user with **any email** without validation, and that the 2FA verification was bypassed.
 
-Since this website's functionality relied heavily on user's emails for contacts, I was able to register and impersonate other people on the platform, which was a rather serious issue.
+Since this website's functionality relied heavily on users' emails for contacts, I was able to register and impersonate other people on the platform, which was a serious security issue.
 
 ## Remediation
 

@@ -2,7 +2,7 @@
 
 ## Discovery
 
-I was looking at a rather static site and wanted to search for something. This was when I noticed a search function powered by Algolia being present:
+I was looking at a rather static site and wanted to search for something. That's when I noticed a search function powered by Algolia:
 
 ![](../../../.gitbook/assets/algolia-api-image.png)
 
@@ -10,13 +10,13 @@ Algolia is a third-party, search as a service platform.
 
 {% embed url="https://www.algolia.com/" %}
 
-I found it rather odd that this site had this in use, so I looked into it out of curiosity. Further enumeration using browser inspector tools shows that each keystroke typed in the search bar sent a request to an external domain.
+I found it rather odd that this site was using it, so I looked into it out of curiosity. Further enumeration using browser inspector tools showed that each keystroke typed in the search bar sent a request to an external domain.
 
 ![](../../../.gitbook/assets/algolia-api-image-1.png)
 
-The external domain was `https://APPID-dsn.algolia.net`, and it included 2 parameters, namely the `x-algolia-api-key` and `x-algolia-application-id`.
+The external domain was `https://APPID-dsn.algolia.net`, and the requests included 2 parameters, namely the `x-algolia-api-key` and `x-algolia-application-id`.
 
-The next question was whether this `api-key` parameter was meant to be exposed, so I read up on the Algolia documentation. It states that the keys are safe to expose provided they are set to **SEARCH-ONLY**. There is another **Admin API key** which must be kept secret.
+The next question was whether this `api-key` parameter was meant to be exposed, so I read up on the Algolia documentation. It states that the keys are safe to expose, provided they are set to **SEARCH-ONLY**. There is another **Admin API key** which must be kept secret.
 
 ![](../../../.gitbook/assets/algolia-api-image-2.png)
 
@@ -38,7 +38,7 @@ I worked with the developers to fix this issue, which included setting up my own
 
 ![](../../../.gitbook/assets/algolia-api-image-4.png)
 
-The fix was straightforward, revoke the admin key, and replace the old key with the Search-Only key. The real question is: **How did this bug occur?**
+The fix was straightforward: revoke the admin key and replace it with the Search-Only key. The real question is: **How did this bug occur?**
 
 The root cause is their documentation. Algolia has 'dynamic' documentation, which generates code snippets for any developer to copy and paste, like so:
 

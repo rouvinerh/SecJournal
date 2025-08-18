@@ -1,6 +1,6 @@
 # Price Manipulation
 
-They acknowledged the report, fixed the change, but decided my report was 'Invalid' 🤷‍♂️
+They acknowledged the report and fixed the issue, but decided my report was 'Invalid' 🤷‍♂️
 
 ## Discovery
 
@@ -39,7 +39,7 @@ Changing the price in the GET request to the PaymentPortal will cause errors. So
 
 Eventually, I found that the `adult` parameter was not sanitised, and decimals could be used.This meant that changing the value of `adult` from `1` to `0.01` actually reduced the price by a factor of `100`.
 
-I knew that there were multiple POST requests being sent to that endpoint throughout the checkout process as I filled my details, so exploiting any of the intermediate requests was useless.
+I knew that multiple POST requests were being sent to that endpoint throughout the checkout process as I filled in my details, so exploiting any of the intermediate requests was useless.
 
 I intercepted the initial POST request sent and changed the `adult` parameter to `0.01`. This worked in reducing the initial price. Subsequent POST requests also reflected this manipulated price. The manipulated price was eventually passed to the payment portal, and the `DigitalSignature` was created for that price. I was thus able to checkout and actually make a payment.
 
@@ -63,6 +63,6 @@ After reviewing the issue, we observed that no Order ID was generated because no
 
 {% endcode %}
 
-The rather infuriating part was that after they got back to me, they **fixed the issue**  and I was unable to recreate it. I personally felt it was a bit unfair since they claimed it was 'expected behaviour', but still proceeded to change and add validation for the parameters I highlighted.
+The rather infuriating part was that after they got back to me, they fixed the issue, and I was unable to recreate it. I personally felt it was a bit unfair since they claimed it was 'expected behaviour' but still proceeded to change and add validation for the parameters I highlighted.
 
-Regardless, I thought it was a pretty interesting experience, seeing how business logic flaws like this still existed despite measures like signatures being implemented.
+Regardless, I thought it was a pretty interesting experience, seeing how business logic flaws like this still exist despite measures like signatures being implemented.
