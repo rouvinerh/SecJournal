@@ -10,6 +10,8 @@ I created this notebook to document my own security learning and projects from u
 
 * I am a final year student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
 * Certifications:
+  * **OffSec Certified Expert 3 (OSCE3)**
+  * **Offsec Experienced Penetration Tester (OSEP)**
   * **OffSec Web Expert (OSWE)**
   * **OffSec Exploit Developer (OSED)**
   * **OffSec Certified Professional (OSCP)**
