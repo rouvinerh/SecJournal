@@ -24,9 +24,7 @@ This is my notebook where I document all my security-related experiences, from H
 
 ### Blogs
 
-Random things I find interesting enough to write about:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/blogs/my-blogs" %}
+I (try) to write some blogs about cybersecurity and anything interesting I find, which are viewable on the left under the 'Blogs' section.&#x20;
 
 ### Starting in InfoSec
 
