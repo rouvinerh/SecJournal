@@ -86,7 +86,7 @@ I had a lot of fun during the exam, which was highly relevant to the material co
 
 I had concerns about initial access, having read that it was similar to OSCP. In the end, it was very similar to the practice labs. Although I submitted 17 flags, I am fairly certain I missed 1 because I could not access a machine. I still think about that today.
 
-I received my results after 3 days:
+I received my results after exactly 72 hours after the exam ended:
 
 ![Passed!](../../../.gitbook/assets/osep-review-image-1.png)
 
