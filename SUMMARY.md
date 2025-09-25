@@ -29,6 +29,7 @@
   * [Certified Red Team Expert (CRTE) Review](blogs/my-blogs/reviews/crte-review.md)
   * [OSWE / WEB-300 Review](blogs/my-blogs/reviews/oswe-review.md)
   * [OSED / EXP-301 Review](blogs/my-blogs/reviews/osed-review.md)
+  * [OSEP / PEN-300 Review](blogs/my-blogs/reviews/osep-review.md)
 
 ## 🔐 What is Security <a href="#infosec" id="infosec"></a>
 
