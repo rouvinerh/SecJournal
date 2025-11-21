@@ -39,17 +39,19 @@
 ## 🖱️ Website Security <a href="#websec" id="websec"></a>
 
 * [Bug Bounties](websec/disclosed-bugs/README.md)
-  * [wkhtmltopdf LFI](websec/disclosed-bugs/pdf-lfi.md)
+  * [Dutch Government - wkhtmltopdf LFI](websec/disclosed-bugs/pdf-lfi.md)
+  * [Dutch Government - wkhtmltopdf Blind SSRF](websec/disclosed-bugs/blind-ssrf.md)
+  * [NASA -  API Leaking PII](websec/disclosed-bugs/nasa-api.md)
+  * [NASA - Exposed GoAccess Logs](websec/disclosed-bugs/nasa-logs.md)
+  * [NASA - Misconfigured API](websec/disclosed-bugs/nasa-go-api.md)
   * [Algolia API Misconfiguration](websec/disclosed-bugs/algolia-api.md)
   * [Outdated Apache](websec/disclosed-bugs/outdated-apache.md)
   * [GraphQL Batching DoS](websec/disclosed-bugs/batching-dos-graphql.md)
   * [XSS WAF Bypass + PII Exfil](websec/disclosed-bugs/reflected-xss-waf.md)
   * [Email 2FA Bypass](websec/disclosed-bugs/2fa-bypass.md)
   * [XSS + Open Redirect](websec/disclosed-bugs/xss-open-redirect.md)
-  * [Blind SSRF via HTML Injection](websec/disclosed-bugs/blind-ssrf.md)
   * [Price Manipulation](websec/disclosed-bugs/price-manipulation.md)
-  * [NASA API Leaking PII](websec/disclosed-bugs/nasa-api.md)
-  * [Exposed NASA GoAccess Logs](websec/disclosed-bugs/nasa-logs.md)
+
 * [Web](websec/web-vulnerabilities/README.md)
   * [MVC Framework](websec/web-vulnerabilities/mvcframework.md)
 * [SQL Injection](websec/sql-injection/README.md)
