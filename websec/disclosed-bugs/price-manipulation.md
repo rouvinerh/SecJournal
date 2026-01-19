@@ -27,7 +27,7 @@ When the final button to check out was clicked, it sent a GET request to the pay
 GET /Payment?ReferenceNum=<refnumber>&Price=56&DigitalSignature=<signature>
 ```
 
-There was a `DigitalSignature` field that prevented parameter alteration. When `Price` was manipulated in this GET request, the server responded with a 500. 
+There was a `DigitalSignature` field that prevented parameter alteration. When `Price` was manipulated in this GET request, the server responded with a 500.
 
 This was the overall flow:
 
@@ -57,7 +57,7 @@ I reported this issue to the relevant party. However, as my method failed to pro
 
 {% code overflow="wrap" %}
 
-```
+```text
 After reviewing the issue, we observed that no Order ID was generated because no order was created. This is the expected behaviour and part of the normal application flow. As such, it is not considered a valid security issue.
 ```
 
