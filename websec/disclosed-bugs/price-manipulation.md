@@ -56,11 +56,9 @@ I repeated the exploit, this time using `0.5` instead of `0.01`. This worked in 
 I reported this issue to the relevant party. However, as my method failed to produce a valid order ID, they deemed it as 'Invalid`. They mentioned, and I quote:
 
 {% code overflow="wrap" %}
-
-```text
+```
 After reviewing the issue, we observed that no Order ID was generated because no order was created. This is the expected behaviour and part of the normal application flow. As such, it is not considered a valid security issue.
 ```
-
 {% endcode %}
 
 The rather infuriating part was that after they got back to me, they fixed the issue, and I was unable to recreate it. I personally felt it was a bit unfair since they claimed it was 'expected behaviour' but still proceeded to change and add validation for the parameters I highlighted.
