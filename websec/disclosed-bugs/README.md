@@ -6,6 +6,6 @@ I will only post reports that **demonstrate impact**. My impact assessment is ba
 
 I mainly use HackerOne, but sometimes use BugCrowd if I want a change of pace c:
 
-{% embed url="http://hackerone.com/green_hats/" %}
+{% embed url="http://hackerone.com/erh/" %}
 
-{% embed url="https://bugcrowd.com/h/green_hats" %}
+{% embed url="https://bugcrowd.com/h/erh" %}
