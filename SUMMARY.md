@@ -51,6 +51,7 @@
   * [Email 2FA Bypass](websec/disclosed-bugs/2fa-bypass.md)
   * [XSS + Open Redirect](websec/disclosed-bugs/xss-open-redirect.md)
   * [Price Manipulation](websec/disclosed-bugs/price-manipulation.md)
+  * [SSRF in Chrome PDF Generator](websec/disclosed-bugs/ssrf-chrome.md)
 
 * [Web](websec/web-vulnerabilities/README.md)
   * [MVC Framework](websec/web-vulnerabilities/mvcframework.md)
