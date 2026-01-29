@@ -31,7 +31,7 @@ There was a `DigitalSignature` field that prevented parameter alteration. When `
 
 This was the overall flow:
 
-![](../../../.gitbook/assets/price-manipulation-image.png)
+![](../../.gitbook/assets/price-manipulation-image.png)
 
 ## Exploitation
 
@@ -45,7 +45,7 @@ I intercepted the initial POST request sent and changed the `adult` parameter to
 
 Sequence of exploit:
 
-![](../../../.gitbook/assets/price-manipulation-image-1.png)
+![](../../.gitbook/assets/price-manipulation-image-1.png)
 
 Each order had a `Number of Travelers` field, and the order created using my exploit method had 0 travelers, which I found rather odd. It also did not send me any confirmation emails, and I figured that it was due to a backend error since the variable was set to 0.
 

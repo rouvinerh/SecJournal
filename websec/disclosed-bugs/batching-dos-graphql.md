@@ -27,7 +27,7 @@ python3 -c "print('%s' % ('query{C}'*12700))" > payload.txt
 
 Sending over 10,000 batched queries might result in significant delays if the server does not validate the number of queries sent. On this target, I was able to delay the response by a few seconds.
 
-![](../../../.gitbook/assets/batching-dos-graphql-image.png)
+![](../../.gitbook/assets/batching-dos-graphql-image.png)
 
 In the bottom right of the above image, notice that there are more than 12,000 matches for the word `anonymous` within the response, and that it took 8 seconds. This means that during those 8 seconds, the CPU was being used to process each of the queries.
 

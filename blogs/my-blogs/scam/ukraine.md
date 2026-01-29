@@ -4,7 +4,7 @@
 
 I recently received this email from some random user:
 
-![Alt text](../../../.gitbook/assets/image-5.png)
+![](../../../.gitbook/assets/image-5.png)
 
 To me, this is an obvious scam. This is because:
 

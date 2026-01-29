@@ -8,7 +8,7 @@ I was initially interested in how this company was registering accounts, proxyin
 
 I decided to change the parameter to `locale=evil`. To my surprise, my input was reflected.
 
-![](../../../.gitbook/assets/reflected-xss-waf-image.png)
+![](../../.gitbook/assets/reflected-xss-waf-image.png)
 
 I decided to test some HTML payloads to see if it was rendered. I first tried using `meta` tags to see if redirection occurs:
 
@@ -22,7 +22,7 @@ The final link was `company.com/locale?locale=HTML_PAYLOAD`. When visited, I was
 <a href="https://evil.com">Click me for money!</a>
 ```
 
-![](../../../.gitbook/assets/reflected-xss-waf-image-1.png)
+![](../../.gitbook/assets/reflected-xss-waf-image-1.png)
 
 ## Escalation to XSS
 
@@ -44,7 +44,7 @@ I used Burp Intruder to do so, and eventually found one payload that was not blo
 
 {% endcode %}
 
-![](../../../.gitbook/assets/reflected-xss-waf-image-2.png)
+![](../../.gitbook/assets/reflected-xss-waf-image-2.png)
 
 ## Increasing Impact
 

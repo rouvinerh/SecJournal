@@ -38,7 +38,7 @@ The check for the actual URL was not enough since it was only checking whether `
 https://vulnerable.com/?redirectUrl=javascript:alert(%27XSS%27)//https://
 ```
 
-![](../../../.gitbook/assets/xss-open-redirect-image.png)
+![](../../.gitbook/assets/xss-open-redirect-image.png)
 
 This works because `https://` was appended at the end and bypassed the includes check that the JavaScript uses.
 

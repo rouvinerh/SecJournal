@@ -28,7 +28,7 @@ Both parameters were extracted from the URL and sent to `/pdf/download`.
 
 Setting the `url` parameter to a Burp Collaborator payload worked, and I was able to receive callbacks with interesting HTTP headers.
 
-![](../../../../SecJournal/.gitbook/assets/ssrf-chrome-image.png)
+![](../..//.gitbook/assets/ssrf-chrome-image.png)
 
 This confirmed I had Blind SSRF. The IP address revealed that this was an EC2 instance. However, Blind SSRF alone does not demonstrate any impact, so I had to investigate this further.
 
@@ -99,7 +99,7 @@ And this was the HTML I hosted:
 
 Visiting `https:///target.com/pdf/?type=pdf&url=https://instanceID.instances.httpworkbench.com/products.html` to execute the payload worked, and Burp Collaborator received many callbacks like this:
 
-![](../../../../SecJournal/.gitbook/assets/ssrf-chrome-image-1.png)
+![](../../.gitbook/assets/ssrf-chrome-image-1.png)
 
 The AWS metadata endpoint appeared to be properly restricted. Direct `file://` access was blocked by Chrome. However, the ability to perform internal network scanning could potentially lead to discovery of internal services, credential theft, or lateral movement within the infrastructure.
 

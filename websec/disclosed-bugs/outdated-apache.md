@@ -4,7 +4,7 @@
 
 I was enumerating all the subdomains of a target and noticed that one domain returned nothing but 403s. However, it revealed its version:
 
-![](../../../.gitbook/assets/outdated-apache-image.png)
+![](../../.gitbook/assets/outdated-apache-image.png)
 
 ## Exploitation
 
@@ -31,7 +31,7 @@ Location: evil.com
 
 The response confirmed that it was vulnerable since it returned two responses:
 
-![](../../../.gitbook/assets/outdated-apache-image-1.png)
+![](../../.gitbook/assets/outdated-apache-image-1.png)
 
 Afterwards, I notified the relevant parties, and this vulnerability was acknowledged.
 
