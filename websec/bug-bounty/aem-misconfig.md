@@ -100,4 +100,4 @@ It is worth noting that AEM vulnerabilities are rarely isolated. I found numerou
 
 On top of the Adobe documentation, I found this set of slides particularly helpful:
 
-{% embed url="https://www.slideshare.net/slideshow/securing-aem-webapps-by-hacking-them/169651468" %}
+- https://experienceleague.adobe.com/en/docs/experience-manager-65/content/implementing/developing/platform/sling-cheatsheet
