@@ -1,10 +1,24 @@
 # Bug Bounties
 
-I decided to spend a year doing bug bounties and learning about finding bugs in websites for my final year in college.
+I decided to spend a year doing bug bounties and learning about finding bugs in websites during my last year in university.
 
 I will post reports I find interesting and are impactful. My impact assessment is based on my experience as a bug triager for PayPal. If I would have accepted it there / awarded, it might be posted here.
 
-I mainly use HackerOne, but sometimes use BugCrowd if I want a change of pace c:
+I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of these platforms or through programs not publicly listed, and report them directly to the company.
+
+As of March 2026, I have:
+
+- Disclosed over 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, Sony, and Booking.com
+
+- Ranked #1 on Sony’s HackerOne program (2026)
+
+- Ranked #4 on the U.S. Department of Defense VDP (2026)
+
+- Ranked #1 on the Treasury Board of Canada HackerOne program (all-time)
+
+- Received Letters of Recognition from NASA, shirts from the Dutch Government / Sony, bounties, and many other cool things from companies 
+
+See my profiles below:
 
 {% embed url="http://hackerone.com/erh/" %}
 
