@@ -8,7 +8,7 @@ I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of the
 
 As of March 2026, I have:
 
-- Disclosed over 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, Sony, and Booking.com
+- Disclosed 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, Sony, and Booking.com
 
 - Ranked #1 on Sony’s HackerOne program (2026)
 
