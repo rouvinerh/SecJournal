@@ -8,7 +8,7 @@ I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of the
 
 As of March 2026, I have:
 
-- Disclosed 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, City of Vienna, and Booking.com across pentests, bug bounties, VDPs and by accident
+- Disclosed 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, City of Vienna, and Booking.com found from pentests, bug bounties, VDPs and by accident
 
 - Ranked #1 on Sony’s HackerOne program (2026)
 
