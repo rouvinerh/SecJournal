@@ -2,7 +2,7 @@
 
 I decided to spend a year doing bug bounties and learning about finding bugs in websites during my last year in university.
 
-I will post reports I find interesting and are impactful. My impact assessment is based on my experience as a bug triager for PayPal. If I would have accepted it there / awarded, it might be posted here.
+My impact assessment is based on my experience as a bug triager for PayPal. If I would have accepted it there / awarded, it might be posted here.
 
 I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of these platforms, through programs not publicly listed, or even as a pentester.
 
@@ -18,7 +18,7 @@ As of March 2026, I have:
 
 - Received Letters of Recognition from NASA, shirts from the Dutch Government / Sony, bounties, and many other cool things from companies 
 
-See my profiles below:
+My profiles can be found below (and yes, I'm lucky to have my last name as my username):
 
 {% embed url="http://hackerone.com/erh/" %}
 
