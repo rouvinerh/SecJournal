@@ -4,11 +4,11 @@ cover: >-
 coverY: 28
 ---
 
-# Hello!
+# Hello
 
 ## What's This?
 
-This is my notebook where I document all my security-related experiences, from HackTheBox writeups, to bug bounty findings, and personal blogs about anything information security related!&#x20;
+This is my notebook where I document all my security-related experiences, from HackTheBox writeups, to bug bounty findings, and personal blogs about random security topics.
 
 {% hint style="warning" %}
 **What am I doing now?** I have decided to spend a year on bug bounties to learn and see what I can learn and find.

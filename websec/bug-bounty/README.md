@@ -2,13 +2,13 @@
 
 I decided to spend a year doing bug bounties and learning about finding bugs in websites during my last year in university.
 
-My impact assessment is based on my experience as a bug triager for PayPal. If I would have accepted it there / awarded, it might be posted here.
+My impact assessment is based on my experience as a bug triager for PayPal. If I would have accepted / awarded it there, it might be posted here.
 
-I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of these platforms, through programs not publicly listed, or even as a pentester.
+I mainly use HackerOne and BugCrowd. Sometimes I come across bugs outside of these platforms, through programs not publicly listed.
 
 As of March 2026, I have:
 
-- Disclosed 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, City of Vienna, and Booking.com found from pentests, bug bounties, VDPs and by accident
+- Disclosed 100+ valid vulnerabilities to 20+ organizations, including Indeed, NASA, PayPal, City of Vienna, and Booking.com found from bug bounties, VDPs and by accident
 
 - Ranked #1 on Sony’s HackerOne program (2026)
 
