@@ -6,7 +6,7 @@ I chose not to focus much on the course material and went straight into the labs
 
 {% embed url="https://medium.com/@rouvin/how-i-tried-harder-6eb22fb6cf48" %}
 
-It took me two attempts to pass — I finally cleared it on my second try with 80 points. The exam has changed since then, and a new "OSCP+" is available. If I take that in the future, I’ll update this review.
+It took me two attempts to pass, finally clearing it on my second try with 80 points. The exam has changed since then, and a new "OSCP+" is available. If I take that in the future, I’ll update this review.
 
 ## Introduction
 

@@ -74,9 +74,9 @@ Next, I noticed that there were no actual HTTP requests being sent to the server
 
 HTTP requests and WebSockets are two ways for computers to talk to each other over the internet.
 
-HTTP requests: Like sending a letter — you ask for something (like a web page), the server gets your request, sends back the information, and then the connection closes. It is a one-time conversation.
+HTTP requests: Like sending a letter: you ask for something (like a web page), the server gets your request, sends back the information, and then the connection closes. It is a one-time conversation.
 
-WebSocket: More like a phone call — once the connection is made, it stays open, so both sides can send and receive information anytime, in real-time, without having to reconnect every time. This is great for things like chat apps or live updates.
+WebSocket: More like a phone call: once the connection is made, it stays open, so both sides can send and receive information anytime, in real-time, without having to reconnect every time. This is great for things like chat apps or live updates.
 
 The actual data is being sent to `https://kws4.web.telegram.org/`, which is a legitimate domain owned by Telegram. The data looks like a bunch of garbage characters because it is **encrypted**, and it is impossible for me to decrypt it.
 
