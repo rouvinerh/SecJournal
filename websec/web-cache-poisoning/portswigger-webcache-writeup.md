@@ -2,7 +2,7 @@
 
 ## Cache Poisoning
 
-#### Lab 1: Unkeyed Header
+### Lab 1: Unkeyed Header
 
 Goal of the lab is to poison the cache with a response that executes `alert(document.cookie)` in the vicitm's browser.
 
