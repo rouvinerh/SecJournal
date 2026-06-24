@@ -48,4 +48,170 @@ The exploitation steps can be broken down into 3 stages.
 
 The above methodology roughly works for both poisoning and deception. The difference is that poisoning attempts to find gaps between what is written into the cache key versus what is passed to the application's code. Deception cares about finding gaps between how the cache and origin server each parse and map URLs to a resource, only caring about whether a cache mistakes a dynamic page with sensitive data as a static one. This is done by adding junk to the end of the path or static suffixes, then checking whether the page caches the response or not.
 
-Lastly, a cache buster can be used for testing to force a cache miss. This is good for establishing a clean baseline, and also to avoid interference with real users. 
+Lastly, a cache buster can be used for testing to force a cache miss. This is good for establishing a clean baseline, and also to avoid interference with real users.
+
+## Enumeration Techniques
+
+Knowledge was taken from Martin Doyhenard. These are my notes from this paper:
+
+{% embed url="https://portswigger.net/research/gotta-cache-em-all" %}
+
+CDNs today like CloudFlare or Akamai are used by companies, being a network of web cache proxies. However, each product parses URLs differently, and vulnerabilities arise because of it. To derive cache keys and map endpoints, origin servers typically extract the absolute path of the requested resource by using path delimiters and normalisation when parsing the URL.
+
+### Delimiters
+
+URL RFC defines certain characters as delimiters, like `;` or `?`. Custom characters can be added to the list, with each web framework doing things a little differently that causes path confusion between the origin and cache.
+
+Some examples:
+
+- Semicolon in Spring (Java): `;` is used to include matrix variables.
+    - `/Account;var1=val` -> `/Account`
+    - `/hello;var=a/world;var1=b;var2=c` -> `/hello/world`
+
+- Dot in Rails: `.` is used to return different content types. Default is HTML if an extension is not used, or it is one that is not recognised.
+    - `/Account.html` -> HTML view of `/Account`
+    - `/Account.css` -> CSS view of `/Account`, or error if not present
+    - `/Account.aaa` -> HTML view of `/Account`
+
+- Null byte in OpenLiteSpeed: Used to truncate the path.
+    - `/Account%00.html` -> `/Account`
+
+- Newline in nginx: Only when configured to rewrite the request path. Rewrite rule must map prefix of URL and not entire pathname, a common configuration.
+    - Rule: `rewrite /user/(.*) /account/$1 break;`
+    - `/user/account%0aaaa` -> `/user/account`
+
+#### Finding Origin Delimiters
+
+1. Find a non-cacheable request, look for a method like POST, or a response with `Cache-Control: no-store` or `Cache-Control: private` header. **This is the baseline response (R0) for future comparisons**.
+
+2. Send same request, but append a random suffix, like `/homeabcd`. If R1 is same as R0, choose a different endpoint. If different, move to step 3.
+
+3. Using ASCII list, brute force possible delimiters, for both unencoded and URL encoded versions of characters. Compare R2 and R0, if same, then this character is a delimiter. For instance, `/home$abcd` is one possible request that may return same as `/home`.
+
+#### Finding Cache Delimiters
+
+Majority do not use any other than `?`. Possible to identify using a static request and response.
+
+1. Identify cacheable request by looking for evidence that response is retrieved from cache. Look for response time, or `X-Cache: hit` header. This is R0
+
+2. Send same request followed by delimiter and random, like `/home;avcd`.
+
+3. Compare with R0, if identical, then character or string is delimiter.
+
+### Normalisation
+
+Path delimiters are used to locate the start and end of the pathname. Once path is extracted, it is normalised to its absolute form by decoding characters and removing dot-segments.
+
+
+#### Encoding
+
+This process is not consistent, many proxies decode the URL and forward message with decoded values, which means next parser may use decoded characters as delimiters. Need to test whether it is being decoded then normalised:
+
+- Compare base request with encoded version. If using `/home/index`, check with `/%68%6f%6d%65%2f%69%6e%64%65%78`. Sometimes, it's better to encode each character individually as sometimes specific characters are not encoded
+
+- If encoded response same as base with **no cache hit**, origin server decodes path before using it. If response is cacheable, can detect cache parser's decoding behaviour.
+
+- Send original request followed by encoded version. If both response contain same cache headers, means second one was obtained from the proxy, and the key was decoded before being compared.
+
+#### Dot-segment Normalisation
+
+It is possible to exploit this normalisation by finding discrepancies between parsers to modify cache rules and obtain crafted keys. 
+
+To see normalisation in origin server, issue non-cacheable request or request with cache buster to a known path, then send the same message with path traversal sequence.
+
+- Send `/home?cb=123`.
+- Send `/aaa/../home?cb=123` OR `/aaa\..\home?cb=123`
+
+See if responses are identical. If yes, path is normalised before being mapped. 
+
+To test if normalisation is present in cache server, repeat same response with cacheable response and compare `X-Cache` and `Cache-Control` headers to verify if resource was obtained from cache memory.
+
+If we use `/hello/..%2fworld`, different servers and cache proxies normalise it differently:
+
+![](../../.gitbook/assets/README-image-2.png)
+
+## Deception Exploitation
+
+Most CDN providers store responses for resources with static extensions, meaning that if the requested path fields ends with a string like `.js` or `.css`, the cache proxy treats it as static.
+
+List of static extensions by CloudFlare:
+
+![](../../.gitbook/assets/README-image-3.png)
+
+After finding the delimiter, can include a static suffix to trigger a cache rule to store any sensitive response.
+
+For example, if `$` is a delimiter in the origin server but not the proxy, the cache can be tricked to cache account information of another user.
+
+![](../../.gitbook/assets/README-image-4.png)
+
+Can use same technique with an encoded character or string. Useful when origin server decodes a delimiter before parsing the URL. A `#` symbol will not work for deception as its not sent by the browser, but an encoded version can work:
+
+![](../../.gitbook/assets/README-image-5.png)
+
+
+If there are multiple parsers rewriting, can apply multiple encodings. 
+
+### Static Directories Exploits
+
+#### With Delimiters
+
+Rules can be created to match URL prefixes, like to cache all files from `/static`, `/assets` or `/wp-content.`
+
+If a character is used by a delimiter by the origin server but not by the cache, and the cache normalises the path before applying a static directory rule, can hide a path traversal segment after delimiter which cache will resolve.
+
+![](../../.gitbook/assets/README-image-6.png)
+
+### With Normalisation
+
+If origin server normalises path before mapping the endpoint, but cache does not normalise the path before evaluating cache rules, can add path traversal after.
+
+![](../../.gitbook/assets/README-image-7.png)
+
+Cloudflare, Google Cloud and Fastly do not normalise paths before evaluating rules. If origin server normalises the path before mapping the request with an endpoint handler like nginx, it is possible to exploit any static directory rule.
+
+Combining Microsoft IIS with any web cache that does not convert backslashes causes a discrepancy too:
+
+![](../../.gitbook/assets/README-image-8.png)
+
+### Static Files
+
+Files like `/robots.txt` and what not might not be in a static folder, but are also expected to be immutable in every website. Possible to create a cache rule that looks for an exact match, with CDNs like Cloudflare having a default rule for them.
+
+Same technique as above:
+
+![](../../.gitbook/assets/README-image-9.png)
+
+## Poisoning Exploitation
+
+This allows for unexploitable XSS to become practical. If an attacker can use path traversal to exploit the cache key:
+
+![](../../.gitbook/assets/README-image-10.png)
+
+### Back-End Delimiters
+
+Back-end delimiters are ones that are used by the origin server but not by the cache, and it is possible to generate an arbitrary ke for the cacheable resource. Delimiter stops the backedn from resolving dot-segment:
+
+![](../../.gitbook/assets/README-image-11.png)
+
+### Front-End Delimiters
+
+Finding a character with special meaning for the cache server that can be sent through browser is rare (like `#`!). Web cache poisoning does not require user interaction, and delimiters like hash can create path confusion.
+
+Hash fragments are interpreted differently:
+
+![](../../.gitbook/assets/README-image-12.png)
+
+In cases with Azure that normalises path and treats hash as delimiter, it is possible to use this to modify the cache key of the stored resource:
+
+`GET /<Poisoned_Path><Front-End_Delimiter><Path_Traversal><Backend_Path>`.
+
+## Bug Bounty Methods
+
+For actual programs, a combination of vulnerabilities might be combined. Similar to the labs, can make use of static files to force a caching of the poisoned response:
+
+![](../../.gitbook/assets/README-image-13.png)
+
+So `/main.js` is cached with an evil header that causes a redirect response. In worse case, can cause full website defacement:
+
+![](../../.gitbook/assets/README-image-14.png)
+
