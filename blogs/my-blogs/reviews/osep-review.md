@@ -80,7 +80,7 @@ The long list of flags obtained always feels satisfying!
 
 For the exam, students are given **48 hours to achieve at least 100 points OR gain access to the objective specified in the exam portal** to pass. Afterward, an additional **24 hours** are given to write the report. The reporting standard is similar to the OSCP.
 
-I felt over prepared for the exam due to my prior coursework. I gained initial access within the first 30 minutes and then proceeded through the exam at a steady pace. Within the first 7 hours, I got got access to the `secret.txt` file. The remainder of the first day was spent attempting to capture every flag on the network before going to bed. Upon waking, I wrote and submitted my report just after the 25 hour mark. In total, I submitted **17 flags** and my report was **70 pages**, most of which was screenshots.
+I felt over prepared for the exam due to my prior coursework. I gained initial access within the first 30 minutes and then proceeded through the exam at a steady pace. Within the first 7 hours, I got access to the `secret.txt` file. The remainder of the first day was spent attempting to capture every flag on the network before going to bed. Upon waking, I wrote and submitted my report just after the 25 hour mark. In total, I submitted **17 flags** and my report was **70 pages**, most of which was screenshots.
 
 I had a lot of fun during the exam, which was highly relevant to the material covered in the course. While the exam was not easy, it was straightforward, with a clear 'next step' if proper post-exploitation and domain enumeration procedures were followed.
 
