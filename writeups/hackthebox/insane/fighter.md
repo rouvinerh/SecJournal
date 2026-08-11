@@ -165,7 +165,7 @@ username=wad1awdawd23&password=t123awd34&logintype=3;EXEC+xp_cmdshell+"ping+10.1
 
 However, I got no ping back. In this case, there might be something blocking us on the website. I searched ways to obfuscate it, in case there was Defender or something blocking us, and this site had a pretty good way:
 
-https://www.midnightdba.com/Jen/2016/04/xp_cmdshell-isnt-evil/
+{% embed url="https://www.midnightdba.com/Jen/2016/04/xp_cmdshell-isnt-evil/" %}
 
 Just use `XP_cmdshell` instead of `xp_cmdshell`, and the ping would work:
 
@@ -292,7 +292,7 @@ Normally, I would append something to the end of the file and get it to execute,
 
 Normally we cannot overwrite the file without write permissions, but modify allows us to use `copy` to change the file.
 
-https://stackoverflow.com/questions/45141044/cmd-copy-null-to-multiple-files
+{% embed url="https://stackoverflow.com/questions/45141044/cmd-copy-null-to-multiple-files" %}
 
 ```
 PS C:\users\decoder> cmd /c copy /Y NUL clean.bat
@@ -332,11 +332,11 @@ At line:128 char:1
 
 Based on the theme of the machine, I enumerated exploits related to Street Fighter and surprisingly, found an ExploitDB link:
 
-https://www.exploit-db.com/exploits/40451
+{% embed url="https://www.exploit-db.com/exploits/40451" %}
 
 Capcom driver is well-known for granting SYSTEM shells, so let's take a look at that. There are loads of PoCs available. I used this one:
 
-https://github.com/FuzzySecurity/Capcom-Rootkit
+{% embed url="https://github.com/FuzzySecurity/Capcom-Rootkit" %}
 
 The above was the best because it was based on Powershell instead of `.exe` files, which I could not seem to execute anyway. I struggled a bit here in uploading them onto the machine, but eventually resorted to using 0xdf's writeup to combine all of them (which is really smart):
 
