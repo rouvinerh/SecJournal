@@ -62,11 +62,11 @@ Port 6667 is indeed running IRC, and it has some functionality.
 
 Port 80 was entirely static.
 
-![](<../../../.gitbook/assets/image%20(3162).png>)
+![](../../../.gitbook/assets/spaghetti-10.png)
 
 Port 8080 was running a non-vulnerable version of Postfix, with a login page:
 
-![](<../../../.gitbook/assets/image%20(170).png>)
+![](../../../.gitbook/assets/spaghetti-9.png)
 
 I had no credentials, so let's move on first.
 
@@ -74,7 +74,7 @@ I had no credentials, so let's move on first.
 
 I used `nc` to first enumerate the IRC server. Initially when connecting, it tells me that it cannot resolve my hostname, which we can fix by using `NICK`.
 
-![](<../../../.gitbook/assets/image%20(1387).png>)
+![](../../../.gitbook/assets/spaghetti-4.png)
 
 It will then send this when we register a user:
 
@@ -119,15 +119,15 @@ LIST
 
 I decided to use a GUI tool called `pidgin` to connect to the IRC server instead. We just have to add `irc.spaghetti.lan` to our `/etc/hosts` file. I used the same username as per what I nicked myself earlier.
 
-![](<../../../.gitbook/assets/image%20(1374).png>)
+![](../../../.gitbook/assets/spaghetti-1.png)
 
 Then, I went to Conversations > Join a Chat and used `#mailAssistant` as the channel name to join. This dropped me within another chat group with a bot.
 
-![](<../../../.gitbook/assets/image%20(1395).png>)
+![](../../../.gitbook/assets/spaghetti-5.png)
 
 We can open a separate DM with this bot:
 
-![](<../../../.gitbook/assets/image%20(1410).png>)
+![](../../../.gitbook/assets/spaghetti-6.png)
 
 It drops a link to this Git repository:
 
@@ -157,9 +157,9 @@ if "PRIVMSG" in text and "email" in text and "description" in text:
 
 The parameters are not sanitised at all. As such, we can attempt to chain commands using `&&` to inject commands into the script since it passes these arguments to shell commands.
 
-![](<../../../.gitbook/assets/image%20(1443).png>)
+![](../../../.gitbook/assets/spaghetti-8.png)
 
-![](<../../../.gitbook/assets/image%20(1424).png>)
+![](../../../.gitbook/assets/spaghetti-7.png)
 
 ## Privilege Escalation
 
@@ -167,7 +167,7 @@ The parameters are not sanitised at all. As such, we can attempt to chain comman
 
 I ran `linpeas.sh` to enumerate, and it picked up on a cronjob running:
 
-![](<../../../.gitbook/assets/image%20(1385).png>)
+![](../../../.gitbook/assets/spaghetti-2.png)
 
 Here's the script contents:
 
@@ -280,4 +280,4 @@ Rows matched: 1  Changed: 1  Warnings: 0
 
 Afterwards, we can just wait for `root` to execute it and give us a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(1386).png>)
+![](../../../.gitbook/assets/spaghetti-3.png)

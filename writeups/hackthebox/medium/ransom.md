@@ -8,7 +8,7 @@ aining Access
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(1370).png>)
+![](../../../.gitbook/assets/ransom-3.png)
 
 Web exploitation time.
 
@@ -16,29 +16,29 @@ Web exploitation time.
 
 The website was some type of Incident Response site, from E Corp.
 
-![](<../../../.gitbook/assets/image%20(2115).png>)
+![](../../../.gitbook/assets/ransom-5.png)
 
 I tried logging in with some random password, and intercepted the response in Burpsuite to see how the login was handled. Found the `/api` endpoint.
 
-![](<../../../.gitbook/assets/image%20(2847).png>)
+![](../../../.gitbook/assets/ransom-7.png)
 
 I tried playing around with the website by sending JSON objects, and found that setting the `password` parameter to `true` would let us login.
 
-![](<../../../.gitbook/assets/image%20(3398).png>)
+![](../../../.gitbook/assets/ransom-10.png)
 
 ### Home Directory Backup
 
 Once we were in, we could view these files:
 
-![](<../../../.gitbook/assets/image%20(3099).png>)
+![](../../../.gitbook/assets/ransom-8.png)
 
 We can grab the user flag and also the `homedirectory.zip` file. Upon running an `exiftool` for it, we can see that the file name was `.bash_logout`. All of the files were encrypted with a password, and cracking it was not possible.
 
-![](<../../../.gitbook/assets/image%20(1136).png>)
+![](../../../.gitbook/assets/ransom-1.png)
 
 When attempting to unzip the file, we can find some SSH keys within it.
 
-![](<../../../.gitbook/assets/image%20(387).png>)
+![](../../../.gitbook/assets/ransom-12.png)
 
 At this point, I began enumerating possible ZIP file exploits that were used. One command we could use was `7z l -slt` which would list out the files and show the technical information for the files:
 
@@ -88,27 +88,27 @@ This attack is made possible due to legacy encryption being used, and this form 
 
 Because this was simply a home directory with common files like `.bash_logout`, we can easily create another zip file with our machine's `.bash_logout` file and then find the keys using `bkcrack`.
 
-![](<../../../.gitbook/assets/image%20(1284).png>)
+![](../../../.gitbook/assets/ransom-2.png)
 
 We can then retrieve the keys for the ZIP file:
 
-![](<../../../.gitbook/assets/image%20(2020).png>)
+![](../../../.gitbook/assets/ransom-4.png)
 
 Afterwards, the ZIP file and its contents can be copied to another ZIP file with a known password that we can decrypt.
 
-![](<../../../.gitbook/assets/image%20(2537).png>)
+![](../../../.gitbook/assets/ransom-6.png)
 
-![](<../../../.gitbook/assets/image%20(3607).png>)
+![](../../../.gitbook/assets/ransom-11.png)
 
 Then we can SSH in as the `htb` user.
 
-![](<../../../.gitbook/assets/image%20(3891).png>)
+![](../../../.gitbook/assets/ransom-13.png)
 
 ## Privilege Escalation
 
 I ran a LinPEAS to find more information, and it enumerated out a potential password for a `mysql` instance:
 
-![](<../../../.gitbook/assets/image%20(318).png>)
+![](../../../.gitbook/assets/ransom-9.png)
 
 However, the machine does not have any database running. However, the presence of the other APP related environment variables highlighted that the `/srv/prod` directory had the files for the website we exploited earlier.
 
@@ -118,4 +118,4 @@ We would be looking for some type of config files, or a method as to how the aut
 
 Within the `/srv/prod/app/Http/Controllers/AuthController.php` file, I found the root password:
 
-![](<../../../.gitbook/assets/image%20(591).png>)
+![](../../../.gitbook/assets/ransom-14.png)

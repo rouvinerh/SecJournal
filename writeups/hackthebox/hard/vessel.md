@@ -10,33 +10,33 @@ description: >-
 
 As usual, an nmap scan to start:
 
-![](<../../../.gitbook/assets/image%20(2693).png>)
+![](../../../.gitbook/assets/vessel-13.png)
 
 ### Webpage
 
 Pretty standard webpage. Has a login page and a few other categories that could be vulnerable.
 
-![](<../../../.gitbook/assets/image%20(1401).png>)
+![](../../../.gitbook/assets/vessel-4.png)
 
 When investigating the login page, we can see that it allows us to create an account.
 
-![](<../../../.gitbook/assets/image%20(3863).png>)
+![](../../../.gitbook/assets/vessel-28.png)
 
 We can create a quick account for testing purposes.
 
-![](<../../../.gitbook/assets/image%20(1721).png>)
+![](../../../.gitbook/assets/vessel-7.png)
 
 However, the function seems to not be made available, and throws an error. When analysing the traffic generated, we can see that there is an /api backend.
 
-![](<../../../.gitbook/assets/image%20(3499).png>)
+![](../../../.gitbook/assets/vessel-21.png)
 
 From here, we should gobust the page to find other endpoints that could reveal some credentials or other vulnerabilities. Using feroxbuster, I was able to find a `/dev` endpoint.
 
-![](<../../../.gitbook/assets/image%20(1053).png>)
+![](../../../.gitbook/assets/vessel-2.png)
 
 However, this was nothing interesting. Other than that, I also found some Git Repository folders within the website through feroxbuster recursive search. This was through finding the .git folder and seeing that it does exist on the page.
 
-![](<../../../.gitbook/assets/image%20(255).png>)
+![](../../../.gitbook/assets/vessel-11.png)
 
 We can then use `git-dumper` to pull these files.
 
@@ -44,7 +44,7 @@ We can then use `git-dumper` to pull these files.
 
 After retrieving the files, we can proceed with some source code analysis.
 
-![](<../../../.gitbook/assets/image%20(3686).png>)
+![](../../../.gitbook/assets/vessel-25.png)
 
 ### Source Code Analysis
 
@@ -52,13 +52,13 @@ The first thing I was interested in was the login page, and if it could be explo
 
 From the source code in the `/routes` directory, we can see some SQL queries being passed to the backend API.
 
-![](<../../../.gitbook/assets/image%20(3187).png>)
+![](../../../.gitbook/assets/vessel-17.png)
 
 No input sanitising, but its not vulnerable to SQL Injection attacks.
 
 From here, we can look at the logs to see if there were previous iterations of this file and if the mechanism was changed.
 
-![](<../../../.gitbook/assets/image%20(3519).png>)
+![](../../../.gitbook/assets/vessel-22.png)
 
 We can see that the login was indeed changed, and perhaps this could be vulnerable to SQL Injection after all. Since this was a node.js website, we can start researching for node.js related SQL Injections.
 
@@ -70,29 +70,29 @@ The exploit for this would involve putting in a string that gets treated as an O
 
 Here's the payload used:
 
-![](<../../../.gitbook/assets/image%20(492).png>)
+![](../../../.gitbook/assets/vessel-30.png)
 
 With this, we can login to the admin panel!
 
-![](<../../../.gitbook/assets/image%20(2944).png>)
+![](../../../.gitbook/assets/vessel-15.png)
 
 ### Open Web Analytics
 
 When looking around the admin panel, I didn't find much. However, in the top right corner of the page there was an analytics button that brings us to a new page.
 
-![](<../../../.gitbook/assets/image%20(3827).png>)
+![](../../../.gitbook/assets/vessel-27.png)
 
 This brought me to a new domain called `openwebanalytics.vessel.htb`.
 
-![](<../../../.gitbook/assets/image%20(3378).png>)
+![](../../../.gitbook/assets/vessel-19.png)
 
 A quick check on the page source reveals this is **version 1.7.3**. A bit of digging around newer exploits revealed that there is an RCE exploit available here.
 
 {% embed url="https://github.com/garySec/CVE-2022-24637" %}
 
-![](<../../../.gitbook/assets/image%20(2162).png>)
+![](../../../.gitbook/assets/vessel-8.png)
 
-![](<../../../.gitbook/assets/image%20(3016).png>)
+![](../../../.gitbook/assets/vessel-16.png)
 
 We now have gained access to the machine.
 
@@ -102,15 +102,15 @@ We now have gained access to the machine.
 
 Now that we are www-data, we should check for what users are present. Within the /home directory, there are 2 users named **ethan** and **steven**.
 
-![](<../../../.gitbook/assets/image%20(267).png>)
+![](../../../.gitbook/assets/vessel-12.png)
 
 We cannot access ethan's directory, but we can access steven's and see that he has a binary within his home directory that generates passwords.
 
-![](<../../../.gitbook/assets/image%20(1427).png>)
+![](../../../.gitbook/assets/vessel-5.png)
 
 Interestingly, there's also a hidden file named .notes that has a .pdf.
 
-![](<../../../.gitbook/assets/image%20(3205).png>)
+![](../../../.gitbook/assets/vessel-18.png)
 
 We can transfer both these files into our machine and begin our analysis.
 
@@ -120,13 +120,13 @@ The PDF seems to be password protected, amd I'm guessing the password is either 
 
 The screenshot reveals to us how many characters are this pdf, of which there are 32.
 
-![](<../../../.gitbook/assets/image%20(734).png>)
+![](../../../.gitbook/assets/vessel-31.png)
 
 We would first need to decompile this binary to understand how it functions. In order to do this, we can try to find out what compiled it.
 
 When doing strings on it, we can see the last few lines seems to indicate that a Python based compiler was used.
 
-![](<../../../.gitbook/assets/image%20(101).png>)
+![](../../../.gitbook/assets/vessel-1.png)
 
 We can use this tool to retrieve the bytecode from the binary.
 
@@ -134,7 +134,7 @@ We can use this tool to retrieve the bytecode from the binary.
 
 From this tool, we can get our loads of files from this one binary.
 
-![](<../../../.gitbook/assets/image%20(3698).png>)
+![](../../../.gitbook/assets/vessel-26.png)
 
 We can use another decompiler to extract code from the .pyc file into readable python code. This can be done using uncompyle6.
 
@@ -142,15 +142,15 @@ We can use another decompiler to extract code from the .pyc file into readable p
 
 There was some difficulty in making this work due to incompatible Python versions, but there are a lot of releases that are comptaible with the newer Python versions.
 
-![](<../../../.gitbook/assets/image%20(3599).png>)
+![](../../../.gitbook/assets/vessel-23.png)
 
 Now, we can take a look at how this application generates its random passwords, and if we can possibly create our own wordlist and brute force the password out. Firstly, we can see this thisi binary uses the PySide2.Qt library to generate its passwords.
 
-![](<../../../.gitbook/assets/image%20(1390).png>)
+![](../../../.gitbook/assets/vessel-3.png)
 
 Then, we can take a look at the actual password generation.
 
-![](<../../../.gitbook/assets/image%20(3428).png>)
+![](../../../.gitbook/assets/vessel-20.png)
 
 With this, we can craft a script to generate passwords for us.
 
@@ -208,21 +208,21 @@ I tried this for really, really long and only then managed to find the password.
 
 This is the password: YG7Q7RDzA+q\&ke\~MJ8!yRzoI^VQxSqSS. For some reason pdfcrack appends its own stuff at the end.
 
-![](<../../../.gitbook/assets/image%20(2931).png>)
+![](../../../.gitbook/assets/vessel-14.png)
 
 Anyways, once we have this password, we can view the PDF and see the password for steven.
 
-![](<../../../.gitbook/assets/image%20(802).png>)
+![](../../../.gitbook/assets/vessel-32.png)
 
 We can then SSH in as Ethan.
 
-![](<../../../.gitbook/assets/image%20(4014).png>)
+![](../../../.gitbook/assets/vessel-29.png)
 
 ## Root Shell
 
 When running linpeas.sh, we can find this SUID binary called `pinns`.
 
-![](<../../../.gitbook/assets/image%20(1494).png>)
+![](../../../.gitbook/assets/vessel-6.png)
 
 Again. researching on more recent vulnerabilities led me to this:
 
@@ -238,7 +238,7 @@ In a new directory for the machine, we can include a simple script that would ma
 
 Then, we can execute these commands:
 
-![](<../../../.gitbook/assets/image%20(3626).png>)
+![](../../../.gitbook/assets/vessel-24.png)
 
 This would spawn a container for us to use for the core dump, and we would need to append something to the **mount** section of config.json: (basically setting the configuration of the container we generate with runc)
 
@@ -256,7 +256,7 @@ This would spawn a container for us to use for the core dump, and we would need 
 
 Then, we can run our container and spawn in as root for it.
 
-![](<../../../.gitbook/assets/image%20(2486).png>)
+![](../../../.gitbook/assets/vessel-9.png)
 
 We can configure our container to execute our malicious script using pinns, and then configure the container such that we get a core dump.
 
@@ -273,5 +273,5 @@ kill -SIGSEGV <PID_for_tail>
 
 Afterwards, we should see our script be executed and we can get a root shell using `bash -p`.
 
-![](<../../../.gitbook/assets/image%20(2549).png>)
+![](../../../.gitbook/assets/vessel-10.png)
 

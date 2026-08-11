@@ -68,35 +68,35 @@ PORT      STATE SERVICE VERSION
 
 Port 8080 shows a portfolio page:
 
-![](<../../../.gitbook/assets/image%20(1761).png>)
+![](../../../.gitbook/assets/catto-2.png)
 
 It was rather static, so I moved to port 30330. This page had some book reviews:
 
-![](<../../../.gitbook/assets/image%20(3843).png>)
+![](../../../.gitbook/assets/catto-7.png)
 
 This page looked more dynamic, so I ran a directory scan with `feroxbuster`, which found nothing of interest. Since we couldn't find anything with wordlists, I took a look through the local files:
 
 There were a few interesting folders:
 
-![](<../../../.gitbook/assets/image%20(483).png>)
+![](../../../.gitbook/assets/catto-8.png)
 
 There wasn't much within the folders. On the 'Using Typescript' page, there was a link to documentation:
 
-![](<../../../.gitbook/assets/image%20(1525).png>)
+![](../../../.gitbook/assets/catto-1.png)
 
 {% embed url="https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/" %}
 
 On the documentation page, there was mention of GraphQL being used, and sure enough `/__graphql` was a valid directory on the website as per the documentation:
 
-![](<../../../.gitbook/assets/image%20(3582).png>)
+![](../../../.gitbook/assets/catto-6.png)
 
 The left had some queries already valid, so I checked those out. Using the `allSitePage` reveals all directories, including a hidden one:
 
-![](<../../../.gitbook/assets/image%20(901).png>)
+![](../../../.gitbook/assets/catto-9.png)
 
 Visiting it reveals a password:
 
-![](<../../../.gitbook/assets/image%20(1768).png>)
+![](../../../.gitbook/assets/catto-3.png)
 
 This was a password to a Minecraft server. We didn't have a user, but the Minecraft page had some that we could try:
 
@@ -139,7 +139,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2023-07-12 15:20:
 
 We can then `ssh` in as `marcus`:
 
-![](<../../../.gitbook/assets/image%20(1770).png>)
+![](../../../.gitbook/assets/catto-4.png)
 
 ## Privilege Escalation
 
@@ -186,4 +186,4 @@ SortMentionLeast269
 
 We can then `su` to `root`:
 
-![](<../../../.gitbook/assets/image%20(2591).png>)
+![](../../../.gitbook/assets/catto-5.png)

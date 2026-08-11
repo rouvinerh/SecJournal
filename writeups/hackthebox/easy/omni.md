@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(326).png>)
+![](../../../.gitbook/assets/omni-2.png)
 
 ### Port 8080
 
 Port 8080 requires credentials to access:
 
-![](<../../../.gitbook/assets/image%20(1928).png>)
+![](../../../.gitbook/assets/omni-1.png)
 
 I did a detailed scan on port 8080, and found that it was running Windows Device Portal:
 
-![](<../../../.gitbook/assets/image%20(767).png>)
+![](../../../.gitbook/assets/omni-4.png)
 
 Windows Device Portal is related to IoT devices and it allows users to configure devices using it.
 
@@ -26,11 +26,11 @@ So Googling for Windows Device Portal exploits led me to this:
 
 It seems that this is a Remote Access Trojan script that can be used to achieve RCE on the machine. I tested it using `powershell -c ipconfig`, and it worked well.
 
-![](<../../../.gitbook/assets/image%20(3898).png>)
+![](../../../.gitbook/assets/omni-3.png)
 
 We can use this to gain a reverse shell easily using `nc.exe`. This reverse shell would give us a SYSTEM shell, which is unique because we are already the administrator.
 
-![](<../../../.gitbook/assets/image%20(87).png>)
+![](../../../.gitbook/assets/omni-5.png)
 
 ### User Flag
 

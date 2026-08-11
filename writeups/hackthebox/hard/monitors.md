@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2253).png>)
+![](../../../.gitbook/assets/monitors-5.png)
 
 We can add `monitors.htb` to our `/etc/hosts` file.
 
@@ -12,39 +12,39 @@ We can add `monitors.htb` to our `/etc/hosts` file.
 
 Port 80 hosts a Wordpress site.
 
-![](<../../../.gitbook/assets/image%20(668).png>)
+![](../../../.gitbook/assets/monitors-15.png)
 
 We can run `wpscan` to enumerate the plugins and version, and this finds that **wp-with-spritz** is being used.
 
-![](<../../../.gitbook/assets/image%20(841).png>)
+![](../../../.gitbook/assets/monitors-18.png)
 
 This version is vulnerable to RFI.
 
-![](<../../../.gitbook/assets/image%20(1738).png>)
+![](../../../.gitbook/assets/monitors-3.png)
 
 We can confirm this by viewing the `/etc/passwd` file.
 
-![](<../../../.gitbook/assets/image%20(569).png>)
+![](../../../.gitbook/assets/monitors-14.png)
 
 After further enumeration, there's nothing else that I could find. So we probably need to read more files within this machine. I could not read any user files, so I tried to check some configuration files for the server at `/etc/apache2/sites-enabled/000-default.conf`.
 
-![](<../../../.gitbook/assets/image%20(2096).png>)
+![](../../../.gitbook/assets/monitors-4.png)
 
 We can find a new domain at `cacti-admin.monitors.htb`. Afterwards, I also read the Wordpress configuration files at `/var/www/wordpress/wp-config.php` to find a password.
 
-![](<../../../.gitbook/assets/image%20(2871).png>)
+![](../../../.gitbook/assets/monitors-10.png)
 
 ### Cacti
 
 Upon visting this separate domain, we are greeted by another login page:
 
-![](<../../../.gitbook/assets/image%20(549).png>)
+![](../../../.gitbook/assets/monitors-13.png)
 
 This version of Cacti is old and vulnerable to loads of exploits. We can login with the credentials for Wordpress. Afterwards, we can use an exploit that uses SQL injection to gain a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(3771).png>)
+![](../../../.gitbook/assets/monitors-12.png)
 
-![](<../../../.gitbook/assets/image%20(3230).png>)
+![](../../../.gitbook/assets/monitors-11.png)
 
 We now have remote access as the user `marcus` and can capture the user flag.
 
@@ -54,15 +54,15 @@ We now have remote access as the user `marcus` and can capture the user flag.
 
 In the user's directory, we find a `note.txt` file that points towards a docker image being present.
 
-![](<../../../.gitbook/assets/image%20(672).png>)
+![](../../../.gitbook/assets/monitors-16.png)
 
 I read the configuration files at `/etc/containerd`, and found that the `root` user was running the image.
 
-![](<../../../.gitbook/assets/image%20(2488).png>)
+![](../../../.gitbook/assets/monitors-7.png)
 
 We can check the open ports of this machine via `netstat -tulpn` to see other open ports.
 
-![](<../../../.gitbook/assets/image%20(2638).png>)
+![](../../../.gitbook/assets/monitors-8.png)
 
 Port 8443 was open and we could access it. The next step is port forwarding.
 
@@ -70,15 +70,15 @@ Port 8443 was open and we could access it. The next step is port forwarding.
 
 I used `ssh -L 8443:localhost:8443 marcus@monitors.htb` to port forward after dropping my public key in the `authorized_keys` folder. Then, I used `gobuster` to find hidden directories present:
 
-![](<../../../.gitbook/assets/image%20(2328).png>)
+![](../../../.gitbook/assets/monitors-6.png)
 
 Visting any of these would redirect us to `/content/control/main`, where there is a login page present.
 
-![](<../../../.gitbook/assets/image%20(1352).png>)
+![](../../../.gitbook/assets/monitors-2.png)
 
 The bottom of the page shows that this is running Apache OFBiz Release 17.12.01, which is vulnerable to loads of exploits, including an RCE one.
 
-![](<../../../.gitbook/assets/image%20(2787).png>)
+![](../../../.gitbook/assets/monitors-9.png)
 
 We can follow the PoC here to execute it:
 
@@ -86,7 +86,7 @@ We can follow the PoC here to execute it:
 
 Then, we would gain a shell as root in the container.
 
-![](<../../../.gitbook/assets/image%20(1225).png>)
+![](../../../.gitbook/assets/monitors-1.png)
 
 ### Sys Module Exploit
 
@@ -132,4 +132,4 @@ clean:
 
 Get them both into the root directory and start listening on a port. Afterwards, we can run `make` and `insmod reverse-shell.ko`. This would trigger the reverse shell, and give us a shell as `root`.
 
-![](<../../../.gitbook/assets/image%20(811).png>)
+![](../../../.gitbook/assets/monitors-17.png)

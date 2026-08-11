@@ -48,19 +48,19 @@ We can take note of the `webhosting.htb` domain and add it to the `/etc/hosts` f
 
 We have to add `www.webhosting.htb` to our `/etc/hosts` file to view the HTTPS application:
 
-![](<../../.gitbook/assets/image%20(4091).png>)
+![](../../.gitbook/assets/registrytwo-1.png)
 
 We can try registering a user and logging in.
 
-![](<../../.gitbook/assets/image%20(4092).png>)
+![](../../.gitbook/assets/registrytwo-2.png)
 
 Using this, we have the ability to create new subdomains:
 
-![](<../../.gitbook/assets/image%20(4093).png>)
+![](../../.gitbook/assets/registrytwo-3.png)
 
 Visiting this reveals a simple HTML page:
 
-![](<../../.gitbook/assets/image%20(4094).png>)
+![](../../.gitbook/assets/registrytwo-4.png)
 
 Since this machine is Docker related, the web application might be creating a Docker container for each new subdomain that we create. As such, we can focus a bit more on port 5000.
 
@@ -82,11 +82,11 @@ https://www.webhosting.htb:5000/v2/_catalog
 
 Turns out that we need some credentials to access the API:
 
-![](<../../.gitbook/assets/image%20(4095).png>)
+![](../../.gitbook/assets/registrytwo-5.png)
 
 Interesting, because port 5001 shows an Auth Server we can fuzz next:
 
-![](<../../.gitbook/assets/image%20(4096).png>)
+![](../../.gitbook/assets/registrytwo-6.png)
 
 A quick directory scan reveals that `/auth` is a valid directory, and visiting it just returns access tokens:
 
@@ -100,7 +100,7 @@ $ curl --silent -k https://www.webhosting.htb:5001/auth | jq
 
 The tokens were pretty plain, nothing interesting in it. Within the token there was an `access` field that was empty:
 
-![](<../../.gitbook/assets/image%20(4097).png>)
+![](../../.gitbook/assets/registrytwo-7.png)
 
 When looking at the Hacktricks page, the Authorization error seems to be something like this:
 
@@ -127,7 +127,7 @@ $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-mediu
 
 Out of all the outputs, `account` and `service` had the greatest deviation from the rest of them, indicating that a completely different token was generated. `account` just requested us to login via HTTP, while the `service` one was interesting. Seems that it changes the `aud` parameter.
 
-![](<../../.gitbook/assets/image%20(4098).png>)
+![](../../.gitbook/assets/registrytwo-8.png)
 
 Based on this, we can fuzz further for other parameters as I want to change the `access` portion and see if we can access other resources.
 
@@ -139,7 +139,7 @@ $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-mediu
 
 Seems that `scope` is the next parameter.
 
-![](<../../.gitbook/assets/image%20(4101).png>)
+![](../../.gitbook/assets/registrytwo-9.png)
 
 There's a valid scope to enter. The normal error message included 3 parameters:
 
@@ -149,21 +149,21 @@ There's a valid scope to enter. The normal error message included 3 parameters:
 
 Based on this error, it might be looking for these 3 parameters. After some testing, I found that `scope=registry:catalog:*` returned a valid token:
 
-![](<../../.gitbook/assets/image%20(4102).png>)
+![](../../.gitbook/assets/registrytwo-10.png)
 
 Now we need to experiment with what's the right `aud` parameter to stop getting an error. I found that specifying `Docker+registry` worked and I didn't get an error on port 5000:
 
-![](<../../.gitbook/assets/image%20(4103).png>)
+![](../../.gitbook/assets/registrytwo-11.png)
 
 ### API Fuzz -> Dump Repository
 
 Visiting `v2/_catalog` returned one repository:
 
-![](<../../.gitbook/assets/image%20(4104).png>)
+![](../../.gitbook/assets/registrytwo-12.png)
 
 Attempting to dump the repository using the same token results in an error:
 
-![](<../../.gitbook/assets/image%20(4105).png>)
+![](../../.gitbook/assets/registrytwo-13.png)
 
 We can change the token to have `scope=repository:hosting-app:pull` and try again:
 
@@ -171,7 +171,7 @@ We can change the token to have `scope=repository:hosting-app:pull` and try agai
 eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlFYNjY6MkUyQTpZT0xPOjdQQTM6UEdRSDpHUVVCOjVTQk06UlhSMjpUSkM0OjVMNFg6TVVZSjpGSEVWIn0.eyJpc3MiOiJBY21lIGF1dGggc2VydmVyIiwic3ViIjoiIiwiYXVkIjoiRG9ja2VyIHJlZ2lzdHJ5IiwiZXhwIjoxNjkwNTIxNTQ3LCJuYmYiOjE2OTA1MjA2MzcsImlhdCI6MTY5MDUyMDY0NywianRpIjoiNjk1NjI0NzQwMTI4MjUzNzkyMSIsImFjY2VzcyI6W3sidHlwZSI6InJlcG9zaXRvcnkiLCJuYW1lIjoiaG9zdGluZy1hcHAiLCJhY3Rpb25zIjpbInB1bGwiXX1dfQ.W4Hz4J10gZ7_gX4GvLE9t1SJf3tiYcr7ZXncXr3TSzW8At_XV74PMWiPQDBIQwgl_2e4pGXf_FMkztgSbYGMEwuFKDzbkg11rx3iytL3wt0P_KxAjMb-s2j_CHU1ngZHIDAOrJ1fLpsks6ybuBCRpE2WxiKagpuz0lVcKPln0aRhHkcj8ZjPyODTJW2oUbkLiL7zjo9k8c6xrNbufoO8kTALvdJHQJ68MrWLLvg7qSw1NRdOXPrTsw1Jzku7h2E5Kmwatj9j7INkCfIK2kDwfVN0Nrt2mKu5HrZAei9V8vX23pDxNAh-71fddY6DmzGCx2bLQGQJhDgwpeIuSkix8A
 ```
 
-![](<../../.gitbook/assets/image%20(4106).png>)
+![](../../.gitbook/assets/registrytwo-14.png)
 
 Visiting `/manifests/latest` reveals a lot of information like `blobSum` and what not. Based on this, we can modify `DockerGraber.py` to include this token and dump everything from it using that. Here's my modified script:
 
@@ -343,7 +343,7 @@ if __name__ == '__main__':
     options()
 ```
 
-![](<../../.gitbook/assets/image%20(4107).png>)
+![](../../.gitbook/assets/registrytwo-15.png)
 
 This would generate loads of `tar` files from the repository we pulled:
 
@@ -401,15 +401,15 @@ docs  examples  hosting.war  host-manager  manager  ROOT
 
 The source code seems to be compiled within the `.war` file. We can decompile this online or `jd-gui`.
 
-![](<../../.gitbook/assets/image%20(4108).png>)
+![](../../.gitbook/assets/registrytwo-16.png)
 
 There's a lot to look through here. Within the `ConfigurationServlet.class` file, there's a check on whether we are a manager on the website:
 
-![](<../../.gitbook/assets/image%20(4109).png>)
+![](../../.gitbook/assets/registrytwo-17.png)
 
 Within `RMIClientWrapper.class`, there's mention of other hostnames as well:
 
-![](<../../.gitbook/assets/image%20(4110).png>)
+![](../../.gitbook/assets/registrytwo-18.png)
 
 And this has to do with the `FileService` somehow.
 
@@ -419,21 +419,21 @@ We need a way to modify our session to become an Administrator. Since this is To
 
 Took me about 1 hour before realising that the `..;` Tomcat auth bypass works here:
 
-![](<../../.gitbook/assets/image%20(4111).png>)
+![](../../.gitbook/assets/registrytwo-19.png)
 
 Using this, we can locate the `SessionExample` page:
 
-![](<../../.gitbook/assets/image%20(4112).png>)
+![](../../.gitbook/assets/registrytwo-20.png)
 
 Using this, we can set the `s_IsLoggedInUserRoleManager` session attribute to `true`. Afterwards, we would gain access to the reconfiguration panel.
 
-![](<../../.gitbook/assets/image%20(4113).png>)
+![](../../.gitbook/assets/registrytwo-21.png)
 
 ### More Reviewing -> RMIClient LFI
 
 The key question in my head was around the `rmiHost` parameter and where we had to use it. Since we had access to the Reconfigure panel as the manager of the site, this only gave us one more thing to work with, which was this panel:
 
-![](<../../.gitbook/assets/image%20(4114).png>)
+![](../../.gitbook/assets/registrytwo-22.png)
 
 By default, the HTTP request for this only includes the `domains.max` and `domains.start-template` parameters. Within the `ConfigurationServlet.class` file however, it shows that sending POST requesst to this updates the `Settings` variable using a hashmap.
 
@@ -490,7 +490,7 @@ Sending return with payload for obj [0:0:0, 0]
 Closing connection
 ```
 
-![](<../../.gitbook/assets/image%20(4115).png>)
+![](../../.gitbook/assets/registrytwo-23.png)
 
 ### App -> RMI Client -> Read User Creds
 
@@ -526,7 +526,7 @@ These other ports might be run by a user on the main machine. The most interesti
 
 The idea of `FileService` was still present in my head. Perhaps there was a way to interact with the actual service that was listening on port 9002 reachable from this container, since we injected code into the `rmi.host` parameter to get this shell in the first place. I took another look at the source code for the `FileService.class` file:
 
-![](<../../.gitbook/assets/image%20(4116).png>)
+![](../../.gitbook/assets/registrytwo-24.png)
 
 Problem is, there's no actual code present that would interact with the service. Based on the functions available, we should be able to use the `getFile` method to read stuff from the directory using a custom client that we can create using all the code present.
 
@@ -578,7 +578,7 @@ https://irogir:qybWiMTRg0sIHz4beSTUzrVIl7t3YsCj9@github.com
 
 With that password, we can `ssh` in as the `developer` user:
 
-![](<../../.gitbook/assets/image%20(4117).png>)
+![](../../.gitbook/assets/registrytwo-25.png)
 
 ## Privilege Escalation
 
@@ -601,11 +601,11 @@ quarantine.jar                                             100%   13KB 616.0KB/s
 
 I first saw that this thing opens port 9002 again to run the service:
 
-![](<../../.gitbook/assets/image%20(4118).png>)
+![](../../.gitbook/assets/registrytwo-26.png)
 
 Afterwards, files scanned that are flagged as malicious are quarantined in a separate directory. The system contains a `/quarantine` directory which we have read access to. Afterwards, this thing also opens a listener port based on the configuration:
 
-![](<../../.gitbook/assets/image%20(4119).png>)
+![](../../.gitbook/assets/registrytwo-27.png)
 
 When checking the open ports on the machine, there are a few:
 
@@ -646,7 +646,7 @@ containerd  registry.jar
 
 Extracting from this file reveals that it contains the configurations that we need:
 
-![](<../../.gitbook/assets/image%20(4120).png>)
+![](../../.gitbook/assets/registrytwo-28.png)
 
 ### Hijack Configuration -> Read Root Creds
 
@@ -722,7 +722,7 @@ https://admin:52nWqz3tejiImlbsihtV@github.com
 
 We can then `su` to `root`:
 
-![](<../../.gitbook/assets/image%20(4121).png>)
+![](../../.gitbook/assets/registrytwo-29.png)
 
 ## Final RMIClient Code
 

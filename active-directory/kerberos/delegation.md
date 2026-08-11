@@ -28,7 +28,7 @@ Delegation basically allows a user or machine to act on the behalf of another us
 
 The front-end needs to authenticate to the back-end database (using Kerberos) as the authenticated user. This is how delegation works in a nutshell:
 
-![](<../../.gitbook/assets/image%20(3525).png>)
+![](../../.gitbook/assets/delegation-10.png)
 
 ### Password / NTLM Authentication?
 
@@ -74,11 +74,11 @@ Exploitation of any of these privileges is not a CVE, but rather an **abuse of a
 
 This is the first type of delegation introduced in Windows 2000. When configured, the KDC would include a copy of the user's TGT **inside the TGS**. when the user accesses the `DB` machine, it extracts the user's TGT from the TGS and caches it in memory. Then, it would use this TGT to request for a TGS, which would allow for the accessing of database resources.
 
-![](<../../.gitbook/assets/image%20(1012).png>)
+![](../../.gitbook/assets/delegation-1.png)
 
 The service can act on behalf of the client in the network **simply by using its TGT**. This feature requires the `SeEnableDelegation` privilege to be enabled. We can configure this like so:
 
-![](<../../.gitbook/assets/image%20(1052).png>)
+![](../../.gitbook/assets/delegation-2.png)
 
 With this setting enabled, all we need are credentials for the user. Now suppose that we are on `WEB` machine and want to access the files on the `DB` machine, and we can do so using a web login form. This is how the requests are formed:
 
@@ -97,7 +97,7 @@ With this setting enabled, all we need are credentials for the user. Now suppose
 
 That's a lot to take in. Here's a packet capture from ATTL4S regarding this subject (take note he uses different machines here, but the concept is roughly the same):
 
-![](<../../.gitbook/assets/image%20(3562).png>)
+![](../../.gitbook/assets/delegation-11.png)
 
 ### Abuse
 
@@ -135,7 +135,7 @@ This new method was introduced in 2003 as a safer means to perform Kerberos dele
 
 To configure this, we just have to check the other setting and specify what type of authentication is allowed:
 
-![](<../../.gitbook/assets/image%20(2970).png>)
+![](../../.gitbook/assets/delegation-7.png)
 
 Additionally, there are 2 new Service-For-User (S4U) Kerberos extensions introduced for these services:
 
@@ -152,7 +152,7 @@ The **Kerberos only** option uses S4U2Proxy, while the other option both new ext
 
 In the interest of keeping this page shorter, I won't be covering the full request here since it's largely the same as Unconstrained Delegation except for a few changes. Again, ATTL4S provides a clear packet capture on how it works:
 
-![](<../../.gitbook/assets/image%20(295).png>)
+![](../../.gitbook/assets/delegation-6.png)
 
 The differences are in the TGS REQ and TGS REP to the `cifs` service with the S4U2Proxy extension. It's the same up the point AFTER the AP REQ (HTTP) part:
 
@@ -202,18 +202,18 @@ Here's what `Rubeus` is basically doing: Obtain TGS using TGT (passed in) for us
 
 In short, this is the machine's way of saying that **it doesn't actually care how the client authenticates.** It can be via cleartext password, NTLM hashes or whatever. This can be configured by specifying a provider:
 
-![](<../../.gitbook/assets/image%20(2346).png>)
+![](../../.gitbook/assets/delegation-4.png)
 
 This would make use of the S4U2Self extension, and we can technically invoke S4U2Proxy using this even if we don't have an additional ticket to use. Again, ATTL4S provides the network traffic:
 
-![](<../../.gitbook/assets/image%20(3065).png>)
+![](../../.gitbook/assets/delegation-8.png)
 
 There are bigger differences in the requests made using this method:
 
 1. **TGS REQ 1 (S4U2Self) ->** The `WEB` machine would request for the user's fowardable ST for itself using S4U2Self. This is because the initial authentication uses NTLM, and there are no STs sent by the client.
 2. **TGS REP 1 (S4U2Self) ->** The `DC` verifies that the `WEB` machine has the `TRUSTED_TO_AUTH_FOR_DELEGATION` flag and responds by sending back the user's ST. The ST that is sent back is **forwadable** thanks to S4U2Self.
 
-![](<../../.gitbook/assets/image%20(3672).png>)
+![](../../.gitbook/assets/delegation-12.png)
 
 3. **TGS REQ 2 (S4U2Proxy) ->** Uses the `WEB` TGT + the user's forwardable ST and requests for a TGS for `cifs` or other services on another machine like `DB`.
 4. **TGS REP 3 (S4U2Proxy) ->** DC checks if `WEB` can delegate to `DB`. Then, it also checks if the additional ticket is forwadable. Afterwards, it responds with the user's ST + `encTGSRep`. If this ticket is not marked as forwardable, then there would have been an error. The KDC **would try for RBCD as a 'fallback'**.
@@ -249,11 +249,11 @@ RBCD reverses this concept by letting the `DB` machine (or backend) to control i
 
 Again, to re-emphasise, the configuration is done on the 'backend' machine and does not require DA or EA permissions. We just need to be an administrator on the 'backend' machine.
 
-![](<../../.gitbook/assets/image%20(3304).png>)
+![](../../.gitbook/assets/delegation-9.png)
 
 This method of authentication is closely related to the classic Constrained Delegation and uses the S4U extensions. Here's a snippet of the traffic:
 
-![](<../../.gitbook/assets/image%20(1432).png>)
+![](../../.gitbook/assets/delegation-3.png)
 
 It is largely the same as the Constrained Delegation Protocol Transition method of authenticating, with a few differences:
 
@@ -328,6 +328,6 @@ To prevent such attacks, we can do a few things:
 * Protected Users Group -> Users part of this group would cause the KDC to not set the STs given to be FORWADABLE or PROXIFIABLE.
 * Flag account as **sensitive** -> This bit would cause TGTs and STs obtained by this account to not be forwadable or proxifiable even when requested.
 
-![](<../../.gitbook/assets/image%20(2885).png>)
+![](../../.gitbook/assets/delegation-5.png)
 
 Either one of these would totally prevent S4U2Self and S4U2Proxy from working entirely. These methods **cannot prevent all forms of abuse**. If you stash your credentials in plaintext on your desktop and it is compromised, then that's on you. No amount of delegation can prevent that!

@@ -12,27 +12,27 @@ Compared to using a Graphical User Interface (GUI), this is much faster if you k
 
 When in bash, it relies on something called the `env` variables, which are basically sort of like the default variables that Bash loads when we are using our system.
 
-![](<../../../.gitbook/assets/image%20(576).png>)
+![](../../../.gitbook/assets/cli-and-shells-18.png)
 
 Above is an example of a PATH variable from a Kali machine. What the PATH variable does is **tell bash where to start looking for binaries to run.** What this means is that when I run a binary **without the absolute path**, it would first check for all variables within the PATH and then if it returns true, it would run it.
 
 Here's an example of using `cat` with and without the absolute path. The absolute path would mean specifying the whole directory that has the binary in it, as shown above.
 
-![](<../../../.gitbook/assets/image%20(2913).png>)
+![](../../../.gitbook/assets/cli-and-shells-9.png)
 
 Within the earlier $PATH variable, we can see how there is the `/usr/bin` directory within it. As such, when we run `cat` , it would check all directories within the PATH directory for that directory and then once found, it would run it.
 
 Here's what happens when we are using a binary that does not exist.
 
-![](<../../../.gitbook/assets/image%20(3076).png>)
+![](../../../.gitbook/assets/cli-and-shells-11.png)
 
 Using this PATH variable, we can do things like run python3 scripts from the CLI.
 
-![](<../../../.gitbook/assets/image%20(1029).png>)
+![](../../../.gitbook/assets/cli-and-shells-1.png)
 
 In Windows, there is also a PATH variable, but it would have to be manually configured. It also can do the same things as the Linux one, albeit a bit less straightforward.
 
-![](<../../../.gitbook/assets/image%20(2239).png>)
+![](../../../.gitbook/assets/cli-and-shells-6.png)
 
 Anyways, when we install all our tools and binaries in Linux, they would basically go into one of the PATH variables, and that's how we use these tools without the absolute paths.
 
@@ -82,7 +82,7 @@ Linux has permission that dictate whether someone can read, execute or write to 
 
 These can be viewed using the `ls -la` command.
 
-![](<../../../.gitbook/assets/image%20(1089).png>)
+![](../../../.gitbook/assets/cli-and-shells-2.png)
 
 From here, we can set the permissions using the `chmod` command, with numbers that would represent the different permissions.
 
@@ -92,7 +92,7 @@ From here, we can set the permissions using the `chmod` command, with numbers th
 
 When we do `chmod 777 hello.txt`this would make it such that our file would have full permissions across all 3 groups.
 
-![](<../../../.gitbook/assets/image%20(2051).png>)
+![](../../../.gitbook/assets/cli-and-shells-5.png)
 
 Similarly, we can adjust this depending on what the file requires.
 
@@ -106,7 +106,7 @@ We can see in the picture above that `.` and `..` are considered files, although
 
 Windows uses the Command Prompt, otherwise known as cmd.exe. This has a different syntax and commands compared to Linux machines, and in my opinion, a bit harder to use.
 
-![](<../../../.gitbook/assets/image%20(3437).png>)
+![](../../../.gitbook/assets/cli-and-shells-15.png)
 
 We can still do a lot of the stuff that Unix machines can do, but we would require Windows's own scripting language called **Powershell**.
 
@@ -120,7 +120,7 @@ Being proficient in Powershell as an attacker would basically mean we are able t
 
 Powershell has its own help page too, and if we need help just do the following:
 
-![](<../../../.gitbook/assets/image%20(3381).png>)
+![](../../../.gitbook/assets/cli-and-shells-14.png)
 
 ### Cmdlets
 
@@ -138,7 +138,7 @@ Import-Module . .\script.ps1
 
 Either way, we would 'load' the cmdlet as a module. We can check what modules are loaded using the `get-module -listavailable` command.
 
-![](<../../../.gitbook/assets/image%20(1973).png>)
+![](../../../.gitbook/assets/cli-and-shells-3.png)
 
 One popular Powershell framework is Powersploit, which is basically a pentesters suite of Powershell tools that can be imported and used easily.
 
@@ -146,7 +146,7 @@ One popular Powershell framework is Powersploit, which is basically a pentesters
 
 Unlike Linux, which has permissions and stuff, Powershell has policies that dictate whether or not something can be run.
 
-![](<../../../.gitbook/assets/image%20(3037).png>)
+![](../../../.gitbook/assets/cli-and-shells-10.png)
 
 This command would basically tell the program whether or not to let a certain script execute.
 
@@ -176,7 +176,7 @@ Powershell doesn't require the usage of a #! like bash does.
 
 Since Powershell is a language, it too has its own logic, like for loops, functions and whatever. In Powershell, there also exists the usage of piping and redirecting input/output to files or commands.
 
-![](<../../../.gitbook/assets/image%20(3308).png>)
+![](../../../.gitbook/assets/cli-and-shells-13.png)
 
 Unfortunately, not many websites are out there with interactive games to use Powershell compared to that of Bash.
 
@@ -190,7 +190,7 @@ Documentation and StackOverflow are your best friends when trying to make Powers
 
 A shell is basically because it wraps the OS and allows us to interact with the OS through a command line interface (CLI).
 
-![](<../../../.gitbook/assets/image%20(2318).png>)
+![](../../../.gitbook/assets/cli-and-shells-7.png)
 
 This would allow us to basically interact with the computer without a GUI. Powershell and Bash are interpreters for shells for Windows and Linux systems alike.
 
@@ -204,7 +204,7 @@ Payloads are basically the piece of code or binary that the attacker intends to 
 
 Reverse shells occur when the hackers are able to make the device connect back to their device to produce a CLI. Unlike the bind shell, the target host would actually conenct back to the hacker's machine, which is actively listening and waiting for an incoming connection on one port.
 
-![Gaining a reverse shell on port 21](<../../../.gitbook/assets/image%20(3485).png>)
+![Gaining a reverse shell on port 21](../../../.gitbook/assets/cli-and-shells-16.png)
 
 ### Bind Shell
 
@@ -216,17 +216,17 @@ Web shells are when attackers send an input to a web application, and is able to
 
 Below is an example of how we are able to use a web vulnerability to write a web shell and confirm that we have RCE on the system.
 
-![](<../../../.gitbook/assets/image%20(2471).png>)
+![](../../../.gitbook/assets/cli-and-shells-8.png)
 
-![](<../../../.gitbook/assets/image%20(891).png>)
+![](../../../.gitbook/assets/cli-and-shells-20.png)
 
 Sometimes, the output of the shell is not as explicit as the above, and it is hidden. As such, other methods, such as telling the victim machine to ping the attacker machine and listening for the ping packets (otherwise known as ICMP packets) to reach us.
 
 Below is an example of a blind RCE.
 
-![](<../../../.gitbook/assets/image%20(656).png>)
+![](../../../.gitbook/assets/cli-and-shells-19.png)
 
-![](<../../../.gitbook/assets/image%20(2035).png>)
+![](../../../.gitbook/assets/cli-and-shells-4.png)
 
 ### Secure Shell (SSH)
 
@@ -234,11 +234,11 @@ Not really an exploit per se, but rather a network protocol that allows for data
 
 The predecessor of SSH is something called Telnet, which does the same thing, **but it is not encrypted.** Telnet is the worst because hackers can intercept packets and be able to view what you are doing exactly without trouble (more on sniffing later).
 
-![SSH Tunnel](<../../../.gitbook/assets/image%20(3518).png>)
+![SSH Tunnel](../../../.gitbook/assets/cli-and-shells-17.png)
 
 In essence, both of which can provide for file transfer utilities, as well as a remote CLI on the target system. This would require us to know the target system's password and username.
 
-![SSH using private key](<../../../.gitbook/assets/image%20(311).png>)
+![SSH using private key](../../../.gitbook/assets/cli-and-shells-12.png)
 
 SSH runs on something called a private and public keys, which I will cover in a later section on cryptography.
 

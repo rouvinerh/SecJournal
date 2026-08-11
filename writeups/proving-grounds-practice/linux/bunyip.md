@@ -21,19 +21,19 @@ PORT     STATE SERVICE
 
 Port 80 had a website that looked rather static with nothing interesting about it:
 
-![](<../../../.gitbook/assets/image%20(1833).png>)
+![](../../../.gitbook/assets/bunyip-3.png)
 
 All of the links led to Lorem Ipsum related stuff, which is definitely not the exploit path we are looking for.
 
 On the other hand, port 8000 contained something more interesting:
 
-![](<../../../.gitbook/assets/image%20(1746).png>)
+![](../../../.gitbook/assets/bunyip-2.png)
 
 This seems to be a 'secure' way to run NodeJS code within the browser. This program checks for whether the signature (which is the MD5 Hash of `API-KEY | CODE`. We don't know the API key, and we only know the code to be run.
 
 I viewed the traffic in Burpsuite, and when we press the 'submit' button for the default code generated, it produces this:
 
-![](<../../../.gitbook/assets/image%20(636).png>)
+![](../../../.gitbook/assets/bunyip-5.png)
 
 The `sig` part is obviously the signature being used, and the `code` part is our Javascript code in `base64`. This looks to be a cryptography based challenge, and let's gather the facts we know:
 
@@ -308,7 +308,7 @@ $ python3 hash.py
 {"result":{}}
 ```
 
-![](<../../../.gitbook/assets/image%20(374).png>)
+![](../../../.gitbook/assets/bunyip-4.png)
 
 ## Privilege Escalation
 
@@ -434,6 +434,6 @@ Enter your password:
 
 After this is done, we can `ssh` in as the `root` user:
 
-![](<../../../.gitbook/assets/image%20(1496).png>)
+![](../../../.gitbook/assets/bunyip-1.png)
 
 Rooted!

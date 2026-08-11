@@ -20,7 +20,7 @@ We have to add `icinga.cerberus.local` to our `/etc/hosts` file in order to acce
 
 Visiting port 8080 reveals this login page:
 
-![](<../../.gitbook/assets/image%20(1305).png>)
+![](../../.gitbook/assets/cerberus-3.png)
 
 A bit of research reveals that Icinga is a network monitoring tool. Default credentials don't work, so we can head straight into a directory scan.
 
@@ -152,13 +152,13 @@ use_ssl = "0
 
 With these credentials, we can login to the Icinga Web instance!
 
-![](<../../.gitbook/assets/image%20(2457).png>)
+![](../../.gitbook/assets/cerberus-8.png)
 
 ### Icinga as Matthew -> RCE
 
 I looked around, and determined that this was running **Icinga Web 2 Version 2.9.2**, which could be useful later. On the original page that gave us the directory traversal exploit, there was another RCE exploit, but I'm not sure how to exploit it yet.
 
-![](<../../.gitbook/assets/image%20(1020).png>)
+![](../../.gitbook/assets/cerberus-1.png)
 
 I also found that as `matthew`, we could create new users. Reading the code from the Sonar website, we can see that there's a `/$configDir/ssh/matthew` directory that can store a private key.
 
@@ -178,11 +178,11 @@ This, combined with the RCE exploit above is a clear attack vector. We need to g
 
 First we need to change the `global_module_path` to `/dev` as per the PoC. This can be done in `/config/general`.
 
-![](<../../.gitbook/assets/image%20(2095).png>)
+![](../../.gitbook/assets/cerberus-7.png)
 
 Then, we can quickly enable the `shm` module in `/config/moduleenable`.
 
-![](<../../.gitbook/assets/image%20(919).png>)
+![](../../.gitbook/assets/cerberus-16.png)
 
 Afterwards, we need to create a new resource with a private SSH key and upload it. Thsi can be done through `/config/resource` and adding resources for SSH Identities. Afterwards, we can simply send another request with our exploit:
 
@@ -209,17 +209,17 @@ type=ssh&name=notakey&user=.../../../../../../../dev/shm/shell.php&private_key=f
 
 Visting the URL below would give us RCE!
 
-![](<../../.gitbook/assets/image%20(1059).png>)
+![](../../.gitbook/assets/cerberus-2.png)
 
 With this, we can get a reverse shell.
 
-![](<../../.gitbook/assets/image%20(3258).png>)
+![](../../.gitbook/assets/cerberus-12.png)
 
 ## Privilege Escalation
 
 I ran LinPEAS on the machine to enumerate for me. We can find some ports that are open:
 
-![](<../../.gitbook/assets/image%20(3302).png>)
+![](../../.gitbook/assets/cerberus-13.png)
 
 The MySQL database has nothing of interest. Port 80 was hosting nothing as well.
 
@@ -227,7 +227,7 @@ The MySQL database has nothing of interest. Port 80 was hosting nothing as well.
 
 For SUID binaries, there were two that I didn't usually see:
 
-![](<../../.gitbook/assets/image%20(3824).png>)
+![](../../.gitbook/assets/cerberus-14.png)
 
 We can check its version:
 
@@ -248,7 +248,7 @@ You can now run 'firejail --join=1407' in another terminal to obtain a shell whe
 
 We have to repeat the RCE exploit that we did previously to make this work. Then, we can run the command and be able to become root. **Take note we can just run `su -` for this to work.**
 
-![](<../../.gitbook/assets/image%20(792).png>)
+![](../../.gitbook/assets/cerberus-15.png)
 
 Great! Now we have access as root on the Linux docker.
 
@@ -294,7 +294,7 @@ We must remember that this machine is joined via to a domain somehow. I googled 
 
 So `sssd` is a method of which Linux machines can store credentials. This is in-line with a certain `createdump` file I found in `/opt/microsoft/powershell/7`, which was a binary with some Red Hat data.
 
-![](<../../.gitbook/assets/image%20(1827).png>)
+![](../../.gitbook/assets/cerberus-6.png)
 
 We can enumerate the `/var/lib/sss` directory to see if we can find anything useful. There's a `db` folder:
 
@@ -312,11 +312,11 @@ drwxr-xr-x 10 root root    4096 Jan 22 18:12 ..
 
 When `strings` is used to view the `cache_cerberus.local.ldb` file, we can find a hashed password for `matthew`.
 
-![](<../../.gitbook/assets/image%20(2529).png>)
+![](../../.gitbook/assets/cerberus-9.png)
 
 This hash can be cracked instantly:
 
-![](<../../.gitbook/assets/image%20(2733).png>)
+![](../../.gitbook/assets/cerberus-11.png)
 
 ### Pivoting
 
@@ -365,7 +365,7 @@ chisel server -p 9001 --reverse
 
 Then we can `evil-winrm` in.
 
-![](<../../.gitbook/assets/image%20(271).png>)
+![](../../.gitbook/assets/cerberus-10.png)
 
 We can now capture the user flag!
 
@@ -442,7 +442,7 @@ Port 9003 is the one we want after some testing. Port 8888 redirects me there fo
 
 Then we need to add `DC.cerberus.local` with the IP of `172.16.22.1` to our `/etc/hosts` file before we can visit this in Firefox with `proxychains`. Very similar to NUS's, interestingly.
 
-![](<../../.gitbook/assets/image%20(1587).png>)
+![](../../.gitbook/assets/cerberus-4.png)
 
 We can login with `matthew@cerberus.local` and the password we found earlier. This does nothing for us, however. All it does is provide a URL with a token appended at the back:
 
@@ -481,7 +481,7 @@ set ISSUER_URL http://dc.cerberus.local/adfs/services/trust
 
 When executed, we would get a meterpreter shell as the SYSTEM user.
 
-![](<../../.gitbook/assets/image%20(1737).png>)
+![](../../.gitbook/assets/cerberus-5.png)
 
 Using hints from the forum were really helpful, because I dislike using Metasploit and would have naturally avoided it.
 

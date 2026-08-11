@@ -20,11 +20,11 @@ The name implies I should be looking for some type of UNION SQL Injection somewh
 
 This reveals a simple website that takes one user input:
 
-![](<../../../.gitbook/assets/image%20(4005).png>)
+![](../../../.gitbook/assets/union-5.png)
 
 If we enter anything, it says that we are eligible to compete in the tournament and gives us a link to `challenge.php`.
 
-![](<../../../.gitbook/assets/image%20(1157).png>)
+![](../../../.gitbook/assets/union-1.png)
 
 Since this was a UHC box, `sqlmap` revealed nothing to me, so we have to do this manually. I tried some basic SQL Injection with UNION, and found that it was indeed vulnerable to SQL Injection:
 
@@ -51,7 +51,7 @@ UHC{F1rst_5tep_2_Qualify}
 
 Once we submit the flag, we have SSH access, but we still have no password.
 
-![](<../../../.gitbook/assets/image%20(2334).png>)
+![](../../../.gitbook/assets/union-2.png)
 
 ### SSH Creds
 
@@ -114,7 +114,7 @@ Sorry, <?php
 
 With that, we can SSH into the machine.
 
-![](<../../../.gitbook/assets/image%20(855).png>)
+![](../../../.gitbook/assets/union-6.png)
 
 ## Privilege Escalation
 
@@ -162,7 +162,7 @@ Upgrade-Insecure-Requests: 1
 
 ```
 
-![](<../../../.gitbook/assets/image%20(3262).png>)
+![](../../../.gitbook/assets/union-4.png)
 
 When checking our `sudo` privileges, this is what we see:
 
@@ -176,4 +176,4 @@ User www-data may run the following commands on union:
     (ALL : ALL) NOPASSWD: ALL
 ```
 
-![](<../../../.gitbook/assets/image%20(2741).png>)
+![](../../../.gitbook/assets/union-3.png)

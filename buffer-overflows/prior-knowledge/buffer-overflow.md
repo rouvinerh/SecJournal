@@ -27,11 +27,11 @@ The `buffer` variable is an array that can store up to 10 characters, however we
 
 Within the stack, this is what the program would store normally:
 
-![](<../../.gitbook/assets/image%20(800).png>)
+![](../../.gitbook/assets/buffer-overflow-3.png)
 
 Should we overflow the buffer variable, this would **overwrite the EBP and EIP**. The return address of the function thus changes.
 
-![](<../../.gitbook/assets/image%20(195).png>)
+![](../../.gitbook/assets/buffer-overflow-2.png)
 
 So when the program returns from the function, and the **epilogue** of the function tries to set the return address, it would set it as the string of 'A' instead. Thus, this crashes the program as it cannot return to normal execution flow.
 
@@ -75,7 +75,7 @@ First we would need to find the number of characters needed to **crash the progr
 
 When we decompile the binary for this program, we get something like this:
 
-![](<../../.gitbook/assets/image%20(1575).png>)
+![](../../.gitbook/assets/buffer-overflow-1.png)
 
 So the `good_password()` function is at `0x00401548`. This means that our payload would be 22 characters and the address of the function appended at the back.
 

@@ -25,7 +25,7 @@ PORT   STATE SERVICE
 
 Port 80 reveals a page advertising an application:
 
-![](<../../../.gitbook/assets/image%20(858).png>)
+![](../../../.gitbook/assets/routerspace-2.png)
 
 The intended method is to do dynamic analysis of the machine and run the application in an emulator (which is annoying because `anbox` is not as easy to install anymore and `genymotion` doesn't seem to work with my machine).
 
@@ -100,4 +100,4 @@ $ scp * paul@routerspace.htb:~
 
 Then, `make` and run it to get a root shell.
 
-![](<../../../.gitbook/assets/image%20(1680).png>)
+![](../../../.gitbook/assets/routerspace-1.png)

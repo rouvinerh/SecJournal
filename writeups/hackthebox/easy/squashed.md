@@ -10,47 +10,47 @@ description: >-
 
 We begin with another Nmap scan.
 
-![](<../../../.gitbook/assets/image%20(1960).png>)
+![](../../../.gitbook/assets/squashed-4.png)
 
 Seeing that there are loads of unknown ports, I want to enumerate what services are running on those with an in-depth nmap scan. The rest of the ports are running RPC stuff, which is kind of related to the NFS services.
 
-![](<../../../.gitbook/assets/image%20(3246).png>)
+![](../../../.gitbook/assets/squashed-12.png)
 
 ### NFS
 
 Seeing that port 111 is running the NFS service, I want to see what files are being shared on the machine. We can do so using showmount.
 
-![](<../../../.gitbook/assets/image%20(717).png>)
+![](../../../.gitbook/assets/squashed-22.png)
 
 Interesting directories to make public. We can mount these directories to view what's within them. Remember that mount requires sudo privileges.
 
-![](<../../../.gitbook/assets/image%20(3906).png>)
+![](../../../.gitbook/assets/squashed-19.png)
 
 ### Ross Directory
 
 Within the user's directory, we can find this Keepass database here.
 
-![](<../../../.gitbook/assets/image%20(2768).png>)
+![](../../../.gitbook/assets/squashed-8.png)
 
 This file seems to be encrypted with a password when trying to use keepassx to access its contents.
 
-![](<../../../.gitbook/assets/image%20(1340).png>)
+![](../../../.gitbook/assets/squashed-1.png)
 
 We can convert this file to a hash for John to crack easily. However, Keepass2john wasn't working for this file for some reason, so we can move on first.
 
 While looking at his directory, we can find that Ross's UID is 1001.
 
-![](<../../../.gitbook/assets/image%20(4035).png>)
+![](../../../.gitbook/assets/squashed-20.png)
 
 ### HTML NFS
 
 When mounting and looking through the files of the other files, we can see the files that are within the website.
 
-![](<../../../.gitbook/assets/image%20(3630).png>)
+![](../../../.gitbook/assets/squashed-16.png)
 
 Interesting files there. BUt we can't edit or do anything with these files. The website itself is also just a simple template, and not much can be done on it. What's interesting was, there was a user with a uid of 2017 being assigned to the html file.
 
-![](<../../../.gitbook/assets/image%20(3800).png>)
+![](../../../.gitbook/assets/squashed-18.png)
 
 ### NFS Exploit
 
@@ -58,25 +58,25 @@ Right, so NFS here does not have any authorization or password required to acces
 
 So we can do these commands to create a new user with a fake UID.
 
-![](<../../../.gitbook/assets/image%20(650).png>)
+![](../../../.gitbook/assets/squashed-21.png)
 
 Then we can SU to this user and view the directory again.
 
-![](<../../../.gitbook/assets/image%20(2379).png>)
+![](../../../.gitbook/assets/squashed-7.png)
 
 Notice how the permissions have changed! We can now access the /var/www/html directory on the website. Reading the .htaccess file, it seems that PHP files are executed here.
 
-![](<../../../.gitbook/assets/image%20(3778).png>)
+![](../../../.gitbook/assets/squashed-17.png)
 
 From here, we can move a webshell into this directory and confirm we have RCE on this website.
 
-![](<../../../.gitbook/assets/image%20(887).png>)
+![](../../../.gitbook/assets/squashed-23.png)
 
 With this, we can easily get a reverse shell as this alex user.
 
-![](<../../../.gitbook/assets/image%20(3571).png>)
+![](../../../.gitbook/assets/squashed-15.png)
 
-![](<../../../.gitbook/assets/image%20(1906).png>)
+![](../../../.gitbook/assets/squashed-3.png)
 
 We can grab the user flag from this alex user.
 
@@ -84,11 +84,11 @@ We can grab the user flag from this alex user.
 
 We can run a linPEAS to enumerate for us. From the output, we see don't really see much. So I looked around the NFS share stuff, as we found ross's directory but was unable to do anything.
 
-![](<../../../.gitbook/assets/image%20(3311).png>)
+![](../../../.gitbook/assets/squashed-13.png)
 
 As Ross, we don't have the 'rw' options, meaning we can't do much even if we impersonate him. A quick check on who's logged on reveals ross is logged on.
 
-![](<../../../.gitbook/assets/image%20(3144).png>)
+![](../../../.gitbook/assets/squashed-11.png)
 
 ### Remote Screenshot via x11
 
@@ -96,13 +96,13 @@ Generally, when I see a session like this, there should be a way to capture the 
 
 Because this was a remote session, the .Xauthority files were particularly interesting.
 
-![](<../../../.gitbook/assets/image%20(2273).png>)
+![](../../../.gitbook/assets/squashed-6.png)
 
 So I learnt Xauthority files are used to store credentials to authenticate to a display. Basically, we can use this thing to take a snapshot of the image of ross's screen!
 
 Firstly, we can transfer the file to the alex user via Base64.
 
-![](<../../../.gitbook/assets/image%20(1683).png>)
+![](../../../.gitbook/assets/squashed-2.png)
 
 I found the exploit easy thanks to these references:
 
@@ -114,18 +114,18 @@ I found the exploit easy thanks to these references:
 
 Firstly, export the file to env variables.
 
-![](<../../../.gitbook/assets/image%20(3545).png>)
+![](../../../.gitbook/assets/squashed-14.png)
 
 Then take a screeshot using xwd.
 
-![](<../../../.gitbook/assets/image%20(2956).png>)
+![](../../../.gitbook/assets/squashed-9.png)
 
 Now we can transfer this file back to our machine and view the image.
 
 When viewing this image, we just get this password here.
 
-![](<../../../.gitbook/assets/image%20(2204).png>)
+![](../../../.gitbook/assets/squashed-5.png)
 
 Then we can just su and grab the root flag.
 
-![](<../../../.gitbook/assets/image%20(3111).png>)
+![](../../../.gitbook/assets/squashed-10.png)

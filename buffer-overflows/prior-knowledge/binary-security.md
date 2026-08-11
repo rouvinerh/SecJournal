@@ -139,7 +139,7 @@ For Windows files, we can use this tool:
 
 When we get the output from the command, it would look something like this:
 
-![Taken from HTB Retired](<../../.gitbook/assets/image%20(2971).png>)
+![Taken from HTB Retired](../../.gitbook/assets/binary-security.png)
 
 We can breakdown the output from this:
 

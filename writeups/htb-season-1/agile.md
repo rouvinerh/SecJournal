@@ -21,15 +21,15 @@ We need to add `superpass.htb` to our `/etc/hosts` file to access port 80.
 
 The website advertised a password manager.
 
-![](<../../.gitbook/assets/image%20(3117).png>)
+![](../../.gitbook/assets/agile-4.png)
 
 I tested by registering a user to see what functionalities this application has. I registed a username and got an error, revealing that this is a Flask application. Not sure if this was supposed to happen
 
-![](<../../.gitbook/assets/image%20(588).png>)
+![](../../.gitbook/assets/agile-7.png)
 
 Anyways, when I tried again it worked and brought me to a dashboard where I can add a password and Export passwords.
 
-![](<../../.gitbook/assets/image%20(288).png>)
+![](../../.gitbook/assets/agile-3.png)
 
 The Export function looks rather exploitable. I added some passwords, then tried to download the file and was presented with this HTTP request:
 
@@ -47,7 +47,7 @@ Upgrade-Insecure-Requests: 1
 
 The `fn` paramete was vulnerable to LFI.
 
-![](<../../.gitbook/assets/image%20(833).png>)
+![](../../.gitbook/assets/agile-8.png)
 
 We find 4 users, `runner`, `corum`, `edwards`, and `dev_admin`. We know that this is a Flask application, so the source code for `app.py` is probably in some `/app/app/main` directory or something along those lines.  Some testing revealed that it was located in `../app/app/superpass/app.py`.
 
@@ -82,7 +82,7 @@ Now, we can change the `_user_id` parameter and hopefully login as other users w
 
 That last one for `corum` is a valid password for SSH.
 
-![](<../../.gitbook/assets/image%20(439).png>)
+![](../../.gitbook/assets/agile-5.png)
 
 Then we can easily grab the user flag.
 
@@ -110,15 +110,15 @@ Afterwards, we can use Burpsuite's Chromium browser (that is in-built) to access
 
 Just add `localhost:41829` to the Discover Network Targets portion, and we will pick up on the target.
 
-![](<../../.gitbook/assets/image%20(1838).png>)
+![](../../.gitbook/assets/agile-1.png)
 
 We can inspect this to basically spy on the user.
 
-![](<../../.gitbook/assets/image%20(969).png>)
+![](../../.gitbook/assets/agile-9.png)
 
 I visited the `/vault` directory and found some secret credentials.
 
-![](<../../.gitbook/assets/image%20(2851).png>)
+![](../../.gitbook/assets/agile-2.png)
 
 Then, we can `su` to `edwards`.
 
@@ -172,4 +172,4 @@ sudo -u dev_admin sudoedit /app/config_test.json
 
 This opens up the `activate` file and we are free to edit it. We can add `chmod u+s /bin/bash` into it. Then we can easily become `root`.
 
-![](<../../.gitbook/assets/image%20(565).png>)
+![](../../.gitbook/assets/agile-6.png)

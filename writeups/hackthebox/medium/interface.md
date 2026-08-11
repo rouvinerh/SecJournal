@@ -21,7 +21,7 @@ We can add `interface.htb` to our `/etc/hosts` file.
 
 The web application reveals this:
 
-![](<../../../.gitbook/assets/image%20(3457).png>)
+![](../../../.gitbook/assets/interface-5.png)
 
 We can start with a simple `gobuster` scan to enumerate the possible endpoints in both directories and subdomains. However, the weird part is that there was nothing to be found from these.
 
@@ -94,7 +94,7 @@ $ ffuf -u http://prd.m.rendering-api.interface.htb/api/FUZZ -X POST -w /usr/shar
 html2pdf                [Status: 422, Size: 36, Words: 2, Lines: 1, Duration: 13ms]
 ```
 
-![](<../../../.gitbook/assets/image%20(3820).png>)
+![](../../../.gitbook/assets/interface-8.png)
 
 I did the same scan on the `/vendor` endpoint and found this:
 
@@ -116,7 +116,7 @@ The PoC states that by creating a CSS file that redirects the server to a PHP fi
 
 Now, we need to find out how to send HTML data into that API. Based on the PoC, we should be sending some HTML frames into this API. After some testing, it seems that the variable is `html`.
 
-![](<../../../.gitbook/assets/image%20(1820).png>)
+![](../../../.gitbook/assets/interface-1.png)
 
 Now we can attempt to gain a shell. First, we need to create a PHP reverse shell one-liner and a malicious CSS file, then host them both on a Python HTTP server (hosting them on a PHP server does not work for some reason).
 
@@ -165,7 +165,7 @@ On the machine, our file is now saved in the fonts directory as `exploitfont_nor
 
 This would give us a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(352).png>)
+![](../../../.gitbook/assets/interface-6.png)
 
 We can capture the user flag from this.
 
@@ -205,13 +205,13 @@ done
 
 This is running Exiftool 12.55, which does not have any glaring RCE exploits. The command run seems to only print out the Producer field from a file.
 
-![](<../../../.gitbook/assets/image%20(3521).png>)
+![](../../../.gitbook/assets/interface-7.png)
 
 From this, we have to somehow include a reverse shell or something using escape characters. I notice that the Producer variable within the exiftool output is unquoted.
 
 In Bash, a single quote would treat all characters within the quotes as strings and not process it. If it is in double quotes, **variables and expressions will be processed.**
 
-![](<../../../.gitbook/assets/image%20(3348).png>)
+![](../../../.gitbook/assets/interface-4.png)
 
 So, in this case, we need to find a way to inject commands into the Producer variable in Bash. Here are some resources I've found when researching this:
 
@@ -229,7 +229,7 @@ Linux
 
 The Producer field of this file is the vulnerability here. I tested this out on my machine, and it works.
 
-![](<../../../.gitbook/assets/image%20(2795).png>)
+![](../../../.gitbook/assets/interface-3.png)
 
 Now, we can exploit this by creating a simple PE bash script to make `/bin/bash` an SUID binary. Then, we can change the Producer field to make the machine execute our script.
 
@@ -239,6 +239,6 @@ Now, we can exploit this by creating a simple PE bash script to make `/bin/bash`
 
 Then, we wait till it executes our script.
 
-![](<../../../.gitbook/assets/image%20(2491).png>)
+![](../../../.gitbook/assets/interface-2.png)
 
 Interesting foothold, weird enumeration and really interesting PE through the unquoted variables.

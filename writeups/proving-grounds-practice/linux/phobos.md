@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 Port 80 hosts the default Apache2 page:
 
-![](<../../../.gitbook/assets/image%20(2181).png>)
+![](../../../.gitbook/assets/phobos-5.png)
 
 I ran a `gobuster` scan and found a few directories:
 
@@ -44,7 +44,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/svn` directory requires credentials:
 
-![](<../../../.gitbook/assets/image%20(3026).png>)
+![](../../../.gitbook/assets/phobos-10.png)
 
 Using `admin:admin` doesn't work for this. When we view the traffic in Burpsuite, we can see that the `Authorization` header is added and it uses the Basic Base64 method of authenticating users.
 
@@ -67,7 +67,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 This directory just contains some interesting files:
 
-![](<../../../.gitbook/assets/image%20(2799).png>)
+![](../../../.gitbook/assets/phobos-9.png)
 
 ### Source Code Review -> RCE Point
 
@@ -103,7 +103,7 @@ This bit of code does not validate the name of the file that is being deleted. I
 
 However, when trying to exploit this thing, the `internal` website does not seem to be working with all the links being broken.
 
-![](<../../../.gitbook/assets/image%20(1421).png>)
+![](../../../.gitbook/assets/phobos-1.png)
 
 This made me think more about WHERE exactly this site is being hosted.
 
@@ -154,33 +154,33 @@ There's a hidden domain here! We can add that to our `/etc/hosts` file and enume
 
 The website led us to this login page:
 
-![](<../../../.gitbook/assets/image%20(3206).png>)
+![](../../../.gitbook/assets/phobos-12.png)
 
 Remember that we have the source code of this website, so we can find all the endpoints at the `views.py` file we saw earlier. The `/register` directory lets us register a new user.
 
-![](<../../../.gitbook/assets/image%20(1809).png>)
+![](../../../.gitbook/assets/phobos-3.png)
 
 We can then login to the site! For some reason it's not loading the visual elements right on my machine...
 
-![](<../../../.gitbook/assets/image%20(2214).png>)
+![](../../../.gitbook/assets/phobos-6.png)
 
 There are a few functions in this site. We know that the 'Submission' one is vulnerable, but we need some kind of administrator account first. So we can view the 'MyAccount' function:
 
-![](<../../../.gitbook/assets/image%20(188).png>)
+![](../../../.gitbook/assets/phobos-4.png)
 
 When the traffic is intercepted, it includes a `username` parameter:
 
-![](<../../../.gitbook/assets/image%20(2540).png>)
+![](../../../.gitbook/assets/phobos-7.png)
 
 Maybe we can change the username to something else, so I changed it to `admin` and found that I could login as the `admin` user!
 
-![](<../../../.gitbook/assets/image%20(3091).png>)
+![](../../../.gitbook/assets/phobos-11.png)
 
 ### LFI Firewall Rules -> Shell
 
 The administrator had a few things different, such as the 'Submissions' function being replaced with a submission reviewer:
 
-![](<../../../.gitbook/assets/image%20(3256).png>)
+![](../../../.gitbook/assets/phobos-13.png)
 
 When we choose a report and view it, it sends this HTTP POST request:
 
@@ -206,13 +206,13 @@ csrfmiddlewaretoken=hZhbo5cgeCuFoeIhJqK2b9S7Xn2rD2CHrWVJrz3hMYJZ0gPT46o7nzUd5M7X
 
 This looks vulnerable to LFI, and testing it reveals that it works!
 
-![](<../../../.gitbook/assets/image%20(2793).png>)
+![](../../../.gitbook/assets/phobos-8.png)
 
 Earlier, the repository comments mentioned something about a UFW firewall. A quick google search on its files reveal that the rules are stored at `/etc/ufw/user.rules`, which can be read using the LFI:
 
 
 
-![](<../../../.gitbook/assets/image%20(3976).png>)
+![](../../../.gitbook/assets/phobos-16.png)
 
 Here are the rules:
 
@@ -258,7 +258,7 @@ csrfmiddlewaretoken=lUZv7MQQ8VaNbnkvd8DgAbLB0WIT1V3CvRD3agHRGhp7Npr7yOhlMBNH8lNp
 
 This wold give us a shell as `www-data`:
 
-![](<../../../.gitbook/assets/image%20(3408).png>)
+![](../../../.gitbook/assets/phobos-14.png)
 
 The user flag is within the `/var/www` directory.
 
@@ -313,12 +313,12 @@ ssh_login
 
 There are some hashes present, and all 3 are crackable:
 
-![](<../../../.gitbook/assets/image%20(1646).png>)
+![](../../../.gitbook/assets/phobos-2.png)
 
 The last password was for the user `root`, and we can try an `su`, which ends up working:
 
 
 
-![](<../../../.gitbook/assets/image%20(3603).png>)
+![](../../../.gitbook/assets/phobos-15.png)
 
 Rooted!

@@ -18,7 +18,7 @@ One key thing to note about encryption is that, **if anything about the algorith
 
 Symmetric Encryption is used when there is only **one key** used to encrypt and decrypt the electronic data. This would mean that if there was an encryptor function, we would be able to decrypt any encrypted ciphertext by putting it through the function again.
 
-![](<../../../.gitbook/assets/image%20(779).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-8.png)
 
 Common types of encryption that use these are:
 
@@ -28,7 +28,7 @@ Common types of encryption that use these are:
 
 Symmetric encryption would have varying key lengths, and hence they are encoded differently. For example, here's AES in action.
 
-![](<../../../.gitbook/assets/image%20(1866).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-4.png)
 
 This is AES-128 working, and the 128 means 128-bits. 8 bits make up 1 byte, hence there are 16 bytes for the key length and the initialisation vector. The IV is not another key, but rather an added security vector (which I won't go into here).
 
@@ -48,13 +48,13 @@ To picture this, here's an analogy. Suppose we have two people, A and B, that wa
 
 A sends a message in plaintext, which is then encrypted with **B's public key**. Then, the encoded message is sent to B, and B would decrypt this with **B's private key** to receive the plaintext.
 
-![](<../../../.gitbook/assets/image%20(1102).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-1.png)
 
 The public key is one that is public, and you can share that with everybody no matter who they are. It's on the Internet, and likely loads of other computers have your public key. The **private key is the one you cannot leak.**  Both of these keys are unique to just you, because there's just that many. As such, your public key can be used to **verify that it is indeed you** that I have sent the message to.
 
 SSH uses this kind of asymmetric encryption formula. When we add our SSH key to our Github Repository, we can then SSH into Github and be able to do stuff with it. This is because when we add our key, what we are doing is adding our public key into the Github database, and telling it to authorize any requests that have this private key.
 
-![](<../../../.gitbook/assets/image%20(1522).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-3.png)
 
 We can generate a pair of keys like so, and we can see how there is a **test\_rsa and a test\_rsa.pub.** The .pub file would be the public key that we add to Github, while we should never disclose our private keys.
 
@@ -83,9 +83,9 @@ There a few type of hashes, with varying lengths
 
 Hashes are unique (most of the time) for each input, and they would truncate all of the possible input into a fixed length. This means that even if the **inputs have the slightest difference, it would produce an entirely different hash.**
 
-![](<../../../.gitbook/assets/image%20(263).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-6.png)
 
-![](<../../../.gitbook/assets/image%20(137).png>)
+![](../../../.gitbook/assets/passwords-and-encryption-2.png)
 
 Hashes are used for verifying integrity of information. For example, when downloading a file from the Internet, sometimes they would provide for the file hash signature, and we can check the downloaded file's signature. **If the signatures match, then it is the same file.**
 
@@ -111,9 +111,9 @@ Hashes shown in the pictures above aren't very secure, because they come from ea
 
 So make sure your passwords are complex and not common!
 
-![Crackstation in action](<../../../.gitbook/assets/image%20(3168).png>)
+![Crackstation in action](../../../.gitbook/assets/passwords-and-encryption-7.png)
 
-![John The Ripper cracking a Kerberos Hash](<../../../.gitbook/assets/image%20(2316).png>)
+![John The Ripper cracking a Kerberos Hash](../../../.gitbook/assets/passwords-and-encryption-5.png)
 
 ```bash
 john --wordlist=/usr/share/wordlists/rockyou.txt <hash file>

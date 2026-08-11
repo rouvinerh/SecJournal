@@ -66,11 +66,11 @@ Let's move on for now, we might need this later.
 
 This just shows a GIF of bacon sizzling:
 
-![](<../../../.gitbook/assets/image%20(1883).png>)
+![](../../../.gitbook/assets/sizzle-6.png)
 
 When viewing the page source, this is located at the `/images` directory, which we don't have access to. However, it does tell us this is an IIS server based on the error page:
 
-![](<../../../.gitbook/assets/image%20(2750).png>)
+![](../../../.gitbook/assets/sizzle-10.png)
 
 ### SMB Shares Enumeration
 
@@ -230,7 +230,7 @@ Created file 'test' in directory: /home/kali/htb/sizzle/mnt/ZZ_ARCHIVE
 
 So I could also write to that Public file. I copied the `test.scf` file there and `responder` captured a hash!
 
-![](<../../../.gitbook/assets/image%20(1302).png>)
+![](../../../.gitbook/assets/sizzle-2.png)
 
 We can crack this hash easily with `john`:
 
@@ -269,23 +269,23 @@ $ smbmap -u amanda -p Ashare1972 -H 10.129.73.156
 
 Now the CertEnroll share is available. CertEnroll is a reference to an ADCS service that provides a web platform to enroll certificates. This means that `/certsrv` is probably present on the web server, and visiting it requires credentials:
 
-![](<../../../.gitbook/assets/image%20(2360).png>)
+![](../../../.gitbook/assets/sizzle-8.png)
 
 Using the credentials we have, we can access it:
 
-![](<../../../.gitbook/assets/image%20(3656).png>)
+![](../../../.gitbook/assets/sizzle-16.png)
 
 We can try to request a certificate, and this presents us with 2 options:
 
-![](<../../../.gitbook/assets/image%20(3352).png>)
+![](../../../.gitbook/assets/sizzle-15.png)
 
 Clicking on User Certificate brings us to a page requesting its key strength:
 
-![](<../../../.gitbook/assets/image%20(1755).png>)
+![](../../../.gitbook/assets/sizzle-5.png)
 
 For some reason, I cannot specify the key strength in this, so we probably aren't supposed to have this functionality. In this case, we can check the advanced request form:
 
-![](<../../../.gitbook/assets/image%20(614).png>)
+![](../../../.gitbook/assets/sizzle-18.png)
 
 It appears we have to create a certificate ourselves, then use it to submit a request to be approved. I know that certificates can be used for authentication purposes, and this service is used to signed the certificates to 'make them legit'. As such, we can create a Certificate Signing Request (CSR) via `openssl`.
 
@@ -295,11 +295,11 @@ $ openssl req -new -newkey rsa:2048 -nodes -keyout user.key -out user.csr
 
 Then, we can grab the `.csr` contents and paste it into the box:
 
-![](<../../../.gitbook/assets/image%20(1676).png>)
+![](../../../.gitbook/assets/sizzle-4.png)
 
 When submitted, we would get the option to download the certificate:
 
-![](<../../../.gitbook/assets/image%20(905).png>)
+![](../../../.gitbook/assets/sizzle-19.png)
 
 This would download a `.cer` file to our machine. Using this, we can try to get a shell. Googling online led me to someone's OSCP notes, and it appears it is possible to get a WinRM shell using this certificate with some Ruby code:
 
@@ -307,7 +307,7 @@ This would download a `.cer` file to our machine. Using this, we can try to get 
 
 Using this, we can get a shell as Amanda:
 
-![](<../../../.gitbook/assets/image%20(3279).png>)
+![](../../../.gitbook/assets/sizzle-12.png)
 
 ## Privilege Escalation
 
@@ -321,11 +321,11 @@ $ bloodhound-python -d HTB.local -u amanda -p Ashare1972 -c all -ns 10.129.101.1
 
 Then, start `bloodhound` and `neo4j`, then upload the data required. I found that the user `amanda` has no privileges at all. Checking the Kerberoastable accounts, we find that `mrlky` is a possible target.
 
-![](<../../../.gitbook/assets/image%20(1373).png>)
+![](../../../.gitbook/assets/sizzle-3.png)
 
 Checking the privileges of this user, we can see that they have DCSync privileges over the forest.
 
-![](<../../../.gitbook/assets/image%20(2455).png>)
+![](../../../.gitbook/assets/sizzle-9.png)
 
 So that's the attack path. Normally, I would aim to Kerberoast remotely for both OPSEC reasons and also because `impacket` is just so easy to use. However, in our initial `nmap` scan, port 88 is not public facing. This means that we **have** to Kerberoast on the machine itself using `rubeus.exe`.
 
@@ -333,7 +333,7 @@ So that's the attack path. Normally, I would aim to Kerberoast remotely for both
 
 I tried to download and execute Rubeus, but this is the error I get due to AppLocker:
 
-![](<../../../.gitbook/assets/image%20(333).png>)
+![](../../../.gitbook/assets/sizzle-13.png)
 
 Other tools like `PowerView.ps1` don't work as well. The current shell that I have is extremely limited in  We can check the Execution Context to confirm this:
 
@@ -348,7 +348,7 @@ There are 2 methods of exploitation here. One is we could run a Kerberoast Power
 
 All we need to do is specify that we want to use Powershell Version 2:
 
-![](<../../../.gitbook/assets/image%20(1168).png>)
+![](../../../.gitbook/assets/sizzle-1.png)
 
 Using this method, we can run some scripts using this. However, its even better if we can get a CLM Bypassed shell. To do so, we can simply download the `Invoke-PowerShellTcp` shell to the machine, and then run this command:
 
@@ -356,7 +356,7 @@ Using this method, we can run some scripts using this. However, its even better 
 powershell -version 2 -nop -nop -noexit -exec bypass -c '.\shell.ps1'
 ```
 
-![](<../../../.gitbook/assets/image%20(3860).png>)
+![](../../../.gitbook/assets/sizzle-17.png)
 
 Great! Now we have a fully functioning shell.
 
@@ -399,7 +399,7 @@ $Cred = New-Object System.Management.Automation.PSCredential('htb\amanda', $SecP
 
 After running this, a hash for the user is given to us:
 
-![](<../../../.gitbook/assets/image%20(3228).png>)
+![](../../../.gitbook/assets/sizzle-11.png)
 
 Transfer this to our machine, and we can crack it easily with `john`:
 
@@ -419,10 +419,10 @@ Session completed.
 
 Earlier, we saw that this user had DCSync privileges over the domain, so we can easily use `secretsdump.py` to dump the administrator hash:
 
-![](<../../../.gitbook/assets/image%20(3347).png>)
+![](../../../.gitbook/assets/sizzle-14.png)
 
 Then, we can use `smbexec.py` to pass the hash and get an administrator shell.
 
-![](<../../../.gitbook/assets/image%20(2225).png>)
+![](../../../.gitbook/assets/sizzle-7.png)
 
 Then we can capture both the flags!

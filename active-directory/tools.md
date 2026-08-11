@@ -56,7 +56,7 @@ A collection of Python classes for working with certain network protocols. The s
 
 In my experience, if you're trying to find a script for an AD attack, impacket probably has it somewhere.
 
-![Kerberoasting using Impacket-GetUserSPN](<../.gitbook/assets/image%20(2578).png>)
+![Kerberoasting using Impacket-GetUserSPN](../.gitbook/assets/tools-6.png)
 
 {% embed url="https://github.com/SecureAuthCorp/impacket" %}
 
@@ -64,9 +64,9 @@ In my experience, if you're trying to find a script for an AD attack, impacket p
 
 Basically, the SSH thing of Windows with loads of easy to use additional commands. Supports file transfer to and fro, as well as passing the hash for authentication. This tool abuses the service typically listening on port 5985.
 
-![Evil-winrm with Password](<../.gitbook/assets/image%20(2507).png>)
+![Evil-winrm with Password](../.gitbook/assets/tools-5.png)
 
-![Evil-winrm with LM Hash](<../.gitbook/assets/image%20(1252).png>)
+![Evil-winrm with LM Hash](../.gitbook/assets/tools-2.png)
 
 {% embed url="https://github.com/Hackplayers/evil-winrm" %}
 
@@ -86,7 +86,7 @@ This tool is mainly useful for when we are trying to pillage the domain for more
 
 There is also a Powershell implementation of this as well witin Powersploit.
 
-![Taken from https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/](<../.gitbook/assets/image%20(1801).png>)
+![Taken from https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/](../.gitbook/assets/tools-3.png)
 
 ## Bloodhound
 
@@ -136,13 +136,13 @@ Once we have run the ingestor, we would just need to upload the data onto the gr
 
 Here's a use case of the Sharphound.ps1, and the zip file it generates containing all the .json data of the domain.
 
-![Using SharpHound.ps1](<../.gitbook/assets/image%20(1913).png>)
+![Using SharpHound.ps1](../.gitbook/assets/tools-4.png)
 
-![Viewing Files Generated](<../.gitbook/assets/image%20(425).png>)
+![Viewing Files Generated](../.gitbook/assets/tools-8.png)
 
 ### Bloodhound in Action
 
-![](<../.gitbook/assets/image%20(1008).png>)
+![](../.gitbook/assets/tools-1.png)
 
 Ths is an example of what the graphing application would look like, and we can see how each node (object) is mapped and linked to other objects.
 
@@ -150,6 +150,6 @@ For this example, we can see how a group has **WriteDacl** privileges over anoth
 
 We can find out more information from each line and whether it can be abused by right-clicking on it and using more info.
 
-![Abuse Info on GenericAll Privilege](<../.gitbook/assets/image%20(2740).png>)
+![Abuse Info on GenericAll Privilege](../.gitbook/assets/tools-7.png)
 
 Bloodhound is insanely useful and fast for mapping a domain out, and it even gives clear instructions and information about each abusable privilege.

@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2990).png>)
+![](../../../.gitbook/assets/frolic-8.png)
 
 Interesting stuff.
 
@@ -12,31 +12,31 @@ Interesting stuff.
 
 Port 9999 was running a typical `nginx` web application. I used `gobuster` to find some hidden directories.
 
-![](<../../../.gitbook/assets/image%20(3067).png>)
+![](../../../.gitbook/assets/frolic-9.png)
 
 Going to `/backup` reveals some credentials and another hidden directory.
 
-![](<../../../.gitbook/assets/image%20(1077).png>)
+![](../../../.gitbook/assets/frolic-2.png)
 
 There was nothing interesting in these files, but I found it rather odd that the `/backup` folder had the `loop/` directory within it.
 
 I proceeded to run `feroxbuster` on the website to recursively enumerate all directories present. This allowed me to find the `/dev/backup` folder which contained another directory.
 
-![](<../../../.gitbook/assets/image%20(2294).png>)
+![](../../../.gitbook/assets/frolic-6.png)
 
 ### PlaySMS
 
 Going to the directory that we just found, we can see another login page.
 
-![](<../../../.gitbook/assets/image%20(2270).png>)
+![](../../../.gitbook/assets/frolic-5.png)
 
 I viewed the page source, and found the password in the JS code within the page.
 
-![](<../../../.gitbook/assets/image%20(3606).png>)
+![](../../../.gitbook/assets/frolic-10.png)
 
 Then, when logged in, we find this cipher.
 
-![](<../../../.gitbook/assets/image%20(1611).png>)
+![](../../../.gitbook/assets/frolic-3.png)
 
 ### Crypto Puzzles
 
@@ -50,15 +50,15 @@ Nothing here check /asdiSIAJJ0QWE9JAS
 
 Afterwards, we would get another cipher.
 
-![](<../../../.gitbook/assets/image%20(3667).png>)
+![](../../../.gitbook/assets/frolic-12.png)
 
 I recognised this as base64 and attempted to decode it, but it returned non-readable characters.
 
-![](<../../../.gitbook/assets/image%20(104).png>)
+![](../../../.gitbook/assets/frolic-1.png)
 
 This was some type of zip folder, because it contained an `index.php` file within it, and also it had the PK file signature (which indicates ZIP folders). So I decoded this to find a password protected zip file, which could be cracked using `zip2john`.
 
-![](<../../../.gitbook/assets/image%20(3664).png>)
+![](../../../.gitbook/assets/frolic-11.png)
 
 Then, `index.php` was another cipher.
 
@@ -90,17 +90,17 @@ This is the Brainfuck cipher, which can be decoded to find `idkwhatispass`.
 
 Now, we had another credential to try. I attempted logins using `admin:idkwhatispass` and logged in to the playSMS service yet again.
 
-![](<../../../.gitbook/assets/image%20(997).png>)
+![](../../../.gitbook/assets/frolic-18.png)
 
 playSMS had a few RCE exploits, so I grabbed one from Github and tried it.
 
 {% embed url="https://github.com/jasperla/CVE-2017-9101/blob/master/playsmshell.py" %}
 
-![](<../../../.gitbook/assets/image%20(2628).png>)
+![](../../../.gitbook/assets/frolic-7.png)
 
 Worked! Now, we can get a reverse shell easily using a bash one-liner.
 
-![](<../../../.gitbook/assets/image%20(583).png>)
+![](../../../.gitbook/assets/frolic-14.png)
 
 Then we would gain a reverse shell as `www-data`.
 
@@ -110,15 +110,15 @@ Then we would gain a reverse shell as `www-data`.
 
 The user on this machine had an interesting `.binary` directory within their home directory.
 
-![](<../../../.gitbook/assets/image%20(189).png>)
+![](../../../.gitbook/assets/frolic-4.png)
 
 In the `/home/ayush/.binary` directory, we can find this `rop` SUID binary.
 
-![](<../../../.gitbook/assets/image%20(752).png>)
+![](../../../.gitbook/assets/frolic-17.png)
 
 I ran an `ltrace` on the binary and tested it with some random input. I found that this uses the `strcpy` function, which is vulnerable to a BOF exploit.
 
-![](<../../../.gitbook/assets/image%20(617).png>)
+![](../../../.gitbook/assets/frolic-15.png)
 
 Ran a `checksec` on it too:
 
@@ -171,9 +171,9 @@ system() -> 0xb7e53da0
 
 Afterwards, we need to fuzz the binary to find the number of junk characters required via `pattern_offset.rb`.
 
-![](<../../../.gitbook/assets/image%20(4050).png>)
+![](../../../.gitbook/assets/frolic-13.png)
 
-![](<../../../.gitbook/assets/image%20(739).png>)
+![](../../../.gitbook/assets/frolic-16.png)
 
 We can then create a quick script using Python.
 

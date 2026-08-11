@@ -25,11 +25,11 @@ PORT     STATE SERVICE
 
 Port 80 reveals a basic login page:
 
-![](<../../../.gitbook/assets/image%20(1291).png>)
+![](../../../.gitbook/assets/vector-3.png)
 
 Port 2290 was also a HTTP port, and it returned something simple:
 
-![](<../../../.gitbook/assets/image%20(1400).png>)
+![](../../../.gitbook/assets/vector-4.png)
 
 C? When we view the page source, there's also this part here:
 
@@ -46,11 +46,11 @@ C? When we view the page source, there's also this part here:
 
 There's a commented ciphertext, and there's also something which takes a parameter. We can try putting this ciphertext as the parameter requested.
 
-![](<../../../.gitbook/assets/image%20(1004).png>)
+![](../../../.gitbook/assets/vector-1.png)
 
 If we remove some characters, then it loads something else.
 
-![](<../../../.gitbook/assets/image%20(2893).png>)
+![](../../../.gitbook/assets/vector-7.png)
 
 That's literally all of the enumeration that is possible to do.
 
@@ -118,7 +118,7 @@ We get a password! SSH is not open on the machine, but RDP is. `xfreerdp` can be
 $ xfreerdp /u:victor /p:WormAloeVat7 /v:192.168.233.119
 ```
 
-![](<../../../.gitbook/assets/image%20(1952).png>)
+![](../../../.gitbook/assets/vector-6.png)
 
 We can then grab the user flag.
 
@@ -128,10 +128,10 @@ We can then grab the user flag.
 
 I downloaded and ran `winPEASx64.exe` on the machine, and found this output:
 
-![](<../../../.gitbook/assets/image%20(1778).png>)
+![](../../../.gitbook/assets/vector-5.png)
 
 It's pretty trivial to get an administrator shell from this.
 
-![](<../../../.gitbook/assets/image%20(1278).png>)
+![](../../../.gitbook/assets/vector-2.png)
 
 Rooted!

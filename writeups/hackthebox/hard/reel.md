@@ -61,7 +61,7 @@ new format / converted documents will be saved here.
 
 The `AppLocker.docx` file just states that AppLocker is in place:
 
-![](<../../../.gitbook/assets/image%20(3433).png>)
+![](../../../.gitbook/assets/reel-4.png)
 
 The last file cannot be opened for some reason. The most interesting thing about it is the metadata extracted with `exiftool`:
 
@@ -139,7 +139,7 @@ Jun 16 09:46:01 kali sendEmail[7797]: Email was sent successfully!
 
 I tried this a few times, and it seems to only work when we use the `-x 0` flag instead. When changed, we can get a reverse shell as the user:
 
-![](<../../../.gitbook/assets/image%20(1155).png>)
+![](../../../.gitbook/assets/reel-1.png)
 
 ## Privilege Escalation
 
@@ -191,7 +191,7 @@ powershell -c "$credentials = Import-Clixml -Path cred.xml; $credentials.GetNetw
 
 Using this password, we can `ssh` in as `tom`.
 
-![](<../../../.gitbook/assets/image%20(1277).png>)
+![](../../../.gitbook/assets/reel-2.png)
 
 ### Bloodhound -> WriteOwner
 
@@ -267,7 +267,7 @@ So there's already a `csv` file present with the ACLs we need. I transferred fil
 
 I found that our current user has WriteOwner permissions over the user `claire`.
 
-![](<../../../.gitbook/assets/image%20(4037).png>)
+![](../../../.gitbook/assets/reel-7.png)
 
 This would mean that `tom` can add permissions over `claire`, of which we don't have any yet. To abuse this, we first need to set `tom` as the owner of the ACLs over `claire` using PowerView.
 
@@ -297,7 +297,7 @@ Set-DomainUserPassword -identity claire -accountpassword $cred
 
 Afterwards, we can `ssh` in as `claire` using this password.
 
-![](<../../../.gitbook/assets/image%20(3812).png>)
+![](../../../.gitbook/assets/reel-6.png)
 
 ### WriteDacl -> Admin Creds
 
@@ -334,7 +334,7 @@ Global Group memberships     *Domain Users         *MegaBank_Users
 
 Checking back on the Bloodhound output, we see that `claire` has WriteDacl permissions over the Backup Admins group:
 
-![](<../../../.gitbook/assets/image%20(360).png>)
+![](../../../.gitbook/assets/reel-5.png)
 
 This means that the user `claire` can modify the ACLs of the group, which includes adding and removing users.
 
@@ -406,6 +406,6 @@ $password="Cr4ckMeIfYouC4n!"
 
 We can then login as the administrator user:
 
-![](<../../../.gitbook/assets/image%20(1875).png>)
+![](../../../.gitbook/assets/reel-3.png)
 
 Rooted!

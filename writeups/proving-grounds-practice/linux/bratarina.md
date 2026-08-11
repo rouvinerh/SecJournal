@@ -56,10 +56,10 @@ OpenSMTPD < 6.6.3p1 - Local Privilege Escalation + Remote  | openbsd/remote/4814
 
 The RCE exploit looks the most promising. We can verify it works using `ping`.
 
-![](<../../../.gitbook/assets/image%20(1061).png>)
+![](../../../.gitbook/assets/bratarina-1.png)
 
 I was facing similar difficulties in getting a reverse shell back, and found that we had to use port 25 as the listener port:
 
-![](<../../../.gitbook/assets/image%20(2103).png>)
+![](../../../.gitbook/assets/bratarina-2.png)
 
 Rooted!

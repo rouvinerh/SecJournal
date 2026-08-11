@@ -30,7 +30,7 @@ $ sudo nmap -p 22,5000,8000 -sC -sV -O -T4 10.129.150.229
 
 Port 8000 hosted a web application selling bagels.
 
-![](<../../../.gitbook/assets/image%20(3633).png>)
+![](../../../.gitbook/assets/bagel-7.png)
 
 The interesting parameter here was the URL, which was `http://bagel.htb/?page=index.html`. LFI works here and I can view the `/etc/passwd` file.
 
@@ -83,7 +83,7 @@ order #3 address: Warsaw. 437 Radomska., client name: A.Kowalska, details: [93 b
 
 Not too sure what to make of the orders, but at least we have an LFI. `gobuster` revealed no other directories of interest. Since we have no other information of the file system in the machine, we can view the `/proc/self/cmdline` file to view the processes that are running.
 
-![](<../../../.gitbook/assets/image%20(1724).png>)
+![](../../../.gitbook/assets/bagel-2.png)
 
 Now we can download the source code and begin enumerating possible vulnerabilities.
 
@@ -229,7 +229,7 @@ TypeNameHandling = 4 means this:
 
 I also found some credentials here:
 
-![](<../../../.gitbook/assets/image%20(2260).png>)
+![](../../../.gitbook/assets/bagel-4.png)
 
 From the 3 main functions, it seems that ReadOrder does check for LFI, so that's not exploitable. WriteOrder does not seem to do much, but RemoveOrder is suspiciously short and does nothing. For our JSON deserialisation exploit, perhaps we should use this as the main function for exploitataion. We know from the main function of the DLL that the code **always deserializes the input we give it no matter what**.
 
@@ -265,15 +265,15 @@ result = ws.recv()
 print(result)
 ```
 
-![](<../../../.gitbook/assets/image%20(812).png>)
+![](../../../.gitbook/assets/bagel-9.png)
 
 This works! Now, we can attempt to read the user flag and the private SSH key of the user `phil`.
 
-![](<../../../.gitbook/assets/image%20(287).png>)
+![](../../../.gitbook/assets/bagel-5.png)
 
 Then we can SSH in as `phil`.
 
-![](<../../../.gitbook/assets/image%20(1751).png>)
+![](../../../.gitbook/assets/bagel-3.png)
 
 ## Privilege Escalation
 
@@ -281,13 +281,13 @@ Then we can SSH in as `phil`.
 
 With the credentials we found within the DLL file, we can `su` to become the `developer` user.
 
-![](<../../../.gitbook/assets/image%20(3200).png>)
+![](../../../.gitbook/assets/bagel-6.png)
 
 ### Sudo Dotnet
 
 As the `developer` user, we can run `/usr/bin/dotnet` as the `root` user.
 
-![](<../../../.gitbook/assets/image%20(166).png>)
+![](../../../.gitbook/assets/bagel-1.png)
 
 Since we can run this, we can simply run `dotnet fsi`, which would open up an interactive interpreter we can use to make `/bin/bash` a SUID binary.
 
@@ -304,6 +304,6 @@ process.Start();
 
 Then, either in the same shell or another, we can run `/bin/bash -p` to become root.
 
-![](<../../../.gitbook/assets/image%20(463).png>)
+![](../../../.gitbook/assets/bagel-8.png)
 
 Rooted!

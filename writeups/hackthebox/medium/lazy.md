@@ -35,11 +35,11 @@ Since only port 80 is open, we can proxy the traffic through Burpsuite.
 
 The website shows a really basic company website:
 
-![](<../../../.gitbook/assets/image%20(4155).png>)
+![](../../../.gitbook/assets/lazy-1.png)
 
 I created a user and logged in to view the same thing:
 
-![](<../../../.gitbook/assets/image%20(4156).png>)
+![](../../../.gitbook/assets/lazy-2.png)
 
 In Burp, there appears to be a custom cookie being sent to the website called `auth`:
 
@@ -59,7 +59,7 @@ Upgrade-Insecure-Requests: 1
 
 Although the website was written in PHP, this cookie was not the default PHP session cookie that was used. I tried to change a few parameters for it and found that the application returned a unique error:
 
-![](<../../../.gitbook/assets/image%20(4157).png>)
+![](../../../.gitbook/assets/lazy-3.png)
 
 This is an obvious hint that we have to somehow use the **paddling oracle attack** for this. This attack basically gives us a computationally feasible way to brute force the plaintext byte by byte using the error. Here's a pretty good video from college that I used:
 
@@ -138,7 +138,7 @@ Block 1 Results:
 
 When we access the website with this cookie, it tells us we are logged in as the administrator:
 
-![](<../../../.gitbook/assets/image%20(4158).png>)
+![](../../../.gitbook/assets/lazy-4.png)
 
 It also gives us a private SSH key to `ssh` in as the `mitsos` user as indicated by the URL:
 
@@ -146,7 +146,7 @@ It also gives us a private SSH key to `ssh` in as the `mitsos` user as indicated
 mysshkeywithnamemitsos
 ```
 
-![](<../../../.gitbook/assets/image%20(4159).png>)
+![](../../../.gitbook/assets/lazy-5.png)
 
 ## Privilege Escalation
 
@@ -237,6 +237,6 @@ export PATH=/tmp:$PATH
 /home/mitsos/backup
 ```
 
-![](<../../../.gitbook/assets/image%20(4161).png>)
+![](../../../.gitbook/assets/lazy-6.png)
 
 Rooted!

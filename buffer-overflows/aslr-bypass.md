@@ -8,7 +8,7 @@ In earlier Buffer Overflows, we examined how controlling the EIP can lead to RCE
 
 In order to bypass ASLR, we need to understand how it functions, as well as how functions are called. When we run a binary, the libraries and functions of that binary are loaded into virtual memory.
 
-![](<../.gitbook/assets/image%20(2917).png>)
+![](../.gitbook/assets/aslr-bypass.png)
 
 With ASLR enabled, the library would be **loaded at different places in memory** each time. With the main library being loaded differently, all functions called in the library are affected and have different locations in memory.
 

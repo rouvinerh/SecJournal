@@ -23,11 +23,11 @@ We can add `snoopy.htb` to our `/etc/hosts` file as per standard HTB practice.
 
 This was a corporate page that provides DevSecOps services:
 
-![](<../../.gitbook/assets/image%20(1481).png>)
+![](../../.gitbook/assets/snoopy-2.png)
 
 Looking around, there's another subdomain present in the form of a mail server.
 
-![](<../../.gitbook/assets/image%20(873).png>)
+![](../../.gitbook/assets/snoopy-19.png)
 
 It syas that the DNS records are being migrated to another domain and that their email server is offline. We can run both a `gobuster` directory and `wfuzz` subdomain scan first. The subdomain scan reveals a `mm` subdomain present.
 
@@ -78,15 +78,15 @@ The last thing is that `mail.snoopy.htb` is not present within the records and i
 
 We can visit the `mm` subdomain to verify that it is running:
 
-![](<../../.gitbook/assets/image%20(3120).png>)
+![](../../.gitbook/assets/snoopy-8.png)
 
 We don't have any credentials, but there is a Password Reset in use here that requires an email address:
 
-![](<../../.gitbook/assets/image%20(849).png>)
+![](../../.gitbook/assets/snoopy-18.png)
 
 Lastly, there are some emails present:
 
-![](<../../.gitbook/assets/image%20(3281).png>)
+![](../../.gitbook/assets/snoopy-9.png)
 
 ### Download LFI -> DNS Vuln
 
@@ -107,11 +107,11 @@ Upgrade-Insecure-Requests: 1
 
 The `announcement.pdf` file had nothing interesting itself, but this looks vulnerable to LFI. Inital testing reveals this isn't vulnerable at first:
 
-![](<../../.gitbook/assets/image%20(444).png>)
+![](../../.gitbook/assets/snoopy-17.png)
 
 After using `....//` instead, we can see that a file is generated:
 
-![](<../../.gitbook/assets/image%20(376).png>)
+![](../../.gitbook/assets/snoopy-15.png)
 
 When the file is downloaded and viewed, we see that it works!
 
@@ -172,7 +172,7 @@ if __name__ == '__main__':
 	main()
 ```
 
-![](<../../.gitbook/assets/image%20(3720).png>)
+![](../../.gitbook/assets/snoopy-14.png)
 
 This made enumeration a lot easier. Now, we can proceed with enumeration of the file system and other sensitive files. We can start with `/etc/nginx/sites-available/default`.
 
@@ -283,7 +283,7 @@ http://mm.snoopy.htb/reset_password_complete?token=b4akcwn9adntaawingkbho8ctcyzf
 
 Afterwards, we can reset the password and see that it works here:
 
-![](<../../.gitbook/assets/image%20(1159).png>)
+![](../../.gitbook/assets/snoopy-1.png)
 
 Then we can login.
 
@@ -291,23 +291,23 @@ Then we can login.
 
 When we login, we can see a ton of chat logs:
 
-![](<../../.gitbook/assets/image%20(2484).png>)
+![](../../.gitbook/assets/snoopy-7.png)
 
 It talks about ClamAV being used as the anti-virus, and also about some provisioning server. We can view the different commands present on this:
 
 There was a weird command `/server_provision` without any description. When run, it opens up a UI that seems to spawn a server:
 
-![](<../../.gitbook/assets/image%20(1936).png>)
+![](../../.gitbook/assets/snoopy-4.png)
 
 We can fill it in to have our credentials and required details. It appears that Windows is disabled too:
 
-![](<../../.gitbook/assets/image%20(2441).png>)
+![](../../.gitbook/assets/snoopy-6.png)
 
-![](<../../.gitbook/assets/image%20(1904).png>)
+![](../../.gitbook/assets/snoopy-3.png)
 
 Anyways, after filling in the fields and clicking submit, we get this weird thing on a listener port:
 
-![](<../../.gitbook/assets/image%20(3315).png>)
+![](../../.gitbook/assets/snoopy-10.png)
 
 I thought that it would be a shell and hence ran `id`, but it quickly closed. In this case, I took a look at the traffic within `wireshark` but wasn't able to find out much. I tried out a few methods from the SSH page of Hacktricks, and found `ssh-mitm`.
 
@@ -350,7 +350,7 @@ listen interfaces 0.0.0.0 and :: on port 2222
 
 We have a credential! With this, we can `ssh` in as the user `cbrown`:
 
-![](<../../.gitbook/assets/image%20(3454).png>)
+![](../../.gitbook/assets/snoopy-12.png)
 
 ## Privilege Escalation
 
@@ -420,7 +420,7 @@ index 0000000..8e881d1
 
 Afterwards, just run the `sudo` command on the `/tmp/diff` file. This would put our public key within the `sbrown` directory since we are running the command as `sbrown`. Then, we can `ssh` in.
 
-![](<../../.gitbook/assets/image%20(2127).png>)
+![](../../.gitbook/assets/snoopy-5.png)
 
 Grab the user flag.
 
@@ -445,14 +445,14 @@ User sbrown may run the following commands on snoopy:
 
 Based on the documentation, since we can run this as `root`, we should be able to read files like `/etc/shadow`. This can be done using the `-f` flag and it works as shown:
 
-![](<../../.gitbook/assets/image%20(3396).png>)
+![](../../.gitbook/assets/snoopy-11.png)
 
 Then, we can simply read the private SSH key of `root` located at `/root/.ssh/id_rsa`.
 
-![](<../../.gitbook/assets/image%20(3578).png>)
+![](../../.gitbook/assets/snoopy-13.png)
 
 After some tidying up, we can `ssh` in as `root`.
 
-![](<../../.gitbook/assets/image%20(390).png>)
+![](../../.gitbook/assets/snoopy-16.png)
 
 Rooted!

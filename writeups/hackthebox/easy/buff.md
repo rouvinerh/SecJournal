@@ -4,25 +4,25 @@
 
 Nmap Scan:
 
-![](<../../../.gitbook/assets/image%20(3039).png>)
+![](../../../.gitbook/assets/buff-5.png)
 
 ### Gym
 
 On port 8080, it was a gym-related page:
 
-![](<../../../.gitbook/assets/image%20(2910).png>)
+![](../../../.gitbook/assets/buff-4.png)
 
 We can use `gobuster` on the website to find more directories:
 
-![](<../../../.gitbook/assets/image%20(2698).png>)
+![](../../../.gitbook/assets/buff-3.png)
 
 Checking the `contact.php` file, we see the software used to make this.
 
-![](<../../../.gitbook/assets/image%20(3327).png>)
+![](../../../.gitbook/assets/buff-7.png)
 
 Then, we can search for exploits for this Gym Management Software 1.0.
 
-![](<../../../.gitbook/assets/image%20(742).png>)
+![](../../../.gitbook/assets/buff-9.png)
 
 We can try the RCE exploit:
 
@@ -30,13 +30,13 @@ We can try the RCE exploit:
 
 By running the exploit, we would gain a webshell:
 
-![](<../../../.gitbook/assets/image%20(1666).png>)
+![](../../../.gitbook/assets/buff-2.png)
 
 Afterwards, we can download `nc.exe` onto the machine via `smbserver.py`.
 
-![](<../../../.gitbook/assets/image%20(1660).png>)
+![](../../../.gitbook/assets/buff-1.png)
 
-![](<../../../.gitbook/assets/image%20(3838).png>)
+![](../../../.gitbook/assets/buff-8.png)
 
 ## Privilege Escalation
 
@@ -61,7 +61,7 @@ dir
 
 When checking for exploits regarding CloudMe, we can find a few Buffer Overflow exploits that can be used for RCE using shellcode.
 
-![](<../../../.gitbook/assets/image%20(3181).png>)
+![](../../../.gitbook/assets/buff-6.png)
 
 {% embed url="https://www.exploit-db.com/exploits/48389" %}
 
@@ -152,6 +152,6 @@ except Exception as e:
 
 Afterwards, run it using `python3` and an administrator shell will spawn.
 
-![](<../../../.gitbook/assets/image%20(774).png>)
+![](../../../.gitbook/assets/buff-10.png)
 
 Rooted!

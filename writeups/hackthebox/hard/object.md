@@ -4,39 +4,39 @@
 
 As usual, we start with an Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2587).png>)
+![](../../../.gitbook/assets/object-8.png)
 
 Doing a detailed scan, we can find that port 8080 was running a Jetty instance.
 
-![](<../../../.gitbook/assets/image%20(2782).png>)
+![](../../../.gitbook/assets/object-10.png)
 
 ### Jenkins
 
 Port 8080 revealed a Jenkins instance login page:
 
-![](<../../../.gitbook/assets/image%20(2265).png>)
+![](../../../.gitbook/assets/object-6.png)
 
 With Jenkins, I attempted to create a Windows batch command that would execute every minute like so:
 
-![](<../../../.gitbook/assets/image%20(2945).png>)
+![](../../../.gitbook/assets/object-11.png)
 
 However, this failed because the box was unable to reach my machine. I suppose there is a firewall or something within the machine that is blocking outgoing TCP traffic.
 
 Instead, we can use this machine to enumerate the box instance. I noticed that the machine was building the workspace in this directory:
 
-![](<../../../.gitbook/assets/image%20(2669).png>)
+![](../../../.gitbook/assets/object-9.png)
 
 I opeted to view the files in that directory using `dir /s`.
 
-![](<../../../.gitbook/assets/image%20(1187).png>)
+![](../../../.gitbook/assets/object-2.png)
 
 We find another `.jenkins` folder. Within that, we would find another `users` folder with some `config.xml` files:
 
-![](<../../../.gitbook/assets/image%20(225).png>)
+![](../../../.gitbook/assets/object-5.png)
 
 Naturally, the admin one is more interesting. Taking a look reveals that there is an encoded password within it:
 
-![](<../../../.gitbook/assets/image%20(597).png>)
+![](../../../.gitbook/assets/object-17.png)
 
 ### Decrypting Password
 
@@ -52,31 +52,31 @@ After extracting both of these files, we can use this tool to decrypt them:
 
 {% embed url="https://github.com/hoto/jenkins-credentials-decryptor" %}
 
-![](<../../../.gitbook/assets/image%20(2433).png>)
+![](../../../.gitbook/assets/object-7.png)
 
 Then, we can `evil-winrm` in as `oliver`.
 
-![](<../../../.gitbook/assets/image%20(3648).png>)
+![](../../../.gitbook/assets/object-15.png)
 
 ## Privilege Escalation
 
 Once in the machine, I ran `Sharphound.ps1` to enumerate for me:
 
-![](<../../../.gitbook/assets/image%20(678).png>)
+![](../../../.gitbook/assets/object-19.png)
 
 ### BloodHound
 
 We find that within Bloodhound, the `oliver` user has the `ForceChangePassword` permission over the `smith` user.
 
-![](<../../../.gitbook/assets/image%20(949).png>)
+![](../../../.gitbook/assets/object-20.png)
 
 The `smith` user has `GenericWrite` permissions over the `maria` user:
 
-![](<../../../.gitbook/assets/image%20(1555).png>)
+![](../../../.gitbook/assets/object-3.png)
 
 And lastly, the `maria` user has `WriteOwner` permissions over the `Domain Admins` group:
 
-![](<../../../.gitbook/assets/image%20(1609).png>)
+![](../../../.gitbook/assets/object-4.png)
 
 Interesting path of exploits.
 
@@ -100,19 +100,19 @@ However, this did not work out well as I was not able to make use of the ticket.
 
 As `smith`, we can create a malicious Powershell script and change the logon script for `maria`.
 
-![](<../../../.gitbook/assets/image%20(3350).png>)
+![](../../../.gitbook/assets/object-13.png)
 
 Within the desktop, I found this `Engines.xls` file.
 
-![](<../../../.gitbook/assets/image%20(2965).png>)
+![](../../../.gitbook/assets/object-12.png)
 
 Copying it to another directory, I was able to move it to my machine using the `download` command from `evil-winrm`. Within it, we can find some credentials:
 
-![](<../../../.gitbook/assets/image%20(634).png>)
+![](../../../.gitbook/assets/object-18.png)
 
 We can use the last credential to `evil-winrm` in as `maria`:
 
-![](<../../../.gitbook/assets/image%20(1139).png>)
+![](../../../.gitbook/assets/object-1.png)
 
 ### Maria to Domain Admin
 
@@ -125,10 +125,10 @@ Add-DomainObjectAcl -TargetIdentity "Domain Admins" -PrincipalIdentity maria -Ri
 net group "Domain Admins" maria /add
 ```
 
-![](<../../../.gitbook/assets/image%20(3631).png>)
+![](../../../.gitbook/assets/object-14.png)
 
 Afterwards, we can re-logon using `evil-winrm` and see that we have full administrative privileges:
 
-![](<../../../.gitbook/assets/image%20(3967).png>)
+![](../../../.gitbook/assets/object-16.png)
 
 We can then access the administrator desktop and capture the root flag.

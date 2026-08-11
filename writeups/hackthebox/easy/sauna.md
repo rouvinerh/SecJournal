@@ -56,11 +56,11 @@ It seems the domain is `EGOTISTICAL-BANK.LOCAL`.
 
 This was a bank company website:
 
-![](<../../../.gitbook/assets/image%20(1511).png>)
+![](../../../.gitbook/assets/sauna-2.png)
 
 At the bottom, we can 'Meet The Team':
 
-![](<../../../.gitbook/assets/image%20(4020).png>)
+![](../../../.gitbook/assets/sauna-6.png)
 
 Using these names, we can make use of `usernamer.py` to generate possible usernames for the machine:
 
@@ -100,7 +100,7 @@ Session completed.
 
 Afterwards, we can get a shell using `evil-winrm`.
 
-![](<../../../.gitbook/assets/image%20(2979).png>)
+![](../../../.gitbook/assets/sauna-5.png)
 
 Grab the user flag.
 
@@ -110,7 +110,7 @@ Grab the user flag.
 
 I ran a WinPEAS scan to enumerate for me. There, I found some AutoLogon credentials for the user.
 
-![](<../../../.gitbook/assets/image%20(2550).png>)
+![](../../../.gitbook/assets/sauna-4.png)
 
 We can login as this user using `evil-winrm`, but there's not much there for us.
 
@@ -144,12 +144,12 @@ INFO: Done in 00M 03S
 
 After uploading the data, we can see what privileges this user has, and find out that he has DCSync privileges over the DC.
 
-![](<../../../.gitbook/assets/image%20(2117).png>)
+![](../../../.gitbook/assets/sauna-3.png)
 
 This means we can use `secretsdump.py` to read the hashes of the entire machine.
 
-![](<../../../.gitbook/assets/image%20(4025).png>)
+![](../../../.gitbook/assets/sauna-7.png)
 
 Then, just pass the hash using `evil-winrm` to get an administrator shell.
 
-![](<../../../.gitbook/assets/image%20(1350).png>)
+![](../../../.gitbook/assets/sauna-1.png)

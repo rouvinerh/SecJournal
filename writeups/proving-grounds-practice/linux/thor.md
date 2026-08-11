@@ -144,17 +144,17 @@ PORT      STATE SERVICE       VERSION
 
 Port 80 hosted a portfolio page for Jane Foster:
 
-![](<../../../.gitbook/assets/image%20(1541).png>)
+![](../../../.gitbook/assets/thor-3.png)
 
 At the bottom of the page, there was some contact details:
 
-![](<../../../.gitbook/assets/image%20(1539).png>)
+![](../../../.gitbook/assets/thor-2.png)
 
 The box was named Thor, so it makes sense that there would be something 'Thor' related. From the earlier `nmap` scan, we know that port 80 is running using Litespeed. Port 7080 is the LiteSpeed admin console, likely operated by this Jane Foster.
 
 Port 7080 reveals a login page:
 
-![](<../../../.gitbook/assets/image%20(3175).png>)
+![](../../../.gitbook/assets/thor-9.png)
 
 There are some exploits available for this:
 
@@ -211,7 +211,7 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 shadow
 [+] Triggering command execution..
 ```
 
-![](<../../../.gitbook/assets/image%20(3147).png>)
+![](../../../.gitbook/assets/thor-8.png)
 
 ## Privilege Escalation
 
@@ -236,7 +236,7 @@ $ john --show hashes
 
 We can then `ssh` in as `thor`:
 
-![](<../../../.gitbook/assets/image%20(1066).png>)
+![](../../../.gitbook/assets/thor-1.png)
 
 ### Sudo Webmin -> Webmin RCE
 
@@ -289,7 +289,7 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 bin
 [+] Triggering command execution...
 ```
 
-![](<../../../.gitbook/assets/image%20(3087).png>)
+![](../../../.gitbook/assets/thor-7.png)
 
 Then we can reset the password and restart Webmin as `thor`:
 
@@ -303,12 +303,12 @@ thor@Lite:~$ sudo /usr/bin/systemctl restart webmin
 
 Using this, we can login to Webmin and view the dashboard:
 
-![](<../../../.gitbook/assets/image%20(1544).png>)
+![](../../../.gitbook/assets/thor-4.png)
 
 Within Webmin, there's a `>_` option, which spawns a command line instance within the browser:
 
-![](<../../../.gitbook/assets/image%20(2072).png>)
+![](../../../.gitbook/assets/thor-5.png)
 
 We can just do `chmod u+s /bin/bash`, and get a proper `root` shell using `ssh`.
 
-![](<../../../.gitbook/assets/image%20(3086).png>)
+![](../../../.gitbook/assets/thor-6.png)

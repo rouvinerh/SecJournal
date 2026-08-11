@@ -21,7 +21,7 @@ FTP and HTTP.
 
 Port 80 just shows a 403 page:
 
-![](<../../../.gitbook/assets/image%20(602).png>)
+![](../../../.gitbook/assets/exghost-5.png)
 
 Running directory scans only shows one directory:
 
@@ -83,7 +83,7 @@ backup: pcap capture file, microsecond ts (little-endian) - version 2.4 (Etherne
 
 We can open this up in `wireshark` and view the TCP streams. Within TCP Stream 1, we can find this HTTP request:
 
-![](<../../../.gitbook/assets/image%20(1661).png>)
+![](../../../.gitbook/assets/exghost-2.png)
 
 Seems that we are able to upload files through POST requests at `exiftest.php`:
 
@@ -94,7 +94,7 @@ There is no file to upload.
 
 From the PCAP file, we can actually export the `exiftest.php` file:
 
-![](<../../../.gitbook/assets/image%20(557).png>)
+![](../../../.gitbook/assets/exghost-4.png)
 
 Interestingly the second `exiftest.php` was the response, and here's the contents:
 
@@ -150,7 +150,7 @@ print(requests.post(url, files=files).text)
 
 After uploading it, we would get a shell as `www-data`:
 
-![](<../../../.gitbook/assets/image%20(1641).png>)
+![](../../../.gitbook/assets/exghost-1.png)
 
 ## Privilege Escalation
 
@@ -168,4 +168,4 @@ Sudo version 1.8.31
 
 We can just download the Python script and execute it to get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(3425).png>)
+![](../../../.gitbook/assets/exghost-3.png)

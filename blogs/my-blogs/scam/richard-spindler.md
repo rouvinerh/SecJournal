@@ -4,7 +4,7 @@
 
 A few days ago, I received this email:
 
-![](<../../../.gitbook/assets/image%20(3814).png>)
+![](../../../.gitbook/assets/richard-spindler.png)
 
 Here's the text format if you're interested:
 

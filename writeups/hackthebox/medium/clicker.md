@@ -119,15 +119,15 @@ We probably need to do source code review later, but for now we can move on to e
 
 The website advertises a game:
 
-![](../../../.gitbook/assets/image.png)
+![](../../../.gitbook/assets/clicker-13.png)
 
 There are some reviews left behind by users in the Info tab:
 
-![](<../../../.gitbook/assets/image%20(1).png>)
+![](../../../.gitbook/assets/clicker-1.png)
 
 We might need these usernames. First, let's register a user and login to see what this game is about. As it turns out, this is just a cookie clicker:
 
-![](<../../../.gitbook/assets/image%20(2).png>)
+![](../../../.gitbook/assets/clicker-6.png)
 
 Based on the source code, there doesn't seem to be a subdomain or hidden directory (yet), so let's take a look at it to find vulnerabilities. `authenticate.php` handles the user sessions:
 
@@ -255,7 +255,7 @@ clicks=321&level=1&%72%6f%6c%65%3d%22%41%64%6d%69%6e%22%23
 
 After re-login, we see this:
 
-![](<../../../.gitbook/assets/image%20(3).png>)
+![](../../../.gitbook/assets/clicker-7.png)
 
 We are now the administrators!
 
@@ -326,15 +326,15 @@ decoded, it gives nickname="<?php system($_REQUEST['cmd']); ?>"#
 
 Afterwards, we can send a POST request with the `extension` parameter.
 
-![](<../../../.gitbook/assets/image%20(4).png>)
+![](../../../.gitbook/assets/clicker-8.png)
 
 From that `.php` file stored, check for RCE:
 
-![](<../../../.gitbook/assets/image%20(5).png>)
+![](../../../.gitbook/assets/clicker-9.png)
 
 Then, we can get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(6).png>)
+![](../../../.gitbook/assets/clicker-10.png)
 
 ## Privilege Escalation
 
@@ -383,11 +383,11 @@ execute_query: setuid, setgid ELF 64-bit LSB pie executable, x86-64, version 1 (
 
 I transferred it back to my machine for some reverse engineering via `ghidra`. When decompiled, we can see how there are `switch` cases within the `main` function:
 
-![](<../../../.gitbook/assets/image%20(7).png>)
+![](../../../.gitbook/assets/clicker-11.png)
 
 Firstly, I noticed that the `.sql` files DO NOT have absolute paths, meaning we could potentially do PATH hijacking. There's also some usage of the `system` function:
 
-![](<../../../.gitbook/assets/image%20(8).png>)
+![](../../../.gitbook/assets/clicker-12.png)
 
 Interesting. When run on the machine, it just shows this:
 
@@ -440,11 +440,11 @@ ERROR: Can't initialize batch_readline - may be the input source is a directory 
 
 This worked! I tried reading the `id_rsa` file (since we are in `/home/jack/queries`) and it worked as well:
 
-![](<../../../.gitbook/assets/image%20(10).png>)
+![](../../../.gitbook/assets/clicker-2.png)
 
 Using the above, we can `ssh` in as `jack`:
 
-![](<../../../.gitbook/assets/image%20(11).png>)
+![](../../../.gitbook/assets/clicker-3.png)
 
 ### Sudo Privileges -> Root
 
@@ -490,10 +490,10 @@ There's no PATH hijacking for this binary, and the script uses `unset` on some P
 
 Based on the above, setting `PERL5OPT=-d` and `PERL5DB=system("sh");exit;`, we can get a `root` shell. I tried it in the machine, and it worked!
 
-![](<../../../.gitbook/assets/image%20(12).png>)
+![](../../../.gitbook/assets/clicker-4.png)
 
 Now, we can easily get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(13).png>)
+![](../../../.gitbook/assets/clicker-5.png)
 
 Rooted!

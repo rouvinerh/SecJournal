@@ -8,11 +8,11 @@ When HTTP requests are sent to a server, the user sends requests to a front-end 
 
 It is normally processed in a queue data structure:
 
-![Taken from Portswigger Web Security Academy](<../../.gitbook/assets/image%20(145).png>)
+![Taken from Portswigger Web Security Academy](../../.gitbook/assets/readme-1-dup10.png)
 
 Request smuggling happens when attackers embed a hidden request, which is then interpreted by the back-end as a separate request.
 
-![Taken from Portswigger Web Security Academy](<../../.gitbook/assets/image%20(535).png>)
+![Taken from Portswigger Web Security Academy](../../.gitbook/assets/readme-2-dup9.png)
 
 Generally, the manipulation of the `Content-Length` or `Transfer-Encoding` headers allows for this. These headers count the length of the request sent differently.
 

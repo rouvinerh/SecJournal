@@ -38,11 +38,11 @@ Port 80 just shows an IIS server default page, with no further directories. FTP 
 
 Port 9998 shows a login page for SmarterMail:
 
-![](<../../../.gitbook/assets/image%20(3605).png>)
+![](../../../.gitbook/assets/algernon-3.png)
 
 If we view the page source, we can sort of find the version that is running:
 
-![](<../../../.gitbook/assets/image%20(1094).png>)
+![](../../../.gitbook/assets/algernon-1.png)
 
 This software has quite a few exploits:
 
@@ -69,6 +69,6 @@ The product build listed above is 6919, which is older than the RCE exploit for 
 
 Running that gives us a reverse shell as the SYSTEM user:
 
-![](<../../../.gitbook/assets/image%20(3108).png>)
+![](../../../.gitbook/assets/algernon-2.png)
 
 Rooted!

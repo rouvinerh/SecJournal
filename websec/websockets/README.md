@@ -8,7 +8,7 @@ This is commonly used in the 'chat' feature in websites, such as raising enquiri
 
 This is how the connection is typically established:
 
-![](<../../.gitbook/assets/image%20(4000).png>)
+![](../../.gitbook/assets/readme-dup2.png)
 
 A WebSocket handshake request can be as follows:
 

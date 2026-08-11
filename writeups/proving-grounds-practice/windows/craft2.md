@@ -23,7 +23,7 @@ This is a continuation of the original Craft machine, and it appears that SMB is
 
 The website is largely the same as the previous one. However, when we try to upload a ODT file, we get some additional information:
 
-![](<../../../.gitbook/assets/image%20(681).png>)
+![](../../../.gitbook/assets/craft2-6.png)
 
 It appears that macros will not work again. Since SMB is open on this machine, I googled 'LibreOffice SMB Exploit' and this was the first result:
 
@@ -64,7 +64,7 @@ Please enter IP of listener: 192.168.45.197
 
 The script also generates the file `bad.odt` for us to upload. I started a `responder` instance and uploaded the file. After a while, `responder` would capture a hash:
 
-![](<../../../.gitbook/assets/image%20(1308).png>)
+![](../../../.gitbook/assets/craft2-2.png)
 
 This hash can be cracked immediately to get the password for the user:
 
@@ -126,7 +126,7 @@ craft2\apache
 
 We can then easily get a reverse shell by downloading `nc.exe` onto the machine and executing it.
 
-![](<../../../.gitbook/assets/image%20(2027).png>)
+![](../../../.gitbook/assets/craft2-4.png)
 
 ## Privilege Escalation
 
@@ -244,7 +244,7 @@ Since we can use `load_file`, this means we can also move files all over the pla
 MariaDB [mysql]> select load_file('C:/Users/Administrator/Desktop/proof.txt') into dumpfile "C:\\root.txt"
 ```
 
-![](<../../../.gitbook/assets/image%20(3690).png>)
+![](../../../.gitbook/assets/craft2-5.png)
 
 This opens up quite a few exploits to getting an administrator shell, such as the WerTrigger exploit.
 
@@ -280,10 +280,10 @@ Query OK, 1 row affected (0.176 sec)
 
 Afterwards, just run `WerTrigger.exe` and our reverse shell command:
 
-![](<../../../.gitbook/assets/image%20(1170).png>)
+![](../../../.gitbook/assets/craft2-1.png)
 
 This would execute the command as the SYSTEM user:
 
-![](<../../../.gitbook/assets/image%20(1810).png>)
+![](../../../.gitbook/assets/craft2-3.png)
 
 Interesting root!

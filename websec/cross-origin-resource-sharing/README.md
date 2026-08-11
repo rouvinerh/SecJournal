@@ -6,7 +6,7 @@ Cross-Origin Resource Sharing (CORS), is an exploit of a misconfigured website p
 
 The policy governing accessible resources looks something like this:
 
-![](<../../.gitbook/assets/image%20(2341).png>)
+![](../../.gitbook/assets/readme-3-dup2.png)
 
 This determines what kind of information a website is able to extract from another website. The policy can be used to protect user information, as it prevents other websites from stealing or reading information from users. 
 
@@ -22,13 +22,13 @@ If the website has a Origin header of `http://example.com` and was allowed to ac
 
 In some cases, there are pre-checks done before requests are processed. Under certain circumstances, when a cross-domain request includes a non-standard HTTP method, such as `OPTIONS` or `PUT`, then the website would kind of do a double check to ensure that it's allowed to carry out those HTTP methods.
 
-![Pre-Flight Check](<../../.gitbook/assets/image%20(3104).png>)
+![Pre-Flight Check](../../.gitbook/assets/readme-4-dup2.png)
 
-![Check Response](<../../.gitbook/assets/image%20(1974).png>)
+![Check Response](../../.gitbook/assets/readme-1-dup6.png)
 
 This could potentially be useful for enumeration and seeing what's really allowed on websites. The process would look something like this:
 
-![](<../../.gitbook/assets/image%20(2052).png>)
+![](../../.gitbook/assets/readme-2-dup5.png)
 
 ## Exploitation
 
@@ -36,7 +36,7 @@ Find methods where the website is loading other websites in requests and see if 
 
 Afterwards, malicious JS code can be used to load things that would be inaccessible to regular users but not the website, as shown below.
 
-![](<../../.gitbook/assets/image%20(3345).png>)
+![](../../.gitbook/assets/readme-5.png)
 
 ## References
 

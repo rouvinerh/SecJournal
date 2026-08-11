@@ -29,17 +29,17 @@ We have to add `qreader.htb` to our `/etc/hosts` file. I ran a detailed scan on 
 
 Website presents some kind of QR Code maker / reader application:
 
-![](<../../.gitbook/assets/image%20(1411).png>)
+![](../../.gitbook/assets/socket-1.png)
 
 We can actually download the application below and view the source code:
 
-![](<../../.gitbook/assets/image%20(2831).png>)
+![](../../.gitbook/assets/socket-2.png)
 
 
 
 Additionally, we can submit a report when something goes wrong:
 
-![](<../../.gitbook/assets/image%20(938).png>)
+![](../../.gitbook/assets/socket-6.png)
 
 Interesting. When we download the file, we will get a binary and a test image:
 
@@ -140,7 +140,7 @@ payload used: 0.0.2"UNION SELECT username,password,3,4 from users;-- -
 
 Great! The hash can be cracked on crackstation:
 
-![](<../../.gitbook/assets/image%20(3225).png>)
+![](../../.gitbook/assets/socket-3.png)
 
 Now, we need to find a username. I looked through the other tables of `reports` and `answers`.
 
@@ -152,7 +152,7 @@ This was done using `group_concat(answers)`, and it seems that the user is eithe
 
 We can then `ssh` in as `tkeller` and grab the user flag.
 
-![](<../../.gitbook/assets/image%20(4023).png>)
+![](../../.gitbook/assets/socket-5.png)
 
 ## Privilege Escalation
 
@@ -219,6 +219,6 @@ So this script checks for a `.spec` file extension, and takes an `$action` argum
 
 As such, the exploit is simple.
 
-![](<../../.gitbook/assets/image%20(336).png>)
+![](../../.gitbook/assets/socket-4.png)
 
 Pretty straightforward machine. The hard part was the SQL injection.

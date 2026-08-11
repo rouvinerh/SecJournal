@@ -21,11 +21,11 @@ SSH was open on this machine, which was unusual for Windows.
 
 Port 80 was rather simple:
 
-![](<../../../.gitbook/assets/image%20(3029).png>)
+![](../../../.gitbook/assets/symbolic-5.png)
 
 I created a HTML file with one word within it, then hosted it on my HTTP server and submitted the URL with my IP. This returned a PDF:
 
-![](<../../../.gitbook/assets/image%20(1691).png>)
+![](../../../.gitbook/assets/symbolic-1.png)
 
 I downloaded the PDF and used `exiftool` on it to enumerate any version:
 
@@ -65,7 +65,7 @@ The exploit here is the content of the HTML file being used. Here's my PoC:
 
 When we host this HTML file on a HTTP server and use the website's converting feature, this is what we are returned:
 
-![](<../../../.gitbook/assets/image%20(1918).png>)
+![](../../../.gitbook/assets/symbolic-3.png)
 
 This confirms that LFI works. We can edit the PoC to show all the content:
 
@@ -73,7 +73,7 @@ This confirms that LFI works. We can edit the PoC to show all the content:
 <iframe src="C:/Windows/system32/drivers/etc/hosts" height=1000 width=1000 />
 ```
 
-![](<../../../.gitbook/assets/image%20(1692).png>)
+![](../../../.gitbook/assets/symbolic-2.png)
 
 Now, we just need to find the correct file to read. The website gives us a username `p4yl0ad`, and SSH is open, so let's try to read the user's private key.
 
@@ -81,11 +81,11 @@ Now, we just need to find the correct file to read. The website gives us a usern
 <iframe src="C:/users/p4yl0ad/.ssh/id_rsa" height=1000 width=1000 />
 ```
 
-![](<../../../.gitbook/assets/image%20(4078).png>)
+![](../../../.gitbook/assets/symbolic-7.png)
 
 Using this, we can `ssh` in as the user:
 
-![](<../../../.gitbook/assets/image%20(3354).png>)
+![](../../../.gitbook/assets/symbolic-6.png)
 
 ## Privilege Escalation
 
@@ -188,8 +188,8 @@ Press ENTER to exit and delete the symlink
 
 I waited for a while and then deleted the symlink. When we check the `C:\backup\logs` directory's newest file that is significantly larger than the rest, we find an SSH key:
 
-![](<../../../.gitbook/assets/image%20(2405).png>)
+![](../../../.gitbook/assets/symbolic-4.png)
 
 Then, use this key to `ssh` in as the administrator:
 
-![](<../../../.gitbook/assets/image%20(608).png>)
+![](../../../.gitbook/assets/symbolic-8.png)

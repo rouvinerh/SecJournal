@@ -29,18 +29,18 @@ When testing for this, I ask myself the following questions:
 
 This is a web application uses a JWT token to authenticate a session.
 
-![](<../../.gitbook/assets/image%20(3231).png>)
+![](../../.gitbook/assets/readme-4.png)
 
 JWT Tokens are basically `base64` encoded strings separated into 3 different portions, the header, payload and signature. If one has the private string / key used by the server, the signature (and hence token) can be forged.
 
-![](<../../.gitbook/assets/image%20(2325).png>)
+![](../../.gitbook/assets/readme-2-dup3.png)
 
 This particular application runs on Flask, and `flask-unsign` can be used to brute force the cookie:
 
-![](<../../.gitbook/assets/image%20(2896).png>)
+![](../../.gitbook/assets/readme-3.png)
 
 This allows me to forge any token and hence pass in any data I want. In this case, the username `blue` was the admin of the page, hence I created a cookie for that user and logged in.
 
-![](<../../.gitbook/assets/image%20(1588).png>)
+![](../../.gitbook/assets/readme-1-dup4.png)
 
 The swopping of cookies done using Javascript in the browser console with `developer.cookie='cookiehere'`.

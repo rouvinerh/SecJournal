@@ -77,7 +77,7 @@ Java Mantainer
 
 Port 80 hosted a corporate website:
 
-![](<../../../.gitbook/assets/image%20(1396).png>)
+![](../../../.gitbook/assets/cassios-4.png)
 
 I was rather static, so I did a `gobuster` scan on it using a few wordlists. Using `common.txt` reveals a hidden directory:
 
@@ -110,7 +110,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/download` endpoint just gives us the source code for this website, and it was static. The `backup_migrate` file was more interesting:
 
-![](<../../../.gitbook/assets/image%20(1388).png>)
+![](../../../.gitbook/assets/cassios-3.png)
 
 We can download and extract the files within this using `tar -xvf`:
 
@@ -147,7 +147,7 @@ src/main/java/com/industrial/recycler/DashboardController.java
 
 Seems that we have source code. Before delving into this, let's check out port 8080, which hosted the dashboard mentioned in the `readme.txt` from SMB.
 
-![](<../../../.gitbook/assets/image%20(1419).png>)
+![](../../../.gitbook/assets/cassios-6.png)
 
 The `WebSecurityConfig.java` file contained credentials needed to access the dashboard:
 
@@ -165,7 +165,7 @@ public UserDetailsService userDetailsService() {
 
 ```
 
-![](<../../../.gitbook/assets/image%20(1417).png>)
+![](../../../.gitbook/assets/cassios-5.png)
 
 ### Source Code -> Deserialisation RCE
 
@@ -251,7 +251,7 @@ smb/pom-bak.xml:                    <artifactId>commons-collections4</artifactId
 
 `commons-collections4` was being used! Next, I checked to see if we could overwrite `recycler.ser` within the SMB directory.
 
-![](<../../../.gitbook/assets/image%20(1383).png>)
+![](../../../.gitbook/assets/cassios-2.png)
 
 Based on the timestamp, this worked. So now, we need to create our serialised payload using `ysoserial`.
 
@@ -268,7 +268,7 @@ You must use Java 8 to make it work. The latest versions of Java cannot run `yso
 
 This would generate a serialised object that we can use. Afterwards, place this within the share and click on Check Status on the website to get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(3166).png>)
+![](../../../.gitbook/assets/cassios-7.png)
 
 ## Privilege Escalation
 
@@ -305,6 +305,6 @@ recycler.ser
 
 This would bring up the `/etc/passwd` file, where we can add the new `hacker` user and use `:wq` to save the changes made. Then, `su` to hacker with `hello123` as the password:
 
-![](<../../../.gitbook/assets/image%20(1379).png>)
+![](../../../.gitbook/assets/cassios-1.png)
 
 Rooted!

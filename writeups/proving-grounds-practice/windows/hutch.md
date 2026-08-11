@@ -43,7 +43,7 @@ An AD machine.
 
 Port 80 hosted a default IIS server:
 
-![](<../../../.gitbook/assets/image%20(1234).png>)
+![](../../../.gitbook/assets/hutch-2.png)
 
 Directory scans reveal nothing much. A detailed `nmap` scan on the port reveals that this does have a webdav instance:
 
@@ -82,7 +82,7 @@ OPEN            FAIL:   http://192.168.197.122  Unauthorized. Basic realm="192.1
 
 For SMB, `enum4linux` reveals nothing of interest regarding the domain, but it does accept null credentials.
 
-![](<../../../.gitbook/assets/image%20(1023).png>)
+![](../../../.gitbook/assets/hutch-1.png)
 
 Now we can move onto LDAP, and we can check whether null credentials are accepted here using `ldapsearch`:
 
@@ -92,7 +92,7 @@ $ ldapsearch -x -H ldap://192.168.197.122 -D '' -w '' -b "DC=hutch,DC=offsec" > 
 
 At the very end of the file, we can find some credentials:
 
-![](<../../../.gitbook/assets/image%20(234).png>)
+![](../../../.gitbook/assets/hutch-5.png)
 
 This user's SAM Account Name is listed as `fmcsorley`, but we cannot use these credentials to `evil-winrm` in it seems. 
 
@@ -169,11 +169,11 @@ PUT Shell: http://192.168.197.122/DavTestDir_YuAxJmlk/YuAxJmlk_aspx_cmd.aspx
 
 `davtest` would place a few backdoors for us, and we can use that to execute commands on the machine:
 
-![](<../../../.gitbook/assets/image%20(3791).png>)
+![](../../../.gitbook/assets/hutch-7.png)
 
 Then, we can easily get a reverse shell as this user.
 
-![](<../../../.gitbook/assets/image%20(1456).png>)
+![](../../../.gitbook/assets/hutch-3.png)
 
 ## Privilege Escalation
 
@@ -221,10 +221,10 @@ The user `fmcsorley` can read the password. I checked using `ldapsearch`, and su
 $ ldapsearch -x -H ldap://192.168.197.122 -D 'hutch\fmcsorley' -w 'CrabSharkJellyfish192' -b "DC=hutch,DC=offsec" > fmc.txt
 ```
 
-![](<../../../.gitbook/assets/image%20(1932).png>)
+![](../../../.gitbook/assets/hutch-4.png)
 
 We can then `evil-winrm` in using it:
 
-![](<../../../.gitbook/assets/image%20(310).png>)
+![](../../../.gitbook/assets/hutch-6.png)
 
 Rooted!

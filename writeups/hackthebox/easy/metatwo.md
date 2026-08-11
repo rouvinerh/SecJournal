@@ -22,7 +22,7 @@ FTP doesn't support anonymous logins, so let's move on to port 80. We have to ad
 
 The website was a blog of some sorts:
 
-![](<../../../.gitbook/assets/image%20(2371).png>)
+![](../../../.gitbook/assets/metatwo-2.png)
 
 Reading a bit of the page source reveals this is a Wordpress site, so let's use `wpscan` with the API token to enumerate plugins and the version.
 
@@ -46,7 +46,7 @@ This was the main exploit I found interesting because the version running on `me
 
 While clicking on the URL within the blog post, I noticed that it was using a certain plugin.
 
-![](<../../../.gitbook/assets/image%20(2473).png>)
+![](../../../.gitbook/assets/metatwo-4.png)
 
 This is a plugin that has a lot of vulnerabilities:
 
@@ -133,7 +133,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 There were 2 hashes, and one of them could be cracked.
 
-![](<../../../.gitbook/assets/image%20(2485).png>)
+![](../../../.gitbook/assets/metatwo-5.png)
 
 Now that we have credentials, we can run the authenticated XXE injection.
 
@@ -143,7 +143,7 @@ How this exploit works is by using the credentails to make the Wordpress site re
 
 Following the PoC from the repo above, I was able to replicate it.
 
-![](<../../../.gitbook/assets/image%20(3745).png>)
+![](../../../.gitbook/assets/metatwo-7.png)
 
 Using this `.dtd` file, we can grab the `wp-config.php` file:
 
@@ -154,7 +154,7 @@ Using this `.dtd` file, we can grab the `wp-config.php` file:
 
 Within that file, we can find FTP credentials:
 
-![](<../../../.gitbook/assets/image%20(942).png>)
+![](../../../.gitbook/assets/metatwo-8.png)
 
 We can login to FTP using `metapress.htb:9NYS_ii@FyL_p5M2NvJ`.
 
@@ -193,7 +193,7 @@ $mail->Port = 587;
 
 With these credentials, we can `ssh` in as `jnelson`.
 
-![](<../../../.gitbook/assets/image%20(3508).png>)
+![](../../../.gitbook/assets/metatwo-6.png)
 
 ## Privilege Escalation
 
@@ -236,8 +236,8 @@ dr-xr-x--- 3 jnelson jnelson 4096 Oct 25  2022 ..
 
 The `.keys` directory contains a PGP key pair, which I'm assuming is used to decrypt the `root.pass` file. I took the private key from the `.keys` file, and cracked it using `gpg2john` > `john`.
 
-![](<../../../.gitbook/assets/image%20(2391).png>)
+![](../../../.gitbook/assets/metatwo-3.png)
 
 With this password, we can decrypt the `root.pass` file:
 
-![](<../../../.gitbook/assets/image%20(1447).png>)
+![](../../../.gitbook/assets/metatwo-1.png)

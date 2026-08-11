@@ -39,15 +39,15 @@ We can enumerate the HTTP page.
 
 Page is some kind of company website.
 
-![](<../../../.gitbook/assets/image%20(2639).png>)
+![](../../../.gitbook/assets/intelligence-4.png)
 
 We can add `intelligence.htb` to our `/etc/hosts` file as well. Within the page, I noticed there were some downloads:
 
-![](<../../../.gitbook/assets/image%20(3729).png>)
+![](../../../.gitbook/assets/intelligence-7.png)
 
 When we download them, we would get redirected to a PDF which did not have anything useful on it.
 
-![](<../../../.gitbook/assets/image%20(3110).png>)
+![](../../../.gitbook/assets/intelligence-5.png)
 
 The more interesting part is the URL. For the above document, I was redirected to `http://10.129.95.154/documents/2020-01-01-upload.pdf`. We can fuzz this and see what other PDFs are present. We can create a wordlist using this:
 
@@ -185,7 +185,7 @@ $ for FILE in *; do pdftotext $FILE; done;
 
 Then, we can use `grep` to find keywords in these files.
 
-![](<../../../.gitbook/assets/image%20(1364).png>)
+![](../../../.gitbook/assets/intelligence-2.png)
 
 We have a credential, and also searching for `security` tells me there's some type of vulnerability with the service accounts:
 
@@ -344,15 +344,15 @@ INFO: Done in 00M 04S
 
 Then we can start `neo4j` and `bloodhound`. After uploading the information, let's view what `Ted.Graves` has access to. We find that they are part of the ITSupport group.
 
-![](<../../../.gitbook/assets/image%20(3801).png>)
+![](../../../.gitbook/assets/intelligence-8.png)
 
 This group has ReadGMSAPassword privileges over `svc_int`.
 
-![](<../../../.gitbook/assets/image%20(2224).png>)
+![](../../../.gitbook/assets/intelligence-3.png)
 
 USing `gMSADumper.py`, we can get a hash for this user:
 
-![](<../../../.gitbook/assets/image%20(3458).png>)
+![](../../../.gitbook/assets/intelligence-6.png)
 
 This cannot be cracked, but Pass The Hash can still be done.
 
@@ -362,7 +362,7 @@ This cannot be cracked, but Pass The Hash can still be done.
 
 When checking this node, we see that it is allowed to delegate for the DC.
 
-![](<../../../.gitbook/assets/image%20(3992).png>)
+![](../../../.gitbook/assets/intelligence-9.png)
 
 We don't have a shell to the machine, but with this we can request service tickets for the administrator. We can use `getST.py` to do this.
 
@@ -384,4 +384,4 @@ $ export KRB5CCNAME = Administrator.ccache
 
 Then we can get a shell using `psexec.py`.
 
-![](<../../../.gitbook/assets/image%20(1227).png>)
+![](../../../.gitbook/assets/intelligence-1.png)

@@ -54,15 +54,15 @@ There was a `.git` repository which we could enumerate later.
 
 Port 80 hosted a website for a Password Manager:
 
-![](<../../../.gitbook/assets/image%20(3945).png>)
+![](../../../.gitbook/assets/keyvault-5.png)
 
 The site was rather static and had nothing interesting. Port 8080 had a login page:
 
-![](<../../../.gitbook/assets/image%20(293).png>)
+![](../../../.gitbook/assets/keyvault-2.png)
 
 Default credentials work, but we are redirected to this cryptic site:
 
-![](<../../../.gitbook/assets/image%20(302).png>)
+![](../../../.gitbook/assets/keyvault-3.png)
 
 Let's take a look at the `.git` repository files. The logs of the website reveal that there's a `hmac.php` which mentions a bit more about the crypto used:
 
@@ -104,15 +104,15 @@ The above resources details a similar exploit, where they submit `token[]=` to t
 
 We can use their parameters to bypass this check:
 
-![](<../../../.gitbook/assets/image%20(3928).png>)
+![](../../../.gitbook/assets/keyvault-4.png)
 
 Visiting `index.php`with the same parameters will show us a page with a password:
 
-![](<../../../.gitbook/assets/image%20(1181).png>)
+![](../../../.gitbook/assets/keyvault-1.png)
 
 We can then `ssh` in as `ray`:
 
-![](<../../../.gitbook/assets/image%20(674).png>)
+![](../../../.gitbook/assets/keyvault-7.png)
 
 ## Privilege Escalation
 
@@ -222,6 +222,6 @@ Mypetdognameisjack909
 
 Using this, we can `su` to `root`:
 
-![](<../../../.gitbook/assets/image%20(3955).png>)
+![](../../../.gitbook/assets/keyvault-6.png)
 
 Rooted!

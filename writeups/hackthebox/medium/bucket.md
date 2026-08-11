@@ -36,15 +36,15 @@ We can add `bucket.htb` to our `/etc/hosts` file to visit the web application.
 
 The website was looked to be a custom platform:
 
-![](<../../../.gitbook/assets/image%20(4162).png>)
+![](../../../.gitbook/assets/bucket-1.png)
 
 When I looked through the page source, I could see that there was a subdomain present:
 
-![](<../../../.gitbook/assets/image%20(4163).png>)
+![](../../../.gitbook/assets/bucket-2.png)
 
 It seems that this uses the AWS S3 Bucket to store images on the website. When we add the subdomain to the `/etc/hosts` file, we can see that images are loaded:
 
-![](<../../../.gitbook/assets/image%20(4164).png>)
+![](../../../.gitbook/assets/bucket-3.png)
 
 S3 Bucket is a cloud storage provider for objects, and it too can have misconfigurations. We only know that the bucket for the web application is called `adserver`. However, it's unlikely this bucket is actually publicly listed (at least I don't think so).
 
@@ -95,7 +95,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 This worked! Now we can easily gain a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(4165).png>)
+![](../../../.gitbook/assets/bucket-4.png)
 
 ## Privilege Escalation
 
@@ -211,7 +211,7 @@ $ sudo aws dynamodb --endpoint-url http://s3.bucket.htb scan --table-name users
 
 It seems that we have some credentials. The third one worked, and I could `su` to `roy`:
 
-![](<../../../.gitbook/assets/image%20(4166).png>)
+![](../../../.gitbook/assets/bucket-5.png)
 
 ### Bucket-App PD4ML LFI -> Root SSH Key
 
@@ -266,7 +266,7 @@ else
 
 This uses the DynamoDB's `alert` table, and it takes some data from there that is titled `Ransomware` and uses `pd4ml_demo.jar` to convert the HTML into a PDF. Searching for exploits for the `pd4ml.jar` program spoiled the box a bit:
 
-![](<../../../.gitbook/assets/image%20(4167).png>)
+![](../../../.gitbook/assets/bucket-6.png)
 
 Anyways, reading the documentation for it provided me with the `<attachment>` tags.
 
@@ -303,10 +303,10 @@ $ curl -X POST http://127.0.0.1:8000/index.php --data 'action=get_alerts'
 
 We can then download the `result.pdf` file back to our machine via `base64` or `scp`. When viewed, this would give us the SSH key we need!
 
-![](<../../../.gitbook/assets/image%20(4168).png>)
+![](../../../.gitbook/assets/bucket-7.png)
 
 Using this, we can `ssh` into the box:
 
-![](<../../../.gitbook/assets/image%20(4169).png>)
+![](../../../.gitbook/assets/bucket-8.png)
 
 Rooted!

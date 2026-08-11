@@ -106,13 +106,13 @@ PORT      STATE SERVICE VERSION
 
 Port 17445 had some kind of ticket creator:
 
-![](<../../../.gitbook/assets/image%20(3548).png>)
+![](../../../.gitbook/assets/hawat-2.png)
 
 Default creds didn't work, so let's move on. Port 30445 just didn't load for me for some reason.
 
 Port 50080 shows a Pizza website:
 
-![](<../../../.gitbook/assets/image%20(3717).png>)
+![](../../../.gitbook/assets/hawat-4.png)
 
 The website was rather static. I did a directory scan on all the ports. Port 50080 has a `/cloud` directory:
 
@@ -139,11 +139,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When viewed, it shows a login page:
 
-![](<../../../.gitbook/assets/image%20(3549).png>)
+![](../../../.gitbook/assets/hawat-3.png)
 
 We can login with `admin:admin`. There, we see an `issuetracker.zip` file:
 
-![](<../../../.gitbook/assets/image%20(3193).png>)
+![](../../../.gitbook/assets/hawat-1.png)
 
 We can download this to our Kali machine and unzip it. This would reveal source code for a website.
 

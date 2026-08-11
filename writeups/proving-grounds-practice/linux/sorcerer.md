@@ -70,7 +70,7 @@ There was nothing, so let's move on.
 
 Port 7742 just shows us a login page:
 
-![](<../../../.gitbook/assets/image%20(472).png>)
+![](../../../.gitbook/assets/sorcerer-3.png)
 
 I ran a `gobuster` directory scan while I tested some weak default passwords. I found a few directories present:
 
@@ -96,7 +96,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/zipfiles` directory looks the most interesting. Within it, there were zip files named after the users on the machine:
 
-![](<../../../.gitbook/assets/image%20(819).png>)
+![](../../../.gitbook/assets/sorcerer-4.png)
 
 `max.zip` was the largest and hence the only one I downloaded. When unzipped, it contained all the files like his SSH key:
 
@@ -148,7 +148,7 @@ id_rsa.pub                                                 100%  391     2.2KB/s
 
 Afterwards. we can just `ssh` in:
 
-![](<../../../.gitbook/assets/image%20(3490).png>)
+![](../../../.gitbook/assets/sorcerer-2.png)
 
 ## Privilege Escalation
 
@@ -165,4 +165,4 @@ $ find / -perm -u=s -type f 2>/dev/null
 
 `start-stop-daemon` is an SUID binary, and it can spawn a `root` shell for us.
 
-![](<../../../.gitbook/assets/image (2203).png>)
+![](../../../.gitbook/assets/sorcerer-1.png)

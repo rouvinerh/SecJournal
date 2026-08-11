@@ -36,27 +36,27 @@ FTP doesn't accept anonymous logins and RDP is open for this machine.
 
 Port 80 was weird:
 
-![](<../../../.gitbook/assets/image%20(502).png>)
+![](../../../.gitbook/assets/nickel-9.png)
 
 Port 8089 was slightly weirder:
 
-![](<../../../.gitbook/assets/image%20(1057).png>)
+![](../../../.gitbook/assets/nickel-1.png)
 
 Clicking on any of these would send requests to an IP address on port 33333:
 
-![](<../../../.gitbook/assets/image%20(273).png>)
+![](../../../.gitbook/assets/nickel-6.png)
 
 Meanwhile on port 33333, we needed a token of some sorts:
 
-![](<../../../.gitbook/assets/image%20(1915).png>)
+![](../../../.gitbook/assets/nickel-2.png)
 
 And this is all the information we have. I experimented with sending POST requests instead of GET requests, and it actually returned something from port 33333.
 
-![](<../../../.gitbook/assets/image%20(277).png>)
+![](../../../.gitbook/assets/nickel-7.png)
 
 This was different from the Not Found errors. I changed around the directory it sent requests to, and the `list-running-procs` returned something interesting:
 
-![](<../../../.gitbook/assets/image%20(2061).png>)
+![](../../../.gitbook/assets/nickel-3.png)
 
 If we scroll down, we can see this:
 
@@ -71,7 +71,7 @@ NowiseSloopTheory139
 
 This was a password for a user `ariah`, which works:
 
-![](<../../../.gitbook/assets/image%20(3357).png>)
+![](../../../.gitbook/assets/nickel-8.png)
 
 ## Privilege Escalation
 
@@ -89,7 +89,7 @@ There was a `C:\ftp` directory that looked interesting:
 
 We can transfer this back to our machine via `smbserver.py` and then view it.
 
-![](<../../../.gitbook/assets/image%20(2535).png>)
+![](../../../.gitbook/assets/nickel-4.png)
 
 There was a temporary command point, and I enumerated it from the machine:
 
@@ -143,6 +143,6 @@ The command completed successfully.
 
 Then, we can relogin and view the flag:
 
-![](<../../../.gitbook/assets/image%20(2605).png>)
+![](../../../.gitbook/assets/nickel-5.png)
 
 Rooted!

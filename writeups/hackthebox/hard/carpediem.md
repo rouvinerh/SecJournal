@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 
 Port 80 hosted a website that had a countdown to a domain being launched.
 
-![](<../../../.gitbook/assets/image%20(941).png>)
+![](../../../.gitbook/assets/carpediem-25.png)
 
 There was nothing interesting about this website. The search there is static. We can do a `gobuster` directory and `wfuzz` subdomain scan. `gobuster` only picked up on static site files, but `wfuzz` picked up on a `portal` endpoint:
 
@@ -43,11 +43,11 @@ ID           Response   Lines    Word       Chars       Payload
 
 This was running some motorcycle store portal:
 
-![](<../../../.gitbook/assets/image%20(2186).png>)
+![](../../../.gitbook/assets/carpediem-5.png)
 
 We can create an account with the site. After registering, we can update our profile:
 
-![](<../../../.gitbook/assets/image%20(2426).png>)
+![](../../../.gitbook/assets/carpediem-8.png)
 
 This is the request generated:
 
@@ -73,15 +73,15 @@ id=25&login_type=2&firstname=test&lastname=test&contact=test&gender=Male&address
 
 There's a `login_type` parameter set at 2, so let's change that to 1 and we might become an administrator. I tested this by visiting `/admin` and it worked:
 
-![](<../../../.gitbook/assets/image%20(732).png>)
+![](../../../.gitbook/assets/carpediem-22.png)
 
 When looking around, we can see there's a Quartely Sales Report part hwhere we can upload files:
 
-![](<../../../.gitbook/assets/image%20(3331).png>)
+![](../../../.gitbook/assets/carpediem-11.png)
 
 The upload functions still being in development might mean this is vulnerable. I tried clicking on Add, but it did nothing. When inspecting the traffic, we can see it making POST requests to `/classes/users.php?f=upload`.
 
-![](<../../../.gitbook/assets/image%20(875).png>)
+![](../../../.gitbook/assets/carpediem-24.png)
 
 This accepts form-data and also is a PHP-based website (as from X-Powered-By), so let's try to upload a PHP webshell. I took some requests I had from other machines / scripts that also uploaded form-data.
 
@@ -111,7 +111,7 @@ Content-Type: text/html
 
 The above request works and it will be uploaded:
 
-![](<../../../.gitbook/assets/image%20(442).png>)
+![](../../../.gitbook/assets/carpediem-19.png)
 
 Now we can try to upload a PHP webshell using an image in `Content-Type` because there's a check for that.
 
@@ -150,7 +150,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 Then, we can get an easy reverse shell.
 
-![](<../../../.gitbook/assets/image%20(660).png>)
+![](../../../.gitbook/assets/carpediem-20.png)
 
 ## Docker Escape
 
@@ -286,7 +286,7 @@ Since we are still pivoting, we can enumerate the other services. We just need t
 
 On 172.17.0.2, there's a `backdrop.carpediem.htb` site:
 
-![](<../../../.gitbook/assets/image%20(1643).png>)
+![](../../../.gitbook/assets/carpediem-3.png)
 
 There's also a FTP server that accepts anonymous credentials, but we can't do much with it as it just hangs. Not much for this host in general.
 
@@ -328,7 +328,7 @@ This was interesting, and we'll keep this in mind for now.
 
 This host was running Trudesk on port 8118 (which is exactly what the MongoDB instance is for). We can directly add `trudesk.carpediem.htb` and access it on port 80 (without proxychains).
 
-![](<../../../.gitbook/assets/image%20(2412).png>)
+![](../../../.gitbook/assets/carpediem-7.png)
 
 We don't have valid credentials (yet), so we can't login.
 
@@ -343,11 +343,11 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 This would reset the admin password to 'hello'. Then we can login to Trudesk. Here, we can read the tickets that are present:
 
-![](<../../../.gitbook/assets/image%20(4045).png>)
+![](../../../.gitbook/assets/carpediem-18.png)
 
 Horace Flaccus is a new user present in the fictional company, and when we see the ticket, it hints that we have to use `zoiper` to call something to get the password.
 
-![](<../../../.gitbook/assets/image%20(3355).png>)
+![](../../../.gitbook/assets/carpediem-12.png)
 
 Interesting! We can download Zoiper from here:
 
@@ -357,19 +357,19 @@ Interesting! We can download Zoiper from here:
 
 We can download and install Zoiper via `sudo dpkg -i <zoiper>.deb`. Then, we can run `zoiper5` to launch it:
 
-![](<../../../.gitbook/assets/image%20(1030).png>)
+![](../../../.gitbook/assets/carpediem-1.png)
 
 We can continue as a free user, and enter these to 'login'.
 
-![](<../../../.gitbook/assets/image%20(2006).png>)
+![](../../../.gitbook/assets/carpediem-4.png)
 
 We can skip the proxy part, and it seesms that both IAX UDP and SIP UDP works for this box:
 
-![](<../../../.gitbook/assets/image%20(3122).png>)
+![](../../../.gitbook/assets/carpediem-10.png)
 
 Then, we can call `*62` to get the voicemail.
 
-![](<../../../.gitbook/assets/image%20(3893).png>)
+![](../../../.gitbook/assets/carpediem-17.png)
 
 When it asks for a Password, type `2022`. Then press `1`. The voicemail should play and here's the contents:
 
@@ -379,7 +379,7 @@ Hey Horance, welcome aboard! We certainly needed more network engineers to assis
 
 Using this, we can easily SSH in as `hflaccus`.
 
-![](<../../../.gitbook/assets/image%20(746).png>)
+![](../../../.gitbook/assets/carpediem-23.png)
 
 ## Privilege Escalation
 
@@ -409,7 +409,7 @@ Then, we can take a look at this within `wireshark`. There's some traffic betwee
 
 Instead, we can take a look at all the TLS traffic to the `backdrop.carpediem.htb` host. Within the Server Hello messages, TLS decides on the protocol that is to be used. In this case, the machine uses this:
 
-![](<../../../.gitbook/assets/image%20(2242).png>)
+![](../../../.gitbook/assets/carpediem-6.png)
 
 A bit of Googling shows that this is a Weak Cipher Suite:
 
@@ -421,7 +421,7 @@ This cipher does not provide Perfect Forward Secrecy, meaning that we can decryp
 
 Within the `/etc/ssl/certs` file, we can find some keys that look out of place:
 
-![](<../../../.gitbook/assets/image%20(3747).png>)
+![](../../../.gitbook/assets/carpediem-15.png)
 
 We can download this back to our machine. Then we can use `wireshark` to decrypt the TLS traffic.
 
@@ -429,11 +429,11 @@ We can download this back to our machine. Then we can use `wireshark` to decrypt
 
 We can dd the `.key` file here:
 
-![](<../../../.gitbook/assets/image%20(3836).png>)
+![](../../../.gitbook/assets/carpediem-16.png)
 
 After that, save the changes and we would see some of the traffic become unencrypted HTTP:
 
-![](<../../../.gitbook/assets/image%20(3090).png>)
+![](../../../.gitbook/assets/carpediem-9.png)
 
 We can foloow the HTTP stream to see this:
 
@@ -459,7 +459,7 @@ We have new credentials! We can use this to login to `backdrop.carpediem.htb` an
 
 We can login using the credentials we found:
 
-![](<../../../.gitbook/assets/image%20(1208).png>)
+![](../../../.gitbook/assets/carpediem-2.png)
 
 There is an RCE for this that involves CSRF, but since I'm the administrator, I don't need to do CSRF. I can directly do the RCE.
 
@@ -482,7 +482,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 Then, we can get another reverse shell on this Docker container.
 
-![](<../../../.gitbook/assets/image%20(3552).png>)
+![](../../../.gitbook/assets/carpediem-14.png)
 
 There's no Python on this, so we have to use `script /dev/null -c bash` to upgrade our shell.
 
@@ -521,7 +521,7 @@ The rest of the command executed seems to execute the root page in PHP, which is
 
 First, drop a reverse shell as `/tmp/shell.sh`, then append the `/var/www/html/backdrop/index.php` page with `system("bash /tmp/shell.sh");` and wait for execution.
 
-![](<../../../.gitbook/assets/image%20(3384).png>)
+![](../../../.gitbook/assets/carpediem-13.png)
 
 ### CVE-2022-0492 -> Rooted!
 
@@ -542,6 +542,6 @@ umount: /tmp/testcgroup: target is busy.
 
 Afterwards, we can `ssh` back into the main machine and get a `root` shell easily:
 
-![](<../../../.gitbook/assets/image%20(730).png>)
+![](../../../.gitbook/assets/carpediem-21.png)
 
 Fun machine, really long though!

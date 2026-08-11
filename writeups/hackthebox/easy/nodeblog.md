@@ -23,7 +23,7 @@ PORT     STATE SERVICE
 
 This was a UHC qualifier box in 2021.
 
-![](<../../../.gitbook/assets/image%20(1705).png>)
+![](../../../.gitbook/assets/nodeblog-2.png)
 
 There was a login functionality there. I tested some SQL Injection but to no avail. Because this was a UHC box, this was probably the way in. I tested some NoSQL injection and it worked in bypassing it!
 
@@ -48,7 +48,7 @@ Upgrade-Insecure-Requests: 1
 }
 ```
 
-![](<../../../.gitbook/assets/image%20(3343).png>)
+![](../../../.gitbook/assets/nodeblog-7.png)
 
 ### XXE Injection
 
@@ -60,7 +60,7 @@ Invalid XML Example: Example DescriptionExample Markdown
 
 This indidates that we have to upload a malicious XML file to achieve XXE injection for our reverse shell. Taking a look at the POST request in Burpsuite reveals that we need this format:
 
-![](<../../../.gitbook/assets/image%20(2936).png>)
+![](../../../.gitbook/assets/nodeblog-6.png)
 
 I headed to PayloadAllTheThings to try some XXE injection payloads, and it worked rather well:
 
@@ -78,11 +78,11 @@ I headed to PayloadAllTheThings to try some XXE injection payloads, and it worke
 
 Then we can save this into a file and upload it. The output would be printed in the `markdown` area:
 
-![](<../../../.gitbook/assets/image%20(2557).png>)
+![](../../../.gitbook/assets/nodeblog-3.png)
 
 Earlier while testing my NoSQL injections, I did run across an error like this:
 
-![](<../../../.gitbook/assets/image%20(1191).png>)
+![](../../../.gitbook/assets/nodeblog-1.png)
 
 So the source code files are in `/opt/blog`. A bit more testing revealed the main file to be `server.js`.
 
@@ -157,7 +157,7 @@ Now, we can replace the `ping` command I used above with a reverse shell:
 
 This uses base64 to encode the shell one-liner and connect to port 8888.
 
-![](<../../../.gitbook/assets/image%20(2932).png>)
+![](../../../.gitbook/assets/nodeblog-5.png)
 
 When trying to read the user flag, I found out that we did not have access to our own home directory. This was because of the permissions set:
 
@@ -182,7 +182,7 @@ mongodb      802  0.3  1.8 981772 76124 ?        Ssl  16:38   0:08 /usr/bin/mong
 
 Earlier we used NoSQL injection to access this, and perhaps we can find the actual credentials for the `admin` user (so that I can check `sudo` privleges). Some DBs and collections can be found here.
 
-![](<../../../.gitbook/assets/image%20(945).png>)
+![](../../../.gitbook/assets/nodeblog-8.png)
 
 I could find a password from the users collections.
 
@@ -193,4 +193,4 @@ I could find a password from the users collections.
 
 We can use this to check `sudo` privileges and find an easy root path:
 
-![](<../../../.gitbook/assets/image%20(2687).png>)
+![](../../../.gitbook/assets/nodeblog-4.png)

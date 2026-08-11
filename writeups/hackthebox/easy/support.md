@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2322).png>)
+![](../../../.gitbook/assets/support-8.png)
 
 ### Null Session
 
 I found that SMB accepts null credentials for this machine:
 
-![](<../../../.gitbook/assets/image%20(1977).png>)
+![](../../../.gitbook/assets/support-6.png)
 
 Viewing the support-tools share, we find that it contains multiple binaries.
 
-![](<../../../.gitbook/assets/image%20(1295).png>)
+![](../../../.gitbook/assets/support-4.png)
 
 There's only one that was interesting, and it was the `UserInfo.exe` file. I took it back to my Windows VM and used dnSpy to open it.
 
@@ -22,11 +22,11 @@ There's only one that was interesting, and it was the `UserInfo.exe` file. I too
 
 When decompiled, it seems that the binary was sending LDAP queries:
 
-![](<../../../.gitbook/assets/image%20(435).png>)
+![](../../../.gitbook/assets/support-10.png)
 
 Looking around, I also found this `password` function.
 
-![](<../../../.gitbook/assets/image%20(728).png>)
+![](../../../.gitbook/assets/support-11.png)
 
 We can decode this easily using some Python and following their logic.
 
@@ -47,27 +47,27 @@ print (array1)
 
 This would output the password.
 
-![](<../../../.gitbook/assets/image%20(1156).png>)
+![](../../../.gitbook/assets/support-3.png)
 
 ### LDAPSearch
 
 Then, since the binary does LDAP queries, I wanted to use the username and password given by the binary to query LDAP.
 
-![](<../../../.gitbook/assets/image%20(134).png>)
+![](../../../.gitbook/assets/support-5.png)
 
 On analysing the output, I found a hidden password for the `support` user.
 
-![](<../../../.gitbook/assets/image%20(1088).png>)
+![](../../../.gitbook/assets/support-1.png)
 
 We can then `evil-winrm` in as this `support` user.
 
-![](<../../../.gitbook/assets/image%20(112).png>)
+![](../../../.gitbook/assets/support-2.png)
 
 ## Privilege Escalation
 
 Once in, I started Bloodhound to enumerate for me. Upon reviewing the contents, I saw this interesting set of permissions over the DC.
 
-![](<../../../.gitbook/assets/image%20(2133).png>)
+![](../../../.gitbook/assets/support-7.png)
 
 We can use PowerMad and PowerView to abuse the `GenericAll` privileges.
 
@@ -89,4 +89,4 @@ This would spawn in a shell for us.
 
 How it works is that we first create a new user that has the Constrained Delegation privilege. Then, we are able to impersonate the administrator and request a ticket that we can use to gain a shell with `smbexec.py`.
 
-![](<../../../.gitbook/assets/image%20(2883).png>)
+![](../../../.gitbook/assets/support-9.png)

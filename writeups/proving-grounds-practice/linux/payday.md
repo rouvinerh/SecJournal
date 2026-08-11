@@ -25,7 +25,7 @@ PORT    STATE SERVICE
 
 Port 80 was running InternetShop CS-Cart, which looks really vulnerable:
 
-![](<../../../.gitbook/assets/image%20(3733).png>)
+![](../../../.gitbook/assets/payday-5.png)
 
 There are loads of exploits for this:
 
@@ -63,11 +63,11 @@ visit http://[victim]/skins/shell.phtml -> Profit. ...!
 
 We can then access `admin.php` with the same credentials:
 
-![](<../../../.gitbook/assets/image%20(3466).png>)
+![](../../../.gitbook/assets/payday-4.png)
 
 Head to 'Template Editor' and upload the file that we want.
 
-![](<../../../.gitbook/assets/image%20(3463).png>)
+![](../../../.gitbook/assets/payday-3.png)
 
 Then, just run this:
 
@@ -77,7 +77,7 @@ $ curl http://192.168.157.39/skins/rev.phtml
 
 And we would get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(3141).png>)
+![](../../../.gitbook/assets/payday-2.png)
 
 ## Privilege Escalation
 
@@ -100,4 +100,4 @@ User patrick may run the following commands on this host:
     (ALL) ALL
 ```
 
-![](<../../../.gitbook/assets/image%20(2854).png>)
+![](../../../.gitbook/assets/payday-1.png)

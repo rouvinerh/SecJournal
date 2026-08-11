@@ -22,19 +22,19 @@ Both the websites point towards a nginx default page.
 
 I ran a `gobuster` scan on both of these, and found an `/install` directory with some random characters.
 
-![](<../../../.gitbook/assets/image%20(222).png>)
+![](../../../.gitbook/assets/registry-5.png)
 
 There was also a `/bolt` endpoint that shows a basic sample site.
 
-![](<../../../.gitbook/assets/image%20(3979).png>)
+![](../../../.gitbook/assets/registry-12.png)
 
 Bolt CMS was a possibility of exploitation here. A `feroxbuster` search reveals this is the case:
 
-![](<../../../.gitbook/assets/image%20(1345).png>)
+![](../../../.gitbook/assets/registry-4.png)
 
 Based on the Bolt CMS Repo, we can check `changelog.md` to see the version and find that this is Bolt 3.6.4.
 
-![](<../../../.gitbook/assets/image%20(1197).png>)
+![](../../../.gitbook/assets/registry-2.png)
 
 This was a rather old machine, so there were RCE exploits available if I could find the credentials for the administrator. However, there were no credentials for me to exploit, and I could not do much with this. I was clearly missing something.
 
@@ -121,7 +121,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When trying to access it, it requested for credentials:
 
-![](<../../../.gitbook/assets/image%20(1010).png>)
+![](../../../.gitbook/assets/registry-1.png)
 
 Using `admin:admin` worked. I was forwarded to what looked like a web API. I didn't have any commands to use, so doing some basic research for Docker Registry API commands was the next step. As usual, Hacktricks had some commands.
 
@@ -197,7 +197,7 @@ interact
 
 I downloaded the other files to see if there were any other interesting things. Eventually, I did find a SSH private key
 
-![](<../../../.gitbook/assets/image%20(3069).png>)
+![](../../../.gitbook/assets/registry-8.png)
 
 ```bash
 $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/bolt-image/blobs/sha256:2931a8b44e495489fdbe2bccd7232e99b182034206067a364553841a1f06f791 -L -o blob3.tar
@@ -211,7 +211,7 @@ Host registry
 
 With these, we can SSH in as `bolt`.
 
-![](<../../../.gitbook/assets/image%20(1332).png>)
+![](../../../.gitbook/assets/registry-3.png)
 
 ## Privilege Escalation
 
@@ -239,7 +239,7 @@ sqlite> SELECT * from bolt_users;
 
 We have a hash here that is cracked to give `strawberry`.
 
-![](<../../../.gitbook/assets/image%20(3266).png>)
+![](../../../.gitbook/assets/registry-9.png)
 
 Now, we can login to the `bolt` CMS and continue our enumeration.
 
@@ -247,13 +247,13 @@ Now, we can login to the `bolt` CMS and continue our enumeration.
 
 We can login with `admin:strawberry` to the admin dashboard.
 
-![](<../../../.gitbook/assets/image%20(3666).png>)
+![](../../../.gitbook/assets/registry-10.png)
 
 Great! Within the password hash, we saw another hint in the form of `shell.php`. As the administrator for bolt, we can actually create PHP files in the File Management tab. We can drop in a webshell and easily get an RCE as the next user.
 
 Originally, this is not allowed since `.php` files are not included in the allowed types of files. However, as the administrator, we can change the `config.yml` file in Configuration > Main Configuration.
 
-![](<../../../.gitbook/assets/image%20(3699).png>)
+![](../../../.gitbook/assets/registry-11.png)
 
 Then we can upload whatever files we want.
 
@@ -270,7 +270,7 @@ The first reverse shell using a simple `bash` one-liner did not work for some re
 
 To circumvent this, we can simply have the reverse shell connect back to a listener port on localhost using the SSH shell we got earlier.
 
-![](<../../../.gitbook/assets/image%20(3014).png>)
+![](../../../.gitbook/assets/registry-7.png)
 
 ### Restic
 
@@ -384,6 +384,6 @@ MIIEowIBAAKCAQEAmiGiXpswTyHhjgC55jHRWlGX1asEMyDFfkVwhuNohv/4cQKm
 
 Then we can SSH in as `root`.
 
-![](<../../../.gitbook/assets/image%20(2420).png>)
+![](../../../.gitbook/assets/registry-6.png)
 
 Cool machine. Really good despite being like 3 years old.

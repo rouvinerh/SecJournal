@@ -89,7 +89,7 @@ Encrypter.exe: PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS 
 
 So we can port this to a Windows VM for analysis via DnSpy. Here, we can see that the file uses AES for something:
 
-![](<../../.gitbook/assets/image%20(344).png>)
+![](../../.gitbook/assets/coder-14.png)
 
 We can take a look at the `main` function:
 
@@ -205,15 +205,15 @@ We can now head to that URL.
 
 We would see a login page, and we already have credentials for it:
 
-![](<../../.gitbook/assets/image%20(2848).png>)
+![](../../.gitbook/assets/coder-10.png)
 
 Then, we would see a 2FA Mechanism in place:
 
-![](<../../.gitbook/assets/image%20(1134).png>)
+![](../../.gitbook/assets/coder-2.png)
 
 I wasn't sure how to go about finding this, so I just brute forced it because it doesn't seem to have any account lockout. I used Burp Intruder to do this:
 
-![](<../../.gitbook/assets/image%20(1341).png>)
+![](../../.gitbook/assets/coder-3.png)
 
 This works, but is hella slow.
 
@@ -236,7 +236,7 @@ ffuf -request req -w possible_codes -t 70 -fs 89 > output
 
 Then just monitor the output file for any entries that end up inside. This would be the correct code used. This takes around 10-20 minutes, which is a lot faster.
 
-![](<../../.gitbook/assets/image%20(2938).png>)
+![](../../.gitbook/assets/coder-11.png)
 
 Then we can login!
 
@@ -246,7 +246,7 @@ TeamCity is a CI/CD dashboard, and I'm 99% sure we can gain access by building s
 
 When checking the build that we have, we can upload a file here:
 
-![](<../../.gitbook/assets/image%20(105).png>)
+![](../../.gitbook/assets/coder-1.png)
 
 I read more here:
 
@@ -254,7 +254,7 @@ I read more here:
 
 In short, a unified diff file would allow us to append more stuff to the end of the current build, which is obviously not good. Some further enumeration revealed that this uses Powershell.
 
-![](<../../.gitbook/assets/image%20(3911).png>)
+![](../../.gitbook/assets/coder-15.png)
 
 The answer is simple. Include some small Powershell code that would execute some commands to download a reverse shell. So I created a quick diff file like this to test:
 
@@ -267,7 +267,7 @@ The answer is simple. Include some small Powershell code that would execute some
 
 Uploading it and running gives me this:
 
-![](<../../.gitbook/assets/image%20(2143).png>)
+![](../../.gitbook/assets/coder-7.png)
 
 Success! I tried to download and run Invoke-PowerShellTcp but it didn't work. Probably is some kind of firewall or security features present on the site. As such, we need to include another Powershell script to bypass it.
 
@@ -287,7 +287,7 @@ Using their `bamsi.txt`, we can bypass the AMSI that is (probably) present on th
 
 Then just upload this file with a basic Powershell reverse shell, and it would work!
 
-![](<../../.gitbook/assets/image%20(235).png>)
+![](../../.gitbook/assets/coder-9.png)
 
 ## User Access
 
@@ -308,15 +308,15 @@ Based on this, we just need to head to `C:\TeamCity\logs` and run `type * | Sele
 
 Following the instructions, we would gain access as the administrator of TeamCity rather easily.
 
-![](<../../.gitbook/assets/image%20(1802).png>)
+![](../../.gitbook/assets/coder-6.png)
 
 As the administrator, we see some additional stuff like this thing:
 
-![](<../../.gitbook/assets/image%20(4047).png>)
+![](../../.gitbook/assets/coder-16.png)
 
 ADCS? Might need this for later. Anyways as this user, we can add new build steps on the builds. I simply added a new step whereby it would execute the same powershell as above.
 
-![](<../../.gitbook/assets/image%20(3382).png>)
+![](../../.gitbook/assets/coder-13.png)
 
 But running just seems to give me a shell as the service user still. But at least the shell never times out unless I want it to.
 
@@ -394,7 +394,7 @@ Decrypting this would give us the user's credentials as remote Powershell was be
 
 This would decrypt to give `ypOSJXPqlDOxxbQSfEERy300`, which we can easily use to `evil-winrm` in as the user and capture the user flag.
 
-![](<../../.gitbook/assets/image%20(1504).png>)
+![](../../.gitbook/assets/coder-5.png)
 
 ## AD Privilege Escalation
 
@@ -419,7 +419,7 @@ The first thing we need to do is to enumerate all possible certificates to find 
 
 Unfortunately, there won't be any vulnerable templates that we can exploit because none of the templates present give us any enrollment permissions. Since the user is part of PKI Admins, we can take a closer look at the role and infer what permissions we have. I used Bloodhound to map the permissions, and didn't find much apart from this:
 
-![](<../../.gitbook/assets/image%20(138).png>)
+![](../../.gitbook/assets/coder-4.png)
 
 So `e.black` can manage templates for the ADCS instance. Since we could not find any templates to abuse, perhaps we can **add one.** We just need to find a template for a certificate, add it and give PKI Admins enrollment rights to abuse this and request an administrator TGT.
 
@@ -451,12 +451,12 @@ Afterwards, we can run `certipy` to get a PFX file for the administrator. Keep i
 certipy req -username e.black@coder.htb -password <pass> -ca coder-DC01-CA -target dc01.coder.htb -template esc1 -dc-ip <ip> -upn administrator@coder.htb
 ```
 
-![](<../../.gitbook/assets/image%20(2976).png>)
+![](../../.gitbook/assets/coder-12.png)
 
 This would retrieve the administrator PFX for us to use. We can then use this to retrieve the NT Hash for the administrator and login using `evil-winrm`:
 
-![](<../../.gitbook/assets/image%20(2196).png>)
+![](../../.gitbook/assets/coder-8.png)
 
-![](<../../.gitbook/assets/image%20(513).png>)
+![](../../.gitbook/assets/coder-17.png)
 
 Rooted!

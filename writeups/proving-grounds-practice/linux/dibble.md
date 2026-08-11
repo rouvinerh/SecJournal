@@ -24,19 +24,19 @@ FTP accepts anonymous logins but there's nothing within it.
 
 Port 80 shows a blog about some web exploits:
 
-![](<../../../.gitbook/assets/image%20(487).png>)
+![](../../../.gitbook/assets/dibble-5.png)
 
 Port 3000 shows a more dynamic incident reporting site:
 
-![](<../../../.gitbook/assets/image%20(3288).png>)
+![](../../../.gitbook/assets/dibble-3.png)
 
 I registed a new account and looked at the events:
 
-![](<../../../.gitbook/assets/image%20(509).png>)
+![](../../../.gitbook/assets/dibble-7.png)
 
 Doesn't look super relevant. I checked Burpsuite, and noticed this cookie:
 
-![](<../../../.gitbook/assets/image%20(505).png>)
+![](../../../.gitbook/assets/dibble-6.png)
 
 When decoded, it gives `default`. I changed it to a `base64` encoded `admin` string, giving `YWRtaW4=`, which allows us to create logs.
 
@@ -44,7 +44,7 @@ When decoded, it gives `default`. I changed it to a `base64` encoded `admin` str
 
 The new log event specified that we can write code in it:
 
-![](<../../../.gitbook/assets/image%20(1551).png>)
+![](../../../.gitbook/assets/dibble-1.png)
 
 The `X-Powered-By` header specified that this was using Express, which is Javascript. Since we can directly write code, I tried putting in a Node.js reverse shell:
 
@@ -65,7 +65,7 @@ The `X-Powered-By` header specified that this was using Express, which is Javasc
 
 When we submit thiss, we get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(485).png>)
+![](../../../.gitbook/assets/dibble-4.png)
 
 ## Privilege Escalation
 
@@ -86,4 +86,4 @@ hacker:$1$ZNhJDyK2$vksoiVz4W8rhrWm8BKxWK/:0:0::/root:/bin/bash
 
 Then, use `cp` to overwrite the existing `/etc/passwd` file and `su` to `hacker` with 'hello123':
 
-![](<../../../.gitbook/assets/image%20(2031).png>)
+![](../../../.gitbook/assets/dibble-2.png)

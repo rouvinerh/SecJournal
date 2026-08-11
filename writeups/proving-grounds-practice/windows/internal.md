@@ -85,6 +85,6 @@ This is vulnerable to CVE-2009-3103. I ran the Metasploit module to exploit this
 
 This worked in giving us a SYSTEM shell:
 
-![](<../../../.gitbook/assets/image%20(3940).png>)
+![](../../../.gitbook/assets/internal.png)
 
 Rooted!

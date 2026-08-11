@@ -8,13 +8,13 @@ description: Taken from eCPPTv2.
 
 The Central Process Unit (CPU) is in charge of executing machine code of a program. For example, when we compile C code, we would need a **compiler** like `clang` or `gcc` that would convert the code into a binary (.elf or .exe), which is basically machine code that the computer can read.
 
-![](<../../.gitbook/assets/image%20(1965).png>)
+![](../../.gitbook/assets/system-architecture-6.png)
 
 **Assembly** is the human interpretable format of machine code, which is written using a set of instructions that the CPU processes. In assembly, each instruction is a primitive command that executes specific operations, such as moving data, changing the execution flow and it performs logical operations.
 
 CPU instructions are represented in hex, and it's impossible for humans to use this in hex format because we can't read hex (obviously). Hence, this code gets translated into **mnenomic** code using tools like `nasm`.
 
-![helloword.exe program](<../../.gitbook/assets/image%20(3682).png>)
+![helloword.exe program](../../.gitbook/assets/system-architecture-12.png)
 
 Each CPU has their own set of instructions and differ from one another. This set is known as the **instruction set architecture (ISA)**, which a compiler must understand and use to write the program. The ISA is what the programmer sees, which involves the memory, regiusters, instructions and so on. This provides all the necessary instructions for someone that wants to write a program in assembly.
 
@@ -26,11 +26,11 @@ Think of registers like variables used by the CPU to store and get data. Some re
 
 **General Purpose Registers (GPRs)** are a set of registers that can be used for normal assembly. They each have a specific name and purpose.
 
-![](<../../.gitbook/assets/image%20(3779).png>)
+![](../../.gitbook/assets/system-architecture-13.png)
 
 In a 32-bit system, each register is an acryonym that is prefixed with 'E', meaning extended. The E is replaced by 'R' in x64.
 
-![](<../../.gitbook/assets/image%20(4033).png>)
+![](../../.gitbook/assets/system-architecture-15.png)
 
 **The most important register** is called the **instruction pointer or EIP.** This register controls the flow of program execution through storing a pointer to the address of the next instruction where it will be executed. The entire point of a **buffer overflow to RCE is to control this one register**.
 
@@ -38,7 +38,7 @@ In a 32-bit system, each register is an acryonym that is prefixed with 'E', mean
 
 When a process runs, it is organised in a stack shape, and this is called Process Memory. When we run a binary, the data loaded in memory is shown in this diagram:
 
-![](<../../.gitbook/assets/image%20(1572).png>)
+![](../../.gitbook/assets/system-architecture-4.png)
 
 The process is divided into 4 regions:
 
@@ -65,7 +65,7 @@ The most fundamental operations are the **PUSH** and **POP** instructions, which
 
 This instruction minuses 4 in 32-bit or 8 in 64-bit from the ESP and updaters the ESP. It substracts to a point with **lower memory location** on the stack.
 
-![](<../../.gitbook/assets/image%20(1106).png>)
+![](../../.gitbook/assets/system-architecture-1.png)
 
 ### POP
 
@@ -103,7 +103,7 @@ int main(){ //main function where program starts
 
 The stack frames would look like this for the program above:
 
-![](<../../.gitbook/assets/image%20(3235).png>)
+![](../../.gitbook/assets/system-architecture-11.png)
 
 As the stack frames are popped out, the EIP would point back to `a()` and then `main()`, changing where the execution flow starts and resumes.
 
@@ -130,7 +130,7 @@ int main (int argc, char *argv[]){
 
 When the `main()` function is called, the stack frames would look like so:
 
-![](<../../.gitbook/assets/image%20(319).png>)
+![](../../.gitbook/assets/system-architecture-10.png)
 
 The program first needs to save its location, since if we lose it, we can't run our program anymore as we would lose the `main()` function. Specifically, the processors PUSHes the content of the EIP (which is basically a pointer to the address of memory that the variables are stored in) to the stack. The `main()` function is called via a CALL instruction, and the EIP points to the **first byte** after the CALL instruction.
 
@@ -138,7 +138,7 @@ The instruction that executes the `main()` function, also known as the **caller,
 
 A new stack frame is created, and **defined by the ESP and EBP**. Since we cannot lose the old stack frame and its information, the current EBP is saved on the stack.
 
-![](<../../.gitbook/assets/image%20(1118).png>)
+![](../../.gitbook/assets/system-architecture-2.png)
 
 #### Prologue
 
@@ -162,7 +162,7 @@ Breaking it down:
    * This would substract the value of the ESP by a specific number (in this case, the value of the variable is an integer) to make space for the variables from `main()`.
    * This variable tends to be a multiple of 4.
 
-![](<../../.gitbook/assets/image%20(165).png>)
+![](../../.gitbook/assets/system-architecture-5.png)
 
 Once the prologue ends, the stack frame for `main()` is complete and local variables are coped onto the stack. Since the ESP is not pointing to the memory address right after the EBP, we cannot use the PUSH operation since it stores values top of the stack. **We want to store the variables where space has been allocated for it**.
 
@@ -170,11 +170,11 @@ As such, the ESP would be **incremented** as variables are stored in it and it *
 
 Take note of how we declare `int x = 11` first, hence its PUSHed last.
 
-![](<../../.gitbook/assets/image%20(3948).png>)
+![](../../.gitbook/assets/system-architecture-14.png)
 
 When we call the `func()` function, this would repeat again. The prologue changes values of the EBP to indicate the creation of another stack frame in memory would occur. This process continues until all variables are stored in their own stack frames.
 
-![](<../../.gitbook/assets/image%20(2807).png>)
+![](../../.gitbook/assets/system-architecture-9.png)
 
 Notice how the ESP keeps pointing to the top of the stack of other frames, and the old values are still stored within the stack.
 
@@ -207,7 +207,7 @@ The `ret` instruction POPs the value at the top of the stack to the old EIP. Thi
 
 After `func()` returns, the stack frames look like this:
 
-![](<../../.gitbook/assets/image%20(1995).png>)
+![](../../.gitbook/assets/system-architecture-7.png)
 
 ## Endianness
 
@@ -219,11 +219,11 @@ Endianness refers to how storing values in memory works. There are 2 types of en
 
 In Big Endian representation, the LSB is stored in the **highest memory address**.
 
-![](<../../.gitbook/assets/image%20(2477).png>)
+![](../../.gitbook/assets/system-architecture-8.png)
 
 For LSB, it's the opposite:
 
-![](<../../.gitbook/assets/image%20(1442).png>)
+![](../../.gitbook/assets/system-architecture-3.png)
 
 This affects the order of which a program reads code, and affects the type of payloads associated with buffer overflows.
 

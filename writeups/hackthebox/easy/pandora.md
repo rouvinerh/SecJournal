@@ -4,13 +4,13 @@
 
 Nmap scan results:
 
-![](<../../../.gitbook/assets/image%20(1731).png>)
+![](../../../.gitbook/assets/pandora-4.png)
 
 ### Port 80
 
 The website was some form of corporate website.
 
-![](<../../../.gitbook/assets/image%20(146).png>)
+![](../../../.gitbook/assets/pandora-1.png)
 
 However, checking for directories or other web exploits was rather unsuccessful, as I did not find anything of use.
 
@@ -32,11 +32,11 @@ Nmap done: 1 IP address (1 host up) scanned in 95.71 seconds
 
 So port 161 for SNMP was open. We can then use `snmpwalk` to enumerate this further.
 
-![](<../../../.gitbook/assets/image%20(1570).png>)
+![](../../../.gitbook/assets/pandora-2.png)
 
 Redirecting this output to a file, I was able to find some credentials within the contents:
 
-![](<../../../.gitbook/assets/image%20(1644).png>)
+![](../../../.gitbook/assets/pandora-3.png)
 
 With these credentials, we can SSH in as the `daniel` user.
 
@@ -46,11 +46,11 @@ With these credentials, we can SSH in as the `daniel` user.
 
 As Daniel, we didn't have much permissions over the machine. However, we were able to head to the `/var/www/pandora` directory to find another potential website that was up:
 
-![](<../../../.gitbook/assets/image%20(2912).png>)
+![](../../../.gitbook/assets/pandora-8.png)
 
 Checking the apache2 config files reveals that the user `matt` was running the other web server:
 
-![](<../../../.gitbook/assets/image%20(2522).png>)
+![](../../../.gitbook/assets/pandora-6.png)
 
 So, I started an SSH tunnel using the credentials for `daniel`, and we can forward port 80 to our machine.
 
@@ -58,13 +58,13 @@ So, I started an SSH tunnel using the credentials for `daniel`, and we can forwa
 ssh -L 4444:127.0.0.1:80 daniel@pandora.htb
 ```
 
-![](<../../../.gitbook/assets/image%20(4056).png>)
+![](../../../.gitbook/assets/pandora-13.png)
 
 ### Upgrade Session
 
 We can enumerate from the machine that this was a Pandora FMS instance.
 
-![](<../../../.gitbook/assets/image%20(3472).png>)
+![](../../../.gitbook/assets/pandora-11.png)
 
 Pandora FMS was vulnerable to many types of exploits, one of which was CVE-2021-32099, which would leverage SQL Inejction on the `/include/chart_generator.php` endpoint to bypass authentication and allow attackers to login as the admin.
 
@@ -72,25 +72,25 @@ Pandora FMS was vulnerable to many types of exploits, one of which was CVE-2021-
 
 Then, we would gain access to the Pandora Dashboard.
 
-![](<../../../.gitbook/assets/image%20(2092).png>)
+![](../../../.gitbook/assets/pandora-5.png)
 
 ### RCE as Matt
 
 I did more research and found this repository, which allowed us to make use of the SQL Injection to upload any web shell of our choosing to the server:
 
-![](<../../../.gitbook/assets/image%20(3334).png>)
+![](../../../.gitbook/assets/pandora-10.png)
 
 Then, we can gain a reverse shell via a Python3 shell.
 
-![](<../../../.gitbook/assets/image%20(3216).png>)
+![](../../../.gitbook/assets/pandora-9.png)
 
-![](<../../../.gitbook/assets/image%20(2590).png>)
+![](../../../.gitbook/assets/pandora-7.png)
 
 ### Exploiting PATH
 
 I ran another LinPEAS as `matt`, and found that the root user was running some processes.
 
-![](<../../../.gitbook/assets/image%20(838).png>)
+![](../../../.gitbook/assets/pandora-14.png)
 
 I also found this one SUID binary called `pandora_backup`.
 
@@ -116,4 +116,4 @@ export PATH=$(pwd).$PATH
 pandora_backup
 ```
 
-![](<../../../.gitbook/assets/image%20(3541).png>)
+![](../../../.gitbook/assets/pandora-12.png)

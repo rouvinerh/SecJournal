@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(1266).png>)
+![](../../../.gitbook/assets/granny-1.png)
 
 ### IIS 6.0
 
@@ -14,9 +14,9 @@ This machine is running an outdated version of Microsoft IIS, which is vulnerabl
 
 Using this, we can gain a reverse shell easily:
 
-![](<../../../.gitbook/assets/image%20(162).png>)
+![](../../../.gitbook/assets/granny-3.png)
 
-![](<../../../.gitbook/assets/image%20(1282).png>)
+![](../../../.gitbook/assets/granny-2.png)
 
 ## Privilege Escalation
 
@@ -24,7 +24,7 @@ Using this, we can gain a reverse shell easily:
 
 We can enumerate the machine using `systeminfo`.
 
-![](<../../../.gitbook/assets/image%20(823).png>)
+![](../../../.gitbook/assets/granny-5.png)
 
 This is a really old version of Windows that is outdated and vulnerable to loads of exploits. One exploit is the Churrasco exploit, which works on Windows Server 2003 machines. However, because this machine was so old, it was hard to transfer files over to it using conventional Windows methods.
 
@@ -67,6 +67,6 @@ The exploit works through impersonating the SYSTEM user to execute commands by s
 
 The exploit can be used to gain a reverse shell easily via `nc.exe`:
 
-![](<../../../.gitbook/assets/image%20(519).png>)
+![](../../../.gitbook/assets/granny-4.png)
 
 A listener port would have a shell as SYSTEM after execution.

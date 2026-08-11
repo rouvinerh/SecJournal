@@ -22,7 +22,7 @@ We have to add `laboratory.htb` to our `/etc/hosts` file to access the web ports
 
 The website is some kind of company page for coding services:
 
-![](<../../../.gitbook/assets/image%20(570).png>)
+![](../../../.gitbook/assets/laboratory-9.png)
 
 The background animated thing is pretty cool honestly. Anyways, this looked pretty static, so I did a subdomain and directory scan on the site, and found one `git` subdomain.
 
@@ -44,19 +44,19 @@ ID           Response   Lines    Word       Chars       Payload
 
 When we visit this subdomain, it reveals a GitLab instance.
 
-![](<../../../.gitbook/assets/image%20(415).png>)
+![](../../../.gitbook/assets/laboratory-8.png)
 
 When trying to create a user, it appears we have to have a specific email domain being used.
 
-![](<../../../.gitbook/assets/image%20(3649).png>)
+![](../../../.gitbook/assets/laboratory-5.png)
 
 Using `laboratory.htb` works as the email domain, then we can view the dashbaord:
 
-![](<../../../.gitbook/assets/image%20(1775).png>)
+![](../../../.gitbook/assets/laboratory-2.png)
 
 Interestingly, this was running GitLab 12.8.1, which is an outdated version of the software.
 
-![](<../../../.gitbook/assets/image%20(2901).png>)
+![](../../../.gitbook/assets/laboratory-4.png)
 
 This version is vulnerable to an LFI.
 
@@ -185,15 +185,15 @@ Enqueued ActionMailer::DeliveryJob (Job ID: b987cd5d-e2e4-4558-a5ed-31339c1046f4
 
 Afterwards, we can sign in as `dexter` and view his projects:
 
-![](<../../../.gitbook/assets/image%20(3724).png>)
+![](../../../.gitbook/assets/laboratory-6.png)
 
 'Some personal stuff' in the SecureDocker project. Turns out that refers to his private SSH key that was left on the project!
 
-![](<../../../.gitbook/assets/image%20(1289).png>)
+![](../../../.gitbook/assets/laboratory-1.png)
 
 Using this, we can `ssh` in as the user and grab the user flag:
 
-![](<../../../.gitbook/assets/image%20(2690).png>)
+![](../../../.gitbook/assets/laboratory-3.png)
 
 ### Ghidra -> SUID Exploit
 
@@ -216,7 +216,7 @@ dexter@laboratory:/$
 
 I downloaded a copy of this binary to my Kali machine because it looks custom and I could not find any other software online matching this. Then, I opened up a copy in Ghidra. The program is really simple:
 
-![](<../../../.gitbook/assets/image%20(907).png>)
+![](../../../.gitbook/assets/laboratory-10.png)
 
 The funny thing is that the binary is using the full path for the target file, but `chmod` itself doesn't have the full path specified. All we have to do is create an program that is called `chmod` which executes a command as `root`:
 
@@ -228,6 +228,6 @@ dexter@laboratory:/tmp$ export PATH=/tmp:$PATH
 
 Then, we can just run `docker-security` to get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(3902).png>)
+![](../../../.gitbook/assets/laboratory-7.png)
 
 Rooted!

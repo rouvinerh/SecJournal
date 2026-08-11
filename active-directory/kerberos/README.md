@@ -34,9 +34,9 @@ There are quite a few different services and tickets that make Kerberos work.
 
 At the start of the process, we would have this:​
 
-![TGT Contents](<../../.gitbook/assets/image%20(3725).png>)
+![TGT Contents](../../.gitbook/assets/readme-1-dup2.png)
 
-![Service Ticket Contents](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FWTUTS177qkR2G18bNEOt%2Fuploads%2Fcht1PGoBtW4TmC5gzMrs%2Fimage.png?alt=media&#x26;token=d2848710-cee5-4b9a-9105-d60753cb8886)
+![Service Ticket Contents](https:/files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces/WTUTS177qkR2G18bNEOt/uploads/cht1PGoBtW4TmC5gzMrs/readme-3.png?alt=media&#x26;token=d2848710-cee5-4b9a-9105-d60753cb8886)
 
 Generally, there are 2 important portions for the Service Tickets as shown above.
 
@@ -45,7 +45,7 @@ Generally, there are 2 important portions for the Service Tickets as shown above
 
 The signing of the key with the Service LT Key and KDC LT Key basically acts like what a signature is in real life, which verifies the ticket is from authorised sources.
 
-![Process for Keberos](https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FWTUTS177qkR2G18bNEOt%2Fuploads%2FU3sKhk5AJawTGtqtBZac%2Fimage.png?alt=media&#x26;token=f5944ef7-897e-4bf3-8a1b-a08d8d816246)
+![Process for Keberos](https:/files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces/WTUTS177qkR2G18bNEOt/uploads/U3sKhk5AJawTGtqtBZac/readme-2.png?alt=media&#x26;token=f5944ef7-897e-4bf3-8a1b-a08d8d816246)
 
 1. AS-REQ
    * The Client requests a TGT

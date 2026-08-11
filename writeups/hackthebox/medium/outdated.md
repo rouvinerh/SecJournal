@@ -69,7 +69,7 @@ smb: \> ls
 
 When we view the PDF, it talks about how the systems are vulnerable to some CVEs, and that we have to send an email to `itsupport@outdated.htb` for it.
 
-![](<../../../.gitbook/assets/image%20(1209).png>)
+![](../../../.gitbook/assets/outdated-1.png)
 
 We have to sent a link to web applications, meaning someone will click on our links. We can start with researching the vulnerabilities listed in the PDF. The first CVE (also known as Follina) is an RCE vulnerability that makes use of a HTML file that the user has to click to execute arbitrary code.
 
@@ -96,7 +96,7 @@ After waiting for a little bit, we should get a hit on both HTTP servers (one fo
 
 `nc.exe`) and get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(3431).png>)
+![](../../../.gitbook/assets/outdated-5.png)
 
 ## Privilege Escalation
 
@@ -122,7 +122,7 @@ dir
 
 Then we just need to transfer this file over to our machine via `copy`. Afterwards, start `neo4j` and `bloodhound`, then upload the data. We can find the privilege escalation vector here:
 
-![](<../../../.gitbook/assets/image%20(399).png>)
+![](../../../.gitbook/assets/outdated-7.png)
 
 The `AddKeyCredentialLink` is exploitable using Shadow Credentials.
 
@@ -138,15 +138,15 @@ Then run this:
 
 This should output a huge command for `Rubeus.exe`.
 
-![](<../../../.gitbook/assets/image%20(854).png>)
+![](../../../.gitbook/assets/outdated-9.png)
 
 Download and run `Rubeus.exe` with that command, and we should get a hash to use:
 
-![](<../../../.gitbook/assets/image%20(2372).png>)
+![](../../../.gitbook/assets/outdated-3.png)
 
 Using that NTLM hash, we can PTH and `evil-winrm` in.
 
-![](<../../../.gitbook/assets/image%20(1628).png>)
+![](../../../.gitbook/assets/outdated-2.png)
 
 Grab the user flag.
 
@@ -271,11 +271,11 @@ Then we need to wait for a while until the update installs. We can check when it
 
 Once installed, we will see that we are the part of the Administrators group.
 
-![](<../../../.gitbook/assets/image%20(3794).png>)
+![](../../../.gitbook/assets/outdated-6.png)
 
 Then, all we need to do is relog in using `evil-winrm` and we can access the root flag:
 
-![](<../../../.gitbook/assets/image%20(2573).png>)
+![](../../../.gitbook/assets/outdated-4.png)
 
 Alternatively, we can dump the hashes from the entire domain:
 
@@ -285,4 +285,4 @@ $ secretsdump.py outdated.htb/sflowers@10.129.193.194 -hashes ':1FCDB1F6015DCB31
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:716f1ce2e2cf38ee1210cce35eb78cb6
 ```
 
-![](<../../../.gitbook/assets/image%20(834).png>)
+![](../../../.gitbook/assets/outdated-8.png)

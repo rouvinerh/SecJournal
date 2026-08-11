@@ -26,17 +26,17 @@ WinRM is open, which can be used for `evil-winrm`. FTP does not accept anonymous
 
 Port 450 shows us a basic login:
 
-![](<../../../.gitbook/assets/image%20(1418).png>)
+![](../../../.gitbook/assets/butch-4.png)
 
 Default credentials don't work. Attempting any form of SQL Injection shows this:
 
-![](<../../../.gitbook/assets/image%20(1375).png>)
+![](../../../.gitbook/assets/butch-1.png)
 
 So this is definitely vulnerable to SQL Injection. I was unable to bypass this login, so I used `sqlmap` to verify the type of injection we needed to use.
 
-![](<../../../.gitbook/assets/image%20(667).png>)
+![](../../../.gitbook/assets/butch-7.png)
 
-![](<../../../.gitbook/assets/image%20(1378).png>)
+![](../../../.gitbook/assets/butch-3.png)
 
 All of the payloads `sqlmap` used had the `WAITFOR DELAY` commands, which means we have to exploit time-based Blind SQLI. While I could dump out the entire database (which could take hours), I wanted to exploit it manually (as per OSCP rules, no `sqlmap`!).
 
@@ -95,7 +95,7 @@ I tested all of these using this payload, and then attempted to login with `butc
 
 We can then login to view the dashboard:
 
-![](<../../../.gitbook/assets/image%20(264).png>)
+![](../../../.gitbook/assets/butch-5.png)
 
 ### Gobuster -> C# RCE
 
@@ -120,7 +120,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /dev                  (Status: 301) [Size: 153] [--> http://192.168.208.63:450/dev/]
 ```
 
-![](<../../../.gitbook/assets/image%20(1377).png>)
+![](../../../.gitbook/assets/butch-2.png)
 
 The contents of the `site.master.txt` file was in C#:
 
@@ -235,6 +235,6 @@ namespace MyNamespaceMaster
 
 When we upload the file and refresh the page, we get a shell as the SYSTEM user.
 
-![](<../../../.gitbook/assets/image%20(666).png>)
+![](../../../.gitbook/assets/butch-6.png)
 
 Rooted!

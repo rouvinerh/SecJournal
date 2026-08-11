@@ -23,7 +23,7 @@ There was nothing of interest on the website. `gobuster` scans and default enume
 
 I decided to use `wfuzz` to fuzz the possible subdomains present on the website, and actually found one at `dev.stocker.htb`.
 
-![](<../../../.gitbook/assets/image%20(3412).png>)
+![](../../../.gitbook/assets/stocker-8.png)
 
 Interesting.
 
@@ -31,7 +31,7 @@ Interesting.
 
 At the dev site, all we see is one login page:
 
-![](<../../../.gitbook/assets/image%20(3524).png>)
+![](../../../.gitbook/assets/stocker-9.png)
 
 I tested out `sqlmap` or other SQL injections but it didn't work. It seems that we have to bypass this login to carry on with the machine. Proxying the traffic via Burp gave me a clearer picture on the error received when I entered wrong credentials:
 
@@ -59,23 +59,23 @@ There was a `connect.sid` endpoint, indicating that this was some type of Expres
 {"username": {"$ne": "foo"}, "password": {"$ne": "bar"} }
 ```
 
-![](<../../../.gitbook/assets/image%20(2691).png>)
+![](../../../.gitbook/assets/stocker-6.png)
 
 The website was some ordering website where we could place orders for items.
 
-![](<../../../.gitbook/assets/image%20(2279).png>)
+![](../../../.gitbook/assets/stocker-5.png)
 
 ### Stock LFI
 
 I added some items and attemted to checkout from the website.
 
-![](<../../../.gitbook/assets/image%20(735).png>)
+![](../../../.gitbook/assets/stocker-11.png)
 
-![](<../../../.gitbook/assets/image%20(2792).png>)
+![](../../../.gitbook/assets/stocker-7.png)
 
 Viewing the purchase order brought us to a PDF page.
 
-![](<../../../.gitbook/assets/image%20(473).png>)
+![](../../../.gitbook/assets/stocker-10.png)
 
 I downloaded the PDF and used `exiftool` on it to find that Skia is used to generate this PDF from Chromium.
 
@@ -131,19 +131,19 @@ I attempted this exploit using the `file:///` wrapper to read the `/etc/passwd` 
 <iframe src='file:///etc/passwd' width=500px height=1000px ></iframe>
 ```
 
-![](<../../../.gitbook/assets/image%20(227).png>)
+![](../../../.gitbook/assets/stocker-4.png)
 
-![](<../../../.gitbook/assets/image%20(1557).png>)
+![](../../../.gitbook/assets/stocker-2.png)
 
 We find that the user is called `angoose`. I attempted to read more files such as the private SSH key of the user, but it seems that I either could not read it or it did not exist.
 
 Remembering that this was an Express website, perhaps there was a Javascript file that I could read to find some credentials, particularly those used to access this server in the first place. WIthin  the `/var/www/dev/index.js` file, I managed to find some credentials.
 
-![](<../../../.gitbook/assets/image%20(1072).png>)
+![](../../../.gitbook/assets/stocker-1.png)
 
 With this password, we can `ssh` in as `angoose`.
 
-![](<../../../.gitbook/assets/image%20(1993).png>)
+![](../../../.gitbook/assets/stocker-3.png)
 
 ## Privilege Escalation
 

@@ -35,25 +35,25 @@ We can add this host to our `/etc/hosts` file.
 
 The website shows a shop:
 
-![](<../../.gitbook/assets/image%20(4184).png>)
+![](../../.gitbook/assets/cybermonday-1.png)
 
 There are a few products available:
 
-![](<../../.gitbook/assets/image%20(4185).png>)
+![](../../.gitbook/assets/cybermonday-2.png)
 
 When the traffic is proxied, we can see that there are some JWT tokens being passed around:
 
-![](<../../.gitbook/assets/image%20(4186).png>)
+![](../../.gitbook/assets/cybermonday-3.png)
 
 I tried creating a user and logging in.
 
-![](<../../.gitbook/assets/image%20(4187).png>)
+![](../../.gitbook/assets/cybermonday-4.png)
 
 The site is powered by PHP based on the `X-Powered-By` header. Since there was nothing much here, I did a `feroxbuster` scan to view the hidden directories. This revealed the `assets` directories with loads of stuff, but I couldn't really use all of it.
 
 Since this was an `nginx` server, I checked Hacktricks and tested a few things, such as the `nginx` LFI exploit:
 
-![](<../../.gitbook/assets/image%20(4188).png>)
+![](../../.gitbook/assets/cybermonday-5.png)
 
 This caused a `403` to be returned, indicating that it might work. `gobuster` confirms this:
 
@@ -266,35 +266,35 @@ It seems that there's an `isAdmin` boolean variable being set. We can change thi
 
 I appended `isAdmin=1` to the end of the POST parameters and updated my user's profile, which worked since the Dashboard appeared!
 
-![](<../../.gitbook/assets/image%20(4189).png>)
+![](../../.gitbook/assets/cybermonday-6.png)
 
 ### Admin Dashboard -> Webhook Subdomain
 
 The changelog of the administrator's dashboard was the most interesting:
 
-![](<../../.gitbook/assets/image%20(4190).png>)
+![](../../.gitbook/assets/cybermonday-7.png)
 
 The link redirected us to `webhooks-api-beta.cybermonday.htb`, which we can add to the `hosts` file. Visiting that site revealed some kind of API:
 
-![](<../../.gitbook/assets/image%20(4191).png>)
+![](../../.gitbook/assets/cybermonday-8.png)
 
 Webhooks open up the possibilities of SSRF, and from the earlier `.env` file, we know that this machine uses Redis on port 6379, which we might need to interact with to get a password or something. The `sendRequest` action seems to be vulnerable to SSRF somehow.
 
 To use this API, we first need to create a user.
 
-![](<../../.gitbook/assets/image%20(4192).png>)
+![](../../.gitbook/assets/cybermonday-9.png)
 
 Afterwards, logging in would return an `x-access-token` for us to use:
 
-![](<../../.gitbook/assets/image%20(4193).png>)
+![](../../.gitbook/assets/cybermonday-10.png)
 
 However, we are not authorized to create webhooks on this site with this token:
 
-![](<../../.gitbook/assets/image%20(4194).png>)
+![](../../.gitbook/assets/cybermonday-11.png)
 
 It's worth noting that the JWT token stored contains our user ID and our username:
 
-![](<../../.gitbook/assets/image%20(4195).png>)
+![](../../.gitbook/assets/cybermonday-12.png)
 
 There should be a way to spoof this token or get the secret required.
 
@@ -388,15 +388,15 @@ With this PEM, we can spoof tokens by changing the algorithm to HS256 instead of
 
 I used Burpsuite extensions (JOSEPH and JWT Editor Keys) to attack this. First, we can edit the JWT to have this as the payload and header:
 
-![](<../../.gitbook/assets/image%20(4196).png>)
+![](../../.gitbook/assets/cybermonday-13.png)
 
 Afterwards, we can sign the token using the PEM string we got earlier using JOSEPH. Since JWTs are 3 separate fields separated by `.` characters, I just removed the signature part of the token from JWT Editor Keys:
 
-![](<../../.gitbook/assets/image%20(4197).png>)
+![](../../.gitbook/assets/cybermonday-14.png)
 
 Using this token, we can then access the `/webhooks` endpoint:
 
-![](<../../.gitbook/assets/image%20(4198).png>)
+![](../../.gitbook/assets/cybermonday-15.png)
 
 ### Redis SSRF -> Deserialisation RCE
 
@@ -404,7 +404,7 @@ Using this token, we can then access the `/webhooks` endpoint:
 
 Now that we can create our own webhooks, we create a webhook with the `action` parameter set to `sendRequest`:
 
-![](<../../.gitbook/assets/image%20(4199).png>)
+![](../../.gitbook/assets/cybermonday-16.png)
 
 Using this, we can then send requests from the server:
 
@@ -426,17 +426,17 @@ Content-Length: 51
 {"url":"http://10.10.14.32/iamssrf","method":"GET"}
 ```
 
-![](<../../.gitbook/assets/image%20(4200).png>)
+![](../../.gitbook/assets/cybermonday-17.png)
 
 Attempts to use any other protocol fails:
 
-![](<../../.gitbook/assets/image%20(4201).png>)
+![](../../.gitbook/assets/cybermonday-18.png)
 
 Very early on, we saw that we had a Redis server operating on the server when we read the `.env` file through the `nginx` LFI exploit. I know that its possible to interact with Redis through HTTP requests, and the SSRF for this machine returns the message retrieved from its request.
 
 From the `.env` file, the `REDIS_HOST` variable is set to `redis`, indicating that we have to use that. On the Hacktricks page for Redis, there's an interesting part that talks about `slaveof`.
 
-![](<../../.gitbook/assets/image%20(4202).png>)
+![](../../.gitbook/assets/cybermonday-19.png)
 
 I used this JSON object:
 
@@ -446,7 +446,7 @@ I used this JSON object:
 
 When I opened a listener port, this is what I got:
 
-![](<../../.gitbook/assets/image%20(4203).png>)
+![](../../.gitbook/assets/cybermonday-20.png)
 
 Hacktricks mentions that we might be able to control the master instance (the machine) with our slave. This means that we could potentially read stuff within the machine. To exploit this, we can first create a `redis-server` to accept incoming connections and retrieve output from the commands I sent via webhooks.
 
@@ -514,7 +514,7 @@ This was the payload I used:
 
 The last parts are for handling the arguments passed to Redis:
 
-![](<../../.gitbook/assets/image%20(4204).png>)
+![](../../.gitbook/assets/cybermonday-21.png)
 
 Afterwards, we need to replicate the remote Redis database to our own. This would allow us to write to the remote Redis database if we need to:
 
@@ -623,7 +623,7 @@ Afterwards, I set the value of the cookie to my payload:
 
 Upon refreshing the page, I got a shell as `www-data`:
 
-![](<../../.gitbook/assets/image%20(4205).png>)
+![](../../.gitbook/assets/cybermonday-22.png)
 
 ## Privilege Escalation 1
 
@@ -1009,15 +1009,15 @@ Now, we just need to bypass the string checks within the code using this:
 {"action":"read","log_name":"logs/. ./etc/passwd"}
 ```
 
-![](<../../.gitbook/assets/image%20(4206).png>)
+![](../../.gitbook/assets/cybermonday-23.png)
 
 LFI works! We don't have many files to read, so I started by reading the files within `/proc` to find stuff. Within the `/proc/self/environ` file, we can find a new password:
 
-![](<../../.gitbook/assets/image%20(4207).png>)
+![](../../.gitbook/assets/cybermonday-24.png)
 
 With this password, we can finally `ssh` in as the user and read the user flag:
 
-![](<../../.gitbook/assets/image%20(4210).png>)
+![](../../.gitbook/assets/cybermonday-26.png)
 
 ## Privilege Esclation 2
 
@@ -1181,7 +1181,7 @@ services:
 
 Using the above file would give us a reverse shell in the Docker container we create:
 
-![](<../../.gitbook/assets/image%20(4209).png>)
+![](../../.gitbook/assets/cybermonday-25.png)
 
 Afterwards, we can `mount` back onto the main machine since we have all capabilities. However, this does not work for some reason:
 
@@ -1236,6 +1236,6 @@ chmod 600 .ssh
 
 We can then `ssh` in as `root`:
 
-![](<../../.gitbook/assets/image%20(4211).png>)
+![](../../.gitbook/assets/cybermonday-27.png)
 
 Rooted!

@@ -19,11 +19,11 @@ PORT     STATE SERVICE
 
 Port 8080 a corporate webpage for some product:
 
-![](<../../.gitbook/assets/image%20(296).png>)
+![](../../.gitbook/assets/inject-6.png)
 
 There's an Upload function in the top right of the page. When we upload a file, we can view it on the server:
 
-![](<../../.gitbook/assets/image%20(2614).png>)
+![](../../.gitbook/assets/inject-4.png)
 
 There's an LFI vulnerability here.
 
@@ -96,7 +96,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The release notes shows that the creators added some 'checks' for the upload feature, which obviously failed if LFI can be used:
 
-![](<../../.gitbook/assets/image%20(1834).png>)
+![](../../.gitbook/assets/inject-1.png)
 
 We need to find out what kind of framework this is running. Because this uses images, I found out we can read directories like this:
 
@@ -317,11 +317,11 @@ The PoC is pretty simple:
 We find that this works!\
 
 
-![](<../../.gitbook/assets/image%20(4086).png>)
+![](../../.gitbook/assets/inject-7.png)
 
 Now we have RCE, we can easily get a reverse shell. I got this via 2 commands, one that downloads a small reverse shell script via `curl` and then executes it with `bash`.
 
-![](<../../.gitbook/assets/image%20(2873).png>)
+![](../../.gitbook/assets/inject-5.png)
 
 We can upgrade the shell by dropping our public key in a `authorized_keys` folder in `frank` home directory.
 
@@ -355,7 +355,7 @@ frank@inject:~/.m2$ cat settings.xml
 
 With this, we can `su` to `phil`.
 
-![](<../../.gitbook/assets/image%20(256).png>)
+![](../../.gitbook/assets/inject-3.png)
 
 ### Playbook PE
 
@@ -399,6 +399,6 @@ After changing the module and command, we need to specify `become: true` to enab
 
 Download this via `wget` to the machine and wait. After a bit, we should get an easy root shell.
 
-![](<../../.gitbook/assets/image%20(2421).png>)
+![](../../.gitbook/assets/inject-2.png)
 
 Pwned.

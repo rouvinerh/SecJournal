@@ -41,11 +41,11 @@ We can add this domain to our `/etc/hosts` file.
 
 Port 80 hosted a typical corporate site:
 
-![](<../../.gitbook/assets/image%20(4122).png>)
+![](../../.gitbook/assets/gofer-1.png)
 
 Within the site, there wasn't much apart from a few names like Jocelyn Hudson and stuff.
 
-![](<../../.gitbook/assets/image%20(4123).png>)
+![](../../.gitbook/assets/gofer-2.png)
 
 `gobuster` scans reveal nothing much, but a `wfuzz` scan shows one subdomain has been returned.
 
@@ -67,7 +67,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 Visiting this subdomain requires credentials:
 
-![](<../../.gitbook/assets/image%20(4124).png>)
+![](../../.gitbook/assets/gofer-3.png)
 
 Weak credentials don't work at all. I tested a few common directories with different requests, and found that `index.php` accepted POST requests without credentials:
 
@@ -110,7 +110,7 @@ $ curl -X POST http://proxy.gofer.htb/index.php?url=file:///etc/passwd
 
 A bit more testing by removing `/` characters eventually works! This tells me that the WAF is rather weak.
 
-![](<../../.gitbook/assets/image%20(4125).png>)
+![](../../.gitbook/assets/gofer-4.png)
 
 ### SMB -> Phishing Download
 
@@ -270,7 +270,7 @@ gopher://2130706433:25/xHELO%250d%250aMAIL%20FROM%3A%3Ciamanidiot@gofer.htb%3E%2
 
 Since there were some quotes I was lazy to deal with, I sent it in Burp and got a reponse saying it worked:
 
-![](<../../.gitbook/assets/image%20(4126).png>)
+![](../../.gitbook/assets/gofer-5.png)
 
 We would also get hits on our HTTP server.
 
@@ -290,7 +290,7 @@ End Sub
 
 We can then assign this to the Open Document event:
 
-![](<../../.gitbook/assets/image%20(4127).png>)
+![](../../.gitbook/assets/gofer-6.png)
 
 Then we can host this file on a HTTP server and send our Gopher payload. This would give us a reverse shell as the user!
 
@@ -308,7 +308,7 @@ I ran `pspy64` and found some user credentials:
 
 We can then `su` to `tbuckley`, who is part of the `dev` group:
 
-![](<../../.gitbook/assets/image%20(4130).png>)
+![](../../.gitbook/assets/gofer-7.png)
 
 ### Notes SUID -> Reverse Engineering
 
@@ -340,7 +340,7 @@ tbuckley@gofer:/home/jhudson$ /usr/local/bin/notes
 
 I transferred the binary back to my machine via `base64` and used `ghidra` to analyse it. Within it, I found some interesting parts. Option 1 is the user creation part:
 
-![](<../../.gitbook/assets/image%20(4131).png>)
+![](../../.gitbook/assets/gofer-8.png)
 
 * It allocates 40 bytes for the username in the Heap via `malloc(0x28)`, and afterwards checks whether the `malloc` worked.
 * There seems to be 2 parts for this memory, of which it uses the first 24 (0x18) bytes for the `username` since the username part is set to the first block of memory.
@@ -358,7 +358,7 @@ nimda
 
 Option 3 is the delete user option, and it is vulnerable due to dangling pointers:
 
-![](<../../.gitbook/assets/image%20(4132).png>)
+![](../../.gitbook/assets/gofer-9.png)
 
 * This is a classic case of a Use After Free vulnerability. The `local_10` variable is `free` here, but the pointer still remains and is not set to NULL.
 * This indicates that the pointer is a 'dangling', meaning that any future accesses to it will still point to the allocated memory even if it does not belong to us.
@@ -366,7 +366,7 @@ Option 3 is the delete user option, and it is vulnerable due to dangling pointer
 
 Option 4 is the write note option, which allows us to overwrite the memory due to the dangling pointer:
 
-![](<../../.gitbook/assets/image%20(4133).png>)
+![](../../.gitbook/assets/gofer-10.png)
 
 * One thing to note about `malloc` is that dangling pointers are 'used again', meaning we can reaccess the memory allocated from the user creation.
 
@@ -374,7 +374,7 @@ Option 4 is the write note option, which allows us to overwrite the memory due t
 
 Option 8 is the main vulnerability:
 
-![](<../../.gitbook/assets/image%20(4134).png>)
+![](../../.gitbook/assets/gofer-11.png)
 
 This part of the code checks whether the role of the user has been set to `admin`, and then grants us access to the `tar` command, which does not have its full PATH specified and is thus vulnerable to PATH Hijacking.
 
@@ -484,6 +484,6 @@ Your choice: 9
 
 Then, we can easily escalate privileges:
 
-![](<../../.gitbook/assets/image%20(4135).png>)
+![](../../.gitbook/assets/gofer-12.png)
 
 Rooted!

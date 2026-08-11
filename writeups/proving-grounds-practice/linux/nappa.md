@@ -69,15 +69,15 @@ There was some config files and what not, but there's nothing in it at all. Movi
 
 Port 80 was a ForumOnRails instance:
 
-![](<../../../.gitbook/assets/image%20(3088).png>)
+![](../../../.gitbook/assets/nappa-7.png)
 
 I registered a user and looked through the posts made by the admin, and found his email.
 
-![](<../../../.gitbook/assets/image%20(3085).png>)
+![](../../../.gitbook/assets/nappa-6.png)
 
 I decided to look into the page source for the Login, Register and Forgot Password pages. Within the Register page, there's a password within the page source:
 
-![](<../../../.gitbook/assets/image%20(1523).png>)
+![](../../../.gitbook/assets/nappa-2.png)
 
 We can then login as the admin email and password of `it0jNc6L/r090Q==`.
 
@@ -85,21 +85,21 @@ We can then login as the admin email and password of `it0jNc6L/r090Q==`.
 
 The administrator had access to the `/serverinfo` page:
 
-![](<../../../.gitbook/assets/image%20(1535).png>)
+![](../../../.gitbook/assets/nappa-3.png)
 
 Again, there were some interesting comments in the page source:
 
-![](<../../../.gitbook/assets/image%20(2561).png>)
+![](../../../.gitbook/assets/nappa-4.png)
 
 We can edit the HTML such that the `cmd` box appears:
 
-![](<../../../.gitbook/assets/image%20(1271).png>)
+![](../../../.gitbook/assets/nappa-1.png)
 
 Then, we can send stuff to this to get a request within Burp, which can give us a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(2568).png>)
+![](../../../.gitbook/assets/nappa-5.png)
 
-![](<../../../.gitbook/assets/image%20(3744).png>)
+![](../../../.gitbook/assets/nappa-9.png)
 
 ## Privilege Escalation
 
@@ -157,4 +157,4 @@ b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 
 We can then use this to `ssh` in as `root`:
 
-![](<../../../.gitbook/assets/image%20(3169).png>)
+![](../../../.gitbook/assets/nappa-8.png)

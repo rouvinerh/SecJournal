@@ -70,7 +70,7 @@ $ wpscan --api-token mytoken --enumerate p,t,u --url http://192.168.208.166
 
 I confirmed that this works:
 
-![](<../../../.gitbook/assets/image%20(1384).png>)
+![](../../../.gitbook/assets/readys-3.png)
 
 So we have an LFI, and the only other exploitable thing is the Redis instance. I tried to find credentials for it using this LFI, and found it within `/etc/redis/redis.conf`:
 
@@ -80,11 +80,11 @@ $ curl http://192.168.208.166/wp-content/plugins/site-editor/editor/extensions/p
 
 Searching for the `AUTH` string allowed me to find the password:
 
-![](<../../../.gitbook/assets/image%20(269).png>)
+![](../../../.gitbook/assets/readys-7.png)
 
 We can then enumerate the database:
 
-![](<../../../.gitbook/assets/image%20(1376).png>)
+![](../../../.gitbook/assets/readys-1.png)
 
 ### Redis RCE
 
@@ -92,11 +92,11 @@ The Redis instance is vulnerable to RCE through the module loading exploit with 
 
 {% embed url="https://github.com/n0b0dyCN/redis-rogue-server" %}
 
-![](<../../../.gitbook/assets/image%20(2154).png>)
+![](../../../.gitbook/assets/readys-6.png)
 
 We can easily get a reverse shell using this RCE exploit:
 
-![](<../../../.gitbook/assets/image%20(1380).png>)
+![](../../../.gitbook/assets/readys-2.png)
 
 ## Privilege Escalation
 
@@ -110,7 +110,7 @@ I wrote a PHP reverse shell to the `/opt/redis-cli` directory. Then, using our L
 $ curl http://192.168.208.166/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/opt/redis-files/phpreverseshell.php
 ```
 
-![](<../../../.gitbook/assets/image%20(1436).png>)
+![](../../../.gitbook/assets/readys-5.png)
 
 ### Cronjob -> Tar Command Injection
 
@@ -160,4 +160,4 @@ touch ./'--checkpoint-action=exec=bash ez.sh'
 
 After a while, the `root` user would execute the script and we would get a reverse shell:
 
-![](<../../../.gitbook/assets/image (1422).png>)
+![](../../../.gitbook/assets/readys-4.png)

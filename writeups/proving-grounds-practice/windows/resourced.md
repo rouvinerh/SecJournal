@@ -261,11 +261,11 @@ INFO: Done in 00M 33S
 
 We can then upload all of this information to `bloodhound`. Then, we find that `l.livingstone` is part of the Remote Management Group:
 
-![](<../../../.gitbook/assets/image%20(3875).png>)
+![](../../../.gitbook/assets/resourced-5.png)
 
 We can then `evil-winrm` in by passing the hash.
 
-![](<../../../.gitbook/assets/image%20(3850).png>)
+![](../../../.gitbook/assets/resourced-4.png)
 
 Then, we can grab the user flag.
 
@@ -275,7 +275,7 @@ Then, we can grab the user flag.
 
 When viewing the outbound privileges that this user has, we see that they have GenericAll permissions over the DC:
 
-![](<../../../.gitbook/assets/image%20(2136).png>)
+![](../../../.gitbook/assets/resourced-2.png)
 
 This means that the user has full control over the DC and we can basically do whatever we want. We can abuse this to get an administrator shell via RCBD:
 
@@ -298,11 +298,11 @@ Get-DomainComputer resourcedc | Set-DomainObject -Set @{'msds-allowedtoactonbeha
 
 Once we have run these, it should work and we can check `klist` to see that we have the administrator's ticket:
 
-![](<../../../.gitbook/assets/image%20(1759).png>)
+![](../../../.gitbook/assets/resourced-1.png)
 
 However, even with this ticket, it appears we still cannot access the administrator's desktop (and also we still don't have a shell...)
 
-![](<../../../.gitbook/assets/image%20(543).png>)
+![](../../../.gitbook/assets/resourced-6.png)
 
 ### Proper DA Shell
 
@@ -331,6 +331,6 @@ $ export KRB5CCNAME=./Administrator.ccache
 $ sudo impacket-psexec -k -no-pass resourcedc.resourced.local -dc-ip 192.168.219.175
 ```
 
-![](<../../../.gitbook/assets/image%20(3460).png>)
+![](../../../.gitbook/assets/resourced-3.png)
 
 Rooted!

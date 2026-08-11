@@ -19,15 +19,15 @@ PORT      STATE    SERVICE
 
 The page was some type of blog.
 
-![](<../../../.gitbook/assets/image%20(1690).png>)
+![](../../../.gitbook/assets/curling-3.png)
 
 In one of the posts, there's a user called `floris`.
 
-![](<../../../.gitbook/assets/image%20(2975).png>)
+![](../../../.gitbook/assets/curling-5.png)
 
 The page source also had a hidden file:
 
-![](<../../../.gitbook/assets/image%20(3757).png>)
+![](../../../.gitbook/assets/curling-7.png)
 
 Within it, it had a base64-encoded string. We can pipe the output and decode it:
 
@@ -77,21 +77,21 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Loads of directories. The `/administrator` directory had a Joomla login:
 
-![](<../../../.gitbook/assets/image%20(4089).png>)
+![](../../../.gitbook/assets/curling-9.png)
 
 We can login using `floris:Curling2018!`.
 
-![](<../../../.gitbook/assets/image%20(153).png>)
+![](../../../.gitbook/assets/curling-2.png)
 
 We can follow the instructions from Hacktrikcs to get RCE on this website by creating new PHP Templates.
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/joomla#rce" %}
 
-![](<../../../.gitbook/assets/image%20(700).png>)
+![](../../../.gitbook/assets/curling-10.png)
 
 Then we can get a reverse shell using a `bash` one-liner.
 
-![](<../../../.gitbook/assets/image%20(403).png>)
+![](../../../.gitbook/assets/curling-8.png)
 
 ## Privilege Escalation
 
@@ -123,7 +123,7 @@ www-data@curling:/home/floris$ cat password_backup
 
 It appears that the `hexdump` of the original file was taken and this is what is left. We can reverse this with `xxd -r`.
 
-![](<../../../.gitbook/assets/image%20(1249).png>)
+![](../../../.gitbook/assets/curling-1.png)
 
 This file turns out to be loads of zip files, so we have to do `bunzip2` and `gunzip` twice and `tar` once. Eventually, we will end up with this file:
 
@@ -134,7 +134,7 @@ $ cat password.txt
 
 We can use this to `su` to `floris`.
 
-![](<../../../.gitbook/assets/image%20(3594).png>)
+![](../../../.gitbook/assets/curling-6.png)
 
 ### To Root
 
@@ -201,6 +201,6 @@ output = "/etc/passwd"
 
 After the machine has downloaded the file, we can just `su` to our new user.
 
-![](<../../../.gitbook/assets/image%20(1836).png>)
+![](../../../.gitbook/assets/curling-4.png)
 
 Rooted!

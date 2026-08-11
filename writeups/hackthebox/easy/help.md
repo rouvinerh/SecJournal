@@ -55,21 +55,21 @@ GraphQL was present. So we need to send `query` parameters and hopefully find so
 
 At the top, we see this:
 
-![](<../../../.gitbook/assets/image%20(2000).png>)
+![](../../../.gitbook/assets/help-2.png)
 
 This means we can query `username` and `password` fields from `user`, which would make `{user{username,password}}`.
 
-![](<../../../.gitbook/assets/image%20(2212).png>)
+![](../../../.gitbook/assets/help-4.png)
 
 The hash is crackable on CrackStation.
 
-![](<../../../.gitbook/assets/image%20(206).png>)
+![](../../../.gitbook/assets/help-3.png)
 
 ### HelpDeskZ
 
 On port 80, it just shows the default Apache2 page:
 
-![](<../../../.gitbook/assets/image%20(2383).png>)
+![](../../../.gitbook/assets/help-6.png)
 
 Doing a `gobuster` scan reveals some directories:
 
@@ -98,11 +98,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 `/support` reveals a HelpDeskZ instance:
 
-![](<../../../.gitbook/assets/image%20(2297).png>)
+![](../../../.gitbook/assets/help-5.png)
 
 We can login with `helpme@helpme.com:godhelpmeplz`. From the HelpDeskZ repository, there's a `readme.html` file present where we can find the version that is running.
 
-![](<../../../.gitbook/assets/image%20(2709).png>)
+![](../../../.gitbook/assets/help-7.png)
 
 This version has an exploit available:
 
@@ -118,7 +118,7 @@ HelpDeskZ < 1.0.2 - (Authenticated) SQL Injection / Unauth | php/webapps/41200.p
 
 First we need to open a ticket and then upload a `cmd.php` webshell.
 
-![](<../../../.gitbook/assets/image%20(306).png>)
+![](../../../.gitbook/assets/help-8.png)
 
 Then we can submit this, and even though the website says the file type is not allowed, **the file is still uploaded onto the website**. Then, we can use `40200.py` to find it.
 
@@ -133,7 +133,7 @@ uid=1000(help) gid=1000(help) groups=1000(help),4(adm),24(cdrom),30(dip),33(www-
 
 Then, we can get a reverse shell easily and capture the user flag.
 
-![](<../../../.gitbook/assets/image%20(984).png>)
+![](../../../.gitbook/assets/help-9.png)
 
 ## Privilege Escalation
 
@@ -150,4 +150,4 @@ We can use this kernel exploit to get a root shell:
 
 {% embed url="https://www.exploit-db.com/exploits/44298" %}
 
-![](<../../../.gitbook/assets/image%20(1937).png>)
+![](../../../.gitbook/assets/help-1.png)

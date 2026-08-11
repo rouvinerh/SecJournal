@@ -49,11 +49,11 @@ There's a `.git` repository present on the website. There is also a domain we ha
 
 The website was a Flask based website:
 
-![](<../../../.gitbook/assets/image%20(40).png>)
+![](../../../.gitbook/assets/canape-4.png)
 
 We can submit quotes to be viewed on the website through the using specific Simpsons characters:
 
-![](<../../../.gitbook/assets/image%20(41).png>)
+![](../../../.gitbook/assets/canape-5.png)
 
 Since we have a `.git` repository, we can dump that out first.
 
@@ -151,7 +151,7 @@ Rp4
 
 The reason we split the string by `*` is because of the weird string it generates. Running this gives us a shell:
 
-![](<../../../.gitbook/assets/image%20(37).png>)
+![](../../../.gitbook/assets/canape-1.png)
 
 ## Privilege Escalation
 
@@ -201,7 +201,7 @@ www-data@canape:/$ curl 127.0.0.1:5984/passwords/739c5ebdf3f7a001bebb8fc43800473
 
 With this, we can `ssh` in as `homer` using the password from the other fields:
 
-![](<../../../.gitbook/assets/image%20(38).png>)
+![](../../../.gitbook/assets/canape-2.png)
 
 ### Sudo Pip -> Root
 
@@ -226,6 +226,6 @@ echo "import os; os.execl('/bin/sh', 'sh', '-c', 'sh <$(tty) >$(tty) 2>$(tty)')"
 sudo pip install $TF
 ```
 
-![](<../../../.gitbook/assets/image%20(39).png>)
+![](../../../.gitbook/assets/canape-3.png)
 
 Rooted!

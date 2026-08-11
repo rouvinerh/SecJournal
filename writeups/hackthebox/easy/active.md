@@ -142,6 +142,6 @@ Session completed.
 
 Then, we can get a shell via `smbexec.py`.
 
-![](<../../../.gitbook/assets/image%20(989).png>)
+![](../../../.gitbook/assets/active.png)
 
 Rooted!

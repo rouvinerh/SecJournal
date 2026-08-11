@@ -25,11 +25,11 @@ PORT     STATE SERVICE
 
 I wanted to see what Port 9001 had for us, but I didn't get very far because it required credentials to access.
 
-![](<../../../.gitbook/assets/image%20(1576).png>)
+![](../../../.gitbook/assets/luanne-4.png)
 
 Default credentials of `admin:admin` worked! Then, we were able to view the Supervisor program running on it.
 
-![](<../../../.gitbook/assets/image%20(2343).png>)
+![](../../../.gitbook/assets/luanne-8.png)
 
 When clicking on the processes, I was able to find quite a few that were rather interesting:
 
@@ -45,29 +45,29 @@ Most notably, we can see that the `_httpd` user was running some kind of .lua sc
 
 When viewing the page, we get a 401 Unauthorized code because we don't have any credentials. Default and weak credentials don't work here.
 
-![](<../../../.gitbook/assets/image%20(2864).png>)
+![](../../../.gitbook/assets/luanne-12.png)
 
-![](<../../../.gitbook/assets/image%20(806).png>)
+![](../../../.gitbook/assets/luanne-20.png)
 
 I ran a `gobuster` scan on port 80 in the hopes that I would find something else, and I did find a `robots.txt`.
 
-![](<../../../.gitbook/assets/image%20(897).png>)
+![](../../../.gitbook/assets/luanne-21.png)
 
 Viewing `robots.txt` revealed this file:
 
-![](<../../../.gitbook/assets/image%20(2808).png>)
+![](../../../.gitbook/assets/luanne-11.png)
 
 I ran another `gobuster` on this `/weather` directory and found another hidden endpoint.
 
-![](<../../../.gitbook/assets/image%20(3080).png>)
+![](../../../.gitbook/assets/luanne-13.png)
 
 When interacting with this endpoint, we get some instructions on parameters to send.
 
-![](<../../../.gitbook/assets/image%20(1621).png>)
+![](../../../.gitbook/assets/luanne-5.png)
 
 We can interact with this API and it will return certain bits of information to us about the weather forecasts in cities.
 
-![](<../../../.gitbook/assets/image%20(248).png>)
+![](../../../.gitbook/assets/luanne-9.png)
 
 ### RCE Discovery
 
@@ -77,11 +77,11 @@ Initially, I thought that there was an LFI within this, and that the city names 
 
 I tried a few of the `os.execute()` payloads, and it worked!
 
-![](<../../../.gitbook/assets/image%20(2596).png>)
+![](../../../.gitbook/assets/luanne-10.png)
 
 We now have RCe, and we can easily use a `mkfifo` shell to gain a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(370).png>)
+![](../../../.gitbook/assets/luanne-14.png)
 
 ## Privilege Escalation
 
@@ -89,46 +89,46 @@ We now have RCe, and we can easily use a `mkfifo` shell to gain a reverse shell.
 
 Afterwards, I found the `.htpasswd` file for the webpage I was blocked from earlier.
 
-![](<../../../.gitbook/assets/image%20(3866).png>)
+![](../../../.gitbook/assets/luanne-16.png)
 
 With this, I was able to crack the hash to give `iamthebest` as the password and login to the service on port 80. We can view the `Authorization` header here.
 
-![](<../../../.gitbook/assets/image%20(3715).png>)
+![](../../../.gitbook/assets/luanne-15.png)
 
 With this, I enumerated the users on the machine, of which there was just `r.michaels`. I enumerated the processes he was running, and found that he was running a similar process to the `_httpd` user, but on port 3001 instead.
 
-![](<../../../.gitbook/assets/image%20(1035).png>)
+![](../../../.gitbook/assets/luanne-1.png)
 
 Interactions with this instance revealed that it was similar to the weather API we found earlier.
 
-![](<../../../.gitbook/assets/image%20(1450).png>)
+![](../../../.gitbook/assets/luanne-3.png)
 
 However, no command injection seems to work here. Perhaps this was a patched version of the script.
 
 In the command, we can see that the creator of the box used `httpd -u`, which makes the root directory of the script accessible. This means that we should be able to read the files of the `r.michaels` user. I attempted to read his SSH keys with our credentials, and it worked!
 
-![](<../../../.gitbook/assets/image%20(4069).png>)
+![](../../../.gitbook/assets/luanne-17.png)
 
 With this, we can SSH inas the `r.michaels` user.
 
-![](<../../../.gitbook/assets/image%20(2240).png>)
+![](../../../.gitbook/assets/luanne-7.png)
 
 ### Tar Backup -> doas
 
 Within the user's directory, we would find a `devel` backup file.
 
-![](<../../../.gitbook/assets/image%20(690).png>)
+![](../../../.gitbook/assets/luanne-19.png)
 
 Since this was a BSD machine, the commands and binaries are a little different. I searched for all the binaries within this machine (since `gpg` was not available) and found that `netpgp` was downloaded. With `netpgp`, we can decrypt this file.
 
-![](<../../../.gitbook/assets/image%20(2040).png>)
+![](../../../.gitbook/assets/luanne-6.png)
 
 Then, we can decrypt this file and find another `.htpasswd` file.
 
-![](<../../../.gitbook/assets/image%20(1119).png>)
+![](../../../.gitbook/assets/luanne-2.png)
 
 The hash would crack to give `littlebear`. I wanted to check whether this was the root user's password, but this machine does not have `sudo`. Instead, it has `doas` and this password works in spawning a root shell.
 
-![](<../../../.gitbook/assets/image%20(4070).png>)
+![](../../../.gitbook/assets/luanne-18.png)
 
 Rooted!

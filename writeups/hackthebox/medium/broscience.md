@@ -22,13 +22,13 @@ Vhost and directory scans don't reveal much regarding this.
 
 ### BroScience Enumeration
 
-![](<../../../.gitbook/assets/image%20(1794).png>)
+![](../../../.gitbook/assets/broscience-4.png)
 
 We can take note that there is an `administrator` user present on the website, as they have made posts. Also, there's a login feature for this website. We are redirected to `login.php` when we click on Log In.
 
 Within each post, there's an Add Comment functionality that requires us to be logged in. I attempted to register an account, but this didn't work because we had to find an activation link.
 
-![](<../../../.gitbook/assets/image%20(2973).png>)
+![](../../../.gitbook/assets/broscience-6.png)
 
 So there's an activation link of some sort. I ran a directory scan for .php files on the website, and found quite a few.
 
@@ -70,7 +70,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When heading to the `/includes` directory, we can find some other PHP files that could contain credentials.
 
-![](<../../../.gitbook/assets/image%20(3703).png>)
+![](../../../.gitbook/assets/broscience-10.png)
 
 Out of all of them, `img.php` requires a `path` parameter to be passed to it. It also detects LFI
 
@@ -130,7 +130,7 @@ From here, we can see that is a `postgres` and `bill` user on the machine. Now, 
 
 I was able to read the `db_connect.php` file by double URL encoding `../includes/db_connect.php` and passing it as the parameter.
 
-![](<../../../.gitbook/assets/image%20(1140).png>)
+![](../../../.gitbook/assets/broscience-1.png)
 
 Trying this credential found does not work anywhere though. So I read the other files, and the `utils.php` file contained some useful information about how the activation code was generated.
 
@@ -231,7 +231,7 @@ vmsQdLZ9v5aUqAiUalTmt5CYnIxqrvpF
 
 Afterwards, we use this `token` variable at `activate.php`.
 
-![](<../../../.gitbook/assets/image%20(1142).png>)
+![](../../../.gitbook/assets/broscience-2.png)
 
 Afterwards, we can just login as the user.
 
@@ -351,11 +351,11 @@ TzoxNToiQXZhdGFySW50ZXJmYWNlIjoyOntzOjM6InRtcCI7czoyNToiaHR0cDovLzEwLjEwLjE0LjQv
 
 Then, we can simply send a request with this the output as the cookie. We would get a few hits on our HTTP server.
 
-![](<../../../.gitbook/assets/image%20(3537).png>)
+![](../../../.gitbook/assets/broscience-9.png)
 
 Then we can simply curl it to gain a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(2122).png>)
+![](../../../.gitbook/assets/broscience-5.png)
 
 ## Privilege Escalation
 
@@ -383,7 +383,7 @@ We can use `\d` to read the tables present on the machine.
 
 Then, we can read the stuff in the `users` file.
 
-![](<../../../.gitbook/assets/image%20(1217).png>)
+![](../../../.gitbook/assets/broscience-3.png)
 
 We would find lots of hashes. Since the user on the machine is `bill`, let's attempt to crack his hash. The `db_connect.php` file did have a salt for the hashes as "NaCl". Using this, we can generate a wordlist based on rockyou.txt with this salt prepended to all the words.
 
@@ -394,7 +394,7 @@ sed -i 's|^|NaCl|g' rockyou.txt
 
 Then, we can use `hashcat` to crack the hash.
 
-![](<../../../.gitbook/assets/image%20(3419).png>)
+![](../../../.gitbook/assets/broscience-7.png)
 
 The part without the salt is the password that we can use to SSH in as `bill`.
 
@@ -496,4 +496,4 @@ Email Address []:
 
 After a while, it would execute and allow us to spawn in a root shell.
 
-![](<../../../.gitbook/assets/image%20(3440).png>)
+![](../../../.gitbook/assets/broscience-8.png)

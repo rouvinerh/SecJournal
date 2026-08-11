@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3165).png>)
+![](../../../.gitbook/assets/jerry-1.png)
 
 There is a vulnerable version of Tomcat running on this machine
 
@@ -14,8 +14,8 @@ The Tomcat instance here is vulnerable to RCE. To exploit this, we would need ac
 
 For this, we can attempt to access it to see the default credentials.
 
-![](<../../../.gitbook/assets/image%20(464).png>)
+![](../../../.gitbook/assets/jerry-3.png)
 
 Was a bit lazy, hence used `msf` to solve this box and gain a root shell instantly.
 
-![](<../../../.gitbook/assets/image%20(368).png>)
+![](../../../.gitbook/assets/jerry-2.png)

@@ -22,15 +22,15 @@ Just 2 ports on the website.
 
 Port 80 shows a Wordpress site:
 
-![](<../../../.gitbook/assets/image%20(772).png>)
+![](../../../.gitbook/assets/shiftdel-8.png)
 
 Port 8888 on the other hand shows a phpMyAdmin instance:
 
-![](<../../../.gitbook/assets/image%20(2595).png>)
+![](../../../.gitbook/assets/shiftdel-4.png)
 
 When we view the page source of port 8888, there is indication of the version running:
 
-![](<../../../.gitbook/assets/image%20(1169).png>)
+![](../../../.gitbook/assets/shiftdel-1.png)
 
 This version is vulnerable to an RCE exploit that requires credentials, which we'll keep in mind for now:
 
@@ -77,7 +77,7 @@ http://192.168.197.174/?static=1&order=asc
 
 The web page then reveals some credentials:
 
-![](<../../../.gitbook/assets/image%20(2194).png>)
+![](../../../.gitbook/assets/shiftdel-3.png)
 
 We seem to be an intern at Shiftdel, and it coincides with `wpscan` returning `intern` as a valid user:
 
@@ -95,7 +95,7 @@ We seem to be an intern at Shiftdel, and it coincides with `wpscan` returning `i
 
 With these credentials, we can login to the dashboard and begin checking out the other vulnerabilities:
 
-![](<../../../.gitbook/assets/image%20(2109).png>)
+![](../../../.gitbook/assets/shiftdel-2.png)
 
 ### Arbitrary File Deletion -> RCE
 
@@ -137,11 +137,11 @@ When run on the localhost, it causes the Wordpress instance to start crashing si
 
 To exploit this, we can use the instructions given in the JS file. This involves using the Developer Console and pasting some code within it. Afterwards, we can just execute the function as required:
 
-![](<../../../.gitbook/assets/image%20(3339).png>)
+![](../../../.gitbook/assets/shiftdel-6.png)
 
 Once deleted, this kind of breaks the entire website. It just returns source code:
 
-![](<../../../.gitbook/assets/image%20(815).png>)
+![](../../../.gitbook/assets/shiftdel-9.png)
 
 Using this, we can view the `wp-config.php` file since the website is no longer executing PHP:
 
@@ -197,7 +197,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 We can then get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(3788).png>)
+![](../../../.gitbook/assets/shiftdel-7.png)
 
 Grab the user flag.
 
@@ -256,4 +256,4 @@ chmod +x rm
 
 Then, set up a listener port and wait for a few minutes. Eventually, we'll get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(3129).png>)
+![](../../../.gitbook/assets/shiftdel-5.png)

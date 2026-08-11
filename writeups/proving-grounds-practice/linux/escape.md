@@ -47,11 +47,11 @@ $ feroxbuster -u http://192.168.157.113:8080
 [--------------------] - 0s         0/30000   0/s     http://192.168.157.113:8080/dev/uploads
 ```
 
-![](<../../../.gitbook/assets/image%20(3736).png>)
+![](../../../.gitbook/assets/escape-6-dup2.png)
 
 This was a PHP page, so uploading PHP reverse shells is the priority, and there's a pretty good WAF. I tested loads of method of bypassing it, and this machine requires a combination of quite a few.
 
-![](<../../../.gitbook/assets/image%20(3731).png>)
+![](../../../.gitbook/assets/escape-5-dup2.png)
 
 * File Header Spoofing
 * Double File Extension
@@ -59,7 +59,7 @@ This was a PHP page, so uploading PHP reverse shells is the priority, and there'
 
 We can get a reverse shell by loading the uploaded file:
 
-![](<../../../.gitbook/assets/image%20(2855).png>)
+![](../../../.gitbook/assets/escape-2-dup2.png)
 
 ## Privilege Escalation
 
@@ -117,7 +117,7 @@ Then, transfer this using `curl` and `chmod 777` it. To execute the shell, run t
 $ snmpbulkwalk -c 53cur3M0NiT0riNg -v2c 192.168.157.113 NET-SNMP-EXTEND-MIB::nsExtendOutputFull
 ```
 
-![](<../../../.gitbook/assets/image%20(3465).png>)
+![](../../../.gitbook/assets/escape-3-dup2.png)
 
 ### LogRotate SUID -> PATH Hijack
 
@@ -197,7 +197,7 @@ Then, place this within `/tmp` and `chmod 777` it. Afterwards, change the PATH v
 export PATH=/tmp:$PATH
 ```
 
-![](<../../../.gitbook/assets/image%20(3579).png>)
+![](../../../.gitbook/assets/escape-4-dup2.png)
 
 ### OpenSSL -> File Read
 
@@ -233,4 +233,4 @@ SrkfuLGw7b9VN05jJ33EMtDGRyyDLljFXv7t5OktkC0omumXyWG2KRRe3Avn4RMI
 <TRUNCATED>
 ```
 
-![](<../../../.gitbook/assets/image%20(1292).png>)
+![](../../../.gitbook/assets/escape-1-dup2.png)

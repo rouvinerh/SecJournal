@@ -24,7 +24,7 @@ We have to add `academy.htb` to our `/etc/hosts` file to visit the HTTP site.
 
 This box was created to introduce HTB Academy I think:
 
-![](<../../../.gitbook/assets/image%20(2731).png>)
+![](../../../.gitbook/assets/academy-4.png)
 
 There is a Login and Register page. We can try to register a user since we don't have credentials. While intercepting responses, we can see the HTTP request for registering:
 
@@ -50,7 +50,7 @@ uid=test123&password=test123&confirm=test123&roleid=0
 
 There's a `roleid` parameter which we can change to 1 and see what happens. When logged in, it shows a lot of HTB Academy related content:
 
-![](<../../../.gitbook/assets/image%20(458).png>)
+![](../../../.gitbook/assets/academy-5.png)
 
 This was a PHP site, so I started a `gobuster` scan to enumerate the possible directories:
 
@@ -101,7 +101,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Because of the changed `roleid` parameter earlier, we can access the `admin.php` page:
 
-![](<../../../.gitbook/assets/image%20(867).png>)
+![](../../../.gitbook/assets/academy-8.png)
 
 There was another subdomain present on the site.
 
@@ -109,11 +109,11 @@ There was another subdomain present on the site.
 
 When we visit the new domain, we are greeted with a Laravel debuggin issue:
 
-![](<../../../.gitbook/assets/image%20(749).png>)
+![](../../../.gitbook/assets/academy-7.png)
 
 On this page, we can find a load of information, even the APP\_KEY used for the website:
 
-![](<../../../.gitbook/assets/image%20(2226).png>)
+![](../../../.gitbook/assets/academy-3.png)
 
 Googling the term 'Laravel exploit with APP\_KEY' returned this Github Repo:
 
@@ -121,11 +121,11 @@ Googling the term 'Laravel exploit with APP\_KEY' returned this Github Repo:
 
 This CVE works!
 
-![](<../../../.gitbook/assets/image%20(2041).png>)
+![](../../../.gitbook/assets/academy-2.png)
 
 We can then get an easy reverse shell as `www-data`.
 
-![](<../../../.gitbook/assets/image%20(623).png>)
+![](../../../.gitbook/assets/academy-6.png)
 
 ## Privilege Escalation
 
@@ -248,6 +248,6 @@ echo '{"scripts":{"x":"/bin/sh -i 0<&3 1>&3 2>&3"}}' >$TF/composer.json
 sudo composer --working-dir=$TF run-script x
 ```
 
-![](<../../../.gitbook/assets/image%20(1361).png>)
+![](../../../.gitbook/assets/academy-1.png)
 
 Rooted!

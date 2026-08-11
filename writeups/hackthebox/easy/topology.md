@@ -21,17 +21,17 @@ HTTP exploits it seems.
 
 The website is seems to be a university website:
 
-![](<../../../.gitbook/assets/image%20(97).png>)
+![](../../../.gitbook/assets/topology-10.png)
 
 There's a LaTeX Equation Generator available. LaTeX is a software made for documentation, and I'm roughly familiar with how it works to make mathematical equations for stuff like university math module notes. Anyways, we have to add `latex.topology.htb` to our `/etc/hosts` file to visit the `equation.php` site available.
 
 On the site itself, it just shows some basic LaTeX syntax:
 
-![](<../../../.gitbook/assets/image%20(3253).png>)
+![](../../../.gitbook/assets/topology-7.png)
 
 There are some exploits available pertaining to Latex Injection, such as being able to read machine files. I tried to use `\input{/etc/passwd}` to read files, but there's a WAF blocking it:
 
-![](<../../../.gitbook/assets/image%20(2156).png>)
+![](../../../.gitbook/assets/topology-5.png)
 
 I tested different payloads, and eventually found one that worked on this site:
 
@@ -47,7 +47,7 @@ I tested different payloads, and eventually found one that worked on this site:
 
 Using this, we can get the first line of the `/etc/passwd` file:
 
-![](<../../../.gitbook/assets/image%20(89).png>)
+![](../../../.gitbook/assets/topology-9.png)
 
 Before carrying on, I wanted to some proper web enumeration to find out what I was supposed to do with this LFI. Using `wfuzz`, I found a `dev` subdomain:
 
@@ -68,7 +68,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 This returns a 401, and visiting it requires credentials:
 
-![](<../../../.gitbook/assets/image%20(2140).png>)
+![](../../../.gitbook/assets/topology-4.png)
 
 This is a HTTP sign in, meaning we can probably find the credentials in a `.htpasswd` file somewhere. Also, it coincides with the one-line LFI that we have. However, the same command does not work with the `/var/www/dev/.htpasswd` file, which is definitely where the password hash is stored.
 
@@ -84,11 +84,11 @@ It doesn't work (as I've learnt) because the machine asks for **LaTeX inline mat
 
 If we use `\\lstinputlisting{/var/www/dev/.htpasswd}` instead, we see that it processes it as text:
 
-![](<../../../.gitbook/assets/image%20(2429).png>)
+![](../../../.gitbook/assets/topology-6.png)
 
 So by using `$\lstinputlisting{/var/www/dev/.htpasswd}$`, it would be processed as an expression (similar to `$()` in bash) and loads the hash:
 
-![](<../../../.gitbook/assets/image%20(140).png>)
+![](../../../.gitbook/assets/topology-3.png)
 
 We can crack the hash easily with `john`:
 
@@ -108,11 +108,11 @@ Session completed.
 
 Then we can access the `dev` subdomain:
 
-![](<../../../.gitbook/assets/image%20(1322).png>)
+![](../../../.gitbook/assets/topology-2.png)
 
 More importantly, we can access the user via `ssh`:
 
-![](<../../../.gitbook/assets/image%20(3362).png>)
+![](../../../.gitbook/assets/topology-8.png)
 
 ## Privilege Escalation
 
@@ -159,6 +159,6 @@ system "chmod u+s /bin/bash"
 
 Then, we can just wait for `root` to execute our new file and privesc that way:
 
-![](<../../../.gitbook/assets/image%20(127).png>)
+![](../../../.gitbook/assets/topology-1.png)
 
 Rooted!

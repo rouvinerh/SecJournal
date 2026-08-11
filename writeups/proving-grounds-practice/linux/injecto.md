@@ -20,19 +20,19 @@ PORT     STATE SERVICE
 
 Port 80 shows a simple quiz application:
 
-![](<../../../.gitbook/assets/image%20(1629).png>)
+![](../../../.gitbook/assets/injecto-3.png)
 
 If we click any of the buttons, we are shown a very obvious LFI.
 
-![](<../../../.gitbook/assets/image%20(194).png>)
+![](../../../.gitbook/assets/injecto-5.png)
 
 Attempting to do anything with it results in being blocked by a WAF.
 
-![](<../../../.gitbook/assets/image%20(1560).png>)
+![](../../../.gitbook/assets/injecto-2.png)
 
 We can confirm that the website runs on PHP by visiting `index.php` and being shown the same page. Then, I experimented with some PHP Filter LFI exploits for the `blackdeath` page.
 
-![](<../../../.gitbook/assets/image%20(198).png>)
+![](../../../.gitbook/assets/injecto-6.png)
 
 The WAF is easily bypassed as long as we include it within the `page` parameter. We can read the code of `index.php` by visiting:
 
@@ -40,7 +40,7 @@ The WAF is easily bypassed as long as we include it within the `page` parameter.
 http://192.168.183.173/index.php?page=php://filter/convert.base64-encode/resource=blackdeath/../../../../../var/www/html/index
 ```
 
-![](<../../../.gitbook/assets/image%20(3152).png>)
+![](../../../.gitbook/assets/injecto-7.png)
 
 Here's the PHP code:
 
@@ -115,11 +115,11 @@ $ curl "http://192.168.183.173:8080/index.php?values_submit=O:7:%22MyClass%22:2:
 
 Then, we can verify that we have RCE:
 
-![](<../../../.gitbook/assets/image%20(1060).png>)
+![](../../../.gitbook/assets/injecto-1.png)
 
 Getting reverse shell using the usual `bash` one-liner is easy:
 
-![](<../../../.gitbook/assets/image%20(1870).png>)
+![](../../../.gitbook/assets/injecto-4.png)
 
 ## Privilege Escalation
 
@@ -147,6 +147,6 @@ hacker:$1$wsCz0GNf$0S8e55RreE.iCJIyEr3jP.:0:0::/root:/bin/sh
 
 Then, host the new `passwd` file on a HTTP server and `curl` it, directing the output to `/etc/passwd`. Afterwards, `su` to the new user to get `root`:
 
-![](<../../../.gitbook/assets/image%20(3415).png>)
+![](../../../.gitbook/assets/injecto-8.png)
 
 Rooted!

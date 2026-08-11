@@ -25,7 +25,7 @@ The trunk of the tree can see everything, and basically controls everything with
 
 Within each branch, small and big, there would be administrators there to make sure everything is running smoothly. This could be your boss, or the IT guy who administers the entire section of the company.
 
-![](<../.gitbook/assets/image%20(2720).png>)
+![](../.gitbook/assets/ad.png)
 
 I like to think of AD as a company having multiple computers and users all under a domain like `company.com`.
 

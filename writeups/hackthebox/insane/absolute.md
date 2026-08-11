@@ -10,7 +10,7 @@ This is an AD machine, so first we can begin with a port scan, and then go throu
 
 Nmap Scan:
 
-![](<../../../.gitbook/assets/image%20(2528).png>)
+![](../../../.gitbook/assets/absolute-8.png)
 
 Standard Ports. I added absolute.htb  and its DC into my hosts file for this machine, as it is standard HTB practice. There are few things to enumerate:
 
@@ -23,7 +23,7 @@ Standard Ports. I added absolute.htb  and its DC into my hosts file for this mac
 
 Interestingly, doing all of these revealed nothing useful, **except for my last resort.** Running a kerbrute reveals this:
 
-![](<../../../.gitbook/assets/image%20(750).png>)
+![](../../../.gitbook/assets/absolute-24.png)
 
 This username wordlist was just within my machine from another machine that required it. Very useful! However, these usernames cannot be used to do anything, leading me to believe that there are other users on this domain.
 
@@ -35,35 +35,35 @@ So now we have some possible users. I wanted to try and fuzz along this line, si
 
 So to circumvent this, I took the names.txt file from Seclists (/seclists/usernames/names/names.txt) then appended the front of each entry with a letter and brute forced it. From A - Z. This would produce a list of names with the prefix required.
 
-![](<../../../.gitbook/assets/image%20(3980).png>)
+![](../../../.gitbook/assets/absolute-20.png)
 
 Everytime I would find a username, I would then test it for AS-REP roasting and check for null credentials. Eventually, I found this d.klay user.
 
-![](<../../../.gitbook/assets/image%20(2577).png>)
+![](../../../.gitbook/assets/absolute-9.png)
 
 When testing this for AS-REP Roasting, it worked!
 
-![](<../../../.gitbook/assets/image%20(2604).png>)
+![](../../../.gitbook/assets/absolute-10.png)
 
 Then we can crack this hash.
 
-![](<../../../.gitbook/assets/image%20(244).png>)
+![](../../../.gitbook/assets/absolute-7.png)
 
 ### Retrieving Tickets
 
 It would seem that this set of credentials cannot grant us access via evil-winrm. There was a unique reason however.
 
-![](<../../../.gitbook/assets/image%20(216).png>)
+![](../../../.gitbook/assets/absolute-5.png)
 
 We can attempt with LDAP as well and get a false result. It seems that **passwords are not accepted here**. So, the next form of authentication is through tickets. Now the goal is to somehow get a ticket to authenticate into the machine. Once we get some form of ticket, we can perhaps continue with Bloodhound, login or something.
 
 I managed to retrieve a ticket using getTGT. We can then export this.
 
-![](<../../../.gitbook/assets/image%20(3066).png>)
+![](../../../.gitbook/assets/absolute-13.png)
 
 We can attempt kerberoasting the machine to try and get some kind of service ticket using the credentials using GetUserSPNs. The output using the DC Domain is below:
 
-![](<../../../.gitbook/assets/image%20(1331).png>)
+![](../../../.gitbook/assets/absolute-2.png)
 
 We can fix the clock skew issue pretty easily.
 
@@ -77,9 +77,9 @@ Kerberoasting reveals that there are no SPNs to roast. Instead, we can use this 
 
 {% embed url="https://wiki.porchetta.industries/getting-started/using-kerberos" %}
 
-![](<../../../.gitbook/assets/image%20(756).png>)
+![](../../../.gitbook/assets/absolute-25.png)
 
-![](<../../../.gitbook/assets/image%20(3048).png>)
+![](../../../.gitbook/assets/absolute-12.png)
 
 Really interesting output. We have found another user and credential!
 
@@ -87,15 +87,15 @@ Really interesting output. We have found another user and credential!
 
 Running the same process, we can retrieve another ticket.
 
-![](<../../../.gitbook/assets/image%20(577).png>)
+![](../../../.gitbook/assets/absolute-22.png)
 
 Interesting, now that we have a ticket, we can export this. I found that we can access shares from the DC using this ticket to authenticate ourselves.
 
-![](<../../../.gitbook/assets/image%20(3344).png>)
+![](../../../.gitbook/assets/absolute-15.png)
 
 We can check out the 'Shared' share to find some interesting files.
 
-![](<../../../.gitbook/assets/image%20(3369).png>)
+![](../../../.gitbook/assets/absolute-16.png)
 
 Interesting!  The program here seems to be some form of script that creates the binary.
 
@@ -109,19 +109,19 @@ Poking around the shares, we don't seem to get much from it. I could decompiled 
 
 The next step was to use Bloodhound, since we had credentials and a ticket.
 
-![](<../../../.gitbook/assets/image%20(2428).png>)
+![](../../../.gitbook/assets/absolute-6.png)
 
 {% embed url="https://github.com/jazzpizazz/BloodHound.py-Kerberos" %}
 
 Now we just need to fire up bloodhound and neo4j to view this data in a neat format. Bloodhound reveals a few users that are significant.
 
-![](<../../../.gitbook/assets/image%20(418).png>)
+![](../../../.gitbook/assets/absolute-21.png)
 
 Out of all of these users, m.lovegod has the most privileges. The user owns the Network Audit group. **This group has GenericWrite over the WinRM\_User**, which I suspect is where the user flag would be. So our exploit path is clear.
 
-![](<../../../.gitbook/assets/image%20(2749).png>)
+![](../../../.gitbook/assets/absolute-11.png)
 
-![](<../../../.gitbook/assets/image%20(3748).png>)
+![](../../../.gitbook/assets/absolute-19.png)
 
 We now need to somehow get a ticket from the `m.lovegod` user and gain access as the `winrm_user` to get a shell.
 
@@ -129,7 +129,7 @@ We now need to somehow get a ticket from the `m.lovegod` user and gain access as
 
 When I ran the binary on my Windows VM, it seems to exit straightaway. Weird, but maybe it was trying to make external connections. I started Wireshark to see what I could capture from it. I found this interesting bit here when I connected to the HTB VPN.
 
-![](<../../../.gitbook/assets/image%20(3573).png>)
+![](../../../.gitbook/assets/absolute-18.png)
 
 We now have credentials for this user!
 
@@ -139,7 +139,7 @@ Now that we know that the `m.lovegod` user owns the Network Audit group, and mem
 
 First, we need to request a ST using `impacket-getTGT` using these credentials. Then we can export to `KRB5CCNAME`.
 
-![](<../../../.gitbook/assets/image%20(1133).png>)
+![](../../../.gitbook/assets/absolute-1.png)
 
 The tricky part was figuring out how to use this ticket. The easiest way to do this is to use a Windows VM connected to the VPN and run some Powerview commands on it, such as `Add-DomainObjectAcl` and stuff. We have to do this because it is not possible for us to use this ticket to add group members to the Network Audit group from a Linux machine. (I could not make pywhisker or dacledit) to work.
 
@@ -170,7 +170,7 @@ impacket-getTGT 'absolute.htb/m.lovegod:AbsoluteLDAP2022!' -dc-ip dc.absolute.ht
 
 Afterwards, we should get a .pfx file.
 
-![](<../../../.gitbook/assets/image%20(193).png>)
+![](../../../.gitbook/assets/absolute-3.png)
 
 Now we have a .pfx file that we can use to get a .ccache file for the `winrm_user`. This can be done with `gettgtpkinit.py`.
 
@@ -182,7 +182,7 @@ evil-winrm -i dc.absolute.htb -r absolute.htb
 
 This would give us an evil\_winrm shell as the user and we can grab the flag.
 
-![](<../../../.gitbook/assets/image%20(737).png>)
+![](../../../.gitbook/assets/absolute-23.png)
 
 The GenericWrite permission on the user allows us to write properties. Hence, we used `pywhisker` to add a new KeyCredential as `m.lovegod` to the `winrm_user` msDs-KeyCredentialLink attribute. This was done **because we don't have a shell**.
 
@@ -212,7 +212,7 @@ Then, we need to first add a Shadow Credential using KrbRelay through the `m.lov
 
 This would generate an output like this:
 
-![](<../../../.gitbook/assets/image%20(3179).png>)
+![](../../../.gitbook/assets/absolute-14.png)
 
 What this command does is use a CLSID in order to first add a new msDS-KeyCredentialLink, which would generate another certificate for us similar to `pywhisker`. Afterwards, we can use this certificate to request a TGT as DC$ and get the NTLM hash.
 
@@ -221,12 +221,12 @@ What this command does is use a CLSID in order to first add a new msDS-KeyCreden
 
 This would generate the NTLM hash for us:
 
-![](<../../../.gitbook/assets/image%20(996).png>)
+![](../../../.gitbook/assets/absolute-26.png)
 
 Afterwards, we can use `crackmapexec` with this hash to dump the credentials out.
 
-![](<../../../.gitbook/assets/image%20(2093).png>)
+![](../../../.gitbook/assets/absolute-4.png)
 
 Then, pass the hash via `evil-winrm` as the administrator.
 
-![](<../../../.gitbook/assets/image%20(3422).png>)
+![](../../../.gitbook/assets/absolute-17.png)

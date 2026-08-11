@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(1832).png>)
+![](../../../.gitbook/assets/trick-2.png)
 
 We can add the `trick.htb` domain as per usual HTB practice.
 
@@ -12,7 +12,7 @@ We can add the `trick.htb` domain as per usual HTB practice.
 
 All the ports yield nothing of interest and port 80 was just a corporate website with nothing to interact with. However, when attempting a zone transfer, we would get another domain here:
 
-![](<../../../.gitbook/assets/image%20(3706).png>)
+![](../../../.gitbook/assets/trick-8.png)
 
 The `preprod-payroll` subdomain was new, and I headed there.
 
@@ -20,11 +20,11 @@ The `preprod-payroll` subdomain was new, and I headed there.
 
 The page revealed some kind of application used to manage employee salary tracking.
 
-![](<../../../.gitbook/assets/image%20(2520).png>)
+![](../../../.gitbook/assets/trick-6.png)
 
 Initially, I assumed that there would be some kind of public exploit for this Employee Record system, and found quite a few.
 
-![](<../../../.gitbook/assets/image%20(2259).png>)
+![](../../../.gitbook/assets/trick-4.png)
 
 However, none of the exploits worked here and I was stuck.
 
@@ -34,25 +34,25 @@ The whole payroll bit was a rabbit hole, and I could not make anything work. As 
 
 I then tried to fuzz with the `preprod-` bit prefixed, and found a new domain:
 
-![](<../../../.gitbook/assets/image%20(3857).png>)
+![](../../../.gitbook/assets/trick-9.png)
 
 ### LFI for SSH Keys
 
 The new page contained a load of rubbish information, and when clicking on the different tabs, we can see this `page` parameter pop up.
 
-![](<../../../.gitbook/assets/image%20(857).png>)
+![](../../../.gitbook/assets/trick-12.png)
 
 We can test this for a simple directory traversal exploit. Using the standard `../../../` did not work, but `....//....//....//` worked instead.
 
-![](<../../../.gitbook/assets/image%20(3273).png>)
+![](../../../.gitbook/assets/trick-7.png)
 
 With this, I attempted to read the private SSH keys of the user `michael`.
 
-![](<../../../.gitbook/assets/image%20(906).png>)
+![](../../../.gitbook/assets/trick-13.png)
 
 Afterwards, we can simply SSH in as michael using this key.
 
-![](<../../../.gitbook/assets/image%20(452).png>)
+![](../../../.gitbook/assets/trick-10.png)
 
 ## Privilege Escalation
 
@@ -60,11 +60,11 @@ Afterwards, we can simply SSH in as michael using this key.
 
 When enumerating the user's permissions, we can see that he's part of the security group.
 
-![](<../../../.gitbook/assets/image%20(1624).png>)
+![](../../../.gitbook/assets/trick-1.png)
 
 Additionally, we are allowed to run `fail2ban restart` as root using `sudo`.
 
-![](<../../../.gitbook/assets/image%20(2315).png>)
+![](../../../.gitbook/assets/trick-5.png)
 
 Fail2ban is a service that would block an IP address after many failed attempts to connect. The conf file for this is within the `/etc/fail2ban/action.d/iptables-multiport.conf` file. Upon detecting a bannable action, a script would run to block the IP address.
 
@@ -74,8 +74,8 @@ This repo made is easy to exploit:
 
 {% embed url="https://github.com/rvizx/fail2ban/blob/main/fail2ban" %}
 
-![](<../../../.gitbook/assets/image%20(598).png>)
+![](../../../.gitbook/assets/trick-11.png)
 
-![](<../../../.gitbook/assets/image%20(2247).png>)
+![](../../../.gitbook/assets/trick-3.png)
 
 Rooted.

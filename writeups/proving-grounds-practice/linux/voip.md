@@ -20,21 +20,21 @@ PORT     STATE SERVICE
 
 Port 80 had a login page:
 
-![](<../../../.gitbook/assets/image%20(4088).png>)
+![](../../../.gitbook/assets/voip-10.png)
 
 We didn't have any credentials, and weak credentials don't work, so we can move on first.
 
 Port 8000 had another login page:
 
-![](<../../../.gitbook/assets/image%20(3782).png>)
+![](../../../.gitbook/assets/voip-8.png)
 
 `admin:admin` worked for this one, and we were brought to a IP Phone instance, which matches the name of the box being Voice over IP:
 
-![](<../../../.gitbook/assets/image%20(3589).png>)
+![](../../../.gitbook/assets/voip-6.png)
 
 Within the logs tab, we can see that there were some calls being logged:
 
-![](<../../../.gitbook/assets/image%20(3447).png>)
+![](../../../.gitbook/assets/voip-5.png)
 
 Within the Configuration tab, there was some XML looking output. Here's it below:
 
@@ -146,25 +146,25 @@ Using this worked and we managed to get a hashed password:
 $ python3 sipdigestleak.py -i 192.168.152.156
 ```
 
-![](<../../../.gitbook/assets/image%20(261).png>)
+![](../../../.gitbook/assets/voip-4.png)
 
 This hash cracks easily:
 
-![](<../../../.gitbook/assets/image%20(1905).png>)
+![](../../../.gitbook/assets/voip-1.png)
 
 With this, we can login to port 80 as `adm_sip`.
 
-![](<../../../.gitbook/assets/image%20(3780).png>)
+![](../../../.gitbook/assets/voip-7.png)
 
 ### Audio File -> SSH Creds
 
 We can view the CDR (Call Data Records) and find that one of them is raw, which allows us to download it:
 
-![](<../../../.gitbook/assets/image%20(493).png>)
+![](../../../.gitbook/assets/voip-11.png)
 
 This is a raw audio file, and we need to convert it using `sox`. We can find the exact configurations required in the Stream Rates tab on the left:
 
-![](<../../../.gitbook/assets/image%20(2039).png>)
+![](../../../.gitbook/assets/voip-3.png)
 
 Then, we can convert this to a `wav` file:
 
@@ -182,7 +182,7 @@ Your password has been changed to Password1234 where the P is capital.
 
 Interesting. We have a username, but not a password. This was the part I got stuck at for a long time. I tried some usernames like `voip`, `zoiper`, and `voiper` because those were popular softwares used with VoIP, and `voiper` worked:
 
-![](<../../../.gitbook/assets/image%20(1991).png>)
+![](../../../.gitbook/assets/voip-2.png)
 
 ## Privilege Escalation
 
@@ -199,6 +199,6 @@ User voiper may run the following commands on VOIP:
     (ALL : ALL) ALL
 ```
 
-![](<../../../.gitbook/assets/image%20(4085).png>)
+![](../../../.gitbook/assets/voip-9.png)
 
 Rooted!

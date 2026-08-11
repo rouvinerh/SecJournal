@@ -40,21 +40,21 @@ Based on the box name, we are likely dealing with a Flask application here.
 
 Port 5555 just shows us a login page:
 
-![](<../../../.gitbook/assets/image%20(280).png>)
+![](../../../.gitbook/assets/flasky-8.png)
 
 We don't have any credentials, so let's move on for now.
 
 Port 20202 shows us another login page:
 
-![](<../../../.gitbook/assets/image%20(183).png>)
+![](../../../.gitbook/assets/flasky-5.png)
 
 We can use the guest access to view the dashboard, and hints towards abusing JWT:
 
-![](<../../../.gitbook/assets/image%20(215).png>)
+![](../../../.gitbook/assets/flasky-7.png)
 
 We can take a look at the cookie value assigned to us:
 
-![](<../../../.gitbook/assets/image%20(758).png>)
+![](../../../.gitbook/assets/flasky-12.png)
 
 We can easily change this to exploit it. I also ran a `gobuster` scan and found an admin directory:
 
@@ -80,11 +80,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Visiting it just shows us this:
 
-![](<../../../.gitbook/assets/image%20(210).png>)
+![](../../../.gitbook/assets/flasky-6.png)
 
 Running scans against both of these directories show nothing. I checked the requests in Burp, and there are some allowed methods:
 
-![](<../../../.gitbook/assets/image%20(1639).png>)
+![](../../../.gitbook/assets/flasky-3.png)
 
 We can send POST and OPTIONS requests to this, but we first need to modify our cookie. The JWT cookie has 3 parts, the encryption type, the actual data and the signature. Since we know there's a problem with the JWT, we can abuse this by replacing the encryption type and the payload:
 
@@ -125,17 +125,17 @@ username=wwwwww&password=w
 
 When we load the request in a Browser, we would see the admin dashboard:
 
-![](<../../../.gitbook/assets/image%20(3997).png>)
+![](../../../.gitbook/assets/flasky-11.png)
 
 ### Config -> SSH Creds
 
 At the bottom, we can see users making posts about the configuration files:
 
-![](<../../../.gitbook/assets/image%20(1623).png>)
+![](../../../.gitbook/assets/flasky-2.png)
 
 This step took forever, but I eventually found the config file at `cisco_config`.
 
-![](<../../../.gitbook/assets/image%20(3831).png>)
+![](../../../.gitbook/assets/flasky-10.png)
 
 These are Cisco Type 7 passwords, which can be decrypted here:
 
@@ -145,7 +145,7 @@ We can then try each password with `ssh`, finding that `john:NezukoCh@n` works.
 
 
 
-![](<../../../.gitbook/assets/image%20(1640).png>)
+![](../../../.gitbook/assets/flasky-4.png)
 
 ## Privilege Escalation
 
@@ -230,7 +230,7 @@ eyJsb2dnZWRfaW4iOnRydWV9.ZLI_rA.WmTcl0Wa5jOy8ajsJvWhn6npDKA
 
 This allows us to access the calculator application:
 
-![](<../../../.gitbook/assets/image%20(1274).png>)
+![](../../../.gitbook/assets/flasky-1.png)
 
 The source code uses `eval` to calculate the results, which is vulnerable to RCE. We can just inject Python code like this:
 
@@ -256,6 +256,6 @@ value1=os.system("chmod+u%2bs+/bin/bash")&value2=1
 
 Then, we can become `root`:
 
-![](<../../../.gitbook/assets/image%20(363).png>)
+![](../../../.gitbook/assets/flasky-9.png)
 
 Rooted!

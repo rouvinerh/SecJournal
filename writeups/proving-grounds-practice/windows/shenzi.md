@@ -104,25 +104,25 @@ $ cat passwords.txt
 
 Port 80 shows the default XAMPP page:
 
-![](<../../../.gitbook/assets/image%20(1091).png>)
+![](../../../.gitbook/assets/shenzi-1.png)
 
 There was a PHPInfo page that we could view for more clues.
 
-![](<../../../.gitbook/assets/image%20(1612).png>)
+![](../../../.gitbook/assets/shenzi-3.png)
 
 The only interesting thing to note is that the user is named `shenzi` on the machine. We need to be finding this wordpress instance. However, all directory scans failed to find any instance of `wp-content` or `wp-admin`.
 
 I was stuck here for a while, until I visited `/shenzi` to test, and it worked!
 
-![](<../../../.gitbook/assets/image%20(114).png>)
+![](../../../.gitbook/assets/shenzi-2.png)
 
 With this, we can easily login to the admin panel and replace one of the PHP files with a web shell.
 
-![](<../../../.gitbook/assets/image%20(2725).png>)
+![](../../../.gitbook/assets/shenzi-6.png)
 
 Then, we can get a reverse shell by downloading `nc.exe` onto the machine and executing it:
 
-![](<../../../.gitbook/assets/image%20(291).png>)
+![](../../../.gitbook/assets/shenzi-7.png)
 
 ## Privilege Escalation
 
@@ -130,7 +130,7 @@ Then, we can get a reverse shell by downloading `nc.exe` onto the machine and ex
 
 I ran `winPEAS.exe` to enumerate the machine for me. It picked up on AlwaysInstallElevated being misconfigured:
 
-![](<../../../.gitbook/assets/image%20(175).png>)
+![](../../../.gitbook/assets/shenzi-4.png)
 
 Using this, we can generate an MSI payload using `msfvenom` and run it on the system, which would give us a reverse shell as the SYSTEM user.
 
@@ -152,4 +152,4 @@ C:\Windows\Tasks>msiexec /quiet /qn /i shell.msi
 
 This would give us a reverse shell as the SYSTEM user on a listener port:
 
-![](<../../../.gitbook/assets/image%20(2358).png>)
+![](../../../.gitbook/assets/shenzi-5.png)

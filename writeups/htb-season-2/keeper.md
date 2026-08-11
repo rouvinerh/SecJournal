@@ -22,27 +22,27 @@ We can start proxying traffic through Burpsuite.
 
 Visiting the website itself shows a domain we need to add:
 
-![](<../../.gitbook/assets/image%20(49).png>)
+![](../../.gitbook/assets/keeper-6.png)
 
 After adding to the `/etc/hosts` file, it brings us to a login page:
 
-![](<../../.gitbook/assets/image%20(50).png>)
+![](../../.gitbook/assets/keeper-7.png)
 
 The website was running Best Practical Request Tracker (RT) 4.4.4, which is quite outdated. A bit of research reveals that `root:password` is the default password, which works here:
 
-![](<../../.gitbook/assets/image%20(51).png>)
+![](../../.gitbook/assets/keeper-8.png)
 
 There is 1 ticket present, and it's an issue regarding Keepass (with the box name being an obvious hint).
 
-![](<../../.gitbook/assets/image%20(42).png>)
+![](../../.gitbook/assets/keeper-1.png)
 
 The attachment has been removed. There's also mention of another user named `lnorgaard`. When we use the Admin panel to view all Users, there's a password located within the user's comments:
 
-![](<../../.gitbook/assets/image%20(43).png>)
+![](../../.gitbook/assets/keeper-2.png)
 
 Using these creds, we can `ssh` in as the user:
 
-![](<../../.gitbook/assets/image%20(44).png>)
+![](../../.gitbook/assets/keeper-3.png)
 
 ## Privilege Escalation
 
@@ -112,7 +112,7 @@ Combined: ●{,, l, `, -, ', ], A, I, :, =, _, c, M}<REDACTEDSTRING>
 
 This would produce a string at the end with some non-printable characters. Googling part of the string reveals a certain Danish dessert (based on the username of the user):
 
-![](<../../.gitbook/assets/image%20(45).png>)
+![](../../.gitbook/assets/keeper-4.png)
 
 Using the name of the dessert, we can access the passwords within the `.kdbx` file:
 
@@ -187,6 +187,6 @@ MIIEowIBAAKCAQEAp1arHv4TLMBgUULD7AvxMMsSb3PFqbpfw/K4gmVd9GW3xBdP
 
 After running `chmod 600` on it, we can use this private key to `ssh` in as `root`:
 
-![](<../../.gitbook/assets/image%20(46).png>)
+![](../../.gitbook/assets/keeper-5.png)
 
 `dotnet run` saves loads of time transferring files to a Windows machine. Rooted!

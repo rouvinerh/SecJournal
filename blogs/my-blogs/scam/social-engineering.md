@@ -49,11 +49,11 @@ For example, one can generate a website login that is identical to the Google lo
 
 This page is identical to the real Google login page, so all links point to valid domains and the icons are in the same positions. One can attempt to sign in:
 
-![](<../../../.gitbook/assets/image%20(3328).png>)
+![](../../../.gitbook/assets/social-engineering-4.png)
 
 Upon pressing 'Sign in', an attacker's computer can capture the result.
 
-![](<../../../.gitbook/assets/image%20(1657).png>)
+![](../../../.gitbook/assets/social-engineering-2.png)
 
 Afterwards, the user will be redirected to the real Google sign in to reduce any suspicion that they had just been phished.
 
@@ -67,19 +67,19 @@ For Microsoft Office documents, this is done using Macros, which are basically V
 
 An attack can be demonstrated using Crafty from Proving Grounds Practice, where a payload (malicious code) is embedded within a Microsoft Word document posing as a 'resume'. For this machine, the website allows the uploading of `.doc` files:
 
-![](<../../../.gitbook/assets/image%20(3513).png>)
+![](../../../.gitbook/assets/social-engineering-5.png)
 
 Further suppose a user will open **any resume** uploaded without checking. As such, I can create a VBS script like so:
 
-![Encoded Reverse Shell](<../../../.gitbook/assets/image%20(1989).png>)
+![Encoded Reverse Shell](../../../.gitbook/assets/social-engineering-3.png)
 
 Afterwards, the code can be assigned to an event, such as the starting of Microsoft Office to read the document:
 
-![](<../../../.gitbook/assets/image%20(1467).png>)
+![](../../../.gitbook/assets/social-engineering-1.png)
 
 Afterwards, the file can be uploaded. When the user opens the file, the payload executes itself. In this case, it triggers a callback to my machine which can be used to steal credentials for the user `thecybergeek`. 
 
-![](<../../../.gitbook/assets/image%20(4080).png>)
+![](../../../.gitbook/assets/social-engineering-6.png)
 
 This is a basic example of how Macros can be used maliciously to steal credentials. In most cases, anti-virus solutions can scan these documents and detect malicious code. However, these solutions can always be bypassed with code obfuscation and encryption.
 

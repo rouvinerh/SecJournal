@@ -4,13 +4,13 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3949).png>)
+![](../../../.gitbook/assets/ophiuchi-9.png)
 
 ### YAML Parser
 
 Port 8080 was running an application that handles YAML input.
 
-![](<../../../.gitbook/assets/image%20(1325).png>)
+![](../../../.gitbook/assets/ophiuchi-2.png)
 
 This was obviously a deserialisation exploit, where the application handles user input without sanitsation and it can lead to code execution. Googling for this led me to this repository.
 
@@ -28,7 +28,7 @@ Based on the PoC, we can first test whether the parser is able to send requests 
 
 And it does indeed work.
 
-![](<../../../.gitbook/assets/image%20(1625).png>)
+![](../../../.gitbook/assets/ophiuchi-3.png)
 
 We then need to use this bit of code here to make the machine download a reverse shell and execute it.
 
@@ -122,7 +122,7 @@ jar -cvf AwesomeScriptingEngineFactory.jar -C src/ .
 
 This would create a JAR file. Then, we can make the machine download the JAR file using the same method as above to receive callback. This would trigger the command and our listener port would receive a reverse shell as `tomcat`.
 
-![](<../../../.gitbook/assets/image%20(1638).png>)
+![](../../../.gitbook/assets/ophiuchi-4.png)
 
 ## Privilege Escalation
 
@@ -130,17 +130,17 @@ This would create a JAR file. Then, we can make the machine download the JAR fil
 
 Since we are `tomcat`, we should look into the configurations for the Tomcat interface. This can be found within `~/conf/tomcat-users.xml`.
 
-![](<../../../.gitbook/assets/image%20(1924).png>)
+![](../../../.gitbook/assets/ophiuchi-5.png)
 
 We can try an `su` to the `admin` user and find that it works with this password.
 
-![](<../../../.gitbook/assets/image%20(2715).png>)
+![](../../../.gitbook/assets/ophiuchi-8.png)
 
 ### Sudo Privileges
 
 Since we have the password, we can check for `sudo` privileges.
 
-![](<../../../.gitbook/assets/image%20(2165).png>)
+![](../../../.gitbook/assets/ophiuchi-6.png)
 
 Seems that we can run `go` on a certain script:
 
@@ -200,10 +200,10 @@ export function info():int {
 
 The above code seems to do nothing but return 0, so we need to change that 0 to a 1. We can count the bytes and change the byte accordingly using `dd`.
 
-![](<../../../.gitbook/assets/image%20(1216).png>)
+![](../../../.gitbook/assets/ophiuchi-1.png)
 
 Afterwards, we can create a `deploy.sh` file that adds our public key into the `/root/.ssh/authorized_key` folder and run the `sudo` command.
 
 This would allow us to SSH in as `root`.
 
-![](<../../../.gitbook/assets/image%20(2263).png>)
+![](../../../.gitbook/assets/ophiuchi-7.png)

@@ -27,11 +27,11 @@ OAuth allows for multiple ways for its authentication process to be implemented,
 
 Generally, there are 2 different ways for OAuth to grant access. The first being **Authorization Code Grant Type:**
 
-![](<../../.gitbook/assets/image%20(459).png>)
+![](../../.gitbook/assets/readme-2-dup10.png)
 
 The second is the **Implicit Flow Type:**
 
-![](<../../.gitbook/assets/image%20(2663).png>)
+![](../../.gitbook/assets/readme-1-dup11.png)
 
 Between the two, the implicit flow is easier. It does not need to obtain an authorization code, thus there's no need to have an access token to exchange for. The client token simply receives an access token immediately and the user can log in.
 

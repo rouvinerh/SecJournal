@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3095).png>)
+![](../../../.gitbook/assets/october-6.png)
 
 We don't need to add anything into the hosts file.
 
@@ -12,17 +12,17 @@ We don't need to add anything into the hosts file.
 
 The website was running OctoberCMS and appears to have a default look:
 
-![](<../../../.gitbook/assets/image%20(3263).png>)
+![](../../../.gitbook/assets/october-7.png)
 
 Registering an account and trying to do stuff with it was useless and had no functionalities. So instead, we can abuse the fact that OctoberCMS is an open-source project. A quick Google search reveals that the backend of this is at `/backend`:
 
 {% embed url="https://octobercms.com/forum/post/how-do-i-access-the-backend" %}
 
-![](<../../../.gitbook/assets/image%20(2185).png>)
+![](../../../.gitbook/assets/october-4.png)
 
 We can use the default credentials of `admin:admin`.
 
-![](<../../../.gitbook/assets/image%20(506).png>)
+![](../../../.gitbook/assets/october-11.png)
 
 OctoberCMS has quite a few exploits:
 
@@ -30,11 +30,11 @@ OctoberCMS has quite a few exploits:
 
 We can use one of them to upload a `cmd.php5` file to execute on the server, as `php5` is not blocked on the server:
 
-![](<../../../.gitbook/assets/image%20(1250).png>)
+![](../../../.gitbook/assets/october-1.png)
 
 We can confirm we have RCE via `curl`.
 
-![](<../../../.gitbook/assets/image%20(2870).png>)
+![](../../../.gitbook/assets/october-5.png)
 
 Getting a reverse shell is then trivial.
 
@@ -44,11 +44,11 @@ Getting a reverse shell is then trivial.
 
 I ran a LinPEAS scan on the machine, and found this weird SUID binary called `overflw`:
 
-![](<../../../.gitbook/assets/image%20(1339).png>)
+![](../../../.gitbook/assets/october-2.png)
 
 I opened it up in Ghidra to view what it does:
 
-![](<../../../.gitbook/assets/image%20(205).png>)
+![](../../../.gitbook/assets/october-3.png)
 
 It appears we have a classic BOF expliot to do here. The `strcpy` function is vulnerable, and the buffer is pretty short. Doing a `checksec` reveals that NX is enabled but PIE is disabled:
 
@@ -63,11 +63,11 @@ RELRO     : Partial
 
 In this case, we can go for a Ret2Libc attack. First, we find the buffer size:
 
-![](<../../../.gitbook/assets/image%20(3970).png>)
+![](../../../.gitbook/assets/october-10.png)
 
 Fixed at 112 it appears (same as length of `local_74`). Now, we can use `ldd` to find the address where `libc` is loaded on the machine:
 
-![](<../../../.gitbook/assets/image%20(3935).png>)
+![](../../../.gitbook/assets/october-9.png)
 
 Then we can simply execute the following commands to get the addresses we need
 
@@ -111,6 +111,6 @@ So, we can set up a `bash` script to keep looping until we get a successful expl
 while true; do /usr/local/bin/ovrflw $(python -c 'print "\x90"*112 + "\x10\x83\x63\xb7" + "\x60\xb2\x62\xb7" + "\xac\xab\x75\xb7"'); done
 ```
 
-![](<../../../.gitbook/assets/image%20(3418).png>)
+![](../../../.gitbook/assets/october-8.png)
 
 Rooted!

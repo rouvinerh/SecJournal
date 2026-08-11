@@ -22,11 +22,11 @@ We have to add `forge.htb` to our `/etc/hosts` file to enumerate the website. Al
 
 The website is some kind of Gallery that lets us view and upload images.
 
-![](<../../../.gitbook/assets/image%20(3012).png>)
+![](../../../.gitbook/assets/forge-6.png)
 
 The uploads portion allow us to use URLs:
 
-![](<../../../.gitbook/assets/image%20(1863).png>)
+![](../../../.gitbook/assets/forge-2.png)
 
 If we were to start a `nc` listener port and redirect the request to our machine, we would see this:
 
@@ -95,7 +95,7 @@ if __name__ == '__main__':
 
 When we start this, the website would generate a link to an 'image', which would always fail to display because it's not an image.
 
-![](<../../../.gitbook/assets/image%20(2703).png>)
+![](../../../.gitbook/assets/forge-4.png)
 
 But, when we `curl` it, we can see it contains the page contents of the admin panel:
 
@@ -195,7 +195,7 @@ $ curl http://forge.htb/uploads/EvkwW5i3ganDEIzW2doi
 
 We can grab the `id_rsa` flag through this and SSH in as `user`.
 
-![](<../../../.gitbook/assets/image%20(1022).png>)
+![](../../../.gitbook/assets/forge-1.png)
 
 Grab the user flag.
 
@@ -263,10 +263,10 @@ finally:
 
 This program opens a port and then runs commands as `root`. The vulnerable part is when it opens `pdb` upon receivinig an input that is not a number.
 
-![](<../../../.gitbook/assets/image%20(2754).png>)
+![](../../../.gitbook/assets/forge-5.png)
 
 `pdb` is Python Debugger, and running it as `root` means we can gain an easy shell.
 
-![](<../../../.gitbook/assets/image%20(2352).png>)
+![](../../../.gitbook/assets/forge-3.png)
 
 Rooted!

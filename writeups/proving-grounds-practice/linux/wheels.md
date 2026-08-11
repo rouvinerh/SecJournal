@@ -21,17 +21,17 @@ We can proxy traffic through Burpsuite.
 
 The website is for a car repair service:
 
-![](<../../../.gitbook/assets/image%20(818).png>)
+![](../../../.gitbook/assets/wheels-8.png)
 
 There's an employee portal and a register page. When I try to register a user and access the portal, we are denied access. I tried to brute force the admin credentials, but they don't work.
 
 At the bottom of the page, we can find an email:
 
-![](<../../../.gitbook/assets/image%20(3738).png>)
+![](../../../.gitbook/assets/wheels-7.png)
 
 I tried to register an `administrator` user with this email, and it worked in showing us the Employee Portal.
 
-![](<../../../.gitbook/assets/image%20(3140).png>)
+![](../../../.gitbook/assets/wheels-5.png)
 
 If we submit a query, we are returned information in this manner:
 
@@ -56,7 +56,7 @@ If we submit a query, we are returned information in this manner:
 
 I tried to append a `'` character to the query, and received an XML error:
 
-![](<../../../.gitbook/assets/image%20(3199).png>)
+![](../../../.gitbook/assets/wheels-6.png)
 
 We can try XPath injection since it seems to load `xpath()`. I tested all forms of XPath Injection and tried to dump passwords, and eventually this payload worked:
 
@@ -64,7 +64,7 @@ We can try XPath injection since it seems to load `xpath()`. I tested all forms 
 http://192.168.157.202/portal.php?work=car%27)]%20|%20//password%00&action=search
 ```
 
-![](<../../../.gitbook/assets/image%20(2779).png>)
+![](../../../.gitbook/assets/wheels-3.png)
 
 I also found some users when testing payloads:
 
@@ -72,11 +72,11 @@ I also found some users when testing payloads:
 http://192.168.157.202/portal.php?work=car%27)%20or%201=1%20or%20(%27&action=search
 ```
 
-![](<../../../.gitbook/assets/image%20(2959).png>)
+![](../../../.gitbook/assets/wheels-4.png)
 
 The first password works for `bob`:
 
-![](<../../../.gitbook/assets/image%20(1610).png>)
+![](../../../.gitbook/assets/wheels-1.png)
 
 ## Privilege Escalation
 
@@ -135,4 +135,4 @@ It uses seems that our string is directly passed into a `cat` command. There's a
 
 This is easily exploitable for a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(2772).png>)
+![](../../../.gitbook/assets/wheels-2.png)

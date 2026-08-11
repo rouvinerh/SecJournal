@@ -69,11 +69,11 @@ ftp> ls
 
 We can download this `.exe` file to a Windows machine for some reverse engineering.
 
-![Old IP from Old Writeup](<../../../.gitbook/assets/image%20(3567).png>)
+![Old IP from Old Writeup](../../../.gitbook/assets/malbec-5.png)
 
 When we check the listening ports on our Windows machine, we would see that `malbec.exe` opens port 7138:
 
-![](<../../../.gitbook/assets/image%20(1062).png>)
+![](../../../.gitbook/assets/malbec-1.png)
 
 This machine thus becomes a classic buffer overflow exploit as per OSCP. For this particular binary, there weren't any bad characters (other than the NULL byte) and it was just a matter of fuzzing the offset required.
 
@@ -127,7 +127,7 @@ Sending evil buffer...
 Done!
 ```
 
-![](<../../../.gitbook/assets/image%20(2766).png>)
+![](../../../.gitbook/assets/malbec-3.png)
 
 ## Privilege Escalation
 
@@ -135,7 +135,7 @@ Done!
 
 I ran a `linpeas.sh` scan on the machine, and it found a few interesting things.  Firstly, `root` is running `ldconfig` periodically:
 
-![](<../../../.gitbook/assets/image%20(4032).png>)
+![](../../../.gitbook/assets/malbec-6.png)
 
 The next was this SUID binary that I didn't recognise:
 
@@ -145,7 +145,7 @@ The next was this SUID binary that I didn't recognise:
 
 The last was a misconfiguration of the `ld.so` files:
 
-![](<../../../.gitbook/assets/image%20(3234).png>)
+![](../../../.gitbook/assets/malbec-4.png)
 
 This was interesting, because it appears that the user's home directory is the part of the configuration, meaning that `.so` files are executed from this directory. We can run `ldd` for the `messenger` binary to check where it loads its shared object files.
 
@@ -198,4 +198,4 @@ carlos@malbec:/home/carlos$ ldd /usr/bin/messenger
 
 Then, we can just execute `messenger` to get a `root` shell:
 
-![](<../../../.gitbook/assets/image%20(2502).png>)
+![](../../../.gitbook/assets/malbec-2.png)

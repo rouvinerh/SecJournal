@@ -19,11 +19,11 @@ PORT      STATE    SERVICE
 
 The website is a notebook website:
 
-![](<../../../.gitbook/assets/image%20(2636).png>)
+![](../../../.gitbook/assets/thenotebook-6.png)
 
 We can create a new user because we don't have any credentials. Once created, we can login and view our notes, of which we have none:
 
-![](<../../../.gitbook/assets/image%20(2886).png>)
+![](../../../.gitbook/assets/thenotebook-8.png)
 
 When the requests are viewed in Burp, we can see that it uses a JWT token and a `uuid` parameter:
 
@@ -43,7 +43,7 @@ Upgrade-Insecure-Requests: 1
 
 We can take a look at this cookie within jwt.io and see that it uses a private key hosted on the server.
 
-![](<../../../.gitbook/assets/image%20(2234).png>)
+![](../../../.gitbook/assets/thenotebook-4.png)
 
 The token is spoofable, similar to another machine Unicode. We can generate our own private key using `openssl` and use it to spoof the token by replacing the `kid` parameter with a link hosting the key instead. Also, we can change `admin_cap` to be 1.
 
@@ -51,35 +51,35 @@ The token is spoofable, similar to another machine Unicode. We can generate our 
 openssl genrsa -out priv.key 2048
 ```
 
-![](<../../../.gitbook/assets/image%20(2323).png>)
+![](../../../.gitbook/assets/thenotebook-5.png)
 
 When we use this token after refreshing the page, we can see an Admin Panel present.
 
-![](<../../../.gitbook/assets/image%20(1161).png>)
+![](../../../.gitbook/assets/thenotebook-2.png)
 
 Then, we can view the notes of the administrator through Admin Panel > View Notes.
 
-![](<../../../.gitbook/assets/image%20(3930).png>)
+![](../../../.gitbook/assets/thenotebook-11.png)
 
 Conveniently, the first note reveals that PHP files are left executable on this website.
 
-![](<../../../.gitbook/assets/image%20(3326).png>)
+![](../../../.gitbook/assets/thenotebook-10.png)
 
 The admin panel also has an upload file feature:
 
-![](<../../../.gitbook/assets/image%20(2856).png>)
+![](../../../.gitbook/assets/thenotebook-7.png)
 
 I uploaded a basic PHP webshell, and the page shows this:
 
-![](<../../../.gitbook/assets/image%20(1130).png>)
+![](../../../.gitbook/assets/thenotebook-1.png)
 
 Using this, we can get RCE:
 
-![](<../../../.gitbook/assets/image%20(3131).png>)
+![](../../../.gitbook/assets/thenotebook-9.png)
 
 And subsequently, a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(918).png>)
+![](../../../.gitbook/assets/thenotebook-12.png)
 
 ## Privilege Escalation
 
@@ -191,6 +191,6 @@ root@0f4c2517af40:/opt/webapp# ./main
 
 Then, we can just `ssh` into `root`.
 
-![](<../../../.gitbook/assets/image%20(1358).png>)
+![](../../../.gitbook/assets/thenotebook-3.png)
 
 Rooted!

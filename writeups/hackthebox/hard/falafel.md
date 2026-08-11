@@ -4,21 +4,21 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(3828).png>)
+![](../../../.gitbook/assets/falafel-26.png)
 
 ### FalafeLovers
 
 Port 80 reveals a kind of social network website.
 
-![](<../../../.gitbook/assets/image%20(1310).png>)
+![](../../../.gitbook/assets/falafel-3.png)
 
 I ran a `gobuster` scan on the website, and it revealed tons of interesting directories.
 
-![](<../../../.gitbook/assets/image%20(3523).png>)
+![](../../../.gitbook/assets/falafel-23.png)
 
 On the `cyberlaw.txt` file, we can find some hints on what to do next.
 
-![](<../../../.gitbook/assets/image%20(2062).png>)
+![](../../../.gitbook/assets/falafel-11.png)
 
 Interesting. So there's a `chris` user and he hacked the website first.
 
@@ -26,23 +26,23 @@ Interesting. So there's a `chris` user and he hacked the website first.
 
 There was a login page on the website we could access.
 
-![](<../../../.gitbook/assets/image%20(2166).png>)
+![](../../../.gitbook/assets/falafel-12.png)
 
 When trying to enter credentials for the `admin` user, this was the error received.
 
-![](<../../../.gitbook/assets/image%20(1275).png>)
+![](../../../.gitbook/assets/falafel-1.png)
 
 When a random input as the user, we get a different error.
 
-![](<../../../.gitbook/assets/image%20(3042).png>)
+![](../../../.gitbook/assets/falafel-18.png)
 
 It seems that there's a boolean condition present on the website. I proceeded to test this with `sqlmap` using `--level=5 --risk=3` flags. I also included the `--string` flag to signify which was the boolean condition to use.
 
-![](<../../../.gitbook/assets/image%20(4026).png>)
+![](../../../.gitbook/assets/falafel-28.png)
 
 We can then dump out the database.
 
-![](<../../../.gitbook/assets/image%20(2567).png>)
+![](../../../.gitbook/assets/falafel-14.png)
 
 Now we can login as `chris`.
 
@@ -50,7 +50,7 @@ Now we can login as `chris`.
 
 Viewing the profile of chris reveals a hint to use PHP Type Juggling.
 
-![](<../../../.gitbook/assets/image%20(323).png>)
+![](../../../.gitbook/assets/falafel-21.png)
 
 PHP Type juggling was a type of vulnerability that can be used to **force the returning of true** through using specific hashes.
 
@@ -66,39 +66,39 @@ When using these hashes as the password in the login page, we can login as the `
 
 Viewing the profile of the `admin` user shows a hint to bypass some kind of limit.
 
-![](<../../../.gitbook/assets/image%20(3092).png>)
+![](../../../.gitbook/assets/falafel-19.png)
 
 Didn't know how to abuse this yet, so I tried to exploit the image upload function that we now had access to.
 
-![](<../../../.gitbook/assets/image%20(592).png>)
+![](../../../.gitbook/assets/falafel-29.png)
 
 I attempted to upload some PHP webshells, but it did not work.
 
-![](<../../../.gitbook/assets/image%20(3596).png>)
+![](../../../.gitbook/assets/falafel-24.png)
 
 When uploading a jpg file, this is the output we get.
 
-![](<../../../.gitbook/assets/image%20(272).png>)
+![](../../../.gitbook/assets/falafel-15.png)
 
 Attempting to access our webshell does not work. However, we can see how the name of our file can be manipulated to fit the CMD being executed. Seeing the hint earlier on the `admin` profile about the limits of the file name.
 
 So, I tested this via changing the file name to something absurdly long.
 
-![](<../../../.gitbook/assets/image%20(1748).png>)
+![](../../../.gitbook/assets/falafel-8.png)
 
 There was this `Trying to shorten...` bit that was rather suspicious. Perhaps we could use this to **remove the .jpg extension and leave a .php extension**. So what I did was attempt to upload a `cmd.php.jpg` file, and have the name of the file be such that it would shorten to `cmd.php`. This truncation of the name would allow me to upload my webshell.
 
 This would mean having a file name of 236 characters (which was the max when counted), and this works in uploading the file.
 
-![](<../../../.gitbook/assets/image%20(1355).png>)
+![](../../../.gitbook/assets/falafel-5.png)
 
 We can then test our RCE.
 
-![](<../../../.gitbook/assets/image%20(1945).png>)
+![](../../../.gitbook/assets/falafel-9.png)
 
 Then we can get a reverse shell easily.
 
-![](<../../../.gitbook/assets/image%20(844).png>)
+![](../../../.gitbook/assets/falafel-30.png)
 
 ## Privilege Escalation
 
@@ -106,25 +106,25 @@ Then we can get a reverse shell easily.
 
 First, we can view the users present on this machine by reading the `/etc/passwd` file, and see that `moshe` and `yossi` are present.
 
-![](<../../../.gitbook/assets/image%20(2985).png>)
+![](../../../.gitbook/assets/falafel-17.png)
 
 Then, we can view the files for the webroot. In there, we can find some SQL credentials.
 
-![](<../../../.gitbook/assets/image%20(2538).png>)
+![](../../../.gitbook/assets/falafel-13.png)
 
 We can then `su` to moshe.
 
-![](<../../../.gitbook/assets/image%20(1635).png>)
+![](../../../.gitbook/assets/falafel-7.png)
 
 ### Video Group
 
 When running LinPEAS, we see that `moshe` is part of the `video` group.
 
-![](<../../../.gitbook/assets/image%20(2964).png>)
+![](../../../.gitbook/assets/falafel-16.png)
 
 Users part of the `video` group have access to a video device or the screen output. I first checked if there were other users logged in via `w`, and `yossi` is logged in.
 
-![](<../../../.gitbook/assets/image%20(3837).png>)
+![](../../../.gitbook/assets/falafel-27.png)
 
 This means we can take a screenshot of his session and see if we can find any credentials. This blog was useful in exploiting it.
 
@@ -162,17 +162,17 @@ close OUT;
 
 Afterwards, we can transfer this back to our machine and find that it is an image file.
 
-![](<../../../.gitbook/assets/image%20(1321).png>)
+![](../../../.gitbook/assets/falafel-4.png)
 
 Initially, the picture looked like some kind of rubbish.
 
-![](<../../../.gitbook/assets/image%20(2044).png>)
+![](../../../.gitbook/assets/falafel-10.png)
 
 Then I realised it was probably because I messed up the dimensions of the image, so I changed to to these values using `gimp` as per the script to reveal some credentials:
 
-![](<../../../.gitbook/assets/image%20(99).png>)
+![](../../../.gitbook/assets/falafel-31.png)
 
-![](<../../../.gitbook/assets/image%20(1492).png>)
+![](../../../.gitbook/assets/falafel-6.png)
 
 Then, we can `su` as `yossi`.
 
@@ -180,16 +180,16 @@ Then, we can `su` as `yossi`.
 
 Earlier, we found that `yossi` was part of the `disk` and `cdrom` group. Perhaps there was something mounted on the machine that we can access.
 
-![](<../../../.gitbook/assets/image%20(3453).png>)
+![](../../../.gitbook/assets/falafel-22.png)
 
 Using `debugfs` on the `/dev/sda1` filesystem (which just looked off), we find out that we can access the `/root` directory.
 
-![](<../../../.gitbook/assets/image%20(1300).png>)
+![](../../../.gitbook/assets/falafel-2.png)
 
 We can also find the private SSH key for `root`.
 
-![](<../../../.gitbook/assets/image%20(3093).png>)
+![](../../../.gitbook/assets/falafel-20.png)
 
 Then, we can SSH in as `root`.
 
-![](<../../../.gitbook/assets/image%20(372).png>)
+![](../../../.gitbook/assets/falafel-25.png)

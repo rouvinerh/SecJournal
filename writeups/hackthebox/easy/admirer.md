@@ -4,11 +4,11 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(4046).png>)
+![](../../../.gitbook/assets/admirer-13.png)
 
 An Nmap vuln scan reveals there is a `robots.txt` file on port 80.
 
-![](<../../../.gitbook/assets/image%20(2243).png>)
+![](../../../.gitbook/assets/admirer-7.png)
 
 We can head to that directly.
 
@@ -16,19 +16,19 @@ We can head to that directly.
 
 The robots.txt file gave us the `/admin-dir` directory.
 
-![](<../../../.gitbook/assets/image%20(2397).png>)
+![](../../../.gitbook/assets/admirer-8.png)
 
 However, visiting it gives us a 403.
 
-![](<../../../.gitbook/assets/image%20(2116).png>)
+![](../../../.gitbook/assets/admirer-5.png)
 
 I used `gobuster` on this directory and found a `credentials.txt` file.
 
-![](<../../../.gitbook/assets/image%20(1739).png>)
+![](../../../.gitbook/assets/admirer-3.png)
 
 We can view this file to find some FTP credentials.
 
-![](<../../../.gitbook/assets/image%20(829).png>)
+![](../../../.gitbook/assets/admirer-15.png)
 
 Then, we can login to FTP.
 
@@ -36,23 +36,23 @@ Then, we can login to FTP.
 
 Within FTP, we can find a backup of the website.
 
-![](<../../../.gitbook/assets/image%20(251).png>)
+![](../../../.gitbook/assets/admirer-10.png)
 
 When we extract this file and unzip it, we would be able to find a few directories of use.
 
-![](<../../../.gitbook/assets/image%20(1011).png>)
+![](../../../.gitbook/assets/admirer-1.png)
 
 There are 2 directories, the `utility-scripts` and `w4ld0s` stuff. The secret directory revealed one more credential.
 
-![](<../../../.gitbook/assets/image%20(2552).png>)
+![](../../../.gitbook/assets/admirer-11.png)
 
 The utility-scripts folder revealed some database credentials.
 
-![](<../../../.gitbook/assets/image%20(219).png>)
+![](../../../.gitbook/assets/admirer-6.png)
 
 The `index.php` folder also revealed some credentials.
 
-![](<../../../.gitbook/assets/image%20(761).png>)
+![](../../../.gitbook/assets/admirer-14.png)
 
 Afterwards, I was stumped here because I did not find any place to work on this. I understood that there was some kind of admirer-sounding application running somewhere, but gobuster was revealing nothing. Then, googling loads led me to the Adminer software, which was accessible on this website at `adminer.php`.
 
@@ -60,7 +60,7 @@ Afterwards, I was stumped here because I did not find any place to work on this.
 
 So far, none of the credentials work with FTP or SSH. The next logical step is to take a look at this directory to find an Adminer instance at `/utility-scripts/adminer.php`.
 
-![](<../../../.gitbook/assets/image%20(1898).png>)
+![](../../../.gitbook/assets/admirer-4.png)
 
 Adminer is a tool for managing MySQL databases within the machine. There is one specific LFI that can be exploited here:
 
@@ -95,7 +95,7 @@ This credential works with SSH as waldo.
 
 It seems that we have permission to set the environment variables for this script.
 
-![](<../../../.gitbook/assets/image%20(2434).png>)
+![](../../../.gitbook/assets/admirer-9.png)
 
 This was the script:
 
@@ -264,8 +264,8 @@ os.system('cp /bin/bash /var/tmp/.user; chown root:root /var/tmp/.user; chmod 47
 
 Afterwards, we can change the PYTHONPATH used for the script.
 
-![](<../../../.gitbook/assets/image%20(1603).png>)
+![](../../../.gitbook/assets/admirer-2.png)
 
 Then, we can SSH in as root using the key we have.
 
-![](<../../../.gitbook/assets/image%20(3723).png>)
+![](../../../.gitbook/assets/admirer-12.png)

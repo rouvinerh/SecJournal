@@ -20,11 +20,11 @@ PORT   STATE SERVICE
 
 The website was a corporate website:
 
-![](<../../../.gitbook/assets/image%20(3956).png>)
+![](../../../.gitbook/assets/badcorp-10.png)
 
 First thing I noticed was the **phone numbers**. Normally machines, I see numbers like +12 345 678. This was the first box I saw that included unique phone numbers. I took a look at their team:
 
-![](<../../../.gitbook/assets/image%20(3878).png>)
+![](../../../.gitbook/assets/badcorp-8.png)
 
 Again, phone numbers are unique here. This made me think about every little detail in the website, including the names of the users.
 
@@ -105,7 +105,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed. 
 ```
 
-![](<../../../.gitbook/assets/image%20(1178).png>)
+![](../../../.gitbook/assets/badcorp-1.png)
 
 ## Privilege Escalation
 
@@ -169,15 +169,15 @@ puts("Wrong Password !!!"Wrong Password !!!
 
 The bad characters don't include '$' and '()', opening up the possibility of command injection. Moving to `ghidra`, this binary prompts for a password before running the `check()` function to see if the password is correct, and then `copy()` if it is right:
 
-![](<../../../.gitbook/assets/image%20(3484).png>)
+![](../../../.gitbook/assets/badcorp-5.png)
 
 The `copy()` function takes an encrypted password and XOR's it with `0xc`:
 
-![](<../../../.gitbook/assets/image%20(3482).png>)
+![](../../../.gitbook/assets/badcorp-4.png)
 
 We can first grab the `pw` global variable from the binary:
 
-![](<../../../.gitbook/assets/image%20(3116).png>)
+![](../../../.gitbook/assets/badcorp-3.png)
 
 And then we can create a script in Python to decrypt this.
 
@@ -207,7 +207,7 @@ ALL FILE COPYED IN /var/logs/hoswald/
 
 We can move on to the `copy()` function now:
 
-![](<../../../.gitbook/assets/image%20(1315).png>)
+![](../../../.gitbook/assets/badcorp-2.png)
 
 All the binaries use their full path values, so no path hijacks here. However, this seems to use directories within `/var/logs` and `/home/FTP`. I was already thinking of command injection using subshells, and it seems that this is the exploit needed.
 
@@ -224,12 +224,12 @@ local: $(id) remote: $(id)
 
 This works!
 
-![](<../../../.gitbook/assets/image%20(3716).png>)
+![](../../../.gitbook/assets/badcorp-7.png)
 
 I then placed a file named `$(bash)` within the FTP directory, and it gave me a shell:
 
-![](<../../../.gitbook/assets/image%20(3939).png>)
+![](../../../.gitbook/assets/badcorp-9.png)
 
 This shell was pretty limited and couldn't give me any output. However, we can simply run `chmod u+s /bin/bash`. In another shell, we can then get a proper `root` shell easily:
 
-![](<../../../.gitbook/assets/image%20(3491).png>)
+![](../../../.gitbook/assets/badcorp-6.png)

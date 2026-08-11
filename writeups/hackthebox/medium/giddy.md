@@ -23,7 +23,7 @@ Both RDP and WinRM are accessible on this machine, which is new.
 
 Port 80 just shows a cute image:
 
-![](<../../../.gitbook/assets/image%20(2466).png>)
+![](../../../.gitbook/assets/giddy-3.png)
 
 I ran a `gobuster` scan on this, and found 2 directories:
 
@@ -49,11 +49,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Visiting it reveals a Windows Powershell Web Access page:
 
-![](<../../../.gitbook/assets/image%20(1404).png>)
+![](../../../.gitbook/assets/giddy-2.png)
 
 The MVC site reveals some online store:
 
-![](<../../../.gitbook/assets/image%20(852).png>)
+![](../../../.gitbook/assets/giddy-8.png)
 
 When products are viewed, it loads this URL:
 
@@ -63,7 +63,7 @@ http://10.129.96.140/mvc/Product.aspx?ProductSubCategoryId=18
 
 If we replace the number with a `'` character, a lot of SQL errors are returned:
 
-![](<../../../.gitbook/assets/image%20(4084).png>)
+![](../../../.gitbook/assets/giddy-6.png)
 
 This is vulnerable to SQL injection. Googling any of the errors here reveals that this is MSSQL, which we can actually get RCE from through `xp_cmdshell`.
 
@@ -73,7 +73,7 @@ This is vulnerable to SQL injection. Googling any of the errors here reveals tha
 
 We can start `responder` and intercept the response by sending the above command:
 
-![](<../../../.gitbook/assets/image%20(1016).png>)
+![](../../../.gitbook/assets/giddy-1.png)
 
 Then we can crack this hash easily using `john`:
 
@@ -91,7 +91,7 @@ Session completed.
 
 By right, this machine came our before `evil-winrm`, so the intentional route is to use the Remote Powershell Web Access to download and execute a reverse shell. I did it the `evil-winrm` way.
 
-![](<../../../.gitbook/assets/image%20(2683).png>)
+![](../../../.gitbook/assets/giddy-5.png)
 
 ## Privilege Escalation
 
@@ -163,10 +163,10 @@ run
 
 Afterwards, we just need to transfer this reverse shell over and name it as `taskkill.exe` within `C:\programdata\unifi-video` and then run the `stop-service -name Unifivideoservice` command.
 
-![](<../../../.gitbook/assets/image%20(2542).png>)
+![](../../../.gitbook/assets/giddy-4.png)
 
 Then, we would get a meterpreter shell on the listener:
 
-![](<../../../.gitbook/assets/image%20(850).png>)
+![](../../../.gitbook/assets/giddy-7.png)
 
 Rooted!

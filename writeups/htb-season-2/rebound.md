@@ -257,11 +257,11 @@ $ bloodhound-python -u ldap_monitor -p <REDACTED> -d rebound.htb -ns 10.129.148.
 
 Afterwards, we can upload the information to Bloodhound. From it, `winrm_svc` seems to be the next user we have to compromise:
 
-![](<../../.gitbook/assets/image%20(21).png>)
+![](../../.gitbook/assets/rebound-6.png)
 
 The `ServiceMgmt` group was also found to have some interesting privileges:
 
-![](<../../.gitbook/assets/image%20(22).png>)
+![](../../.gitbook/assets/rebound-7.png)
 
 Other than that, Bloodhound provided nothing of use since we aren't part of the `ServiceMgmt` group. I spent quite a bit of time thinking about how the user we compromised was called `ldap_monitor`, and what we could do with LDAP.
 
@@ -368,7 +368,7 @@ $ python bloodyAD.py -d rebound.htb -u oorend -p <PASS> --host dc01.rebound.htb 
 
 Afterwards, we can `evil-winrm` in as the user:
 
-![](<../../.gitbook/assets/image%20(23).png>)
+![](../../.gitbook/assets/rebound-8.png)
 
 ## Privilege Escalation
 
@@ -390,7 +390,7 @@ userprincipalname name      msds-allowedtodelegateto
 
 This is probably the last step to `root`, so we'll keep this in mind. I also ran a `SharpHound.exe` on the machine itself and updated my Bloodhound database. When taking a look at all the parts of `tbrady` noticed this:
 
-![](<../../.gitbook/assets/image%20(24).png>)
+![](../../.gitbook/assets/rebound-9.png)
 
 The user has a session on the DC, and this might be exploitable as we could potentially steal credentials. There weren't any other leads I found, so I went along with this.
 
@@ -415,7 +415,7 @@ Afterwards, simply run the binary on the machine:
 
 This would give us the hash of the `tbrady` user:
 
-![](<../../.gitbook/assets/image%20(4212).png>)
+![](../../.gitbook/assets/rebound-10.png)
 
 `john` can crack this hash to give the password of `tbrady`. Now that we have the password of `tbrady`, we can abuse the `ReadGMSAPassword` privileges given. Using `bloodyAD.py`, we can easily do this:
 
@@ -509,7 +509,7 @@ $ export KRB5CCNAME=ldap_minitor.ccache
 
 Now we need to request a Service Ticket as the `delegator$` user and impersonate `dc01$`. Based on Bloodhound, this user has a SPN of `browser/dc01.rebound.htb`:
 
-![](<../../.gitbook/assets/image%20(14).png>)
+![](../../.gitbook/assets/rebound-1.png)
 
 ```
 $ impacket-getST -spn 'browser/dc01.rebound.htb' -impersonate 'dc01' 'rebound.htb/ldap_monitor' -k -no-pass
@@ -527,7 +527,7 @@ Afterwards, we can do a DCSync since we have the domain admin ticket to grab the
 $ impacket-secretsdump -no-pass -k dc01.rebound.htb -just-dc-ntlm 
 ```
 
-![](<../../.gitbook/assets/image%20(15).png>)
+![](../../.gitbook/assets/rebound-2.png)
 
 Here are some of the resources linked in the writeup sent to me, good reads overall:
 
@@ -597,11 +597,11 @@ $ xfreerdp /u:rdpuser /p:Password@123 /v:10.129.197.120
 
 When viewing the delegation settings, I noticed that `ldap_monitor` had the Delegation tab:
 
-![](<../../.gitbook/assets/image%20(16).png>)
+![](../../.gitbook/assets/rebound-3.png)
 
 The `oorend` user did not have this tab:
 
-![](<../../.gitbook/assets/image%20(17).png>)
+![](../../.gitbook/assets/rebound-4.png)
 
 For some reason, `ldap_monitor` was technically allowed to delegate and the `oorend` user was not. I found few resources that explained this well, but basically it seems that `ldap_monitor` does have an SPN:
 
@@ -609,6 +609,6 @@ For some reason, `ldap_monitor` was technically allowed to delegate and the `oor
 
 {% embed url="https://learn.microsoft.com/en-us/windows-server/security/group-managed-service-accounts/configure-kerberos-delegation-group-managed-service-accounts" %}
 
-![](<../../.gitbook/assets/image%20(18).png>)
+![](../../.gitbook/assets/rebound-5.png)
 
 This means that delegation is 'possible' for `ldap_monitor` because it has an SPN set, whereas `oorend` does not and cannot even process the Kerberos ticket. No wonder I was stuck.

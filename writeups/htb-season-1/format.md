@@ -22,27 +22,27 @@ We have to add `app.microblog.htb` and `microblog.htb` to our `/etc/hosts` file 
 
 Port 80 reveals a blogging service called Microblog:
 
-![](<../../.gitbook/assets/image%20(2075).png>)
+![](../../.gitbook/assets/format-6.png)
 
 At the bottom, it appears that the website creates new blogs by using new subdomains.
 
-![](<../../.gitbook/assets/image%20(987).png>)
+![](../../.gitbook/assets/format-14.png)
 
 By clicking on Contrubute Here, we are redirected to port 3000 that hosts a Gitea instance with some source code:
 
-![](<../../.gitbook/assets/image%20(928).png>)
+![](../../.gitbook/assets/format-13.png)
 
 Before going there, let's take a look at the rest of the website. After registering a user, it seems that we can 'create' a subdomain:
 
-![](<../../.gitbook/assets/image%20(611).png>)
+![](../../.gitbook/assets/format-11.png)
 
 After creating one, we can edit it.
 
-![](<../../.gitbook/assets/image%20(1736).png>)
+![](../../.gitbook/assets/format-4.png)
 
 Going to the edit page reveals that we can use h1 or txt.
 
-![](<../../.gitbook/assets/image%20(1242).png>)
+![](../../.gitbook/assets/format-2.png)
 
 This would send a POST request to `/edit/index.php`:
 
@@ -70,7 +70,7 @@ id=02nc8ktv0kk4&txt=test
 
 When checking the application, it seems that we have a `sunny` subdomain.
 
-![](<../../.gitbook/assets/image%20(1049).png>)
+![](../../.gitbook/assets/format-1.png)
 
 Witin the `sunny` directory, it seems that there is an `edit` function. The PHP code for this is pretty long, so let's break it down:
 
@@ -148,7 +148,7 @@ if (isset($_POST['header']) && isset($_POST['id'])) {
 
 In this case, it seems that the `id` parameter is directly passed into `fopen`, meaning this could be vulnerable to LFI. Earlier, we created a new blog which created a new subdomain, so let's test our vulnerability there and confirm that it works.
 
-![](<../../.gitbook/assets/image%20(810).png>)
+![](../../.gitbook/assets/format-12.png)
 
 ```http
 POST /edit/index.php HTTP/1.1
@@ -233,7 +233,7 @@ curl -X "HSET" http://microblog.htb/static/unix:%2fvar%2frun%2fredis%2fredis.soc
 
 Afterwards, if we create a website, we notice that we can upload Images:
 
-![](<../../.gitbook/assets/image%20(2861).png>)
+![](../../.gitbook/assets/format-7.png)
 
 Great! We are a Pro User and can upload files now. Since we are Pro, this chunk of code would be executed:
 
@@ -284,11 +284,11 @@ id=/var/www/microblog/test/uploads/rev.php&txt=<%3fphp+system($_REQUEST['cmd'])%
 
 Afterwards, we can confirm we have RCE:
 
-![](<../../.gitbook/assets/image%20(3973).png>)
+![](../../.gitbook/assets/format-10.png)
 
 And then we can get a reverse shell:
 
-![](<../../.gitbook/assets/image%20(3869).png>)
+![](../../.gitbook/assets/format-9.png)
 
 ## Privilege Escalation
 
@@ -296,11 +296,11 @@ And then we can get a reverse shell:
 
 Within the machine, if we run `pspy64`, we would eventually see this:
 
-![](<../../.gitbook/assets/image%20(1554).png>)
+![](../../.gitbook/assets/format-3.png)
 
 We can use these credentials to access the user via `ssh`.
 
-![](<../../.gitbook/assets/image%20(2015).png>)
+![](../../.gitbook/assets/format-5.png)
 
 ### Format String -> Root Creds
 
@@ -460,6 +460,6 @@ microblog{'__name__': '__main__', '__doc__': None, '__package__': None, '__loade
 
 Within this entire string is the `root` password of :`unCR4ckaBL3Pa$$w0rd`. We can then `su` to `root`.
 
-![](<../../.gitbook/assets/image%20(3194).png>)
+![](../../.gitbook/assets/format-8.png)
 
 Rooted!

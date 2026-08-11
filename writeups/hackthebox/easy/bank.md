@@ -22,11 +22,11 @@ DNS being open was the most interesting one.
 
 Port 80 reveals a defualt Apache2 Ubuntu page:
 
-![](<../../../.gitbook/assets/image%20(3961).png>)
+![](../../../.gitbook/assets/bank-8.png)
 
 When we add `bank.htb` to our `/etc/hosts` file and revisit it, it loads a login page:
 
-![](<../../../.gitbook/assets/image%20(432).png>)
+![](../../../.gitbook/assets/bank-10.png)
 
 There was no SQL Injection or anything on this, and default credentials don't work. I did a `gobuster` scan next to enumerate the possible endpoints.
 
@@ -55,15 +55,15 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The last one was the most interesting. That directory just contained a bunch of `.acc` files.
 
-![](<../../../.gitbook/assets/image%20(1797).png>)
+![](../../../.gitbook/assets/bank-2.png)
 
 When sorting by size, there was one outlier.
 
-![](<../../../.gitbook/assets/image%20(965).png>)
+![](../../../.gitbook/assets/bank-11.png)
 
 When viewed, it revealed some credentials.
 
-![](<../../../.gitbook/assets/image%20(3097).png>)
+![](../../../.gitbook/assets/bank-6.png)
 
 These don't work for SSH, but using this we can login!
 
@@ -71,23 +71,23 @@ These don't work for SSH, but using this we can login!
 
 Once logged in, we can see a dashboard forbank transfers.
 
-![](<../../../.gitbook/assets/image%20(1081).png>)
+![](../../../.gitbook/assets/bank-1.png)
 
 The Support section allows us to send messages and upload files:
 
-![](<../../../.gitbook/assets/image%20(4052).png>)
+![](../../../.gitbook/assets/bank-9.png)
 
 Also, reading the page source reveals another hint.
 
-![](<../../../.gitbook/assets/image%20(2909).png>)
+![](../../../.gitbook/assets/bank-4.png)
 
 Using this, we can upload a PHP webshell as `cmd.htb`. Then, we can use `curl` to confirm we have RCE.
 
-![](<../../../.gitbook/assets/image%20(2634).png>)
+![](../../../.gitbook/assets/bank-3.png)
 
 Using a `bash` one-liner, we can get a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(3025).png>)
+![](../../../.gitbook/assets/bank-5.png)
 
 Grab the user flag.
 
@@ -106,7 +106,7 @@ I ran a LinPEAS scan to enumerate everything, and found this SUID present on the
 
 For some reason, when I run this binary, it gives me a `root` shell.
 
-![](<../../../.gitbook/assets/image%20(3561).png>)
+![](../../../.gitbook/assets/bank-7.png)
 
 Turns out, the source code for the script is here (and it is super unrealistic):
 

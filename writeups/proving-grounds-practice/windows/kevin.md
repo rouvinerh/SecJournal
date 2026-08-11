@@ -29,11 +29,11 @@ PORT      STATE SERVICE
 
 Port 80 is running HP Power Manager and it looks vulnerable:
 
-![](<../../../.gitbook/assets/image%20(3888).png>)
+![](../../../.gitbook/assets/kevin-3.png)
 
 `admin:admin` works in logging in:
 
-![](<../../../.gitbook/assets/image%20(3887).png>)
+![](../../../.gitbook/assets/kevin-2.png)
 
 There are a couple of exploits available for this software:
 
@@ -70,4 +70,4 @@ HTTP/1.0 200 OK
 
 After running it, we would get a shell as the SYSTEM user:
 
-![](<../../../.gitbook/assets/image (1104).png>)
+![](../../../.gitbook/assets/kevin-1.png)

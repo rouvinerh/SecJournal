@@ -43,11 +43,11 @@ ID           Response   Lines    Word       Chars       Payload
 
 Add the domains to the `/etc/hosts` file, and `www` is visited it shows a typical corporate page:
 
-![](<../../../.gitbook/assets/image%20(707).png>)
+![](../../../.gitbook/assets/anubis-10.png)
 
 When we fill in the Contact and try to submit, it let's us preview our submission at `preview.asp`.
 
-![](<../../../.gitbook/assets/image%20(1082).png>)
+![](../../../.gitbook/assets/anubis-1.png)
 
 Here's the HTTP request for the `Send` function, which is a GET request to `save.asp`:
 
@@ -71,11 +71,11 @@ Te: trailers
 
 Interesting. Since this is using `asp`, and the output is printed on another screen, we can test some SSTI. I used this payload:
 
-![](<../../../.gitbook/assets/image%20(354).png>)
+![](../../../.gitbook/assets/anubis-9.png)
 
 And this was returned:
 
-![](<../../../.gitbook/assets/image%20(3174).png>)
+![](../../../.gitbook/assets/anubis-8.png)
 
 This confirms that SSTI is possible on this machine, and that we can use this to gain a reverse shell (if there's no AMSI / AppLocker).
 
@@ -85,7 +85,7 @@ This confirms that SSTI is possible on this machine, and that we can use this to
 
 Using this, we can get a reverse shell easily.
 
-![](<../../../.gitbook/assets/image%20(2711).png>)
+![](../../../.gitbook/assets/anubis-6.png)
 
 ## Localadmin Creds
 
@@ -214,13 +214,13 @@ chisel server -p 5555 --reverse
 
 Afterwards, we can add `softwareportal.windcorp.htb` within our `/etc/hosts` file under `172.25.80.1`, and visit it using our browser (with FoxyProxy Proxychains).
 
-![](<../../../.gitbook/assets/image%20(846).png>)
+![](../../../.gitbook/assets/anubis-11.png)
 
 ### VNC -> Responder Creds
 
 Within the software present on the page, we can see that there is a VNC service available.
 
-![](<../../../.gitbook/assets/image%20(884).png>)
+![](../../../.gitbook/assets/anubis-12.png)
 
 When we click on it, it would show us this page before going back to the main website. The URL also contains another IP address:
 
@@ -228,15 +228,15 @@ When we click on it, it would show us this page before going back to the main we
 http://softwareportal.windcorp.htb/install.asp?client=172.20.159.137&software=VNC-Viewer-6.20.529-Windows.exe
 ```
 
-![](<../../../.gitbook/assets/image%20(2949).png>)
+![](../../../.gitbook/assets/anubis-7.png)
 
 Since VNC is like an RDP software, there might potentially be credentials beign sent in the packets, so I started `wireshark` and also changed the `client` parameter to be my IP address. When the packets are viewed, we can see a lot of failed TCP requests:
 
-![](<../../../.gitbook/assets/image%20(1406).png>)
+![](../../../.gitbook/assets/anubis-2.png)
 
 This occurs because port 5985 is not open on our machine. So, using this SSRF, we can start `responder` and intercept the request to retrieve any NTLM hashes, which works:
 
-![](<../../../.gitbook/assets/image%20(2399).png>)
+![](../../../.gitbook/assets/anubis-5.png)
 
 We can then crack this hash easily using `john`:
 
@@ -346,7 +346,7 @@ putting file Whatif.omv as \Documents\Analytics\Whatif.omv (130.9 kb/s) (average
 
 Then we just wait. After a while, we would start to get calls on our HTTP servers and get a reverse shell as the user.
 
-![](<../../../.gitbook/assets/image%20(1449).png>)
+![](../../../.gitbook/assets/anubis-3.png)
 
 We can then grab the user flag.
 
@@ -454,6 +454,6 @@ Thumbprint                                Subject
 
 Then, using this hash, we can easily `psexec.py` in as the administrator and grab the root flag:
 
-![](<../../../.gitbook/assets/image%20(2218).png>)
+![](../../../.gitbook/assets/anubis-4.png)
 
 This part was pretty hard for me, and I had to use a walkthrough because I couldn't find the right tools to use. Great machine though!

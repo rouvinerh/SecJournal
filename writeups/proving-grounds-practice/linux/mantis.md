@@ -44,7 +44,7 @@ PORT     STATE SERVICE VERSION
 
 Port 80 hosted a static page:
 
-![](<../../../.gitbook/assets/image%20(571).png>)
+![](../../../.gitbook/assets/mantis-8-dup2.png)
 
 I ran a `gobuster` on this website, and it did find a few directories of interest:
 
@@ -72,21 +72,21 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 `/bugtracker` looks interesting. It brought me to a login page stating that the admin directory is a security risk.
 
-![](<../../../.gitbook/assets/image%20(953).png>)
+![](../../../.gitbook/assets/mantis-12.png)
 
 I tried to access the `/admin` panel but it didn't work. I took a look at the Github repository for this software and tried to access the other files within the admin panel, which worked:
 
 {% embed url="https://github.com/mantisbt/mantisbt" %}
 
-![](<../../../.gitbook/assets/image%20(757).png>)
+![](../../../.gitbook/assets/mantis-9-dup2.png)
 
 At the bottom of the page, there are options to Upgrade the SQL database:
 
-![](<../../../.gitbook/assets/image%20(951).png>)
+![](../../../.gitbook/assets/mantis-11.png)
 
 If we just click on the Install button without filling in any details, we are brought to another page:
 
-![](<../../../.gitbook/assets/image%20(1165).png>)
+![](../../../.gitbook/assets/mantis-2-dup2.png)
 
 There's a configuration file mentioned at the bottom of the page, and it also shows that the web page is able to interact with the SQL instance.
 
@@ -102,7 +102,7 @@ This involves using a Rogue SQL server to exploit an LFI:
 
 We just have to visit `install.php?install=3&hostname=192.168.45.191` to run it, and it works!
 
-![](<../../../.gitbook/assets/image%20(119).png>)
+![](../../../.gitbook/assets/mantis-3-dup2.png)
 
 We can use this to read the `config_inc.php` file mentioned earlier:
 
@@ -126,7 +126,7 @@ $g_crypto_master_salt     = 'OYAxsrYFCI+xsFw3FNKSoBDoJX4OG5aLrp7rVmOCFjU=';
 
 This grants us the MySQL creds, which we can use to login:
 
-![](<../../../.gitbook/assets/image%20(182).png>)
+![](../../../.gitbook/assets/mantis-5-dup2.png)
 
 ### Bugtracker Creds -> RCE
 
@@ -144,7 +144,7 @@ MariaDB [bugtracker]> select * from mantis_user_table;
 
 This hash can be cracked on CrackStation:
 
-![](<../../../.gitbook/assets/image%20(108).png>)
+![](../../../.gitbook/assets/mantis-1-dup2.png)
 
 Now, there are RCE exploits for this, but the one from `searchsploit` also abuses another exploit to do with password resetting for the administrator user.
 
@@ -152,15 +152,15 @@ First of all, that doesn't seem to work for this machine, and secondly, we alrea
 
 We can first login as the administrator:
 
-![](<../../../.gitbook/assets/image%20(3846).png>)
+![](../../../.gitbook/assets/mantis-6-dup2.png)
 
 Then, head to `/bugtracker/adm_config_report.php` and create the following Configuration Options:
 
-![](<../../../.gitbook/assets/image%20(566).png>)
+![](../../../.gitbook/assets/mantis-7-dup2.png)
 
 Then, just visit `/bugtracker/workflow_graph_img.php`, and we will receive a reverse shell:
 
-![](<../../../.gitbook/assets/image%20(773).png>)
+![](../../../.gitbook/assets/mantis-10.png)
 
 ## Privilege Escalation
 
@@ -187,6 +187,6 @@ The file was recently edited, so I ran `pspy64` on the machine to see what `back
 
 There was a password present. Using that, we can `su` to `mantis`, who can run `sudo` on everything without a password.
 
-![](<../../../.gitbook/assets/image%20(1760).png>)
+![](../../../.gitbook/assets/mantis-4-dup2.png)
 
 Rooted!

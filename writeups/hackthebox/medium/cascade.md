@@ -163,11 +163,11 @@ Sure enough, we can find a password there. However, VNC passwords are encrypted,
 
 {% embed url="https://github.com/frizb/PasswordDecrypts" %}
 
-![](<../../../.gitbook/assets/image%20(3623).png>)
+![](../../../.gitbook/assets/cascade-3.png)
 
 With these credentials, we can login as `s.smith`.
 
-![](<../../../.gitbook/assets/image%20(3974).png>)
+![](../../../.gitbook/assets/cascade-5.png)
 
 Grab the user flag.
 
@@ -306,11 +306,11 @@ There was some type of password encrypting, and it uses `c4scadek3y654321` to do
 
 When we view the local variables, we find a password:
 
-![](<../../../.gitbook/assets/image%20(3333).png>)
+![](../../../.gitbook/assets/cascade-2.png)
 
 With this, we can login as the `ArkSvc` user.
 
-![](<../../../.gitbook/assets/image%20(1686).png>)
+![](../../../.gitbook/assets/cascade-1.png)
 
 ### Recycle Bin
 
@@ -362,6 +362,6 @@ cascadeLegacyPwd                : YmFDVDNyMWFOMDBkbGVz
 
 This decodes to give `baCT3r1aN00dles`, and I noticed this was for a user called `TempAdmin`. By testing password reuse, we find that we can login as the Administrator using this password.
 
-![](<../../../.gitbook/assets/image%20(3687).png>)
+![](../../../.gitbook/assets/cascade-4.png)
 
 Rooted!

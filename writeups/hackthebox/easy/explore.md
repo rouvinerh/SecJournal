@@ -148,11 +148,11 @@ Port 59777 seems to be returning some stuff.
 
 The other ports weren't returning anything interesting. When we visit port 59777, it returns a short response.
 
-![](<../../../.gitbook/assets/image%20(3995).png>)
+![](../../../.gitbook/assets/explore-4.png)
 
 A quick Google search reveals that this is running EFS File Explorer, and also some CVEs:
 
-![](<../../../.gitbook/assets/image%20(1804).png>)
+![](../../../.gitbook/assets/explore-2.png)
 
 I used the `poc.py` from this repo to send requests to the port and list the files present:
 
@@ -239,11 +239,11 @@ $ display creds.jpg
 
 The picture contains credentials for the user:
 
-![](<../../../.gitbook/assets/image%20(1645).png>)
+![](../../../.gitbook/assets/explore-1.png)
 
 Here are the creds: `kristi:Kr1sT!5h@Rp3xPl0r3!`.
 
-![](<../../../.gitbook/assets/image%20(2078).png>)
+![](../../../.gitbook/assets/explore-3.png)
 
 Great! There was no `/home` within this machine, and I just went to the directory where the pictures were stored:
 

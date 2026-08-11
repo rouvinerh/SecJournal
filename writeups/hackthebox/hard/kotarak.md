@@ -4,23 +4,23 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(1669).png>)
+![](../../../.gitbook/assets/kotarak-8.png)
 
 Doing a detailed Nmap scan reveals a bit more about the services running on the machine.
 
-![](<../../../.gitbook/assets/image%20(1117).png>)
+![](../../../.gitbook/assets/kotarak-4.png)
 
 Port 8080 was running a Tomcat instance, and this might be the method used for a reverse shell via a malicious .war file. Port 60000 was also running some form of custom application.
 
 Credentials were required for port 8080:
 
-![](<../../../.gitbook/assets/image%20(3278).png>)
+![](../../../.gitbook/assets/kotarak-16.png)
 
 ### Private Browser
 
 This port was hosting a private browser that takes a URL as a parameter.
 
-![](<../../../.gitbook/assets/image%20(2764).png>)
+![](../../../.gitbook/assets/kotarak-13.png)
 
 We can use this to get hits on our own HTTP server, but it does not seem to download files or anything. As such, there isn't much point on trying to host something on our machine. Instead, we can do SSRF and let this application **send requests to itself**. This would allow us to enumerate all ports that were open within the machine but not reachable from my Kali machine.
 
@@ -39,11 +39,11 @@ Eventually, we would start getting hits on the ports that are open.
 
 Using this bash loop, we can find that there's a Simple File Viewer application open on port 888, that was unaccessible to us earlier.
 
-![](<../../../.gitbook/assets/image%20(1116).png>)
+![](../../../.gitbook/assets/kotarak-3.png)
 
 When viewing this page, we can see a few folders, but the most interesting would be the `backup` folder.
 
-![](<../../../.gitbook/assets/image%20(197).png>)
+![](../../../.gitbook/assets/kotarak-10.png)
 
 Clicking on the links does not work at all as we don't actually have access to this service from our machine. However, we can attempt to read the files using SSRF through the private browser.
 
@@ -57,11 +57,11 @@ We can see that the `?doc` parameter was being used to access these links. We ca
 
 This reveals to us a folder with the Tomcat credentials.
 
-![](<../../../.gitbook/assets/image%20(2091).png>)
+![](../../../.gitbook/assets/kotarak-11.png)
 
 With this, we can acess port 8080 and login. Then, using `msfvenom`, we can generate a quick reverse shell to upload to gain a reverse shell easily.
 
-![](<../../../.gitbook/assets/image%20(1047).png>)
+![](../../../.gitbook/assets/kotarak-1.png)
 
 We would be the `tomcat` user on the machine.
 
@@ -71,29 +71,29 @@ We would be the `tomcat` user on the machine.
 
 When viewing the `/home` directory, we can find another user present.
 
-![](<../../../.gitbook/assets/image%20(1183).png>)
+![](../../../.gitbook/assets/kotarak-5.png)
 
 The `tomcat` user also had some interesting files within their directory.
 
-![](<../../../.gitbook/assets/image%20(3063).png>)
+![](../../../.gitbook/assets/kotarak-15.png)
 
 The name of the file was a giveaway that this contained NTLM hashes from a memory dump of a Windows machine. As such, we can transfer this back to our machine and dump the credentials using `secretsdump.py`.
 
-![](<../../../.gitbook/assets/image%20(2821).png>)
+![](../../../.gitbook/assets/kotarak-14.png)
 
 Then we can crack the Administrator's hash to get `f16tomcat!`. Afterwards, we can `su` to the `atanas` user with these credentials.
 
-![](<../../../.gitbook/assets/image%20(893).png>)
+![](../../../.gitbook/assets/kotarak-20.png)
 
 ### wget RCE
 
 Interestingly, the `atanas` user can access the root directory and find a hint as to where the root flag is.
 
-![](<../../../.gitbook/assets/image%20(1069).png>)
+![](../../../.gitbook/assets/kotarak-2.png)
 
 Reading the `app.log` file reveals some interesting stuff.
 
-![](<../../../.gitbook/assets/image%20(1189).png>)
+![](../../../.gitbook/assets/kotarak-6.png)
 
 First thing to note was that there was another IP address at 10.0.3.133. Next, this was using `wget` 1.16, which was a vulnerable version of the binary. Lastly, take a look at the timestamps. Notice how they occur exactly after every 2 minutes? Perhaps this was a cronjob running in the background that we needed to exploit.
 
@@ -112,26 +112,26 @@ output_document = /etc/cron.d/malicious-cron
 
 Then, we can replace the command used in the script to a cronjob reverse shell by root.
 
-![](<../../../.gitbook/assets/image%20(1283).png>)
+![](../../../.gitbook/assets/kotarak-7.png)
 
 Then, we would need to set up a FTP server on our machine with these files using `python3`.
 
-![](<../../../.gitbook/assets/image%20(1825).png>)
+![](../../../.gitbook/assets/kotarak-9.png)
 
 Then, we can attempt to test run the exploit and see that it returns a `socket.error`.
 
-![](<../../../.gitbook/assets/image%20(3616).png>)
+![](../../../.gitbook/assets/kotarak-18.png)
 
 Permission denied was an interesting error to get, as the script doesn't do anything out of the ordinary. Perhaps I was being blocked as I needed to access port 21, which typically requires superuser permissions.
 
 We can use `authbind` to bypass this.
 
-![](<../../../.gitbook/assets/image%20(3695).png>)
+![](../../../.gitbook/assets/kotarak-19.png)
 
 Afterwards, the exploit should work by first extracting the `/etc/shadow` file (as specified in the `.wgetrc` file we made earlier, although this can be any file).
 
-![](<../../../.gitbook/assets/image%20(2689).png>)
+![](../../../.gitbook/assets/kotarak-12.png)
 
 Afterwards, we would get a reverse shell on a listener port.
 
-![](<../../../.gitbook/assets/image%20(3341).png>)
+![](../../../.gitbook/assets/kotarak-17.png)

@@ -8,13 +8,13 @@ description: PDFkit and Deserialization.
 
 **Nmap Scan:**
 
-![](<../../../.gitbook/assets/image%20(2562).png>)
+![](../../../.gitbook/assets/precious-9.png)
 
 Seems like a web vulnerability exploit kinda machine.
 
 ### PDFKit
 
-![](<../../../.gitbook/assets/image%20(3587).png>)
+![](../../../.gitbook/assets/precious-11.png)
 
 Website to PDF ind of functions run on plugins, and depending on the language used to do this conversion (JS, PHP), there are exploits for them.
 
@@ -22,7 +22,7 @@ For instance, we can redirect this website to our own hosted HTTP server and con
 
 For enumeration purposes, I began by generating a PDF and downloading it to my machine from this website. We can enumerate the PDF to see if there is a particular software being used.
 
-![](<../../../.gitbook/assets/image%20(2085).png>)
+![](../../../.gitbook/assets/precious-4.png)
 
 This version of pdfkit is vulnerable to RCE using CVE-2022-25765. There are public exploit scripts available for this.
 
@@ -30,15 +30,15 @@ This version of pdfkit is vulnerable to RCE using CVE-2022-25765. There are publ
 
 Following the exploit, we can test to see if we indeed have RCE:
 
-![](<../../../.gitbook/assets/image%20(245).png>)
+![](../../../.gitbook/assets/precious-6.png)
 
-![](<../../../.gitbook/assets/image%20(1514).png>)
+![](../../../.gitbook/assets/precious-2.png)
 
 Works! Now we just need to gain a reverse shell. I used a simple bash shell to do so.
 
-![](<../../../.gitbook/assets/image%20(2818).png>)
+![](../../../.gitbook/assets/precious-10.png)
 
-![](<../../../.gitbook/assets/image%20(2551).png>)
+![](../../../.gitbook/assets/precious-8.png)
 
 ## Privilege Escalation
 
@@ -46,11 +46,11 @@ Works! Now we just need to gain a reverse shell. I used a simple bash shell to d
 
 When we gain access as the user ruby, the flag is not there. There is another user named henry in this machine.
 
-![](<../../../.gitbook/assets/image%20(970).png>)
+![](../../../.gitbook/assets/precious-12.png)
 
 We don't have permissions to read the flag from henry's directory. However, when poking around ruby's directory and looking into the .bundle directory, we can find henry's password.
 
-![](<../../../.gitbook/assets/image%20(2478).png>)
+![](../../../.gitbook/assets/precious-7.png)
 
 With this, we can SSH in as henry for a better shell. Then, we can grab the user flag.
 
@@ -58,7 +58,7 @@ With this, we can SSH in as henry for a better shell. Then, we can grab the user
 
 Checking sudo privileges, we find that henry is able to execute the following:
 
-![](<../../../.gitbook/assets/image%20(2286).png>)
+![](../../../.gitbook/assets/precious-5.png)
 
 Intriguing. The script is as shown below:
 
@@ -133,8 +133,8 @@ We just need to put the malicious YAML file in some writeable place and execute 
 
 I changed the command to `chmod +s /bin/bash` and tried it out. Worked!
 
-![](<../../../.gitbook/assets/image%20(1776).png>)
+![](../../../.gitbook/assets/precious-3.png)
 
-![](<../../../.gitbook/assets/image%20(1286).png>)
+![](../../../.gitbook/assets/precious-1.png)
 
 Rooted!

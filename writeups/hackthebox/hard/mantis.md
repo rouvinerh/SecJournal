@@ -46,7 +46,7 @@ For this particular machine, Port 8080 and 1433 are both public facing. Also, th
 
 Port 8080 shows a blog page:
 
-![](<../../../.gitbook/assets/image%20(1303).png>)
+![](../../../.gitbook/assets/mantis-2.png)
 
 There wasn't much functionality within this website, so I moved on to port 1337 instead. There was a sign in, but we don't have any credentials yet.
 
@@ -54,7 +54,7 @@ There wasn't much functionality within this website, so I moved on to port 1337 
 
 This port just shows the default IIS server page:
 
-![](<../../../.gitbook/assets/image%20(147).png>)
+![](../../../.gitbook/assets/mantis-3.png)
 
 I ran a directory scan on both of these websites, and found that the service hosted on port 1337 contained one hidden directory:
 
@@ -80,7 +80,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The directory contained an encrypted file:
 
-![](<../../../.gitbook/assets/image%20(1144).png>)
+![](../../../.gitbook/assets/mantis-1.png)
 
 The file contained a lot of lines which I removed:
 
@@ -99,7 +99,7 @@ SQL Server sa credentials file namez
 
 This is just the password in binary, which can be converted online:
 
-![](<../../../.gitbook/assets/image%20(624).png>)
+![](../../../.gitbook/assets/mantis-9.png)
 
 With this, we can login as the administrator using `admin:@dm!n_P@ssW0rd!` on the blog service on port 8080.
 
@@ -107,7 +107,7 @@ With this, we can login as the administrator using `admin:@dm!n_P@ssW0rd!` on th
 
 The dashboard can be accessed at `/admin`.
 
-![](<../../../.gitbook/assets/image%20(1934).png>)
+![](../../../.gitbook/assets/mantis-4.png)
 
 However, I could not find any exploitable feature of this at all. There also wasn't any public exploits related to LFI, RCE or anything I could work with. So I went back to the file found earlier.
 
@@ -272,11 +272,11 @@ INFO: Done in 00M 01S
 
 After uploading the data to Bloodhound, we find that the user `james` can RDP into the machine:
 
-![](<../../../.gitbook/assets/image%20(2415).png>)
+![](../../../.gitbook/assets/mantis-5.png)
 
 That's rather unique, but port 3389 is not open on the machine, meaning we need to do something else. There wasn't any other users on the domain as well:
 
-![](<../../../.gitbook/assets/image%20(2512).png>)
+![](../../../.gitbook/assets/mantis-6.png)
 
 I was stuck here for a while...
 
@@ -300,7 +300,7 @@ Also, while researching for exploitation methods, I found that the Impacket suit
 
 We can then run `impacket-goldenPac` to get a SYSTEM shell.
 
-![](<../../../.gitbook/assets/image%20(4034).png>)
+![](../../../.gitbook/assets/mantis-8.png)
 
 Rooted!
 
@@ -323,7 +323,7 @@ Kerberos has something called Privileged Attribute Certificate (PAC) which conta
 
 PAC Signature Validation is the function that checks the PAC via a checksum. In an earlier version, MS11-013 allows for attackers to basically spoof the PAC to request tickets as the administrator.
 
-![](<../../../.gitbook/assets/image%20(3858).png>)
+![](../../../.gitbook/assets/mantis-7.png)
 
 The current exploit MS014-68 does include a bit more checks, but not enough. The exploit comes about because the DC fails to check for valid checksums for the PAC field, thus allowing us attackers to spoof the PAC to impersonate an administrator requesting for a TGT.
 

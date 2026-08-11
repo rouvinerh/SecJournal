@@ -76,11 +76,11 @@ Port 5132 seems to have loads of errors, asking for a username and password.
 
 Port 80 just shows this page:
 
-![](<../../../.gitbook/assets/image%20(3142).png>)
+![](../../../.gitbook/assets/depreciated-4.png)
 
 When we read the page source, we find this:
 
-![](<../../../.gitbook/assets/image%20(2004).png>)
+![](../../../.gitbook/assets/depreciated-1.png)
 
 There's a GraphQL instance on port 8433 that we can investigate. It also seems to be a login of some sort. We can first query all the different types being used:
 
@@ -90,7 +90,7 @@ There's a GraphQL instance on port 8433 that we can investigate. It also seems t
 
 Using this, we can find two interesting functions:
 
-![](<../../../.gitbook/assets/image%20(3464).png>)
+![](../../../.gitbook/assets/depreciated-5.png)
 
 The first one just gives us usernames:
 
@@ -105,7 +105,7 @@ $ curl --silent http://192.168.157.170:8433/graphql?query=%7BlistUsers%7D | jq
 
 The second one takes a user as input. We can get a password for `peter` using this method:
 
-![](<../../../.gitbook/assets/image%20(3730).png>)
+![](../../../.gitbook/assets/depreciated-6.png)
 
 Using this, we can interact with the service on port 5132. The creds also don't work with SSH.
 
@@ -153,7 +153,7 @@ Attachment: none
 
 We aren't allowed to read any message. Anyways, using this password we can `ssh` in:
 
-![](<../../../.gitbook/assets/image%20(2773).png>)
+![](../../../.gitbook/assets/depreciated-2.png)
 
 ## Privilege Escalation
 
@@ -305,4 +305,4 @@ Hey, Seriously this is getting out of hand. Your new password is 9>XsS+&=Zn#AS9-
 Attachment: none
 ```
 
-![](<../../../.gitbook/assets/image%20(2776).png>)
+![](../../../.gitbook/assets/depreciated-3.png)

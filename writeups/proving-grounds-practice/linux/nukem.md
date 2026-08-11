@@ -87,7 +87,7 @@ WordPress Plugin Simple File List 4.2.2 - Remote Code Exec | php/webapps/48449.p
 
 I found that the first one worked better. Within the exploit, I also changed the payload to drop a webshell instead:
 
-![](<../../../.gitbook/assets/image%20(2922).png>)
+![](../../../.gitbook/assets/nukem-3.png)
 
 We can then run the exploit and confirm that it works:
 
@@ -105,7 +105,7 @@ uid=33(http) gid=33(http) groups=33(http)
 
 Tested loads of ports, and only reverse shells to port 80 work:
 
-![](<../../../.gitbook/assets/image%20(1595).png>)
+![](../../../.gitbook/assets/nukem-1.png)
 
 ## Privilege Escalation
 
@@ -121,7 +121,7 @@ define( 'DB_USER', 'commander' );
 define( 'DB_PASSWORD', 'CommanderKeenVorticons1990' );
 ```
 
-![](<../../../.gitbook/assets/image%20(2467).png>)
+![](../../../.gitbook/assets/nukem-2.png)
 
 ### VNC + Dosbox SUID
 
@@ -169,7 +169,7 @@ We can transfer the small `passwd` file over to our machine via `base64` encodin
 $ vncviewer -passwd passwd 127.0.0.1:5901
 ```
 
-![](<../../../.gitbook/assets/image%20(2925).png>)
+![](../../../.gitbook/assets/nukem-4.png)
 
 Within the terminal we can run this:
 
@@ -179,7 +179,7 @@ dosbox -c 'mount c /' -c "type c:$LFILE"
 
 This would spawn a `dosbox` instance (which is basically a cmd.exe instance). Using the `C:` command, we can view the `root` flag:
 
-![](<../../../.gitbook/assets/image%20(2937).png>)
+![](../../../.gitbook/assets/nukem-5.png)
 
 There's no scrolling on this Dosbox instance, and the handling of control characters is a little inaccurate (so you can't really backspace). Other than that, we have `root` access over the file system and can do whatever we want.
 

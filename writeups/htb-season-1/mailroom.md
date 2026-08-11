@@ -21,11 +21,11 @@ Another HTTP port exploit. We can add `mailroom.htb` to our `/etc/hosts` file fo
 
 Visiting port 80 reveals a basic corporate website:
 
-![](<../../.gitbook/assets/image%20(339).png>)
+![](../../.gitbook/assets/mailroom-11.png)
 
 Viewing the paces reveals that this is a PHP based website. Within the functions available on the page, we can find a Contact Us page that tells us an AI will read our query.
 
-![](<../../.gitbook/assets/image%20(2326).png>)
+![](../../.gitbook/assets/mailroom-6.png)
 
 Interesting, perhaps we can send a request that is processed or something. However, there's not much we can go on.
 
@@ -65,7 +65,7 @@ Let's add this to our hosts file and enumerate further.
 
 There was a Gitea instance on the new subdomain. I didn't manage to find any exploits pertaining to this version. Within the repos present, we can see a staffroom repo by the user `matthew`.
 
-![](<../../.gitbook/assets/image%20(3610).png>)
+![](../../.gitbook/assets/mailroom-12.png)
 
 Interestingly, we could view this repo without logging in. Within the `auth.php` files, we can find a new subdomain.
 
@@ -144,7 +144,7 @@ So the exploit path is to somehow use NoSQL to retrieve the token, and then logi
 
 Viewing the Gitea users, we can find two:
 
-![](<../../.gitbook/assets/image%20(2283).png>)
+![](../../.gitbook/assets/mailroom-5.png)
 
 We might need to use these somehow. Also, the script seems to be vulnerable to blind NoSQL injection based on the error messages it sends. Based on the `auth.php` script, if get a `true` condition, we would get the `Check inbox for 2FA token` message. If not, we would get the `Invalid email or password` error.
 
@@ -152,11 +152,11 @@ We might need to use these somehow. Also, the script seems to be vulnerable to b
 
 When we submit any queries, this is the response that we get:
 
-![](<../../.gitbook/assets/image%20(3691).png>)
+![](../../.gitbook/assets/mailroom-13.png)
 
 If we enter a simple `<script>` tag and view the page, we can confirm that we have XSS.
 
-![](<../../.gitbook/assets/image%20(1912).png>)
+![](../../.gitbook/assets/mailroom-2.png)
 
 This tells me that Javascript is being executed on the page, and we can attempt to steal page contents via CSRF.
 
@@ -198,7 +198,7 @@ email=user%40user.com&title=%3Cscript%3Evar%20url%20%3D%20%22http%3A%2F%2Fstaff-
 
 Then, we would receive a callback with the page contents:
 
-![](<../../.gitbook/assets/image%20(3064).png>)
+![](../../.gitbook/assets/mailroom-10.png)
 
 We have successfully stole the page, and now we can exploit this by stealing the token via NoSQL injection as found earlier. Based on this, we can attempt to send requests to `auth.php` and possibly brute force the password for a user.
 
@@ -256,7 +256,7 @@ for (let k = 0; k < char_set.length && !found_char; k++) {
 
 With this, I was able to retrieve the password character by character:
 
-![](<../../.gitbook/assets/image%20(2155).png>)
+![](../../.gitbook/assets/mailroom-4.png)
 
 After repeating this a load of times and resetting the machine even more times, I was able to retrieve `69trisRulez!` as the full password. This password happens to be the password to SSH in as `tristan` as well.
 
@@ -273,7 +273,7 @@ chisel server -p 1080 --reverse
 
 Then, we can add `staff-review-panel.mailroom.htb` to our `/etc/hosts` file as `127.0.0.1`. Afterwards, we can visit the website!
 
-![](<../../.gitbook/assets/image%20(2524).png>)
+![](../../.gitbook/assets/mailroom-7.png)
 
 We already found a password, so we can login. This would cause the application to send a mail to `tristan`, which we can read in `/var/mail/tristan`.
 
@@ -293,7 +293,7 @@ Click on this link to authenticate: http://staff-review-panel.mailroom.htb/auth.
 
 Visiting the link would refer us to the `dashboard.php`:
 
-![](<../../.gitbook/assets/image%20(297).png>)
+![](../../.gitbook/assets/mailroom-8.png)
 
 Great! We have logged in. Earlier, we found an RCE in the `inquiry_id` parameter, so let's exploit that.
 
@@ -326,7 +326,7 @@ Serving HTTP on 0.0.0.0 port 1234 (http://0.0.0.0:1234/) ...
 
 Great! Now we can simply download a shell and execute it.
 
-![](<../../.gitbook/assets/image%20(2088).png>)
+![](../../.gitbook/assets/mailroom-3.png)
 
 Now we are in a docker container.
 
@@ -496,7 +496,7 @@ read(0, "\10", 8192)
 
 There was this \10 character present, and I didn't really know what it was. When we view the ASCII table, \10 is revealed to be a backspace character, meaning there's an intentional typo in the password. We can then use the password retrieved to access the `.kdbx` file we found.
 
-![](<../../.gitbook/assets/image%20(303).png>)
+![](../../.gitbook/assets/mailroom-9.png)
 
 Within this file was the `root` password.
 
@@ -512,4 +512,4 @@ Notes: root account for sysadmin jobs
 
 Now we can `su` to root and finish the machine.
 
-![](<../../.gitbook/assets/image%20(1805).png>)
+![](../../.gitbook/assets/mailroom-1.png)

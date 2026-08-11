@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-![](<../../../.gitbook/assets/image%20(904).png>)
+![](../../../.gitbook/assets/swagshop-5.png)
 
 We have to add `swagshop.htb` to our `/etc/hosts` file to access port 80.
 
@@ -12,13 +12,13 @@ We have to add `swagshop.htb` to our `/etc/hosts` file to access port 80.
 
 This is whatwe see when we view port 80:
 
-![](<../../../.gitbook/assets/image%20(2598).png>)
+![](../../../.gitbook/assets/swagshop-3.png)
 
 This is running an outdated version of Magento shop, and we can easily find exploits for it. The exploit here would change admin password of the site via SQL Injection:
 
 {% embed url="https://github.com/joren485/Magento-Shoplift-SQLI/blob/master/poc.py" %}
 
-![](<../../../.gitbook/assets/image%20(4062).png>)
+![](../../../.gitbook/assets/swagshop-4.png)
 
 Then we can grab a publicly available RCE exploit from ExploitDB:
 
@@ -26,11 +26,11 @@ Then we can grab a publicly available RCE exploit from ExploitDB:
 
 This would require 3 fields, and we have 3 of them:
 
-![](<../../../.gitbook/assets/image%20(1440).png>)
+![](../../../.gitbook/assets/swagshop-2.png)
 
 We can visit `/app/etc/local.xml` to find the date required:
 
-![](<../../../.gitbook/assets/image%20(1272).png>)
+![](../../../.gitbook/assets/swagshop-1.png)
 
 Then, we can easily gain a reverse shell by using the PoC.
 

@@ -26,11 +26,11 @@ Lots of HTTP ports it seems. We can add `talkative.htb` to our `/etc/hosts` file
 
 Port 80 hosts a normal corporate website:
 
-![](<../../../.gitbook/assets/image%20(1926).png>)
+![](../../../.gitbook/assets/talkative-4.png)
 
 This site had some usernames and emails that we can take note of for now.
 
-![](<../../../.gitbook/assets/image%20(1258).png>)
+![](../../../.gitbook/assets/talkative-2.png)
 
 ```
 matt@talkative.htb
@@ -44,7 +44,7 @@ Other than that, there's nothing much here.
 
 On port 3000, there was a Rocket Chat instance.
 
-![](<../../../.gitbook/assets/image%20(204).png>)
+![](../../../.gitbook/assets/talkative-6.png)
 
 We have no credentials, so let's move on for now.
 
@@ -52,17 +52,17 @@ We have no credentials, so let's move on for now.
 
 On port 8080, I found a Jamovi instance:
 
-![](<../../../.gitbook/assets/image%20(465).png>)
+![](../../../.gitbook/assets/talkative-13.png)
 
 This is a statistical software that is used for data analytics. The more interesting part is, we can run R code using the Rj editor. R can be used to execute system commands via the `system` function.
 
 {% embed url="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/system" %}
 
-![](<../../../.gitbook/assets/image%20(1036).png>)
+![](../../../.gitbook/assets/talkative-1.png)
 
 We now have a very simple RCE on the machine. We can get a reverse shell using a simple `bash` script.
 
-![](<../../../.gitbook/assets/image%20(3819).png>)
+![](../../../.gitbook/assets/talkative-11.png)
 
 ### Docker Enum -> Bolt Creds
 
@@ -150,21 +150,21 @@ $ cat xdata.json | jq
 
 Now that we have some credentials, we need to find the Bolt login page. Normally, this is at the `/bolt` directory. We can find this login page at `talkative.htb/bolt`.
 
-![](<../../../.gitbook/assets/image%20(2472).png>)
+![](../../../.gitbook/assets/talkative-7.png)
 
 We can login with `saul@talkative.htb:jeO09ufhWD<s`.
 
-![](<../../../.gitbook/assets/image%20(1516).png>)
+![](../../../.gitbook/assets/talkative-3.png)
 
 ### Bolt RCE
 
 This version of Bolt doesn't have any obvious vulnerabilities, so let's take a look at the File Management System since that is the most interesting. It appears that we can edit the themes and templates used for this machine:
 
-![](<../../../.gitbook/assets/image%20(582).png>)
+![](../../../.gitbook/assets/talkative-14.png)
 
 The page seems to use Twig templates to display the webpages:
 
-![](<../../../.gitbook/assets/image%20(798).png>)
+![](../../../.gitbook/assets/talkative-16.png)
 
 This means that we can probably execute code using SSTI via Twig templates. I added this one liner to the script and saved the changes.
 
@@ -174,7 +174,7 @@ This means that we can probably execute code using SSTI via Twig templates. I ad
 
 Then, we need to head to Maintenance > Clear Cache, and reload the main page afterwards. Our listener port would catch a reverse shell.
 
-![](<../../../.gitbook/assets/image%20(1979).png>)
+![](../../../.gitbook/assets/talkative-5.png)
 
 ### Docker Escape -> User
 
@@ -401,19 +401,19 @@ In this case, I just used a simple password of '12345'. Then we can login to Roc
 
 The Rocket Chat dashboard had nothong of interest:
 
-![](<../../../.gitbook/assets/image%20(871).png>)
+![](../../../.gitbook/assets/talkative-17.png)
 
 I was taking a look at the Administration panel and seeing what I could do, when I found this:
 
-![](<../../../.gitbook/assets/image%20(3501).png>)
+![](../../../.gitbook/assets/talkative-10.png)
 
 This is sort of like plugins for Rocket Chat, and it appears I can add new ones via Webhooks:
 
-![](<../../../.gitbook/assets/image%20(3467).png>)
+![](../../../.gitbook/assets/talkative-9.png)
 
 When we click Incoming, it appears we can run some type of Script here:
 
-![](<../../../.gitbook/assets/image%20(640).png>)
+![](../../../.gitbook/assets/talkative-15.png)
 
 Reading the documentation for Rocket Chat, it appears that this runs Javascript code!
 
@@ -444,7 +444,7 @@ curl -X POST -H 'Content-Type: application/json' --data '{"text":"Example messag
 
 Afterwards, we would catch a reverse shell on our listener port:
 
-![](<../../../.gitbook/assets/image%20(4041).png>)
+![](../../../.gitbook/assets/talkative-12.png)
 
 ### Docker Vulnerabilities
 
@@ -609,6 +609,6 @@ chmod 600 id_rsa
 ssh -i id_rsa root@talkative.htb
 ```
 
-![](<../../../.gitbook/assets/image%20(281).png>)
+![](../../../.gitbook/assets/talkative-8.png)
 
 Rooted!
