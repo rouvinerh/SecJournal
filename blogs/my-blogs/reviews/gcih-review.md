@@ -1,4 +1,4 @@
-# GCIH Review
+# GCIH / SEC504 Review
 
 ## TL;DR
 

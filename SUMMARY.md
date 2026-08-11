@@ -28,7 +28,7 @@
   * [OSWE / WEB-300 Review](blogs/my-blogs/reviews/oswe-review.md)
   * [OSED / EXP-301 Review](blogs/my-blogs/reviews/osed-review.md)
   * [OSEP / PEN-300 Review](blogs/my-blogs/reviews/osep-review.md)
-  * [GCIH Review](blogs/my-blogs/reviews/gcih-review.md)
+  * [GCIH / SEC504 Review](blogs/my-blogs/reviews/gcih-review.md)
 
 ## 🔐 What is Security <a href="#infosec" id="infosec"></a>
 
