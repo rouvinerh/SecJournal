@@ -18,7 +18,7 @@ PORT     STATE SERVICE
 
 We have to add `help.htb` to the `/etc/hosts` file to access port 80.
 
-### GraphQL&#x20;
+### GraphQL
 
 This port had a HTTP API running:
 
@@ -27,7 +27,7 @@ $ curl http://help.htb:3000/
 {"message":"Hi Shiv, To get access please find the credentials with given query"}
 ```
 
-I ran a `gobuster` scan to find any places that I could send queries.&#x20;
+I ran a `gobuster` scan to find any places that I could send queries.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/big.txt -u http://help.htb:3000 -t 100
@@ -57,7 +57,7 @@ At the top, we see this:
 
 <figure><img src="../../../.gitbook/assets/image (2000).png" alt=""><figcaption></figcaption></figure>
 
-This means we can query `username` and `password` fields from `user`, which would make `{user{username,password}}`.&#x20;
+This means we can query `username` and `password` fields from `user`, which would make `{user{username,password}}`.
 
 <figure><img src="../../../.gitbook/assets/image (2212).png" alt=""><figcaption></figcaption></figure>
 
@@ -100,7 +100,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 <figure><img src="../../../.gitbook/assets/image (2297).png" alt=""><figcaption></figcaption></figure>
 
-We can login with `helpme@helpme.com:godhelpmeplz`. From the HelpDeskZ repository, there's a `readme.html` file present where we can find the version that is running.&#x20;
+We can login with `helpme@helpme.com:godhelpmeplz`. From the HelpDeskZ repository, there's a `readme.html` file present where we can find the version that is running.
 
 <figure><img src="../../../.gitbook/assets/image (2709).png" alt=""><figcaption></figcaption></figure>
 
@@ -116,11 +116,11 @@ HelpDeskZ < 1.0.2 - (Authenticated) SQL Injection / Unauth | php/webapps/41200.p
 ----------------------------------------------------------- ---------------------------------
 ```
 
-First we need to open a ticket and then upload a `cmd.php` webshell.&#x20;
+First we need to open a ticket and then upload a `cmd.php` webshell.
 
 <figure><img src="../../../.gitbook/assets/image (306).png" alt=""><figcaption></figcaption></figure>
 
-Then we can submit this, and even though the website says the file type is not allowed, **the file is still uploaded onto the website**. Then, we can use `40200.py` to find it.&#x20;
+Then we can submit this, and even though the website says the file type is not allowed, **the file is still uploaded onto the website**. Then, we can use `40200.py` to find it.
 
 {% code overflow="wrap" %}
 ```

@@ -2,7 +2,7 @@
 
 ## Compilers
 
-Compilers are quite similar to assemblers. These programs take high-level source code and converts that into low-level code directly into an **object file**. The end result from this is an executable file, such as .elf or .exe.&#x20;
+Compilers are quite similar to assemblers. These programs take high-level source code and converts that into low-level code directly into an **object file**. The end result from this is an executable file, such as .elf or .exe.
 
 Some compilers include `clang` or `gcc`. Some compiled languages do not **translate their code into machine code,** such as Java. C and C++ would compile into machine code directly, whereas Java would be compiled into an intermediate form known as JVM byte code. This byte code is then compiled into machine code for execution.
 
@@ -31,7 +31,7 @@ For debuggers, one that I recommend is **Immunity Debugger** for Windows. Make s
 
 Debuggers are really useful, because they allow for us to view the memory stored within the registers, break the execution flow where needed, and so on.
 
-I use Immunity Debugger a lot for Vanilla BOFs (for OSCP) and it's really handy to use in conjunction with **mona.py.**&#x20;
+I use Immunity Debugger a lot for Vanilla BOFs (for OSCP) and it's really handy to use in conjunction with **mona.py.**
 
 Here's how Immunity Debugger would look when a binary is loaded.
 
@@ -62,14 +62,14 @@ Here's an example of `ghidra` output:
 
 <figure><img src="../../.gitbook/assets/image (1473).png" alt=""><figcaption><p><em>Taken from HTB 0xDiablos</em></p></figcaption></figure>
 
-Not exactly translated back into C, but very close.&#x20;
+Not exactly translated back into C, but very close.
 
-`dnspy` is used for decompiling .NET code compiled using C#. In other words, most .exe files.&#x20;
+`dnspy` is used for decompiling .NET code compiled using C#. In other words, most .exe files.
 
 Here's another example of dnSpy decompiling code:
 
 <figure><img src="../../.gitbook/assets/image (3390).png" alt=""><figcaption><p><em>Taken from HTB Support</em></p></figcaption></figure>
 
-This tool tends to do a better job at decompiling it very close to the actual code written.&#x20;
+This tool tends to do a better job at decompiling it very close to the actual code written.
 
 {% embed url="https://github.com/dnSpy/dnSpy" %}

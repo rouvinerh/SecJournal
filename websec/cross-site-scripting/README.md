@@ -32,7 +32,7 @@ An example would be as follows:
 * Suppose a website has a function that uses a user-controlled parameter like `http://example.com?search=test`
 * This search term causes this to appear on the page:
   * `<p>You searched for: test </p>`
-* Using Reflected XSS, one construct a malicious search link that would trigger a pop-up to appear on screen.&#x20;
+* Using Reflected XSS, one construct a malicious search link that would trigger a pop-up to appear on screen.
 * Use `http://example.com?search=<script>alert(1)</script>` as the URL. 
 * When any other user enters this link, malicious scripts could be executed on their end and the pop-up would show up in their browsers.
 * This works because the rendering of HTML would show this:
@@ -69,7 +69,7 @@ Stored XSS is much more dangerous because it stores the script on the page itsel
 
 ### DOM-Based XSS
 
-DOM XSS arises when Javascript takes some input from a user-controlled source and processes it insecurely.&#x20;
+DOM XSS arises when Javascript takes some input from a user-controlled source and processes it insecurely.
 
 > Document Object Model (DOM) is a programming interface for web pages, defining the structure of a document and how the document is accessed and manipulated. A website can use Javascript to do something, but uses DOM to access the document and the relevant elements. DOM is structured like a hiearchy tree, with a root element and other elements that are children of the root node.
 >
@@ -111,14 +111,14 @@ jQuery.parseHTML()
 $.parseHTML()
 ```
 
-These functions **are not limited to only XSS,** but can also be used for other DOM exploits, such as **open redirection,** through exploiting taint flow vulnerabilities.&#x20;
+These functions **are not limited to only XSS,** but can also be used for other DOM exploits, such as **open redirection,** through exploiting taint flow vulnerabilities.
 
 There are methods to test the HTML and Javascript sinks that are within a website that require the use of browser inspector tools, which would involve looking at how data is parsed by the function. First, we would need to identify a potential source (input location) whereby our input is processed via the sink. Then we can test them as follows:
 
 * HTML Sinks
   * Input HTML strings within a potentially vulnerable sink.
   * Check the page source and try to find out string.
-  * Attempt to break out of the HTML tags to execute our code.&#x20;
+  * Attempt to break out of the HTML tags to execute our code.
 * Javascript execution sinks
   * Use the Javascript Debugger to determine whether and how our input is sent to a sink.
   * Add a break point and follow how the source's value is read, then track the variables to see if they are passed to a sink.

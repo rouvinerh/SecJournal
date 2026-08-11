@@ -28,13 +28,13 @@ There are 2 Level 7 passwords located here, with different usernames. They can b
 
 <figure><img src="../../../.gitbook/assets/image (948).png" alt=""><figcaption></figcaption></figure>
 
-The Bcrypt password could also be cracked using `john`.&#x20;
+The Bcrypt password could also be cracked using `john`.
 
 <figure><img src="../../../.gitbook/assets/image (2546).png" alt=""><figcaption></figcaption></figure>
 
 ### User Enumeration
 
-With some passwords and potential usernames from the forum, we could begin brute-forcing SMB authentications with different combinations. `hazard` was the user on the forum that also requested for a Windows account for him, so I tried guessing his password first with `crackmapexec`.&#x20;
+With some passwords and potential usernames from the forum, we could begin brute-forcing SMB authentications with different combinations. `hazard` was the user on the forum that also requested for a Windows account for him, so I tried guessing his password first with `crackmapexec`.
 
 <figure><img src="../../../.gitbook/assets/image (3323).png" alt=""><figcaption></figcaption></figure>
 
@@ -46,7 +46,7 @@ However, we can use these credentials to enumerate other users that are present 
 
 <figure><img src="../../../.gitbook/assets/image (1146).png" alt=""><figcaption></figcaption></figure>
 
-Now we have found more users, we can start brute-forcing again. The password we found earlier works with the `chase` user.&#x20;
+Now we have found more users, we can start brute-forcing again. The password we found earlier works with the `chase` user.
 
 <figure><img src="../../../.gitbook/assets/image (3908).png" alt=""><figcaption></figcaption></figure>
 

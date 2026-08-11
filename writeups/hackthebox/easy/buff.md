@@ -32,7 +32,7 @@ By running the exploit, we would gain a webshell:
 
 <figure><img src="../../../.gitbook/assets/image (1666).png" alt=""><figcaption></figcaption></figure>
 
-Afterwards, we can download `nc.exe` onto the machine via `smbserver.py`.&#x20;
+Afterwards, we can download `nc.exe` onto the machine via `smbserver.py`.
 
 <figure><img src="../../../.gitbook/assets/image (1660).png" alt=""><figcaption></figcaption></figure>
 

@@ -20,7 +20,7 @@ PORT    STATE SERVICE
 995/tcp open  pop3s
 ```
 
-This box involves testing mail services. We have to add `postfish.off` to our `/etc/hosts` file to view the website on port 80.&#x20;
+This box involves testing mail services. We have to add `postfish.off` to our `/etc/hosts` file to view the website on port 80.
 
 ### Web Enumeration
 

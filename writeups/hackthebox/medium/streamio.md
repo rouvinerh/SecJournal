@@ -16,7 +16,7 @@ Checking the cert, we can find another domain name:
 
 <figure><img src="../../../.gitbook/assets/image (383).png" alt=""><figcaption></figcaption></figure>
 
-We can add this domain to our `/etc/hosts` files. Another notable thing we found was the login function on the main domain.&#x20;
+We can add this domain to our `/etc/hosts` files. Another notable thing we found was the login function on the main domain.
 
 ### SQL Injection
 
@@ -40,7 +40,7 @@ Using the STREAMIO database, we can dump out the tables present:
 
 <figure><img src="../../../.gitbook/assets/image (1966).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can take a look at the users table. This can be done using `a' union select 1, concat(username, ':', password), 3,4,5,6 from users; -- -`.&#x20;
+Then, we can take a look at the users table. This can be done using `a' union select 1, concat(username, ':', password), 3,4,5,6 from users; -- -`.
 
 <figure><img src="../../../.gitbook/assets/image (3988).png" alt=""><figcaption></figcaption></figure>
 
@@ -48,7 +48,7 @@ After getting all the credentials, we can crack the hashes and then brute force 
 
 ### Debug Fuzz
 
-Within the admin dashboard, we can see a few functionalities that cause a unique parameter of `?staff=` to be passed.&#x20;
+Within the admin dashboard, we can see a few functionalities that cause a unique parameter of `?staff=` to be passed.
 
 <figure><img src="../../../.gitbook/assets/image (4044).png" alt=""><figcaption></figcaption></figure>
 
@@ -85,13 +85,13 @@ else
 ?> 
 </code></pre>
 
-The `eval()` function was being used, and this was definitely vulnerable to some kind of RCE. So to construct the attack, we can attempt to upload a `cmd.php` webshell via encoding with base64 and then send it via a POST request with an `include` parameter.&#x20;
+The `eval()` function was being used, and this was definitely vulnerable to some kind of RCE. So to construct the attack, we can attempt to upload a `cmd.php` webshell via encoding with base64 and then send it via a POST request with an `include` parameter.
 
 We can send this request here:
 
 <figure><img src="../../../.gitbook/assets/image (537).png" alt=""><figcaption></figcaption></figure>
 
-And we finally have RCE on the machine. Then, we can gain a reverse shell via `nc.exe`.&#x20;
+And we finally have RCE on the machine. Then, we can gain a reverse shell via `nc.exe`.
 
 <figure><img src="../../../.gitbook/assets/image (389).png" alt=""><figcaption></figcaption></figure>
 
@@ -109,7 +109,7 @@ Also, we can head to the `inetpub` folder to find credentials, of which we do wi
 
 <figure><img src="../../../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
 
-We can then port forward via `chisel`.&#x20;
+We can then port forward via `chisel`.
 
 ```bash
 # on Kali
@@ -163,7 +163,7 @@ And members of this Core Staff were able to ReadLAPSPassword for the DC.
 
 To exploit this, we would first need to add the `jdgodd` user into the Core Staff group, and then read the administrator password.
 
-The adding can be done via remote Powershell and Powerview using the credentials we found from Firefox earlier for `jdgodd`.&#x20;
+The adding can be done via remote Powershell and Powerview using the credentials we found from Firefox earlier for `jdgodd`.
 
 ```powershell
 $SecPassword = ConvertTo-SecureString 'JDg0dd1s@d0p3cr3@t0r' -AsPlainText -Force

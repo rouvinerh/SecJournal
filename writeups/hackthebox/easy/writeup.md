@@ -21,7 +21,7 @@ Port 80 just hosts this image:
 
 <figure><img src="../../../.gitbook/assets/image (604).png" alt=""><figcaption></figcaption></figure>
 
-This thing says that it is banning IPs that send too many requests, so a directory scan might be counterproductive. Instead, based on the text, going to `/writeup` works.&#x20;
+This thing says that it is banning IPs that send too many requests, so a directory scan might be counterproductive. Instead, based on the text, going to `/writeup` works.
 
 <figure><img src="../../../.gitbook/assets/image (843).png" alt=""><figcaption></figcaption></figure>
 
@@ -72,7 +72,7 @@ CMS Made Simple Showtime2 Module 3.6.2 - (Authenticated) A | php/webapps/46546.p
 ----------------------------------------------------------- ---------------------------------
 ```
 
-I tried a few of them, and only the SQL Injection one worked.&#x20;
+I tried a few of them, and only the SQL Injection one worked.
 
 ```
 $ python3 46635.py -u http://10.129.95.203/writeup --crack -w /usr/share/wordlists/rockyou.txt
@@ -83,7 +83,7 @@ $ python3 46635.py -u http://10.129.95.203/writeup --crack -w /usr/share/wordlis
 [+] Password cracked: raykayjay9
 ```
 
-With this, we can `ssh` in as `jkr`.&#x20;
+With this, we can `ssh` in as `jkr`.
 
 <figure><img src="../../../.gitbook/assets/image (2184).png" alt=""><figcaption></figcaption></figure>
 
@@ -105,7 +105,7 @@ Group staff:
 <TRUNCATED>
 ```
 
-Having write access to these directories means that we can do PATH hijacking by creating an executable in those files with the same name as processes run by `root`. As such, I downloaded `pspy64` onto the machine to see if `root` was running any processes without full paths.&#x20;
+Having write access to these directories means that we can do PATH hijacking by creating an executable in those files with the same name as processes run by `root`. As such, I downloaded `pspy64` onto the machine to see if `root` was running any processes without full paths.
 
 When run, I saw these processes that were run:
 

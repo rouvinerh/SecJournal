@@ -45,7 +45,7 @@ drwxr-xr-x   4 kali kali  4096 May 11  2022 src
 -rwxrwxrwx   1 kali kali   651 May 11  2022 validations.js
 ```
 
-Since this is a JWT related challenge, the main goal here is to spoof some token by leaking the secret access token somehow. We can first enumerate the `.git` repository by finding the token secret.&#x20;
+Since this is a JWT related challenge, the main goal here is to spoof some token by leaking the secret access token somehow. We can first enumerate the `.git` repository by finding the token secret.
 
 ```
 $ git log -p -2
@@ -462,7 +462,7 @@ When we use `strings` on the `CoreDump` file, we can find the root flag:
 
 It seems that because we are running the `count` binary as `root` and we crash the program while reading the file, the file contents is still in memory. When the `CoreDump` file is created, the contents of memory is still present.
 
-We can repeat these steps to read the `id_rsa` file of `root`.&#x20;
+We can repeat these steps to read the `id_rsa` file of `root`.
 
 ```
 dasith@secret:/dev/shm/core$ /opt/count 

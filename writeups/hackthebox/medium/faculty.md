@@ -2,11 +2,11 @@
 
 ## Gaining Access
 
-As usual, we start with a Nmap scan.&#x20;
+As usual, we start with a Nmap scan.
 
 <figure><img src="../../../.gitbook/assets/image (963).png" alt=""><figcaption></figcaption></figure>
 
-There's the `faculty.htb` domain running on port 80. We can add this to the `/etc/hosts` file.&#x20;
+There's the `faculty.htb` domain running on port 80. We can add this to the `/etc/hosts` file.
 
 ### SQL Injection
 
@@ -36,7 +36,7 @@ In this case, we can dump the `faculty` table and attempt to login via the origi
 
 ### PDF Generator LFI
 
-WItin the website, there's a PDF Generator that would display certain courses.&#x20;
+WItin the website, there's a PDF Generator that would display certain courses.
 
 <figure><img src="../../../.gitbook/assets/image (2268).png" alt=""><figcaption></figcaption></figure>
 
@@ -68,7 +68,7 @@ From here, we can try to find the `admin.php` or `db.php` file within the machin
 
 <figure><img src="../../../.gitbook/assets/image (2296).png" alt=""><figcaption></figcaption></figure>
 
-With this, we can `ssh` in as the `gbyolo` user using the password found.&#x20;
+With this, we can `ssh` in as the `gbyolo` user using the password found.
 
 ## Privilege Escalation
 
@@ -78,7 +78,7 @@ The other user found on the machine is the `developer` user. When checking the `
 
 <figure><img src="../../../.gitbook/assets/image (447).png" alt=""><figcaption></figcaption></figure>
 
-`meta-git` is a binary that allows us to clone repos as per git. However, this was vulnerable to an RCE exploit, meaning we can execute commands as `developer`.&#x20;
+`meta-git` is a binary that allows us to clone repos as per git. However, this was vulnerable to an RCE exploit, meaning we can execute commands as `developer`.
 
 {% embed url="https://hackerone.com/reports/728040" %}
 
@@ -86,7 +86,7 @@ Using the PoC, we can read the `id_rsa` file from the user's home directory.
 
 <figure><img src="../../../.gitbook/assets/image (266).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can SSH in as `developer`.&#x20;
+Then, we can SSH in as `developer`.
 
 ### GDB Attaching
 
@@ -98,13 +98,13 @@ Running LinPEAS also reveals that we can run GDB as we are part of the `debug` g
 
 <figure><img src="../../../.gitbook/assets/image (1285).png" alt=""><figcaption></figcaption></figure>
 
-In this case, `gdb` can be used to attach ourselves to a process **run by root** and spawn more child processes. These child processes would all be running as root and we can basically gain RCE as root in this manner. This would stop the execution process and make the root thread spawn whatever other functions that we want.&#x20;
+In this case, `gdb` can be used to attach ourselves to a process **run by root** and spawn more child processes. These child processes would all be running as root and we can basically gain RCE as root in this manner. This would stop the execution process and make the root thread spawn whatever other functions that we want.
 
 First, we would need to find a process running as root, and preferably a Python or Bash one so we can execute commands easily.
 
 <figure><img src="../../../.gitbook/assets/image (3925).png" alt=""><figcaption></figcaption></figure>
 
-The PID in this case is `621`, so we can run `gdb -p 621` to attach ourselves there. Afterwards, I called the `system()` function to spawn a reverse shell as root.&#x20;
+The PID in this case is `621`, so we can run `gdb -p 621` to attach ourselves there. Afterwards, I called the `system()` function to spawn a reverse shell as root.
 
 <figure><img src="../../../.gitbook/assets/image (116).png" alt=""><figcaption></figcaption></figure>
 

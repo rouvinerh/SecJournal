@@ -14,7 +14,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-With this, we can start proxying traffic through Burp.&#x20;
+With this, we can start proxying traffic through Burp.
 
 ### Web Enumeration
 
@@ -22,7 +22,7 @@ Port 80 shows a Street Fighter themed page:
 
 <figure><img src="../../../.gitbook/assets/image (56).png" alt=""><figcaption></figcaption></figure>
 
-There's mention of a 'link' that we are supposed to know. Based on HTB trends, I added `streetfighterclub.htb` to the `/etc/hosts` file. Afterwards, I ran a `gobuster` directory and `wfuzz` subdomain scan on the site.&#x20;
+There's mention of a 'link' that we are supposed to know. Based on HTB trends, I added `streetfighterclub.htb` to the `/etc/hosts` file. Afterwards, I ran a `gobuster` directory and `wfuzz` subdomain scan on the site.
 
 ```
 $ wfuzz -c -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hl=190 -H 'Host:FUZZ.streetfighterclub.htb' http://streetfighterclub.htb
@@ -65,7 +65,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /old                  (Status: 301) [Size: 164] [--> http://members.streetfighterclub.htb/old/]
 ```
 
-Based on this alone, we can run a `feroxbuster` recursive scan to find all the hidden subdirectories with the `-x asp,html,aspx,php` extensions.&#x20;
+Based on this alone, we can run a `feroxbuster` recursive scan to find all the hidden subdirectories with the `-x asp,html,aspx,php` extensions.
 
 ```
 $ feroxbuster -u http://members.streetfighterclub.htb -x asp,html,aspx,php
@@ -123,11 +123,11 @@ username=test&password=test&logintype=1&B1=LogIn
 
 There was a `logintype` variable, where 1 indicated Administrator and 2 was for Users. Adding any quotes to it causes an Interval Server Error:
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (59).png" alt=""><figcaption></figcaption></figure>
 
-I tested this with some basic SQL Injection, and found that `;+--+-` works! We are redirected to the `Welcome.asp` page instead.&#x20;
+I tested this with some basic SQL Injection, and found that `;+--+-` works! We are redirected to the `Welcome.asp` page instead.
 
 <figure><img src="../../../.gitbook/assets/image (60).png" alt=""><figcaption></figcaption></figure>
 
@@ -294,9 +294,9 @@ clean.bat Everyone:(M)
           BUILTIN\Administrators:(I)(F
 ```
 
-Normally, I would append something to the end of the file and get it to execute, however, there's an `exit` call which would prevent me from exploiting that.&#x20;
+Normally, I would append something to the end of the file and get it to execute, however, there's an `exit` call which would prevent me from exploiting that.
 
-Normally we cannot overwrite the file without write permissions, but modify allows us to use `copy` to change the file.&#x20;
+Normally we cannot overwrite the file without write permissions, but modify allows us to use `copy` to change the file.
 
 {% embed url="https://stackoverflow.com/questions/45141044/cmd-copy-null-to-multiple-files" %}
 
@@ -364,7 +364,7 @@ Then, run the exploit:
 
 ### Root.exe + DLL RE -> Flag
 
-Within the administrator's desktop, there wasn't a `root.txt` flag. Instead, there was an `.exe` file with a `.dll` library.&#x20;
+Within the administrator's desktop, there wasn't a `root.txt` flag. Instead, there was an `.exe` file with a `.dll` library.
 
 ```
 PS C:\users\administrator\desktop> dir
@@ -397,7 +397,7 @@ Afterwards, I opened both in `ghidra`. `root.exe` had a function `FUN_00401000` 
 
 <figure><img src="../../../.gitbook/assets/image (67).png" alt=""><figcaption></figcaption></figure>
 
-`checkdll.dll` had a function that XOR'd bytes with 9.&#x20;
+`checkdll.dll` had a function that XOR'd bytes with 9.
 
 <figure><img src="../../../.gitbook/assets/image (68).png" alt=""><figcaption></figcaption></figure>
 
@@ -405,7 +405,7 @@ The global variable can be found here by clicking on it:
 
 <figure><img src="../../../.gitbook/assets/image (66).png" alt=""><figcaption></figcaption></figure>
 
-The encryption can be reversed easily by XOR-ing it with 9 and converting to characters.&#x20;
+The encryption can be reversed easily by XOR-ing it with 9 and converting to characters.
 
 ```python
 def xor_hex_string(hex_string, key):

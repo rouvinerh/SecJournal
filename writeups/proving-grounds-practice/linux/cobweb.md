@@ -22,7 +22,7 @@ PORT     STATE  SERVICE
 9090/tcp closed zeus-admin
 ```
 
-Quite a few ports open.&#x20;
+Quite a few ports open.
 
 ### FTP -> access.log
 
@@ -64,7 +64,7 @@ $ cat access.log
 <TRUNCATED>
 ```
 
-The other files weren't so interesting.&#x20;
+The other files weren't so interesting.
 
 ### Source Code Review -> Eval + SQL Injection
 
@@ -129,7 +129,7 @@ I attempted to write some files, but it fails:
 
 <figure><img src="../../../.gitbook/assets/image (3707).png" alt=""><figcaption></figcaption></figure>
 
-So writing webshells won't work. When I looked at the code again, I saw that it was using `eval()` after the `get_page` function returns. This means that if we can somehow make the function return PHP code, it would be executed in `eval()`.&#x20;
+So writing webshells won't work. When I looked at the code again, I saw that it was using `eval()` after the `get_page` function returns. This means that if we can somehow make the function return PHP code, it would be executed in `eval()`.
 
 {% embed url="https://stackoverflow.com/questions/23862873/can-you-sql-inject-a-php-variable-comparison" %}
 
@@ -146,7 +146,7 @@ I tried creating a new directory with one PHP payload on it:
 ```
 {% endcode %}
 
-Then visit `index.php` with that payload and visit `/rev`.&#x20;
+Then visit `index.php` with that payload and visit `/rev`.
 
 {% code overflow="wrap" %}
 ```bash
@@ -258,4 +258,4 @@ screen -D -m -L ld.so.preload echo -ne  "\x0a/var/lib/php/session/libhax.so"
 
 <figure><img src="../../../.gitbook/assets/image (3186).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

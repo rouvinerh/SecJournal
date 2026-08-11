@@ -103,7 +103,7 @@ If we read go to the first Haiku's page and view the page source, we find this:
 
 <figure><img src="../../../.gitbook/assets/image (2112).png" alt=""><figcaption></figcaption></figure>
 
-We can enumerate the API page using `curl`.&#x20;
+We can enumerate the API page using `curl`.
 
 ```
 $ curl http://192.168.183.125:8080/api/ --silent | jq
@@ -231,7 +231,7 @@ git>
 
 ### Cronjob -> Git Hijack
 
-I did some enumeration on the machine as `dademola` first, since there wasn't much I could do with a Git shell yet.&#x20;
+I did some enumeration on the machine as `dademola` first, since there wasn't much I could do with a Git shell yet.
 
 There was a `git-server` folder present in the `/` directory:
 

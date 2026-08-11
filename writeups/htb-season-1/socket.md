@@ -53,9 +53,9 @@ qreader  test.png
 qreader: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=3f71fafa6e2e915b9bed491dd97e1bab785158de, for GNU/Linux 2.6.32, stripped
 ```
 
-We can try to reverse engineer this application. I tried with `ghidra` but it produced a lot of code that I could not read. Instead, we need to use Python Decompilation as the web server runs the application in Python based on the earlier `nmap` scan of port 80.&#x20;
+We can try to reverse engineer this application. I tried with `ghidra` but it produced a lot of code that I could not read. Instead, we need to use Python Decompilation as the web server runs the application in Python based on the earlier `nmap` scan of port 80.
 
-We can decompile this using `pyi-archive_viwer qreader`, and then convert it into a pyc file via `uncompyle6`. Then, we can do source code analysis of the app.&#x20;
+We can decompile this using `pyi-archive_viwer qreader`, and then convert it into a pyc file via `uncompyle6`. Then, we can do source code analysis of the app.
 
 ### Websocket SQL Injection
 
@@ -77,7 +77,7 @@ def version(self):
 ```
 {% endcode %}
 
-This connects to a websocket, which is on port 5789 after running an `nmap` scan to confirm. It appears to send some information via `ws_connect` to the `/version` directory.&#x20;
+This connects to a websocket, which is on port 5789 after running an `nmap` scan to confirm. It appears to send some information via `ws_connect` to the `/version` directory.
 
 ```
 5789/tcp open  unknown
@@ -118,9 +118,9 @@ $ python3 exploit.py
 ```
 {% endcode %}
 
-I tried playing around with the version number, and it would raise an `Invalid Version!` error each time it wasn't set to `0.0.2`. When I appended a `"`, it would print nothing, indicating that there was an error in the backend since the code catches errors.&#x20;
+I tried playing around with the version number, and it would raise an `Invalid Version!` error each time it wasn't set to `0.0.2`. When I appended a `"`, it would print nothing, indicating that there was an error in the backend since the code catches errors.
 
-I played around with some UNION SQL injection, and found that the payload of `0.0.2"UNION SELECT 1,2,3,4;-- -` generated **no errors.** Changing the number of columns results in an error, indicating that this application is indeed vulnerable to SQL Injection.&#x20;
+I played around with some UNION SQL injection, and found that the payload of `0.0.2"UNION SELECT 1,2,3,4;-- -` generated **no errors.** Changing the number of columns results in an error, indicating that this application is indeed vulnerable to SQL Injection.
 
 We can confirm the DBMS used by trying different version commands, and I found that `sqlite_version()` works.
 
@@ -137,7 +137,7 @@ With this, we can extract the tables present in `sqlite_schema`.
 ```
 {% endcode %}
 
-There's a `users` table, and we can try to extract a username and password from it.&#x20;
+There's a `users` table, and we can try to extract a username and password from it.
 
 {% code overflow="wrap" %}
 ```
@@ -150,7 +150,7 @@ Great! The hash can be cracked on crackstation:
 
 <figure><img src="../../.gitbook/assets/image (3225).png" alt=""><figcaption></figcaption></figure>
 
-Now, we need to find a username. I looked through the other tables of `reports` and `answers`.&#x20;
+Now, we need to find a username. I looked through the other tables of `reports` and `answers`.
 
 {% code overflow="wrap" %}
 ```
@@ -225,10 +225,10 @@ else
 fi
 ```
 
-So this script checks for a `.spec` file extension, and takes an `$action` argument from us. It appears that the `build` option runs `pyinstaller` on the file we choose. What `pyinstaller` does is just run the code we specify.&#x20;
+So this script checks for a `.spec` file extension, and takes an `$action` argument from us. It appears that the `build` option runs `pyinstaller` on the file we choose. What `pyinstaller` does is just run the code we specify.
 
-As such, the exploit is simple.&#x20;
+As such, the exploit is simple.
 
 <figure><img src="../../.gitbook/assets/image (336).png" alt=""><figcaption></figcaption></figure>
 
-Pretty straightforward machine. The hard part was the SQL injection.&#x20;
+Pretty straightforward machine. The hard part was the SQL injection.

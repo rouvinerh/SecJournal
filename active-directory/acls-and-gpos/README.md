@@ -2,7 +2,7 @@
 
 Access Control Lists (ACL) are basically a list of permissions that one object has over other objects within the domain.
 
-Every single object in an AD network has a set of permissions and control over objects. For instance, some users are part of the IT Operators group, and hence can add new users to the domain or access the IT Database for the network.&#x20;
+Every single object in an AD network has a set of permissions and control over objects. For instance, some users are part of the IT Operators group, and hence can add new users to the domain or access the IT Database for the network.
 
 These are designed to supprot more than one client system within the workgroup.
 
@@ -15,7 +15,7 @@ Some of the AD object permissions that we as attackers are interested in are:
   * Able to update the object's attributes
   * E.g. change the login script for members in the group
 * WriteOwner
-  * Change the object's owner&#x20;
+  * Change the object's owner
   * Attackers can use this to change the ownership of the object to a compromised user to take full control of that object.
 * WriteDACL
   * Modify the object's ACLs and accessibility for that one object
@@ -29,9 +29,9 @@ Some of the AD object permissions that we as attackers are interested in are:
   * This implies that we have further permissions **under the DC category.**
   * A compromised user with DCSync permission enabled allows attackers to do DCSync attacks, and basically be able to leak credentials for the entire domain.
 
-Apart from ACLs, there are objects within AD networks called **Group Policy Objects.**&#x20;
+Apart from ACLs, there are objects within AD networks called **Group Policy Objects.**
 
-What GPOs are is a feature of Windows that controls the working environment of user accounts and computer accounts. They provide centralized management and configuration of OS, applications and user settings in the AD environment.&#x20;
+What GPOs are is a feature of Windows that controls the working environment of user accounts and computer accounts. They provide centralized management and configuration of OS, applications and user settings in the AD environment.
 
 ## Enumeration
 

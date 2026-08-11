@@ -26,9 +26,9 @@ We can enumerate the machine using `systeminfo`.
 
 <figure><img src="../../../.gitbook/assets/image (823).png" alt=""><figcaption></figcaption></figure>
 
-This is a really old version of Windows that is outdated and vulnerable to loads of exploits. One exploit is the Churrasco exploit, which works on Windows Server 2003 machines. However, because this machine was so old, it was hard to transfer files over to it using conventional Windows methods.&#x20;
+This is a really old version of Windows that is outdated and vulnerable to loads of exploits. One exploit is the Churrasco exploit, which works on Windows Server 2003 machines. However, because this machine was so old, it was hard to transfer files over to it using conventional Windows methods.
 
-So, we would need to create a `wget` binaruy using vbs.&#x20;
+So, we would need to create a `wget` binaruy using vbs.
 
 ```powershell
 echo StrFile = WScript.Arguments.Item(1) >> wget.vbs
@@ -63,7 +63,7 @@ Afterwards, we can download the binary from here:
 
 {% embed url="https://github.com/Re4son/Churrasco/raw/master/churrasco.exe" %}
 
-The exploit works through impersonating the SYSTEM user to execute commands by stealing the tokens from the worker processes run by the SYSTEM user.&#x20;
+The exploit works through impersonating the SYSTEM user to execute commands by stealing the tokens from the worker processes run by the SYSTEM user.
 
 The exploit can be used to gain a reverse shell easily via `nc.exe`:
 

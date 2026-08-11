@@ -30,7 +30,7 @@ This was pretty odd, and I knew this thing had to be important somehow because w
 
 ### Microsoft Word Doc
 
-&#x20;The word doc looks like so, and it contains some useful information.
+The word doc looks like so, and it contains some useful information.
 
 <figure><img src="../../../.gitbook/assets/image (2797).png" alt=""><figcaption></figcaption></figure>
 

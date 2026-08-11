@@ -233,7 +233,7 @@ Afterwards, we use this `token` variable at `activate.php`.
 
 <figure><img src="../../../.gitbook/assets/image (1142).png" alt=""><figcaption></figcaption></figure>
 
-Afterwards, we can just login as the user.&#x20;
+Afterwards, we can just login as the user.
 
 ### PHP Deserialisation
 
@@ -301,7 +301,7 @@ Here's a good article to read on exploiting PHP deserialisation:
 
 {% embed url="https://snoopysecurity.github.io/web-application-security/2021/01/08/02_php_object_injection_exploitation-notes.html" %}
 
-Now, within the `Avatar` class, we can see a `__construct` function being used, which is invoked when an object is created. The class also takes in `tmp` file and writes it out on the machine.&#x20;
+Now, within the `Avatar` class, we can see a `__construct` function being used, which is invoked when an object is created. The class also takes in `tmp` file and writes it out on the machine.
 
 So the exploit path is simple:
 
@@ -387,7 +387,7 @@ We can use `\d` to read the tables present on the machine.
  public | users_id_seq     | sequence | postgres
 ```
 
-Then, we can read the stuff in the `users` file.&#x20;
+Then, we can read the stuff in the `users` file.
 
 <figure><img src="../../../.gitbook/assets/image (1217).png" alt=""><figcaption></figcaption></figure>
 
@@ -475,7 +475,7 @@ This could potentially be a cronjob that is running, so I downloaded and ran `ps
 /bin/bash -c /opt/renew_cert.sh /home/bill/Certs/broscience.crt
 ```
 
-Very obviously, the `commonName` parameter is where we would store our payload to become root. We can use `openssl` to generate a quick cert to exploit this and create an SUID bash binary. We can leave all the other parameters blank except for the Common Name.&#x20;
+Very obviously, the `commonName` parameter is where we would store our payload to become root. We can use `openssl` to generate a quick cert to exploit this and create an SUID bash binary. We can leave all the other parameters blank except for the Common Name.
 
 ```
 bill@broscience:~/Certs$ openssl req -x509 -sha256 -nodes -newkey rsa:4096 -keyout broscience.key -out broscience.crt

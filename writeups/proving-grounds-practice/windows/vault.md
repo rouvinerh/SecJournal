@@ -34,7 +34,7 @@ PORT      STATE SERVICE
 49704/tcp open  unknown
 ```
 
-Loads of ports.&#x20;
+Loads of ports.
 
 ### Guest Shares
 
@@ -66,7 +66,7 @@ smb: \> ls
                 7706623 blocks of size 4096. 656179 blocks available
 ```
 
-There was nothing else about this machine. This reminded me of a few HTB machines where we had to place a malicious file that would trigger a user to click on, which would send requests to our attacker machine and allow us to capture NTLM hashes on `responder`.&#x20;
+There was nothing else about this machine. This reminded me of a few HTB machines where we had to place a malicious file that would trigger a user to click on, which would send requests to our attacker machine and allow us to capture NTLM hashes on `responder`.
 
 There a few methods of creating such files, but I used this repository:
 
@@ -151,7 +151,7 @@ Global Group memberships     *Domain Users
 The command completed successfully.
 ```
 
-Since we are part of this group, we can do loads of things like manipulate services and what not.&#x20;
+Since we are part of this group, we can do loads of things like manipulate services and what not.
 
 ```
 *Evil-WinRM* PS C:\Users\anirudh\Documents> services

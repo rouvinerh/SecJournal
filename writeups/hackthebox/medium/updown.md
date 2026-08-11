@@ -33,7 +33,7 @@ User-Agent: siteisup.htb
 Accept: */*
 ```
 
-We can first add `siteisup.htb` to our `/etc/hosts` file, then we can do both `wfuzz` subdomain fuzzing and `gobuster` directory scans.&#x20;
+We can first add `siteisup.htb` to our `/etc/hosts` file, then we can do both `wfuzz` subdomain fuzzing and `gobuster` directory scans.
 
 `wfuzz` scan reveals a `dev` subdomain.
 
@@ -136,7 +136,7 @@ Deny from All
 Allow from env=Required-Header
 ```
 
-We need to have a special HTTP header in order to be verified. We can use the Modify Header Value Firefox extension to create a new header `Special-Dev` with the value of `only4dev`.&#x20;
+We need to have a special HTTP header in order to be verified. We can use the Modify Header Value Firefox extension to create a new header `Special-Dev` with the value of `only4dev`.
 
 {% embed url="https://addons.mozilla.org/en-US/firefox/addon/modify-header-value/" %}
 
@@ -305,7 +305,7 @@ www-data@updown:/home/developer$ ls
 dev  user.txt
 ```
 
-We can't read the user flag, but we can view the `/dev` directory within it.&#x20;
+We can't read the user flag, but we can view the `/dev` directory within it.
 
 ```
 www-data@updown:/home/developer/dev$ ls -la
@@ -352,13 +352,13 @@ Enter URL here:"http://10.10.14.13"
 Website is up
 ```
 
-This occurs because the argument is directed taken from the user's input and passed into the next line. The script only works if we specify it as a string. Because of how it handles user input, this makes it vulnerable to Python code injection.&#x20;
+This occurs because the argument is directed taken from the user's input and passed into the next line. The script only works if we specify it as a string. Because of how it handles user input, this makes it vulnerable to Python code injection.
 
-We have to import the `os` library, and since we cannot do so statically using `import`, we have to dynamically do it using `__import__`.&#x20;
+We have to import the `os` library, and since we cannot do so statically using `import`, we have to dynamically do it using `__import__`.
 
 <figure><img src="../../../.gitbook/assets/image (2447).png" alt=""><figcaption></figcaption></figure>
 
-We can the nread the user's private SSH key and SSH in to upgrade our shell. We can also grab the user flag.&#x20;
+We can the nread the user's private SSH key and SSH in to upgrade our shell. We can also grab the user flag.
 
 ### Easy\_Install
 
@@ -374,7 +374,7 @@ User developer may run the following commands on localhost:
     (ALL) NOPASSWD: /usr/local/bin/easy_install
 ```
 
-GTFOBins has a script for this binary.&#x20;
+GTFOBins has a script for this binary.
 
 ```bash
 TF=$(mktemp -d)

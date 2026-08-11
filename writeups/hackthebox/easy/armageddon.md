@@ -52,7 +52,7 @@ When checking sudo privilges of this machine, we see that we can run `snap`.
 
 <figure><img src="../../../.gitbook/assets/image (1896).png" alt=""><figcaption></figcaption></figure>
 
-By checking the snap version, we can see that this is not vulnerable to the dirty sock exploit because it is updated.&#x20;
+By checking the snap version, we can see that this is not vulnerable to the dirty sock exploit because it is updated.
 
 <figure><img src="../../../.gitbook/assets/image (1477).png" alt=""><figcaption></figcaption></figure>
 

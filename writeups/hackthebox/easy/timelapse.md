@@ -38,7 +38,7 @@ We also need to extract the .crt file using `openssl pkcs12 -in legacyy_dev_auth
 
 ### Certificate Abuse
 
-When we extracted the private key and certificate, we can use `evil-winrm` to get into the machine.&#x20;
+When we extracted the private key and certificate, we can use `evil-winrm` to get into the machine.
 
 ```bash
 evil-winrm -i timelapse.htb -S -k priv -c legacyy_dev_auth.crt
@@ -58,7 +58,7 @@ The PS History has commands used for remote Powershell-ing as another user calle
 
 <figure><img src="../../../.gitbook/assets/image (778).png" alt=""><figcaption></figcaption></figure>
 
-We can use this to gain a reverse shell as the `svc_deploy` user using whatever method. `nc.exe` is the easiest.&#x20;
+We can use this to gain a reverse shell as the `svc_deploy` user using whatever method. `nc.exe` is the easiest.
 
 <figure><img src="../../../.gitbook/assets/image (1579).png" alt=""><figcaption></figcaption></figure>
 

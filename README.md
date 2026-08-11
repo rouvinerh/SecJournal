@@ -24,7 +24,7 @@ This is my notebook where I document all my security-related experiences, from H
 
 ### Blogs
 
-I (try) to write some blogs about cybersecurity and anything interesting I find, which are viewable on the left under the 'Blogs' section.&#x20;
+I (try) to write some blogs about cybersecurity and anything interesting I find, which are viewable on the left under the 'Blogs' section.
 
 ### Starting in InfoSec
 

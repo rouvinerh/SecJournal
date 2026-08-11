@@ -79,7 +79,7 @@ We can then go about using the exploit according to the exploit instructions.
 
 <figure><img src="../../../.gitbook/assets/image (3899).png" alt=""><figcaption></figcaption></figure>
 
-Now we can see how we have received a reverse shell on port 6666, as specified in Metasploit.&#x20;
+Now we can see how we have received a reverse shell on port 6666, as specified in Metasploit.
 
 We can see how Metasploit can be used to generate payloads instantly and then do more with it.
 

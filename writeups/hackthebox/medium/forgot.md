@@ -233,9 +233,9 @@ for i in range(len(Xnew)):
 ```
 {% endcode %}
 
-From the looks of it, this script executes an SQL query to take data for reasons. So it seems to check for forms of XSS as it checks for \<script> tags and so on. Then, Tensorflow seems to take the thing and passes it to something that basically executes this.&#x20;
+From the looks of it, this script executes an SQL query to take data for reasons. So it seems to check for forms of XSS as it checks for \<script> tags and so on. Then, Tensorflow seems to take the thing and passes it to something that basically executes this.
 
-However, there was a rather recent vulnerability revealing that this was is vulnerable to a form of exploit.&#x20;
+However, there was a rather recent vulnerability revealing that this was is vulnerable to a form of exploit.
 
 {% embed url="https://github.com/advisories/GHSA-75c9-jrh4-79mc" %}
 
@@ -249,7 +249,7 @@ From here, we can first create a malicious script that would make us root. Make 
 
 <figure><img src="../../../.gitbook/assets/image (3531).png" alt=""><figcaption></figcaption></figure>
 
-Then we need to figure out how to include an input into the database such that we can get a score of >= .5.&#x20;
+Then we need to figure out how to include an input into the database such that we can get a score of >= .5.
 
 We can first try to calculate out the score of .5. Since we need a higher score, I just included a load of different things within the database. I just whacked a ton of URL-encoded XSS stuff. Afterwards,  I appended some python code that would execute my malicious script as root.
 

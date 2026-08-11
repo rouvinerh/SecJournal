@@ -382,7 +382,7 @@ Pretty straightforward PE vector. We can see the existing playbook to follow the
       state: started
 ```
 
-This playbook using the built-in `systemd` module, and we can replace that with `ansible.builtin.shell` to execute commands.&#x20;
+This playbook using the built-in `systemd` module, and we can replace that with `ansible.builtin.shell` to execute commands.
 
 {% embed url="https://docs.ansible.com/archive/ansible/2.3/shell_module.html" %}
 
@@ -401,4 +401,4 @@ Download this via `wget` to the machine and wait. After a bit, we should get an 
 
 <figure><img src="../../.gitbook/assets/image (2421).png" alt=""><figcaption></figcaption></figure>
 
-Pwned.&#x20;
+Pwned.

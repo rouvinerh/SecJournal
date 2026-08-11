@@ -163,6 +163,6 @@ $ find / -perm -u=s -type f 2>/dev/null
 <TRUNCATED>
 ```
 
-`start-stop-daemon` is an SUID binary, and it can spawn a `root` shell for us.&#x20;
+`start-stop-daemon` is an SUID binary, and it can spawn a `root` shell for us.
 
 ![](<../../../.gitbook/assets/image (2203).png>)

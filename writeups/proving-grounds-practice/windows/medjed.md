@@ -31,7 +31,7 @@ PORT      STATE SERVICE
 49669/tcp open  unknown
 ```
 
-Loads of ports that are open. We can do a detailed scan to see what services are running on each application.&#x20;
+Loads of ports that are open. We can do a detailed scan to see what services are running on each application.
 
 ```
 $ sudo nmap -p 135,139,445,3306,7680,8000,30021,33033,44330,45332,45443 -sC -sV --min-rate 5000 192.168.233.127 
@@ -221,7 +221,7 @@ There were also no disabled functions, which was great:
 
 <figure><img src="../../../.gitbook/assets/image (3952).png" alt=""><figcaption></figcaption></figure>
 
-We might need some additional information from here later.&#x20;
+We might need some additional information from here later.
 
 ### Rabbit Hole -> Port 8000
 
@@ -233,11 +233,11 @@ It appears that we can set the administrator for this machine:
 
 <figure><img src="../../../.gitbook/assets/image (647).png" alt=""><figcaption></figcaption></figure>
 
-Apart from that, we could not do anything else on this website after running directory scans on it.&#x20;
+Apart from that, we could not do anything else on this website after running directory scans on it.
 
 ### Rabbit Hole -> FTP Anonymous
 
-Port 30021 allowed for anonymous access via FTP.&#x20;
+Port 30021 allowed for anonymous access via FTP.
 
 ```
 $ ftp 192.168.233.127 -P 30021
@@ -329,7 +329,7 @@ We can then use this payload to write a webshell:
 ```
 {% endcode %}
 
-This would work, and then we can attempt to access this shell on port 45332.&#x20;
+This would work, and then we can attempt to access this shell on port 45332.
 
 <figure><img src="../../../.gitbook/assets/image (220).png" alt=""><figcaption></figcaption></figure>
 

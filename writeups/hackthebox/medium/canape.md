@@ -43,7 +43,7 @@ PORT      STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-There's a `.git` repository present on the website. There is also a domain we have to add to our `/etc/hosts` file.&#x20;
+There's a `.git` repository present on the website. There is also a domain we have to add to our `/etc/hosts` file.
 
 ### Web + Git Enumeration
 
@@ -55,7 +55,7 @@ We can submit quotes to be viewed on the website through the using specific Simp
 
 <figure><img src="../../../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
 
-Since we have a `.git` repository, we can dump that out first.&#x20;
+Since we have a `.git` repository, we can dump that out first.
 
 {% embed url="https://github.com/arthaud/git-dumper" %}
 
@@ -64,7 +64,7 @@ $ python3 git_dumper.py http://canape.htb .git
 $ git checkout -- .
 ```
 
-Then, we can view the files present.&#x20;
+Then, we can view the files present.
 
 ### cPickle RCE
 
@@ -109,11 +109,11 @@ def check():
     return "Still reviewing: " + item
 ```
 
-Pickling is used here, and it might be exploitable later. If `p1` is in `data`, then it passes it to the `cPickle.loads()` function. The `cPickle` function used actually allows for RCE.&#x20;
+Pickling is used here, and it might be exploitable later. If `p1` is in `data`, then it passes it to the `cPickle.loads()` function. The `cPickle` function used actually allows for RCE.
 
 Based on online scripts, we have to create a Python class using the `__reduce__` with our command, and then pickle the content using the `cPickle` library. Afterwards, we need to send a POST request to `/check` with the `id` parameter set to the MD5 hash of our character and payload combined.
 
-To bypass the character check, we just need to include a Simpsons character as a substring of the actual thing. &#x20;
+To bypass the character check, we just need to include a Simpsons character as a substring of the actual thing. 
 
 The website code uses `python2`, so I also used `python2` to match:
 
@@ -155,7 +155,7 @@ The reason we split the string by `*` is because of the weird string it generate
 
 ## Privilege Escalation
 
-We cannot read the user's flag yet.&#x20;
+We cannot read the user's flag yet.
 
 ### CouchDB -> User Creds
 
@@ -168,7 +168,7 @@ www-data@canape:/$ ps -elf | grep homer
 ```
 {% endcode %}
 
-CouchDB was being run on the machine, and it is running a vulnerable version.&#x20;
+CouchDB was being run on the machine, and it is running a vulnerable version.
 
 {% embed url="https://www.exploit-db.com/exploits/44913" %}
 
@@ -176,7 +176,7 @@ However, this exploit does not seem to work on the machine. Since this is a DB a
 
 {% embed url="https://justi.cz/security/2017/11/14/couchdb-rce-npm.html" %}
 
-The above uses `curl` to create a new administrator user on the machine.&#x20;
+The above uses `curl` to create a new administrator user on the machine.
 
 {% code overflow="wrap" %}
 ```bash

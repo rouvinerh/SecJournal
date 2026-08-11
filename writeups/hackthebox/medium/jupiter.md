@@ -17,7 +17,7 @@ PORT   STATE SERVICE
 
 We have to add `jupiter.htb` to our `/etc/hosts` file to view port 80.
 
-### Web Enum -> Subdomain&#x20;
+### Web Enum -> Subdomain
 
 The website was a typical corporate site:
 
@@ -94,7 +94,7 @@ Then, we would catch a reverse shell on a listener port:
 
 ## Privilege Escalation
 
-We are a low privilege user here, so we cannot grab any user flags just yet.&#x20;
+We are a low privilege user here, so we cannot grab any user flags just yet.
 
 ### Network Simulation -> RCE
 
@@ -187,7 +187,7 @@ We can overwrite the existing file using `wget -O`. Afterwards, we can easily ge
 
 <figure><img src="../../../.gitbook/assets/image (2712).png" alt=""><figcaption></figcaption></figure>
 
-We can drop our public key into the `authorized_keys` folder to upgrade our shell.&#x20;
+We can drop our public key into the `authorized_keys` folder to upgrade our shell.
 
 <figure><img src="../../../.gitbook/assets/image (1505).png" alt=""><figcaption></figcaption></figure>
 
@@ -270,7 +270,7 @@ This gives us an easy shell as the new user:
 
 <figure><img src="../../../.gitbook/assets/image (3647).png" alt=""><figcaption></figcaption></figure>
 
-We can also get a reverse shell using this method by replacing the command run.&#x20;
+We can also get a reverse shell using this method by replacing the command run.
 
 <figure><img src="../../../.gitbook/assets/image (2037).png" alt=""><figcaption></figcaption></figure>
 

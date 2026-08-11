@@ -85,7 +85,7 @@ sha512: <hash value>
 releaseDate: '2022-03-14T11:17:02.627Z'
 ```
 
-Upon creation, we would need to put this YAML file within the client directory of the share we accessed earlier.&#x20;
+Upon creation, we would need to put this YAML file within the client directory of the share we accessed earlier.
 
 <figure><img src="../../../.gitbook/assets/image (1860).png" alt=""><figcaption></figcaption></figure>
 

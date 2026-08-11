@@ -65,14 +65,14 @@ This means we just need to find some process from `root` that doesn't use the fu
 2023/07/15 22:55:01 CMD: UID=0    PID=13493  | run-parts --report /etc/cron.hourly 
 ```
 
-`run-parts` should work.&#x20;
+`run-parts` should work.
 
 ```
 chloe@roquefort:/tmp$ which run-parts
 /bin/run-parts
 ```
 
-Since the `/bin` directory is the last in PATH, we can place our malicious binary within `/usr/local/bin` to be executed first.&#x20;
+Since the `/bin` directory is the last in PATH, we can place our malicious binary within `/usr/local/bin` to be executed first.
 
 ```bash
 cd /usr/local/bin

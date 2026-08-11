@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 3306/tcp open  mysql
 ```
 
-Interesting ports open.&#x20;
+Interesting ports open.
 
 ### SMB Enumeration
 
@@ -108,7 +108,7 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 
 ### SQL Creds -> RCE
 
-Since we have LFI, we can try reading the SQL credentials that are present within OpenEMR (based on reading the OpenEMR Github repository).&#x20;
+Since we have LFI, we can try reading the SQL credentials that are present within OpenEMR (based on reading the OpenEMR Github repository).
 
 {% embed url="https://github.com/openemr/openemr/blob/master/sites/default/sqlconf.php" %}
 
@@ -158,7 +158,7 @@ $pass   = 'C78maEQUIEuQ';
 $dbase  = 'openemr';
 ```
 
-Now we have some SQL creds, we can login to the database present.&#x20;
+Now we have some SQL creds, we can login to the database present.
 
 <figure><img src="../../../.gitbook/assets/image (606).png" alt=""><figcaption></figcaption></figure>
 

@@ -17,7 +17,7 @@ PORT     STATE  SERVICE
 5437/tcp open   pmip6-data
 ```
 
-Did a detailed scan as well.&#x20;
+Did a detailed scan as well.
 
 ```
 $ sudo nmap -p 21,22,80,5437 -sC -sV --min-rate 5000 192.168.219.47                
@@ -46,7 +46,7 @@ PORT     STATE SERVICE    VERSION
 
 ### SQL Creds -> RCE
 
-I enumerated the PostGreSQL instance, and found that the default credentials of `postgres:postgres` worked.&#x20;
+I enumerated the PostGreSQL instance, and found that the default credentials of `postgres:postgres` worked.
 
 <figure><img src="../../../.gitbook/assets/image (1942).png" alt=""><figcaption></figcaption></figure>
 
@@ -54,7 +54,7 @@ I tested the RCE PoC on Hacktricks, and it worked:
 
 <figure><img src="../../../.gitbook/assets/image (3397).png" alt=""><figcaption></figcaption></figure>
 
-We can then use a Metasploit module to get a reverse shell as this user.&#x20;
+We can then use a Metasploit module to get a reverse shell as this user.
 
 <figure><img src="../../../.gitbook/assets/image (2134).png" alt=""><figcaption></figcaption></figure>
 

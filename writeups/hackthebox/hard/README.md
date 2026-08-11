@@ -1,3 +1,3 @@
 # Hard
 
-Hard-rated machines.&#x20;
+Hard-rated machines.

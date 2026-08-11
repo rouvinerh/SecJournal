@@ -107,7 +107,7 @@ Netcat is a computer network utility for reading from and writing to network con
 
 NC can be used to transfer files over ports should we be unable to use SMB or HTTP. **However, for Windows machines, we would need to get the nc.exe binary onto the target machine before we use it.**
 
-For Linux machines, we just need to make sure that nc is installed. The&#x20;
+For Linux machines, we just need to make sure that nc is installed. The
 
 ```bash
 # receiving end
@@ -116,7 +116,7 @@ nc(.exe) -l -p 1234 > out.file
 nc(.exe) -w 3 10.10.10.10. 1234 < out.file
 ```
 
-Super useful when we cannot use wget or other methods.&#x20;
+Super useful when we cannot use wget or other methods.
 
 ## Base64
 

@@ -34,7 +34,7 @@ We can find a new domain at `cacti-admin.monitors.htb`. Afterwards, I also read 
 
 <figure><img src="../../../.gitbook/assets/image (2871).png" alt=""><figcaption></figcaption></figure>
 
-### Cacti&#x20;
+### Cacti
 
 Upon visting this separate domain, we are greeted by another login page:
 

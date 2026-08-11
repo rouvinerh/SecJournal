@@ -54,7 +54,7 @@ From the source code in the `/routes` directory, we can see some SQL queries bei
 
 <figure><img src="../../../.gitbook/assets/image (3187).png" alt=""><figcaption></figcaption></figure>
 
-No input sanitising, but its not vulnerable to SQL Injection attacks.&#x20;
+No input sanitising, but its not vulnerable to SQL Injection attacks.
 
 From here, we can look at the logs to see if there were previous iterations of this file and if the mechanism was changed.
 
@@ -62,7 +62,7 @@ From here, we can look at the logs to see if there were previous iterations of t
 
 We can see that the login was indeed changed, and perhaps this could be vulnerable to SQL Injection after all. Since this was a node.js website, we can start researching for node.js related SQL Injections.
 
-This website was a good read on how JS handles the type conversions and how they can be abused.&#x20;
+This website was a good read on how JS handles the type conversions and how they can be abused.
 
 {% embed url="https://www.stackhawk.com/blog/node-js-sql-injection-guide-examples-and-prevention/#type-checking" %}
 
@@ -76,13 +76,13 @@ With this, we can login to the admin panel!
 
 <figure><img src="../../../.gitbook/assets/image (2944).png" alt=""><figcaption></figcaption></figure>
 
-### Open Web Analytics&#x20;
+### Open Web Analytics
 
 When looking around the admin panel, I didn't find much. However, in the top right corner of the page there was an analytics button that brings us to a new page.
 
 <figure><img src="../../../.gitbook/assets/image (3827).png" alt=""><figcaption></figcaption></figure>
 
-This brought me to a new domain called `openwebanalytics.vessel.htb`.&#x20;
+This brought me to a new domain called `openwebanalytics.vessel.htb`.
 
 <figure><img src="../../../.gitbook/assets/image (3378).png" alt=""><figcaption></figcaption></figure>
 
@@ -204,7 +204,7 @@ generate_all()
 
 This generates out all possible passwords in a wordlist, and we can begin to brute force the pdf using pdfcrack.
 
-I tried this for really, really long and only then managed to find the password. This process seems to only generate about 999 passwords before becoming really slow as well. While I'm unsure if this is the intended method of getting the .pdf password, I eventually got the password.&#x20;
+I tried this for really, really long and only then managed to find the password. This process seems to only generate about 999 passwords before becoming really slow as well. While I'm unsure if this is the intended method of getting the .pdf password, I eventually got the password.
 
 This is the password: YG7Q7RDzA+q\&ke\~MJ8!yRzoI^VQxSqSS. For some reason pdfcrack appends its own stuff at the end.
 
@@ -220,11 +220,11 @@ We can then SSH in as Ethan.
 
 ## Root Shell
 
-When running linpeas.sh, we can find this SUID binary called `pinns`.&#x20;
+When running linpeas.sh, we can find this SUID binary called `pinns`.
 
 <figure><img src="../../../.gitbook/assets/image (1494).png" alt=""><figcaption></figcaption></figure>
 
-Again. researching on more recent vulnerabilities led me to this:&#x20;
+Again. researching on more recent vulnerabilities led me to this:
 
 {% embed url="https://sysdig.com/blog/cve-2022-0811-cri-o/" %}
 
@@ -271,7 +271,7 @@ bash -i
 kill -SIGSEGV <PID_for_tail>
 ```
 
-Afterwards, we should see our script be executed and we can get a root shell using `bash -p`.&#x20;
+Afterwards, we should see our script be executed and we can get a root shell using `bash -p`.
 
 <figure><img src="../../../.gitbook/assets/image (2549).png" alt=""><figcaption></figcaption></figure>
 

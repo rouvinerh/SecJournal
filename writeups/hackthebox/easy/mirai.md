@@ -24,7 +24,7 @@ I was able to run `sudo su` on this machine and search for `root.txt`:
 
 <figure><img src="../../../.gitbook/assets/image (1814).png" alt=""><figcaption></figcaption></figure>
 
-Interesting, because the root flag is where on a USB stick. Now, the backup would probably be some file in a different format and compressed. We know that the flag is a string, so we can use `strings` to get it out. It is stored at `/dev/sdb`.&#x20;
+Interesting, because the root flag is where on a USB stick. Now, the backup would probably be some file in a different format and compressed. We know that the flag is a string, so we can use `strings` to get it out. It is stored at `/dev/sdb`.
 
 ```bash
 strings /dev/sdb

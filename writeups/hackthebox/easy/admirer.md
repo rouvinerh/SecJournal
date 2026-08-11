@@ -83,9 +83,9 @@ Query OK, 0 rows affected (0.008 sec)
 
 This would create a new database for our LFI contents to go to. Within Adminer, we can login with OUR own root user credentials. Within the database, we would want to execute these queries to load files. I tried reading the `/etc/passwd` file but it didn't work (for some reason).
 
-It seems that we aren't given permission to load certain files. Going back to the backup folder we retrieved, we can attempt to read the `/var/www/html` files based on the FTP backup we retrieved earlier.&#x20;
+It seems that we aren't given permission to load certain files. Going back to the backup folder we retrieved, we can attempt to read the `/var/www/html` files based on the FTP backup we retrieved earlier.
 
-We can find a credential within the `/var/www/html/index.php` folder, which has been updated to `&<h5b~yK3F#{PaPB&dA}{H>` instead of the previous one we found.&#x20;
+We can find a credential within the `/var/www/html/index.php` folder, which has been updated to `&<h5b~yK3F#{PaPB&dA}{H>` instead of the previous one we found.
 
 This credential works with SSH as waldo.
 

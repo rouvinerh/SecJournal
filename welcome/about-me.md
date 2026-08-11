@@ -8,19 +8,21 @@ I created this notebook to document my own security learning and projects from u
 
 ## Bio
 
-* I am a final year student majoring in Information Security at National University of Singapore (NUS) in the School of Computing, and will graduate in 2026.
+* I am currently an Offensive Security engineer at the Cyber Security Agency of Singapore (CSA).
+* I graduated from National University of Singapore (NUS) majoring in Information Security.
 * Certifications:
   * **OffSec Certified Expert 3 (OSCE3)**
   * **Offsec Experienced Penetration Tester (OSEP)**
   * **OffSec Web Expert (OSWE)**
   * **OffSec Exploit Developer (OSED)**
-  * **OffSec Certified Professional (OSCP)**
+  * **OffSec Certified Professional (OSCP)**, passed in 2022
   * **Certified Red Team Operator (CRTO)** from Zero-Point Security
   * **Certified Red Team Expert (CRTE)** from Altered Security
-* I can speak English and Chinese (although the latter isn't the best).
-* Outside of security, I am a canoe sprint athlete. I represent NUS in varsity competitions and have raced internationally repping Singapore as a national athlete.
-* I enjoy teaching too, and teach cybersecurity to youths in the Cyber Youth Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals.&#x20;
-  * Prior to that, I was a canoe sprint coach for National Junior College!&#x20;
+  * **GIAC Certified Incident Handler (GCIH)**
+* I can speak English and Chinese.
+* Outside of security, I was a canoe sprint athlete. I represented NUS in varsity competitions and have raced internationally repping Singapore as a national athlete.
+* I enjoy teaching too, and teach cybersecurity to youths in the Cyber Youth Programme by the Digital and Intelligence Service to help raise the next generation of cybersecurity professionals.
+  * Prior to that, I was a canoe sprint coach for National Junior College. 
 
 ## Contact Me
 

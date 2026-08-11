@@ -39,7 +39,7 @@ $ curl http://10.129.85.248/secret.txt | base64 -d
 Curling2018!
 ```
 
-Can't use these for now, so let's run a `gobuster` scan as well.&#x20;
+Can't use these for now, so let's run a `gobuster` scan as well.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -u http://10.129.85.248 -t 100
@@ -79,7 +79,7 @@ Loads of directories. The `/administrator` directory had a Joomla login:
 
 <figure><img src="../../../.gitbook/assets/image (4089).png" alt=""><figcaption></figcaption></figure>
 
-We can login using `floris:Curling2018!`.&#x20;
+We can login using `floris:Curling2018!`.
 
 <figure><img src="../../../.gitbook/assets/image (153).png" alt=""><figcaption></figcaption></figure>
 
@@ -89,7 +89,7 @@ We can follow the instructions from Hacktrikcs to get RCE on this website by cre
 
 <figure><img src="../../../.gitbook/assets/image (700).png" alt=""><figcaption></figcaption></figure>
 
-Then we can get a reverse shell using a `bash` one-liner.&#x20;
+Then we can get a reverse shell using a `bash` one-liner.
 
 <figure><img src="../../../.gitbook/assets/image (403).png" alt=""><figcaption></figcaption></figure>
 
@@ -121,7 +121,7 @@ www-data@curling:/home/floris$ cat password_backup
 000000f0: 819b bb48                                ...H
 ```
 
-It appears that the `hexdump` of the original file was taken and this is what is left. We can reverse this with `xxd -r`.&#x20;
+It appears that the `hexdump` of the original file was taken and this is what is left. We can reverse this with `xxd -r`.
 
 <figure><img src="../../../.gitbook/assets/image (1249).png" alt=""><figcaption></figcaption></figure>
 
@@ -138,7 +138,7 @@ We can use this to `su` to `floris`.
 
 ### To Root
 
-I ran `pspy64` on the machine to see if there were background processes running as `root`.&#x20;
+I ran `pspy64` on the machine to see if there were background processes running as `root`.
 
 ```
 2023/05/06 11:41:01 CMD: UID=0    PID=3317   | /bin/sh -c sleep 1; cat /root/default.txt > /home/floris/admin-area/input                                                                  
@@ -184,7 +184,7 @@ referer = "http://nowhereatall.example.com/"
 # --- End of example file ---
 ```
 
-This means that we can download any files as `root` since `root` is the one who is running the commands by changing the `curl` configuration file used (which we conveniently have write access over).&#x20;
+This means that we can download any files as `root` since `root` is the one who is running the commands by changing the `curl` configuration file used (which we conveniently have write access over).
 
 This means we can overwrite files like `/etc/passwd` and add new `root` users to the machine. First, we would need to get a copy of the `/etc/passwd` of the machine onto ours, and append this line to it:
 

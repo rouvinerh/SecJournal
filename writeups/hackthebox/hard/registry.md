@@ -16,7 +16,7 @@ PORT    STATE SERVICE
 443/tcp open  https
 ```
 
-Both the websites point towards a nginx default page.&#x20;
+Both the websites point towards a nginx default page.
 
 ### Web Enum
 
@@ -36,7 +36,7 @@ Based on the Bolt CMS Repo, we can check `changelog.md` to see the version and f
 
 <figure><img src="../../../.gitbook/assets/image (1197).png" alt=""><figcaption></figcaption></figure>
 
-This was a rather old machine, so there were RCE exploits available if I could find the credentials for the administrator. However, there were no credentials for me to exploit, and I could not do much with this. I was clearly missing something.&#x20;
+This was a rather old machine, so there were RCE exploits available if I could find the credentials for the administrator. However, there were no credentials for me to exploit, and I could not do much with this. I was clearly missing something.
 
 I went back to the `/install` directory and downloaded the output as a file, only to find that it was a gzip file.
 
@@ -176,7 +176,7 @@ $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/
 ```
 {% endcode %}
 
-This confirms that we can download one of the blobs and perhaps find some files in it.&#x20;
+This confirms that we can download one of the blobs and perhaps find some files in it.
 
 ```bash
 $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/bolt-image/blobs/sha256:302bfcb3f10c386a25a58913917257bd2fe772127e36645192fa35e4c6b3c66b -L -o blob.tar
@@ -282,7 +282,7 @@ Within the files earlier, I did see a `backup.php` file that was probably being 
 <?php shell_exec("sudo restic backup -r rest:http://backup.registry.htb/bolt bolt");
 ```
 
-This file was using `restic` to store encrypted backups of files onto a certain directory.&#x20;
+This file was using `restic` to store encrypted backups of files onto a certain directory.
 
 {% embed url="https://restic.net/" %}
 

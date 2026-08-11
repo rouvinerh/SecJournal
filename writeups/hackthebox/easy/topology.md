@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-HTTP exploits it seems.&#x20;
+HTTP exploits it seems.
 
 ### LaTeX Project -> LFI
 
@@ -23,7 +23,7 @@ The website is seems to be a university website:
 
 <figure><img src="../../../.gitbook/assets/image (97).png" alt=""><figcaption></figcaption></figure>
 
-There's a LaTeX Equation Generator available. LaTeX is a software made for documentation, and I'm roughly familiar with how it works to make mathematical equations for stuff like university math module notes. Anyways, we have to add `latex.topology.htb` to our `/etc/hosts` file to visit the `equation.php` site available.&#x20;
+There's a LaTeX Equation Generator available. LaTeX is a software made for documentation, and I'm roughly familiar with how it works to make mathematical equations for stuff like university math module notes. Anyways, we have to add `latex.topology.htb` to our `/etc/hosts` file to visit the `equation.php` site available.
 
 On the site itself, it just shows some basic LaTeX syntax:
 
@@ -78,7 +78,7 @@ In this case, what we can do is try to use other commands, like `\lstinputlistin
 \lstinputlisting{/var/www/dev/.htpasswd}
 ```
 
-It doesn't work (as I've learnt) because the machine asks for **LaTeX inline math mode.** There are different modes for LaTeX present, and they would parse characters differently. If we use '$' signs, we can force the machine to process our query by switching mode for it.&#x20;
+It doesn't work (as I've learnt) because the machine asks for **LaTeX inline math mode.** There are different modes for LaTeX present, and they would parse characters differently. If we use '$' signs, we can force the machine to process our query by switching mode for it.
 
 {% embed url="https://tex.stackexchange.com/questions/410863/what-are-the-differences-between-and" %}
 
@@ -145,7 +145,7 @@ I also ran a `pspy64` while searching more about this particular software, and f
 2023/06/11 12:35:01 CMD: UID=0    PID=2788   | gnuplot /opt/gnuplot/networkplot.plt 
 ```
 
-We don't have read access to the directory, but we have write access, meaning we have to manipulate the `.plt` files present on the `/opt` directory to somehow achieve RCE as `root`. Or, we can just add another `.plt` file.&#x20;
+We don't have read access to the directory, but we have write access, meaning we have to manipulate the `.plt` files present on the `/opt` directory to somehow achieve RCE as `root`. Or, we can just add another `.plt` file.
 
 I found a resource that shows the `system` keyword can be used to execute system commands:
 
@@ -161,4 +161,4 @@ Then, we can just wait for `root` to execute our new file and privesc that way:
 
 <figure><img src="../../../.gitbook/assets/image (127).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

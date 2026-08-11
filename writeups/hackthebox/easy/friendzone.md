@@ -18,11 +18,11 @@ We can enumerate the SMB shares to find that we have write permissions over one 
 
 <figure><img src="../../../.gitbook/assets/image (2012).png" alt=""><figcaption></figcaption></figure>
 
-This folder contains nothing, but the fact that we have write access indicates that we should probably be adding something to it. We can also find some credentials in the other share.&#x20;
+This folder contains nothing, but the fact that we have write access indicates that we should probably be adding something to it. We can also find some credentials in the other share.
 
 <figure><img src="../../../.gitbook/assets/image (676).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;Now, DNS is open, so we can expect to have loads of sub-domains. This machine has so many and it's rather painful to exploit. So I'll cut to the chase, we have to visit `administrator1.friendzone.red` that has a login page for us:
+Now, DNS is open, so we can expect to have loads of sub-domains. This machine has so many and it's rather painful to exploit. So I'll cut to the chase, we have to visit `administrator1.friendzone.red` that has a login page for us:
 
 <figure><img src="../../../.gitbook/assets/image (3660).png" alt=""><figcaption></figcaption></figure>
 

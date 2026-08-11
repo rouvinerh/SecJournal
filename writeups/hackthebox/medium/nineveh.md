@@ -51,7 +51,7 @@ This was another dead end however since we don't have credentials.
 
 ### Brute Force
 
-Normally, I don't brute force passwords unless it's my last lead, and at this juncture I had no leads. Brute forcing the logins on both pages were successful with username `admin`.&#x20;
+Normally, I don't brute force passwords unless it's my last lead, and at this juncture I had no leads. Brute forcing the logins on both pages were successful with username `admin`.
 
 <figure><img src="../../../.gitbook/assets/image (3171).png" alt=""><figcaption><p><em>HTTP Login Brute Force</em></p></figcaption></figure>
 
@@ -73,7 +73,7 @@ However, this exploit requires us to be able to run the PHP file somehow, and th
 
 <figure><img src="../../../.gitbook/assets/image (3702).png" alt=""><figcaption></figcaption></figure>
 
-Now that we have RCE, getting a shell is trivial.&#x20;
+Now that we have RCE, getting a shell is trivial.
 
 ## Privilege Escalation
 
@@ -83,7 +83,7 @@ When we move to the main directory, we can find a `/report` directory present, a
 
 <figure><img src="../../../.gitbook/assets/image (1702).png" alt=""><figcaption></figcaption></figure>
 
-This root kit has some local privilege escalation exploits.&#x20;
+This root kit has some local privilege escalation exploits.
 
 {% embed url="https://vk9-sec.com/chkrootkit-0-49-local-privilege-escalation-cve-2014-0476/" %}
 

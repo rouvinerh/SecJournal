@@ -46,7 +46,7 @@ PORT     STATE SERVICE VERSION
 |_      httponly flag not set
 ```
 
-So there's a `.git` repository which we can download first.&#x20;
+So there's a `.git` repository which we can download first.
 
 ### Web + Git Enumeration
 
@@ -54,7 +54,7 @@ Port 80 hosts a corporate website:
 
 <figure><img src="../../../.gitbook/assets/image (3954).png" alt=""><figcaption></figcaption></figure>
 
-If we click 'Get in touch', we are redirected to `develop.site/getintouch.php`. We can first add that to our `/etc/hosts` file and then enumerate further.&#x20;
+If we click 'Get in touch', we are redirected to `develop.site/getintouch.php`. We can first add that to our `/etc/hosts` file and then enumerate further.
 
 The page reveals a simple Contact Form:
 
@@ -150,9 +150,9 @@ index 28dd8b2..0000000
 -?>
 ```
 
-Firstly, we have some mention of a blacklist and whitelist preventing RCE. Next, we have some hashes and users, of which the hashes don't crack.&#x20;
+Firstly, we have some mention of a blacklist and whitelist preventing RCE. Next, we have some hashes and users, of which the hashes don't crack.
 
-Lastly, we have `login.php` form, which uses the username concatenated with the MD5 of the password. This authentication mechanism is vulnerable to PHP type juggling since `===` is not used, hence magic hashes can be used to bypass the login.&#x20;
+Lastly, we have `login.php` form, which uses the username concatenated with the MD5 of the password. This authentication mechanism is vulnerable to PHP type juggling since `===` is not used, hence magic hashes can be used to bypass the login.
 
 ### Magic Hashes -> LFI SSH
 
@@ -168,7 +168,7 @@ The Resources tab of the dashboard shows potential for RCE:
 
 <figure><img src="../../../.gitbook/assets/image (312).png" alt=""><figcaption></figcaption></figure>
 
-So we know that this is probably still vulnerable to RCE, and it tells us when we are blocked.&#x20;
+So we know that this is probably still vulnerable to RCE, and it tells us when we are blocked.
 
 <figure><img src="../../../.gitbook/assets/image (308).png" alt=""><figcaption></figcaption></figure>
 
@@ -176,7 +176,7 @@ I tested different commands, and found that `curl` isn't blocked:
 
 <figure><img src="../../../.gitbook/assets/image (1175).png" alt=""><figcaption></figcaption></figure>
 
-Commands like `bash` and `sh` are blocked, and so are 'space' characters, so it will be difficult to get a reverse shell through `curl`. However, we can use this to read the files on the system by sending POST requests to our listening port 80.&#x20;
+Commands like `bash` and `sh` are blocked, and so are 'space' characters, so it will be difficult to get a reverse shell through `curl`. However, we can use this to read the files on the system by sending POST requests to our listening port 80.
 
 To overcome the space character block, we can use `${IFS}`. Using this, we can send POST requests with file contents using the `-F` flag:
 
@@ -208,7 +208,7 @@ REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
 mysql        8.0.22    d4c3cafb11d5   2 years ago   545MB
 ```
 
-&#x20;Just run this command from Hacktricks:
+Just run this command from Hacktricks:
 
 {% code overflow="wrap" %}
 ```

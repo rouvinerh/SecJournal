@@ -15,7 +15,7 @@ PORT      STATE SERVICE
 13337/tcp open  unknown
 ```
 
-This box likely has some API exploitation, so we can start proxying traffic through Burp.&#x20;
+This box likely has some API exploitation, so we can start proxying traffic through Burp.
 
 ### API -> RCE
 
@@ -23,7 +23,7 @@ Port 13337 shows some basic documentation for an API:
 
 <figure><img src="../../../.gitbook/assets/image (3625).png" alt=""><figcaption></figcaption></figure>
 
-The most interesting was the `/update` endpoint, which accepted a user-controlled URL and says it updates the application via a 'Linux Executable'. This might be vulnerable to RCE if we can chain commands to the end of the URL.&#x20;
+The most interesting was the `/update` endpoint, which accepted a user-controlled URL and says it updates the application via a 'Linux Executable'. This might be vulnerable to RCE if we can chain commands to the end of the URL.
 
 But we didn't have a username yet. There's also a `/logs` endpoint:
 
@@ -36,7 +36,7 @@ $ curl http://192.168.183.134:13337/logs
 WAF: Access Denied for this Host.
 ```
 
-Since the application mentioned that this is meant to be open to `localhost` only, we can try appending the `X-Forwarded-For` header.&#x20;
+Since the application mentioned that this is meant to be open to `localhost` only, we can try appending the `X-Forwarded-For` header.
 
 ```
 $ curl http://192.168.183.134:13337/logs -H 'X-Forwarded-For: localhost'
@@ -82,7 +82,7 @@ There's a `clumsyadmin` user present, and this might be the user we need. Then, 
 
 <figure><img src="../../../.gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
 
-Since our parameters was being passed to a 'Linux Executable', I assumed that the URL parameter was not being properly sanitised (and is probably using `wget` or something).&#x20;
+Since our parameters was being passed to a 'Linux Executable', I assumed that the URL parameter was not being properly sanitised (and is probably using `wget` or something).
 
 To test, I sent this JSON data:
 

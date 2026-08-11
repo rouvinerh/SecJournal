@@ -6,13 +6,13 @@ description: Taken from eCPPTv2.
 
 ## CPU, ISA and Assembly
 
-The Central Process Unit (CPU) is in charge of executing machine code of a program. For example, when we compile C code, we would need a **compiler** like `clang` or `gcc` that would convert the code into a binary (.elf or .exe), which is basically machine code that the computer can read.&#x20;
+The Central Process Unit (CPU) is in charge of executing machine code of a program. For example, when we compile C code, we would need a **compiler** like `clang` or `gcc` that would convert the code into a binary (.elf or .exe), which is basically machine code that the computer can read.
 
 <figure><img src="../../.gitbook/assets/image (1965).png" alt=""><figcaption></figcaption></figure>
 
 **Assembly** is the human interpretable format of machine code, which is written using a set of instructions that the CPU processes. In assembly, each instruction is a primitive command that executes specific operations, such as moving data, changing the execution flow and it performs logical operations.
 
-CPU instructions are represented in hex, and it's impossible for humans to use this in hex format because we can't read hex (obviously). Hence, this code gets translated into **mnenomic** code using tools like `nasm`.&#x20;
+CPU instructions are represented in hex, and it's impossible for humans to use this in hex format because we can't read hex (obviously). Hence, this code gets translated into **mnenomic** code using tools like `nasm`.
 
 <figure><img src="../../.gitbook/assets/image (3682).png" alt=""><figcaption><p><em>helloword.exe program</em></p></figcaption></figure>
 
@@ -28,7 +28,7 @@ Think of registers like variables used by the CPU to store and get data. Some re
 
 <figure><img src="../../.gitbook/assets/image (3779).png" alt=""><figcaption></figcaption></figure>
 
-In a 32-bit system, each register is an acryonym that is prefixed with 'E', meaning extended. The E is replaced by 'R' in x64.&#x20;
+In a 32-bit system, each register is an acryonym that is prefixed with 'E', meaning extended. The E is replaced by 'R' in x64.
 
 <figure><img src="../../.gitbook/assets/image (4033).png" alt=""><figcaption></figcaption></figure>
 
@@ -50,8 +50,8 @@ The process is divided into 4 regions:
    * Initialized data includes items such as static variables, which are pre-defined and can be modified.
    * Uninitialized data is called **Block Stated by Symbol (BSS),** which contains variables that are initialized to 0 or do not have any explicit initialization.
 3. Heap
-   * Heap is a space of memory reserved for any manual allocation through `malloc` or `calloc`.&#x20;
-   * During execution, program can request more space if neede, and this size of the data region extends **downwards**.&#x20;
+   * Heap is a space of memory reserved for any manual allocation through `malloc` or `calloc`.
+   * During execution, program can request more space if neede, and this size of the data region extends **downwards**.
 4. Stack
    * Where the main bulk of execution takes place
    * Grows **upwards,** meaning as more variables are declared, they are placed on top with higher memory addresses.
@@ -69,20 +69,20 @@ This instruction minuses 4 in 32-bit or 8 in 64-bit from the ESP and updaters th
 
 ### POP
 
-When POP is executed, it retrieves the data from the top of the stack. Therefore the data contained at the ESP would be retrieved and stored in another register. The POP instruction would increment the value by 4 or 8 depending on the type of processors.&#x20;
+When POP is executed, it retrieves the data from the top of the stack. Therefore the data contained at the ESP would be retrieved and stored in another register. The POP instruction would increment the value by 4 or 8 depending on the type of processors.
 
 **Take note that when the value is popped from the stack, it is not deleted.** Data and files in a computer cannot just be removed. They are still present in the stack, **but flagged as overwriteble**. This indicates that when new data is loaded, the memory overwrites the old data, effectively 'removing it'.
 
 ### Stack Frames
 
-A bit of CS1010 knowledge here. When we call a function, they are stored in something called **stack frames**. Each function would contain a **prologue**, which is the start of the function that declares variables and it readies the stack. The end of the function would be called the **epilogue**, which resets the stack back to prologue settings.&#x20;
+A bit of CS1010 knowledge here. When we call a function, they are stored in something called **stack frames**. Each function would contain a **prologue**, which is the start of the function that declares variables and it readies the stack. The end of the function would be called the **epilogue**, which resets the stack back to prologue settings.
 
 These stack frames are PUSHed when called, and POPped when they return. This allows for the function or **subroutine** to operate independently in its own location in the stack. The memory and variables within one stack frame **would not impact another directly** (unless programmed specifically to). When the function ends, the following happens:
 
 1. Program receives the parameters passed from the subroutine.
 2. The EIP is reset to the location at the time of the initial call. This means that it points back to the original location where it came from.
 
-The stack frame keeps track of the location where each function should return to when it terminates.&#x20;
+The stack frame keeps track of the location where each function should return to when it terminates.
 
 We can take a look at an example in C:
 
@@ -105,7 +105,7 @@ The stack frames would look like this for the program above:
 
 <figure><img src="../../.gitbook/assets/image (3235).png" alt=""><figcaption></figcaption></figure>
 
-As the stack frames are popped out, the EIP would point back to `a()` and then `main()`, changing where the execution flow starts and resumes.&#x20;
+As the stack frames are popped out, the EIP would point back to `a()` and then `main()`, changing where the execution flow starts and resumes.
 
 ### Execution Flow
 
@@ -132,11 +132,11 @@ When the `main()` function is called, the stack frames would look like so:
 
 <figure><img src="../../.gitbook/assets/image (319).png" alt=""><figcaption></figcaption></figure>
 
-The program first needs to save its location, since if we lose it, we can't run our program anymore as we would lose the `main()` function. Specifically, the processors PUSHes the content of the EIP (which is basically a pointer to the address of memory that the variables are stored in) to the stack. The `main()` function is called via a CALL instruction, and the EIP points to the **first byte** after the CALL instruction.&#x20;
+The program first needs to save its location, since if we lose it, we can't run our program anymore as we would lose the `main()` function. Specifically, the processors PUSHes the content of the EIP (which is basically a pointer to the address of memory that the variables are stored in) to the stack. The `main()` function is called via a CALL instruction, and the EIP points to the **first byte** after the CALL instruction.
 
 The instruction that executes the `main()` function, also known as the **caller, loses control of the execution, and the `main()` function takes over**.
 
-A new stack frame is created, and **defined by the ESP and EBP**. Since we cannot lose the old stack frame and its information, the current EBP is saved on the stack.&#x20;
+A new stack frame is created, and **defined by the ESP and EBP**. Since we cannot lose the old stack frame and its information, the current EBP is saved on the stack.
 
 <figure><img src="../../.gitbook/assets/image (1118).png" alt=""><figcaption></figcaption></figure>
 
@@ -157,18 +157,18 @@ Breaking it down:
    * The EBP now points to the location on top of the previous stack frame.
 2. `mov ebp, esp`
    * This moves the value of the ESP into the EBP. It is this instruction that creates a new stack frame on top of the stack.
-   * The base of the new stack is **the top of the old stack frame**.&#x20;
+   * The base of the new stack is **the top of the old stack frame**.
 3. `sub esp, <variable>`
    * This would substract the value of the ESP by a specific number (in this case, the value of the variable is an integer) to make space for the variables from `main()`.
    * This variable tends to be a multiple of 4.
 
 <figure><img src="../../.gitbook/assets/image (165).png" alt=""><figcaption></figcaption></figure>
 
-Once the prologue ends, the stack frame for `main()` is complete and local variables are coped onto the stack. Since the ESP is not pointing to the memory address right after the EBP, we cannot use the PUSH operation since it stores values top of the stack. **We want to store the variables where space has been allocated for it**.&#x20;
+Once the prologue ends, the stack frame for `main()` is complete and local variables are coped onto the stack. Since the ESP is not pointing to the memory address right after the EBP, we cannot use the PUSH operation since it stores values top of the stack. **We want to store the variables where space has been allocated for it**.
 
 As such, the ESP would be **incremented** as variables are stored in it and it **moves downwards**. In this case, ESP + Y is a memory location somewhere between the EBP and ESP. Each time it is incremented, the variables are PUSHed into the stack.
 
-Take note of how we declare `int x = 11` first, hence its PUSHed last.&#x20;
+Take note of how we declare `int x = 11` first, hence its PUSHed last.
 
 <figure><img src="../../.gitbook/assets/image (3948).png" alt=""><figcaption></figcaption></figure>
 
@@ -211,7 +211,7 @@ After `func()` returns, the stack frames look like this:
 
 ## Endianness
 
-Endianness refers to how storing values in memory works. There are 2 types of endianness, **big-endian and little-endian**. The endianness changes where the Most Significant Bit (MSB) and Least Significant Bit (LSB) are stored.&#x20;
+Endianness refers to how storing values in memory works. There are 2 types of endianness, **big-endian and little-endian**. The endianness changes where the Most Significant Bit (MSB) and Least Significant Bit (LSB) are stored.
 
 * MSB refers to the largest binary number, and its usually the first number from the left
   * For example, a binary number of 100 would have an MSB of 1.
@@ -231,4 +231,4 @@ This affects the order of which a program reads code, and affects the type of pa
 
 This is an assembly instruction that tells the code to skip to the next instruction. It has a hex value of \x90, and this does have use within assembly.
 
-For instance, if we want to skip along the code and fill the stack with NOPs to begin execution elsewhere, we can just pad payloads with these instructions. This is known as an **NOP-sled**.&#x20;
+For instance, if we want to skip along the code and fill the stack with NOPs to begin execution elsewhere, we can just pad payloads with these instructions. This is known as an **NOP-sled**.

@@ -22,7 +22,7 @@ Then, I was brought to this page:
 
 <figure><img src="../../../.gitbook/assets/image (3784).png" alt=""><figcaption></figcaption></figure>
 
-This was a PHP site so I tried uploading PHP webshells, but it didn't work. As such, I tried to **embed a webshell witihin a JPG file**.&#x20;
+This was a PHP site so I tried uploading PHP webshells, but it didn't work. As such, I tried to **embed a webshell witihin a JPG file**.
 
 <figure><img src="../../../.gitbook/assets/image (486).png" alt=""><figcaption></figcaption></figure>
 
@@ -60,7 +60,7 @@ From reading the `/home` directory, the user on this machine is `theseus`. These
 
 ### Fdisk
 
-I checked for SUID binaries, and found one at `/bin/sysinfo`. When trying to execute it, I found that it was executing `fdisk` without the full path.&#x20;
+I checked for SUID binaries, and found one at `/bin/sysinfo`. When trying to execute it, I found that it was executing `fdisk` without the full path.
 
 <figure><img src="../../../.gitbook/assets/image (3914).png" alt=""><figcaption></figcaption></figure>
 

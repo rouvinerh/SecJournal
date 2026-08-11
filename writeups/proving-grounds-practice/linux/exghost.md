@@ -132,7 +132,7 @@ Megapixels                      : 0.065
 
 ### File Upload -> Exiftool RCE
 
-It appears that the website is accepting images, and then running `exiftool` on it as a response. This version of `exiftool` is vulnerable to an RCE exploit.&#x20;
+It appears that the website is accepting images, and then running `exiftool` on it as a response. This version of `exiftool` is vulnerable to an RCE exploit.
 
 {% embed url="https://github.com/OneSecCyber/JPEG_RCE" %}
 

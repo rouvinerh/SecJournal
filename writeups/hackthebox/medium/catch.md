@@ -26,7 +26,7 @@ Typical corporate page:
 
 <figure><img src="../../../.gitbook/assets/image (861).png" alt=""><figcaption></figcaption></figure>
 
-I tried enumerating, but I could not find much here. The only thing was the Download Now button, which downloaded an APK file to my machine. Interesting, but we can move on.&#x20;
+I tried enumerating, but I could not find much here. The only thing was the Download Now button, which downloaded an APK file to my machine. Interesting, but we can move on.
 
 ### Gitea
 
@@ -74,7 +74,7 @@ Cachet DID have some vulnerabilities present (finally!). Most notably, there is 
 
 {% embed url="https://www.sonarsource.com/blog/cachet-code-execution-via-laravel-configuration-injection/" %}
 
-We'll keep this in mind.&#x20;
+We'll keep this in mind.
 
 ### APK Reversing
 
@@ -94,7 +94,7 @@ I didn't really know what to do even if I had Gitea access, so let's exploit the
 
 ### Let's Chat Token
 
-This was a Base64 token, so let's try to use an `Authorization` HTTP header as the token. Also, at the very bottom of the page, there was a Github Repository present (which I missed the first time).&#x20;
+This was a Base64 token, so let's try to use an `Authorization` HTTP header as the token. Also, at the very bottom of the page, there was a Github Repository present (which I missed the first time).
 
 {% embed url="https://github.com/sdelements/lets-chat" %}
 
@@ -109,7 +109,7 @@ $ curl -s http://10.129.84.253:5000/rooms -H 'Authorization: Bearer NjFiODZhZWFk
 [{"id":"61b86b28d984e2451036eb17","slug":"status","name":"Status","description":"Cachet Updates and Maintenance","lastActive":"2021-12-14T10:34:20.749Z","created":"2021-12-14T10:00:08.384Z","owner":"61b86aead984e2451036eb16","private":false,"hasPassword":false,"participants":[]},{"id":"61b8708efe190b466d476bfb","slug":"android_dev","name":"Android Development","description":"Android App Updates, Issues & More","lastActive":"2021-12-14T10:24:21.145Z","created":"2021-12-14T10:23:10.474Z","owner":"61b86aead984e2451036eb16","private":false,"hasPassword":false,"participants":[]},{"id":"61b86b3fd984e2451036eb18","slug":"employees","name":"Employees","description":"New Joinees, Org updates","lastActive":"2021-12-14T10:18:04.710Z","created":"2021-12-14T10:00:31.043Z","owner":"61b86aead984e2451036eb16","private":false,"hasPassword":false,"participants":[]}] 
 ```
 
-The output can be beautified using `jq`.&#x20;
+The output can be beautified using `jq`.
 
 ```
 $ curl -s http://10.129.84.253:5000/rooms -H 'Authorization: Bearer NjFiODZhZWFkOTg0ZTI0NTEwMzZlYjE2OmQ1ODg0NjhmZjhiYWU0NDYzNzlhNTdmYTJiNGU2M2EyMzY4MjI0MzM2YjU5NDljNQ==' | jq
@@ -168,11 +168,11 @@ $ curl -s http://10.129.84.253:5000/rooms/61b86b28d984e2451036eb17/messages -H '
 <TRUNCATED>
 ```
 
-Great! Now we can login on Cachet.&#x20;
+Great! Now we can login on Cachet.
 
 ### Cachet Information Leak
 
-In the SonarLink blog, it is stated that we could potentially leak the configuration of the `dotenv` file, which is the basis of the RCE. In this case, it supports **nested variable assignment**. This would mean that `${NAME}` is accepted and will run.&#x20;
+In the SonarLink blog, it is stated that we could potentially leak the configuration of the `dotenv` file, which is the basis of the RCE. In this case, it supports **nested variable assignment**. This would mean that `${NAME}` is accepted and will run.
 
 Following the PoC, we can use `${DB_USERNAME}` and `${DB_PASSWORD}` within Settings > Mail in the Mail Host and Mail From Address fields.
 
@@ -309,7 +309,7 @@ done
 cleanup
 ```
 
-The script seems to do some checking on whether the file is legit or not. However, within the `app_check()` function, there's an Command Injection Vulnerability.&#x20;
+The script seems to do some checking on whether the file is legit or not. However, within the `app_check()` function, there's an Command Injection Vulnerability.
 
 ```bash
 app_check() {
@@ -326,7 +326,7 @@ app_check() {
 }
 ```
 
-The `APP_NAME` variable has to have the word 'Catch' within it, and then this parameter is passed directly to a command without sanitisation. We can use a `$()` expression to inject here since subshells would be processed before the rest of it.&#x20;
+The `APP_NAME` variable has to have the word 'Catch' within it, and then this parameter is passed directly to a command without sanitisation. We can use a `$()` expression to inject here since subshells would be processed before the rest of it.
 
 Now, we need to create a valid file to be used. Using the APK we had earlier, we can decompile is using `apktool`:
 

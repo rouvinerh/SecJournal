@@ -35,11 +35,11 @@ After some digging around on Kali Linux tools, we can find that there is this co
 
 ### Finding Telnet Credentials
 
-When we open this file up in Kali, we can get some interesting results. There are bunch of table names, with one called `auth_user` sticking out.&#x20;
+When we open this file up in Kali, we can get some interesting results. There are bunch of table names, with one called `auth_user` sticking out.
 
 <figure><img src="../../../.gitbook/assets/image (1073).png" alt=""><figcaption></figcaption></figure>
 
-We can dump out the contents of that table using `mdb-export`.&#x20;
+We can dump out the contents of that table using `mdb-export`.
 
 <figure><img src="../../../.gitbook/assets/image (808).png" alt=""><figcaption></figcaption></figure>
 
@@ -67,7 +67,7 @@ A quick searchsploit reveals that there is a public exploits available for this 
 
 <figure><img src="../../../.gitbook/assets/image (3284).png" alt=""><figcaption></figcaption></figure>
 
-This exploit details that privilege escalation is possible as we are allowed to change the executable file with any binary that we choose. However, I was unable to exploit this properly.&#x20;
+This exploit details that privilege escalation is possible as we are allowed to change the executable file with any binary that we choose. However, I was unable to exploit this properly.
 
 ### Finding Runas hint
 

@@ -141,7 +141,7 @@ The above means that it is vulnerable!
 
 {% embed url="https://www.exploit-db.com/exploits/1518" %}
 
-This method exploits the access that the `root` user has over the system using MySQL, which allows for malicious shared objects to be loaded and gives an attacker RCE as `root` using the MySQL instance.&#x20;
+This method exploits the access that the `root` user has over the system using MySQL, which allows for malicious shared objects to be loaded and gives an attacker RCE as `root` using the MySQL instance.
 
 First, compile the exploit accordingly on the machine itself:
 

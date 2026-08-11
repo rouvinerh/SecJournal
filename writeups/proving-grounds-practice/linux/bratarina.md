@@ -54,7 +54,7 @@ OpenSMTPD < 6.6.3p1 - Local Privilege Escalation + Remote  | openbsd/remote/4814
 ----------------------------------------------------------- --------------------------------
 ```
 
-The RCE exploit looks the most promising. We can verify it works using `ping`.&#x20;
+The RCE exploit looks the most promising. We can verify it works using `ping`.
 
 <figure><img src="../../../.gitbook/assets/image (1061).png" alt=""><figcaption></figcaption></figure>
 

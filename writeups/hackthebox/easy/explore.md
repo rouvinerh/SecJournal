@@ -21,7 +21,7 @@ PORT      STATE    SERVICE
 59777/tcp open     unknown
 ```
 
-Interesting ports open. I ran a detailed scan because I didn't know what was what.&#x20;
+Interesting ports open. I ran a detailed scan because I didn't know what was what.
 
 ```
 $ sudo nmap -p 2222,5555,40951,59777 -sC -sV -O --min-rate 5000 10.129.98.58
@@ -142,7 +142,7 @@ No exact OS matches for host (test conditions non-ideal).
 Network Distance: 2 hops
 ```
 
-Port 59777 seems to be returning some stuff.&#x20;
+Port 59777 seems to be returning some stuff.
 
 ### EFS LFI -> SSH Creds
 
@@ -241,7 +241,7 @@ The picture contains credentials for the user:
 
 <figure><img src="../../../.gitbook/assets/image (1645).png" alt=""><figcaption></figcaption></figure>
 
-Here are the creds: `kristi:Kr1sT!5h@Rp3xPl0r3!`.&#x20;
+Here are the creds: `kristi:Kr1sT!5h@Rp3xPl0r3!`.
 
 <figure><img src="../../../.gitbook/assets/image (2078).png" alt=""><figcaption></figcaption></figure>
 
@@ -262,7 +262,7 @@ Earlier, we found port 5555 on the machine and it was being filtered. Based on H
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/5555-android-debug-bridge" %}
 
-To interact with this, we would first need to do port forwarding via `ssh`.&#x20;
+To interact with this, we would first need to do port forwarding via `ssh`.
 
 {% code overflow="wrap" %}
 ```
@@ -286,7 +286,7 @@ uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdca
 ```
 {% endcode %}
 
-We are now root! We just need to find `root.txt` now.&#x20;
+We are now root! We just need to find `root.txt` now.
 
 ```
 x86_64:/ # find / -name root.txt 2> /dev/null

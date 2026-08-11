@@ -32,7 +32,7 @@ Sonatype Nexus 3.21.1 - Remote Code Execution (Authenticat | java/webapps/49385.
 ----------------------------------------------------------- --------------------------------
 ```
 
-Weak credentials like `admin:admin` or `nexus:nexus` didn't work. In this case, let's check out out Telnet on port 23.&#x20;
+Weak credentials like `admin:admin` or `nexus:nexus` didn't work. In this case, let's check out out Telnet on port 23.
 
 ```
 $ nc -vn 192.168.240.159 23
@@ -83,7 +83,7 @@ cancer
 sagittarius
 ```
 
-Afterwards, we can create a Python script to brute force out the answer based on this.&#x20;
+Afterwards, we can create a Python script to brute force out the answer based on this.
 
 ```python
 from pwn import *
@@ -123,7 +123,7 @@ $ python3 brute.py
 [*] Closed connection to 192.168.240.159 port 23
 ```
 
-Now we can do the same for the zodiac signs and ANSTWO.&#x20;
+Now we can do the same for the zodiac signs and ANSTWO.
 
 ```
 [+] Opening connection to 192.168.240.159 on port 23: Done
@@ -160,7 +160,7 @@ USERNAME='admin'
 PASSWORD='3e409e89-514c-4f9f-955e-dfa5c4083518'
 ```
 
-I had a lot of trouble getting a shell on this machine for some reason. Eventually, I just decided to use `msfconsole` to exploit this.&#x20;
+I had a lot of trouble getting a shell on this machine for some reason. Eventually, I just decided to use `msfconsole` to exploit this.
 
 <figure><img src="../../../.gitbook/assets/image (3229).png" alt=""><figcaption></figcaption></figure>
 
@@ -178,7 +178,7 @@ I ran a `linpeas.sh` scan on the machine and found an interesting permission set
 /usr/lib/python3.8/base64.py
 ```
 
-We can write to `base64.py`, which is the module being used here. I ran `pspy64` as well to see if this file was being executed in anyway.&#x20;
+We can write to `base64.py`, which is the module being used here. I ran `pspy64` as well to see if this file was being executed in anyway.
 
 ```
 2023/07/07 04:19:01 CMD: UID=0    PID=58840  | python3 /home/sona/logcrypt.py 

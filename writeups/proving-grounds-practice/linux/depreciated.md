@@ -70,7 +70,7 @@ PORT     STATE SERVICE VERSION
 |_http-server-header: Werkzeug/2.0.2 Python/3.8.10
 ```
 
-Port 5132 seems to have loads of errors, asking for a username and password.&#x20;
+Port 5132 seems to have loads of errors, asking for a username and password.
 
 ### Web Enum -> GraphQL Creds
 

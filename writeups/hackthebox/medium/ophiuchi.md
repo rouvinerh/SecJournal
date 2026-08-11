@@ -120,7 +120,7 @@ javac AwesomeScriptEngineFactory.java
 jar -cvf AwesomeScriptingEngineFactory.jar -C src/ .
 ```
 
-This would create a JAR file. Then, we can make the machine download the JAR file using the same method as above to receive callback. This would trigger the command and our listener port would receive a reverse shell as `tomcat`.&#x20;
+This would create a JAR file. Then, we can make the machine download the JAR file using the same method as above to receive callback. This would trigger the command and our listener port would receive a reverse shell as `tomcat`.
 
 <figure><img src="../../../.gitbook/assets/image (1638).png" alt=""><figcaption></figcaption></figure>
 
@@ -176,7 +176,7 @@ func main() {
 }
 ```
 
-The `deploy.sh` does not have absolute path, so we can create our own script to get a `root` shell. However, before running that, the script seems to check `main.wasm` and only runs `deploy.sh` if it returns 1.&#x20;
+The `deploy.sh` does not have absolute path, so we can create our own script to get a `root` shell. However, before running that, the script seems to check `main.wasm` and only runs `deploy.sh` if it returns 1.
 
 Running the script does not work no matter what for now, so let's investigate `main.wasm`. WASM is short for Web Assembly, and we can download and decompile the file here:
 
@@ -198,7 +198,7 @@ export function info():int {
 }
 ```
 
-The above code seems to do nothing but return 0, so we need to change that 0 to a 1. We can count the bytes and change the byte accordingly using `dd`.&#x20;
+The above code seems to do nothing but return 0, so we need to change that 0 to a 1. We can count the bytes and change the byte accordingly using `dd`.
 
 <figure><img src="../../../.gitbook/assets/image (1216).png" alt=""><figcaption></figcaption></figure>
 

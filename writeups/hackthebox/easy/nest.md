@@ -34,7 +34,7 @@ Within the files downloaded, the `RU_config.xml` file contained this encrypted p
 
 <figure><img src="../../../.gitbook/assets/image (2289).png" alt=""><figcaption></figcaption></figure>
 
-Also, within the contents of that file, was a .NET VB project files.&#x20;
+Also, within the contents of that file, was a .NET VB project files.
 
 ### Password Decryption
 
@@ -42,7 +42,7 @@ What I did was port all the files over to a Windows VM and then compiled it. Aft
 
 <figure><img src="../../../.gitbook/assets/image (2481).png" alt=""><figcaption></figcaption></figure>
 
-So the binary uses the `RU_config.xml` file and decrypts the password. We can set a breakpoint at that line highlighted and then view the variable contents to see the password after clicking 'Step Over' once. This reveals the password of `xRxRxPANCAK3SxRxRx`.&#x20;
+So the binary uses the `RU_config.xml` file and decrypts the password. We can set a breakpoint at that line highlighted and then view the variable contents to see the password after clicking 'Step Over' once. This reveals the password of `xRxRxPANCAK3SxRxRx`.
 
 ### C.Smith Creds
 

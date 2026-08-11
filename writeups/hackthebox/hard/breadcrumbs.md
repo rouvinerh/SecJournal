@@ -96,7 +96,7 @@ Changing these 2 tokens granted access to the file management page we found earl
 
 This was obviously a PHP site, so I attempted to upload a basic PHP webshell. Since only .zip files were allowed, we can attempt to alter the request to bypass the file extension check.
 
-Viewing the requests shows that there's a `task` variable changing our file to a .zip one.&#x20;
+Viewing the requests shows that there's a `task` variable changing our file to a .zip one.
 
 <figure><img src="../../../.gitbook/assets/image (4022).png" alt=""><figcaption></figcaption></figure>
 

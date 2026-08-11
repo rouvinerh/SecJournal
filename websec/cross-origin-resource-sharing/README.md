@@ -20,7 +20,7 @@ If the website has a Origin header of `http://example.com` and was allowed to ac
 
 ### Pre-Flight Checks
 
-In some cases, there are pre-checks done before requests are processed. Under certain circumstances, when a cross-domain request includes a non-standard HTTP method, such as `OPTIONS` or `PUT`, then the website would kind of do a double check to ensure that it's allowed to carry out those HTTP methods.&#x20;
+In some cases, there are pre-checks done before requests are processed. Under certain circumstances, when a cross-domain request includes a non-standard HTTP method, such as `OPTIONS` or `PUT`, then the website would kind of do a double check to ensure that it's allowed to carry out those HTTP methods.
 
 <figure><img src="../../.gitbook/assets/image (3104).png" alt=""><figcaption><p><em>Pre-Flight Check</em></p></figcaption></figure>
 

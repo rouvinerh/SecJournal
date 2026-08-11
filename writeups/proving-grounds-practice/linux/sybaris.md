@@ -56,7 +56,7 @@ I ran a detailed scan to enumerate further:
 6379/tcp open  redis   Redis key-value store 5.0.9
 ```
 
-The most interesting thing was the Redis instance because it was a version that was vulnerable to the Redis Module exploit.&#x20;
+The most interesting thing was the Redis instance because it was a version that was vulnerable to the Redis Module exploit.
 
 ### Rabbit Holes
 
@@ -89,15 +89,15 @@ ftp> dir
 226 Directory send OK.
 ```
 
-Not sure what this directory is used for. The Redis RCE exploit requires that we put a shared object file within the file system, then use Redis's `MODULE LOAD` to run it.&#x20;
+Not sure what this directory is used for. The Redis RCE exploit requires that we put a shared object file within the file system, then use Redis's `MODULE LOAD` to run it.
 
 {% embed url="https://github.com/n0b0dyCN/RedisModules-ExecuteCommand" %}
 
-I transferred this file over to the `pub` directory and tried to find the correct directory to load my module. After a bit of guessing, I found that we uploaded `module.so` to `/var/ftp`.&#x20;
+I transferred this file over to the `pub` directory and tried to find the correct directory to load my module. After a bit of guessing, I found that we uploaded `module.so` to `/var/ftp`.
 
 <figure><img src="../../../.gitbook/assets/image (2173).png" alt=""><figcaption></figcaption></figure>
 
-We can then easily get a reverse shell.&#x20;
+We can then easily get a reverse shell.
 
 <figure><img src="../../../.gitbook/assets/image (3481).png" alt=""><figcaption></figcaption></figure>
 

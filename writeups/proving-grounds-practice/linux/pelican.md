@@ -66,7 +66,7 @@ Exhibitor Web UI 1.7.1 - Remote Code Execution             | java/webapps/48654.
 
 ### Exhibitor RCE
 
-The Exhibitor RCE is rather simple, and the Config tab looks rather vulnerable.&#x20;
+The Exhibitor RCE is rather simple, and the Config tab looks rather vulnerable.
 
 <figure><img src="../../../.gitbook/assets/image (1803).png" alt=""><figcaption></figcaption></figure>
 

@@ -34,7 +34,7 @@ I ran SharpHound on the machine to do collection and enumeration of the domain f
 
 <figure><img src="../../../.gitbook/assets/image (1849).png" alt=""><figcaption></figcaption></figure>
 
-The user we have control over seems to have GenericAll permissions over the Exchange Windows Permissions group, which has WriteDacl permissions over the DC.&#x20;
+The user we have control over seems to have GenericAll permissions over the Exchange Windows Permissions group, which has WriteDacl permissions over the DC.
 
 The attack is as follows:
 

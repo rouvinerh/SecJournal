@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-SSH was open on this machine, which was unusual for Windows.&#x20;
+SSH was open on this machine, which was unusual for Windows.
 
 ### WebPage to PDF -> LFI
 
@@ -128,7 +128,7 @@ backup.ps1 SYMBOLIC\Administrator:(I)(F)
 Successfully processed 1 files; Failed processing 0 files
 ```
 
-We also have write access over `C:\xampp\htdocs\logs\request.log`, meaning that we can create a symbolic link to make the script read and copy any file we want. Again, since SSH is open, we can attempt to get the admin's private key.&#x20;
+We also have write access over `C:\xampp\htdocs\logs\request.log`, meaning that we can create a symbolic link to make the script read and copy any file we want. Again, since SSH is open, we can attempt to get the admin's private key.
 
 First we need to delete the `logs` directory:
 

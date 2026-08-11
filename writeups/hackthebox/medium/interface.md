@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-We can add `interface.htb` to our `/etc/hosts` file.&#x20;
+We can add `interface.htb` to our `/etc/hosts` file.
 
 ### Port 80 Enum
 
@@ -23,7 +23,7 @@ The web application reveals this:
 
 <figure><img src="../../../.gitbook/assets/image (3457).png" alt=""><figcaption></figcaption></figure>
 
-We can start with a simple `gobuster` scan to enumerate the possible endpoints in both directories and subdomains. However, the weird part is that there was nothing to be found from these.&#x20;
+We can start with a simple `gobuster` scan to enumerate the possible endpoints in both directories and subdomains. However, the weird part is that there was nothing to be found from these.
 
 We can try to see the HTTP requests that are being sent and received using Burpsuite. When sending a GET request, this is what we see in return:
 
@@ -86,7 +86,7 @@ $ curl http://prd.m.rendering-api.interface.htb/api
 {"status":"404","status_text":"route not defined"}
 ```
 
-Some JSON was returned, and there's mentionf of a 'route not defined' error.&#x20;
+Some JSON was returned, and there's mentionf of a 'route not defined' error.
 
 I ran another `gobuster` search with a larger wordlist and the `php,html,txt` extensions to fully find all the stuff I can, and still found nothing. Only when I ran a `ffuf` scan using POST requests, did I find one interesting `/api/html2pdf` endpoint.
 
@@ -116,13 +116,13 @@ dompdf has recentyl reported some RCE exploits using CSS File Inclusion.
 
 {% embed url="https://github.com/positive-security/dompdf-rce" %}
 
-The PoC states that by creating a CSS file that redirects the server to a PHP file, we can execute PHP code, which can be used to easily gain a shell. The PoC requires us to somehow generate a PDF, and I think that the html2pdf endpoint we found on API should work.&#x20;
+The PoC states that by creating a CSS file that redirects the server to a PHP file, we can execute PHP code, which can be used to easily gain a shell. The PoC requires us to somehow generate a PDF, and I think that the html2pdf endpoint we found on API should work.
 
 Now, we need to find out how to send HTML data into that API. Based on the PoC, we should be sending some HTML frames into this API. After some testing, it seems that the variable is `html`.
 
 <figure><img src="../../../.gitbook/assets/image (1820).png" alt=""><figcaption></figcaption></figure>
 
-Now we can attempt to gain a shell. First, we need to create a PHP reverse shell one-liner and a malicious CSS file, then host them both on a Python HTTP server (hosting them on a PHP server does not work for some reason).&#x20;
+Now we can attempt to gain a shell. First, we need to create a PHP reverse shell one-liner and a malicious CSS file, then host them both on a Python HTTP server (hosting them on a PHP server does not work for some reason).
 
 Take note that the PHP file has to be a legit CSS file, and we just need to change the extension to PHP. We can grab such a file from the Github PoC link I put earlier.  Then, we can use `vim` to write this extra line:
 
@@ -143,7 +143,7 @@ Take note that the PHP file has to be a legit CSS file, and we just need to chan
 ```
 {% endcode %}
 
-Then, we need to find the SHA1 hash of the link to our server, in this case mine is `http://10.10.14.22/exploit_font.php`, which becomes `a9e48a0532165b117a0ca8132955581e`.&#x20;
+Then, we need to find the SHA1 hash of the link to our server, in this case mine is `http://10.10.14.22/exploit_font.php`, which becomes `a9e48a0532165b117a0ca8132955581e`.
 
 Then, we need to send this HTTP POST request to the API:
 
@@ -251,4 +251,4 @@ Then, we wait till it executes our script.
 
 <figure><img src="../../../.gitbook/assets/image (2491).png" alt=""><figcaption></figcaption></figure>
 
-Interesting foothold, weird enumeration and really interesting PE through the unquoted variables.&#x20;
+Interesting foothold, weird enumeration and really interesting PE through the unquoted variables.

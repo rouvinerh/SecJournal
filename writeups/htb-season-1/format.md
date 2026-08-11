@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 3000/tcp open  ppp
 ```
 
-We have to add `app.microblog.htb` and `microblog.htb` to our `/etc/hosts` file to view port 80.&#x20;
+We have to add `app.microblog.htb` and `microblog.htb` to our `/etc/hosts` file to view port 80.
 
 ### Microblog -> Blog Creation
 
@@ -88,7 +88,7 @@ if(is_null($_SESSION['username'])) {
 }
 ```
 
-This is standard session stuff, and it seems to use a `bulletproof.php`, which is an image uploader plugin.&#x20;
+This is standard session stuff, and it seems to use a `bulletproof.php`, which is an image uploader plugin.
 
 {% embed url="https://github.com/samayo/bulletproof" %}
 
@@ -130,7 +130,7 @@ function isPro() {
 }
 ```
 
-The Pro user is the target here, as it looks like command injection is possible. The last chunk of code has to do with the upload functions. Most of the functions are somewhat identical to each other, taking 2 POST parameters, with one being called `id`.&#x20;
+The Pro user is the target here, as it looks like command injection is possible. The last chunk of code has to do with the upload functions. Most of the functions are somewhat identical to each other, taking 2 POST parameters, with one being called `id`.
 
 ```php
 if (isset($_POST['header']) && isset($_POST['id'])) {
@@ -174,7 +174,7 @@ This means that the code for new blogs are **all the same**. This means that the
 
 ### App Code Review -> Find Path
 
-Let's take a look at the main site that is creating new subdomains.&#x20;
+Let's take a look at the main site that is creating new subdomains.
 
 ```php
 function addSite($site_name) {
@@ -215,13 +215,13 @@ function addSite($site_name) {
 }
 ```
 
-It seems that when the new site is created, it is **writeable** for a while. Not sure what to do with this though.&#x20;
+It seems that when the new site is created, it is **writeable** for a while. Not sure what to do with this though.
 
 After looking through all the code, the 'Pro' user method seems to be the correct way. The ProUser method would allow us to use `bulletproof.php` to upload files, of which we can probably upload some kind of PHP reverse shell and execute it. Now, we need to find out how to manipulate the Redis database to make ourselves Pro.
 
 ### Redis Manipulation -> RCE
 
-While researching possible exploits, I found that it was possible to use SSRF to manipulate the Redis database.&#x20;
+While researching possible exploits, I found that it was possible to use SSRF to manipulate the Redis database.
 
 {% embed url="https://labs.detectify.com/2021/02/18/middleware-middleware-everywhere-and-lots-of-misconfigurations-to-fix/" %}
 
@@ -300,7 +300,7 @@ Within the machine, if we run `pspy64`, we would eventually see this:
 
 <figure><img src="../../.gitbook/assets/image (1554).png" alt=""><figcaption></figcaption></figure>
 
-We can use these credentials to access the user via `ssh`.&#x20;
+We can use these credentials to access the user via `ssh`.
 
 <figure><img src="../../.gitbook/assets/image (2015).png" alt=""><figcaption></figcaption></figure>
 
@@ -322,7 +322,7 @@ cooper@format:~$ file /usr/bin/license
 /usr/bin/license: Python script, ASCII text executable
 ```
 
-The script seems to do some stuff with Redis. First it checks whether the user is `root`, and some flags can be used. It does some string concatenation at the start too.&#x20;
+The script seems to do some stuff with Redis. First it checks whether the user is `root`, and some flags can be used. It does some string concatenation at the start too.
 
 ```python
 class License():
@@ -360,7 +360,7 @@ f = Fernet(encryption_key)
 l = License()
 ```
 
-The provision function is the longest, and it does quite a few things.&#x20;
+The provision function is the longest, and it does quite a few things.
 
 ```python
 if(args.provision):

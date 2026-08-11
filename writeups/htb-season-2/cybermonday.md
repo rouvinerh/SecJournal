@@ -45,11 +45,11 @@ When the traffic is proxied, we can see that there are some JWT tokens being pas
 
 <figure><img src="../../.gitbook/assets/image (4186).png" alt=""><figcaption></figcaption></figure>
 
-I tried creating a user and logging in.&#x20;
+I tried creating a user and logging in.
 
 <figure><img src="../../.gitbook/assets/image (4187).png" alt=""><figcaption></figcaption></figure>
 
-The site is powered by PHP based on the `X-Powered-By` header. Since there was nothing much here, I did a `feroxbuster` scan to view the hidden directories. This revealed the `assets` directories with loads of stuff, but I couldn't really use all of it.&#x20;
+The site is powered by PHP based on the `X-Powered-By` header. Since there was nothing much here, I did a `feroxbuster` scan to view the hidden directories. This revealed the `assets` directories with loads of stuff, but I couldn't really use all of it.
 
 Since this was an `nginx` server, I checked Hacktricks and tested a few things, such as the `nginx` LFI exploit:
 
@@ -134,11 +134,11 @@ CHANGELOG_PATH="/mnt/changelog.txt"
 REDIS_BLACKLIST=flushall,flushdb
 ```
 
-We seem to have an `APP_KEY` variable that might be handy later. Redis is also present on the machine.&#x20;
+We seem to have an `APP_KEY` variable that might be handy later. Redis is also present on the machine.
 
 ### Source Code Review -> Admin Takeover
 
-There were quite a lot of files from the repository.&#x20;
+There were quite a lot of files from the repository.
 
 ```
 $ ls
@@ -262,7 +262,7 @@ class User extends Authenticatable
 
 ```
 
-It seems that there's an `isAdmin` boolean variable being set. We can change this to have a value of 1. Based on the code for the Profile Update, it seems to be taking parameters and directly passing them into the database.&#x20;
+It seems that there's an `isAdmin` boolean variable being set. We can change this to have a value of 1. Based on the code for the Profile Update, it seems to be taking parameters and directly passing them into the database.
 
 I appended `isAdmin=1` to the end of the POST parameters and updated my user's profile, which worked since the Dashboard appeared!
 
@@ -278,9 +278,9 @@ The link redirected us to `webhooks-api-beta.cybermonday.htb`, which we can add 
 
 <figure><img src="../../.gitbook/assets/image (4191).png" alt=""><figcaption></figcaption></figure>
 
-Webhooks open up the possibilities of SSRF, and from the earlier `.env` file, we know that this machine uses Redis on port 6379, which we might need to interact with to get a password or something. The `sendRequest` action seems to be vulnerable to SSRF somehow.&#x20;
+Webhooks open up the possibilities of SSRF, and from the earlier `.env` file, we know that this machine uses Redis on port 6379, which we might need to interact with to get a password or something. The `sendRequest` action seems to be vulnerable to SSRF somehow.
 
-To use this API, we first need to create a user.&#x20;
+To use this API, we first need to create a user.
 
 <figure><img src="../../.gitbook/assets/image (4192).png" alt=""><figcaption></figcaption></figure>
 
@@ -296,7 +296,7 @@ It's worth noting that the JWT token stored contains our user ID and our usernam
 
 <figure><img src="../../.gitbook/assets/image (4195).png" alt=""><figcaption></figcaption></figure>
 
-There should be a way to spoof this token or get the secret required.&#x20;
+There should be a way to spoof this token or get the secret required.
 
 ### Algorithm Confusion -> Webhooks Access
 
@@ -384,7 +384,7 @@ Attempting to verify token using kid_0_1692612611.pem
 RSA Signature is VALID
 ```
 
-With this PEM, we can spoof tokens by changing the algorithm to HS256 instead of RS256. RS256 requires a public and private key, whereas HS256 only requires one key. SInce we have changed the algorithm used, the HS256 algorithm would use the **public PEM key** to sign the token.&#x20;
+With this PEM, we can spoof tokens by changing the algorithm to HS256 instead of RS256. RS256 requires a public and private key, whereas HS256 only requires one key. SInce we have changed the algorithm used, the HS256 algorithm would use the **public PEM key** to sign the token.
 
 I used Burpsuite extensions (JOSEPH and JWT Editor Keys) to attack this. First, we can edit the JWT to have this as the payload and header:
 
@@ -434,7 +434,7 @@ Attempts to use any other protocol fails:
 
 Very early on, we saw that we had a Redis server operating on the server when we read the `.env` file through the `nginx` LFI exploit. I know that its possible to interact with Redis through HTTP requests, and the SSRF for this machine returns the message retrieved from its request.
 
-From the `.env` file, the `REDIS_HOST` variable is set to `redis`, indicating that we have to use that. On the Hacktricks page for Redis, there's an interesting part that talks about `slaveof`.&#x20;
+From the `.env` file, the `REDIS_HOST` variable is set to `redis`, indicating that we have to use that. On the Hacktricks page for Redis, there's an interesting part that talks about `slaveof`.
 
 <figure><img src="../../.gitbook/assets/image (4202).png" alt=""><figcaption></figcaption></figure>
 
@@ -542,7 +542,7 @@ $ redis-cli -h 127.0.0.1 -p 6379
 ```
 {% endcode %}
 
-Since we have the `APP_KEY` variable retrieved earlier from the `.env` file, we can decode this cookie and potentially change it to have a reverse shell payload (if its being deserialised).&#x20;
+Since we have the `APP_KEY` variable retrieved earlier from the `.env` file, we can decode this cookie and potentially change it to have a reverse shell payload (if its being deserialised).
 
 We can decrypt the `cybermonday_session` JWT token using this script from Hacktricks:
 
@@ -999,7 +999,7 @@ We just need to specify a HTTP header `X-Api-Key`. Using this, we can try to exp
 $logPath = "/logs/{$webhook_find->name}/";
 ```
 
-The `name` of the webhook seems to directly taken and used as the `$logPath` variable. We cannot use `../../../../` as the name using the web API. However, we do have access to the MySQL database.&#x20;
+The `name` of the webhook seems to directly taken and used as the `$logPath` variable. We cannot use `../../../../` as the name using the web API. However, we do have access to the MySQL database.
 
 Login to the MySQL database and insert this entry:
 
@@ -1169,7 +1169,7 @@ if __name__ == "__main__":
         cleanup(temp_dir)
 ```
 
-Essentially, this runs `docker-compose` as `root` using any YML file we create to spin up a Docker container based on an image we specify. There's also a lot of checks on the parameters we can and cannot specify.&#x20;
+Essentially, this runs `docker-compose` as `root` using any YML file we create to spin up a Docker container based on an image we specify. There's also a lot of checks on the parameters we can and cannot specify.
 
 Based on the script, we have to set the following:
 

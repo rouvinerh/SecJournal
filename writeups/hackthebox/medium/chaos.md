@@ -65,7 +65,7 @@ PORT      STATE SERVICE  VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-I added `chaos.htb` to my `/etc/hosts` file since there's a DNS name returned from the above scan.&#x20;
+I added `chaos.htb` to my `/etc/hosts` file since there's a DNS name returned from the above scan.
 
 ### Web Enum -> Mail Creds
 
@@ -188,7 +188,7 @@ $ strings enim_msg.txt
 YDo!
 ```
 
-The message says that `You are the password XD`, meaning that `sahay` is the AES key used. The encryption sc ript writes the file size as the first 16 bytes, and then the next 16 bytes is the IV used. The key used is the SHA256 hash of `sahay`.&#x20;
+The message says that `You are the password XD`, meaning that `sahay` is the AES key used. The encryption sc ript writes the file size as the first 16 bytes, and then the next 16 bytes is the IV used. The key used is the SHA256 hash of `sahay`.
 
 Using this, we can construct a quyick decryptor:
 
@@ -262,11 +262,11 @@ drwx------  5 ayush ayush 4096 Jul 12  2022 ayush
 drwx------  5 sahay sahay 4096 Jul 12  2022 sahay
 ```
 
-`ayush` uses the same password of `jiujitsu`.&#x20;
+`ayush` uses the same password of `jiujitsu`.
 
 <figure><img src="../../../.gitbook/assets/image (82).png" alt=""><figcaption></figcaption></figure>
 
-`ayush` has a restricted shell.&#x20;
+`ayush` has a restricted shell.
 
 ```
 ayush@chaos:/home$ echo $PATH
@@ -372,4 +372,4 @@ Then, `su` to `root`!
 
 <figure><img src="../../../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
 
-Interestingly, these are credentials for the Webmin instance present on the machine.&#x20;
+Interestingly, these are credentials for the Webmin instance present on the machine.

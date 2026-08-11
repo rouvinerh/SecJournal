@@ -95,7 +95,7 @@ Host script results:
 |_    Message signing enabled and required
 ```
 
-We can take note of the root domain name of `rebound.htb` and the DC name.&#x20;
+We can take note of the root domain name of `rebound.htb` and the DC name.
 
 ### AD Enum --> AS-REP Fail
 
@@ -206,7 +206,7 @@ SMB         rebound.htb     445    DC01             7686: rebound\tbrady (SidTyp
 SMB         rebound.htb     445    DC01             7687: rebound\delegator$ (SidTypeUser)
 ```
 
-Lots of users and groups, but most importantly we have some users. With a username list, we can try AS-REP Roasting without credentials.&#x20;
+Lots of users and groups, but most importantly we have some users. With a username list, we can try AS-REP Roasting without credentials.
 
 {% code overflow="wrap" %}
 ```
@@ -215,7 +215,7 @@ $krb5asrep$23$jjones@REBOUND.HTB:f5cb26a6a085535088c973a3cd42eaa0$1fff50bbcd2115
 ```
 {% endcode %}
 
-However, this hash cannot be cracked for some reason.&#x20;
+However, this hash cannot be cracked for some reason.
 
 ### Kerberoast W/O Pre-Auth --> Password
 
@@ -267,7 +267,7 @@ The `ServiceMgmt` group was also found to have some interesting privileges:
 
 <figure><img src="../../.gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
 
-Other than that, Bloodhound provided nothing of use since we aren't part of the `ServiceMgmt` group. I spent quite a bit of time thinking about how the user we compromised was called `ldap_monitor`, and what we could do with LDAP.&#x20;
+Other than that, Bloodhound provided nothing of use since we aren't part of the `ServiceMgmt` group. I spent quite a bit of time thinking about how the user we compromised was called `ldap_monitor`, and what we could do with LDAP.
 
 Attempting to use `ldapdomaindump` shows that we need 'stronger auth':
 
@@ -352,13 +352,13 @@ Eventually, something like this appears:
 
 The `pwdLastSet` is being edited to a more recent time, meaning that there's something resetting the password of these users. The `winrm_svc` user is the next step, so perhaps we have to change that password to login.
 
-Based on Bloodhound, we need to be part of the `ServiceMgmt` group to have `GenericAll` privileges over `winrm_svc`, and we can use that to change the password of the user.&#x20;
+Based on Bloodhound, we need to be part of the `ServiceMgmt` group to have `GenericAll` privileges over `winrm_svc`, and we can use that to change the password of the user.
 
 I tried the exploit with `ldap_monitor`, but it doesn't work with it. We can only use `oorend` to exploit this misconfiguration. Searching for tools to exploit this led to `bloodyAD.py`:
 
 {% embed url="https://github.com/CravateRouge/bloodyAD" %}
 
-I tried adding the `oorend` user to the `ServiceMgmt` group, and it surprisingly worked.&#x20;
+I tried adding the `oorend` user to the `ServiceMgmt` group, and it surprisingly worked.
 
 ```
 $ bloodyAD.py -u oorend -p <PASS> -d rebound.htb --host 10.129.68.225 add groupMember SERVICEMGMT oorend
@@ -380,11 +380,11 @@ Afterwards, we can `evil-winrm` in as the user:
 
 ## Privilege Escalation
 
-I should note that because the box resets the passwords of `winrm_svc` user regularly, the `evil-winrm` shell dies pretty often.&#x20;
+I should note that because the box resets the passwords of `winrm_svc` user regularly, the `evil-winrm` shell dies pretty often.
 
 ### Enumeration
 
-Earlier in Bloodhound, we saw that the `tbrady` user has `ReadGMSAPassword` over the `gmsa.rebound.htb` domain, so they are probably the next step.&#x20;
+Earlier in Bloodhound, we saw that the `tbrady` user has `ReadGMSAPassword` over the `gmsa.rebound.htb` domain, so they are probably the next step.
 
 Fortunately, no defences were present on the box and I could download `PowerView.ps1` to enumerate stuff. When enumerating Kerberos, I found that the `delegator$` computer user had some delegation rights for the DC:
 
@@ -400,7 +400,7 @@ This is probably the last step to `root`, so we'll keep this in mind. I also ran
 
 <figure><img src="../../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
 
-The user has a session on the DC, and this might be exploitable as we could potentially steal credentials. There weren't any other leads I found, so I went along with this.&#x20;
+The user has a session on the DC, and this might be exploitable as we could potentially steal credentials. There weren't any other leads I found, so I went along with this.
 
 ### Remote Potato --> Tbrady Hash --> ReadGMSAPassword
 
@@ -480,7 +480,7 @@ lastlogoff                     : 12/31/1600 4:00:00 PM
 dnshostname                    : gmsa.rebound.htb
 ```
 
-We have the NTLM hash of this `delegator$` user. I found that abusing delegation without the `msds-AllowedToActOnBehalfOfOtherIdentity` property was not possible, and as such I focused on enabling this property.&#x20;
+We have the NTLM hash of this `delegator$` user. I found that abusing delegation without the `msds-AllowedToActOnBehalfOfOtherIdentity` property was not possible, and as such I focused on enabling this property.
 
 {% hint style="info" %}
 From this point on, someone offered me some help. Whoever you are, thank you!
@@ -488,11 +488,11 @@ From this point on, someone offered me some help. Whoever you are, thank you!
 
 Their method involved the following:
 
-* Requesting a TGT using the NTLM hash for `delegator$`.&#x20;
-* Using that ticket to allow delegation from `ldap_monitor` to `delegator$` through RBCD.&#x20;
-* Requesting ticket for `ldap_monitor` and then proceeding with regular constrained delegation stuff to get a ticket for `dc01$`.&#x20;
+* Requesting a TGT using the NTLM hash for `delegator$`.
+* Using that ticket to allow delegation from `ldap_monitor` to `delegator$` through RBCD.
+* Requesting ticket for `ldap_monitor` and then proceeding with regular constrained delegation stuff to get a ticket for `dc01$`.
 
-The part I was stuck on was the RBCD part, since I had no idea why we had to use `ldap_monitor` to do so. I'll attempt to cover these later.&#x20;
+The part I was stuck on was the RBCD part, since I had no idea why we had to use `ldap_monitor` to do so. I'll attempt to cover these later.
 
 First, let's get the ticket needed:
 
@@ -529,7 +529,7 @@ $ impacket-getST -spn 'browser/dc01.rebound.htb' -impersonate 'dc01' 'rebound.ht
 ```
 {% endcode %}
 
-Then, use this ST to request for the TGT for `dc01$`.&#x20;
+Then, use this ST to request for the TGT for `dc01$`.
 
 {% code overflow="wrap" %}
 ```
@@ -556,7 +556,7 @@ Here are some of the resources linked in the writeup sent to me, good reads over
 There were 2 things I was puzzled about:
 
 1. Why did adding `oorend` to the `ServiceMgmt` group work?
-2. Why did we have to use `ldap_monitor` for the last step? I was stuck here because I kept trying with `oorend`.&#x20;
+2. Why did we have to use `ldap_monitor` for the last step? I was stuck here because I kept trying with `oorend`.
 
 ### Self ServiceMgmt Group
 
@@ -588,11 +588,11 @@ rebound\oorend
 ```
 {% endcode %}
 
-So all along, the `oorend` user had `Self` privileges over this group, which explains why we could add our user into the group via `bloodyAD.py`.&#x20;
+So all along, the `oorend` user had `Self` privileges over this group, which explains why we could add our user into the group via `bloodyAD.py`.
 
 {% embed url="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/abusing-active-directory-acls-aces#self-self-membership-on-group" %}
 
-The weird part was that Bloodhound failed to pick this up at all. I ran `SharpHound.exe` again to check, but it still didn't reveal it. This might be intended, since this is an Insane machine and it does require some degree of 'educated guesswork' to finish, as with most other Insane machines I've attempted.&#x20;
+The weird part was that Bloodhound failed to pick this up at all. I ran `SharpHound.exe` again to check, but it still didn't reveal it. This might be intended, since this is an Insane machine and it does require some degree of 'educated guesswork' to finish, as with most other Insane machines I've attempted.
 
 ### Delegation Issues --> SPN
 

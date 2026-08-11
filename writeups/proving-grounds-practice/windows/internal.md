@@ -81,7 +81,7 @@ Host script results:
 |_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: TIMEOUT
 ```
 
-This is vulnerable to CVE-2009-3103. I ran the Metasploit module to exploit this (because I was honestly lazy since I'm re-doing the machines for the writeups) after resetting the machine since the `nmap` scan apparently crashed it.&#x20;
+This is vulnerable to CVE-2009-3103. I ran the Metasploit module to exploit this (because I was honestly lazy since I'm re-doing the machines for the writeups) after resetting the machine since the `nmap` scan apparently crashed it.
 
 This worked in giving us a SYSTEM shell:
 

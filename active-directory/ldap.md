@@ -2,9 +2,9 @@
 
 ## What is LDAP?
 
-Lightweight Directory Access Protocol (LDAP) is a protocol that enables people to **locate and find** important organisations and resources within a network. The 'lightweight' aspect is that it has lesser code and does not need a ton of resources to run.&#x20;
+Lightweight Directory Access Protocol (LDAP) is a protocol that enables people to **locate and find** important organisations and resources within a network. The 'lightweight' aspect is that it has lesser code and does not need a ton of resources to run.
 
-LDAP is the core protocl behind Active Directory domains. When a user is trying to find an object, such as a printer or another user, LDAP is being used to query the objects and return the correct results.&#x20;
+LDAP is the core protocl behind Active Directory domains. When a user is trying to find an object, such as a printer or another user, LDAP is being used to query the objects and return the correct results.
 
 LDAP generally runs on ports 389, and LDAPS (which is LDAP with TLS/SSL) runs on port 636. Generally, there are 3 ways to authenticate via LDAP:
 
@@ -29,7 +29,7 @@ Few things to take note of here:
 * Organizational Unit (OU) tends to refer to the **group** **name** of objects to scope our search
 * Domain Component (DC) refers to the domain name of the network we are querying. Generally, they are comprised of 2 components as shown above.
 
-When we do LDAP queries, users use some software with a GUI or a Powershell script to run their queries. Most of the time, there isn't a need to write raw LDAP queries.&#x20;
+When we do LDAP queries, users use some software with a GUI or a Powershell script to run their queries. Most of the time, there isn't a need to write raw LDAP queries.
 
 ## Enumeration
 
@@ -45,7 +45,7 @@ ldapsearch -x -H ldap://<IP> -D '<DOMAIN>\<username>' -w '<password>' -b "CN=Use
 -w My password
 ```
 
-Generally, we can scope our search accordingly to find out more. Sometimes, LDAP can reveal loads of interesting information, such as stuff that was left behind in a user's description during development or some file that was left unattended.&#x20;
+Generally, we can scope our search accordingly to find out more. Sometimes, LDAP can reveal loads of interesting information, such as stuff that was left behind in a user's description during development or some file that was left unattended.
 
 ### Anonymous Login
 
@@ -57,6 +57,6 @@ ldapsearch -x -H ldap://<IP> -D '' -w '' -b "DC=<1_SUBDOMAIN>,DC=<TLD>"
 
 ## Resources
 
-Hacktricks basically has all the commands one needs to run LDAP enumeration. Just make sure to actually look through the output, which can be quite long at times.&#x20;
+Hacktricks basically has all the commands one needs to run LDAP enumeration. Just make sure to actually look through the output, which can be quite long at times.
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/pentesting-ldap" %}

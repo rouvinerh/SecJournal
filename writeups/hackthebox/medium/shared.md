@@ -24,7 +24,7 @@ There were wildcards present in the domain, so I knew that we had to check for s
 
 ### Custom\_cart SQLI
 
-The checkout page looked vulnerable to me.&#x20;
+The checkout page looked vulnerable to me.
 
 <figure><img src="../../../.gitbook/assets/image (753).png" alt=""><figcaption></figcaption></figure>
 
@@ -44,7 +44,7 @@ The output of the injection was printed on screen for us. We can now enumerate t
 custom_cart = {"breached' and 0=1 union select 1, username, 3 from heckout.user -- -": "10"}
 ```
 
-From there, we can find out the username of the user, which is **james\_mason**.&#x20;
+From there, we can find out the username of the user, which is **james\_mason**.
 
 <figure><img src="../../../.gitbook/assets/image (199).png" alt=""><figcaption></figcaption></figure>
 
@@ -56,7 +56,7 @@ This password can be cracked using crackstation.
 
 <figure><img src="../../../.gitbook/assets/image (1687).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can ssh in as `james_mason`.&#x20;
+Then, we can ssh in as `james_mason`.
 
 <figure><img src="../../../.gitbook/assets/image (334).png" alt=""><figcaption></figcaption></figure>
 
@@ -90,7 +90,7 @@ Following the PoC, we can grab dan's private key:
 
 <figure><img src="../../../.gitbook/assets/image (3153).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can SSH in as dan.&#x20;
+Then, we can SSH in as dan.
 
 ### Redis-Server
 
@@ -100,7 +100,7 @@ We saw earlier that root was running `redis-server`. We first need to search for
 
 {% embed url="https://github.com/n0b0dyCN/RedisModules-ExecuteCommand" %}
 
-&#x20;I ran LinPEAS, and found one within the `/usr/local/bin/redis_connector_dev` file.
+I ran LinPEAS, and found one within the `/usr/local/bin/redis_connector_dev` file.
 
 <figure><img src="../../../.gitbook/assets/image (3033).png" alt=""><figcaption></figcaption></figure>
 

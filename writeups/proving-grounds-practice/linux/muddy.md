@@ -41,7 +41,7 @@ PORT     STATE  SERVICE      VERSION
 |_http-title: Ladon Service Catalog
 ```
 
-We can add `muddy.ugc` to our `/etc/hosts` file.&#x20;
+We can add `muddy.ugc` to our `/etc/hosts` file.
 
 ### Web Enumeration -> LFI -> Dav Creds
 
@@ -203,7 +203,7 @@ PUT     html    SUCCEED:        http://muddy.ugc/webdav/DavTestDir_4qtgGAJnSK33j
 PUT     php     SUCCEED:        http://muddy.ugc/webdav/DavTestDir_4qtgGAJnSK33jj/davtest_4qtgGAJnSK33jj.php
 ```
 
-It works, so let's put a PHP web shell since we have Wordpress content on the page as well, indicating that PHP is being used.&#x20;
+It works, so let's put a PHP web shell since we have Wordpress content on the page as well, indicating that PHP is being used.
 
 ```
 $ cadaver http://muddy.ugc/webdav

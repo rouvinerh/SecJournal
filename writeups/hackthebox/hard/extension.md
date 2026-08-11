@@ -50,7 +50,7 @@ We can use wfuzz to fuzz out the two parameters we need, filtering the responses
 
 <figure><img src="../../../.gitbook/assets/image (151).png" alt=""><figcaption><p><br></p></figcaption></figure>
 
-Now we have the first parameter, then we can fuzz the next. When checking request using Burp, we can see that now we have the string "Unknown tablename".&#x20;
+Now we have the first parameter, then we can fuzz the next. When checking request using Burp, we can see that now we have the string "Unknown tablename".
 
 <figure><img src="../../../.gitbook/assets/image (994).png" alt=""><figcaption></figcaption></figure>
 
@@ -68,7 +68,7 @@ There's like over 890 hashes here, so cracking all of them is impossible without
 
 <figure><img src="../../../.gitbook/assets/image (3864).png" alt=""><figcaption></figcaption></figure>
 
-Analysis of the main file revealed that the users are&#x20;
+Analysis of the main file revealed that the users are
 
 * juliana@snippet.htb
 * letha@snippet.htb
@@ -268,7 +268,7 @@ We first need to portforward this MySQL Instance from the machine before moving 
 
 <figure><img src="../../../.gitbook/assets/image (1589).png" alt=""><figcaption></figcaption></figure>
 
-Earlier, we found 4 users, and from there we can update the database such that one of those users becomes a manager. I picked letha, but any is fine. The reason being the cronjob is only changing the password of charlie and jean, so we should use other users.&#x20;
+Earlier, we found 4 users, and from there we can update the database such that one of those users becomes a manager. I picked letha, but any is fine. The reason being the cronjob is only changing the password of charlie and jean, so we should use other users.
 
 <figure><img src="../../../.gitbook/assets/image (3008).png" alt=""><figcaption></figcaption></figure>
 
@@ -312,7 +312,7 @@ We are now in this container as another user, and the next step is to escape in 
 
 {% embed url="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-breakout/docker-breakout-privilege-escalation" %}
 
-Early enumeration shows that there is a docker.sock in the /app/docker.sock directory. However, we can't run the docker command in this container, so there has to be another way.&#x20;
+Early enumeration shows that there is a docker.sock in the /app/docker.sock directory. However, we can't run the docker command in this container, so there has to be another way.
 
 In this machine, there's one critical vulnerability, of which is that the docker.sock is writable.
 

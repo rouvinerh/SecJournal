@@ -118,7 +118,7 @@ public static void Main(string[] args)
 }
 ```
 
-Right, so this uses the **time**. On paper, this is secure, **if they didn't reveal the time it was encrypted**. Refer to the SMB directory listing and we can see the time the file was uploaded was `Fri Nov 11 17:17:08 2022`. This becomes `1668187028` when we convert it to the UnixTimeSeconds.&#x20;
+Right, so this uses the **time**. On paper, this is secure, **if they didn't reveal the time it was encrypted**. Refer to the SMB directory listing and we can see the time the file was uploaded was `Fri Nov 11 17:17:08 2022`. This becomes `1668187028` when we convert it to the UnixTimeSeconds.
 
 This uses an insecure PRNG generator. With the timestamp as the seed, we can quickly find the correct key and IV needed by just printing it out using some online C# compiler:
 
@@ -217,7 +217,7 @@ I wasn't sure how to go about finding this, so I just brute forced it because it
 
 <figure><img src="../../.gitbook/assets/image (1341).png" alt=""><figcaption></figcaption></figure>
 
-This works, but is hella slow.&#x20;
+This works, but is hella slow.
 
 ### Better Brute Force
 
@@ -244,7 +244,7 @@ Then we can login!
 
 ### AMSI Bypass + PS Shell
 
-TeamCity is a CI/CD dashboard, and I'm 99% sure we can gain access by building some kind of project that executes code on the computer. Just need to find out how.&#x20;
+TeamCity is a CI/CD dashboard, and I'm 99% sure we can gain access by building some kind of project that executes code on the computer. Just need to find out how.
 
 When checking the build that we have, we can upload a file here:
 
@@ -279,7 +279,7 @@ On my research, I found this super useful repository:
 
 {% embed url="https://github.com/Karmaz95/evasion/blob/main/bamsi.txt" %}
 
-Using their `bamsi.txt`, we can bypass the AMSI that is (probably) present on the server via unload `amsi.dll`.&#x20;
+Using their `bamsi.txt`, we can bypass the AMSI that is (probably) present on the server via unload `amsi.dll`.
 
 ```
 --- hello_world.ps1        2023-04-05 04:22:08.640184787 -0400
@@ -295,7 +295,7 @@ Then just upload this file with a basic Powershell reverse shell, and it would w
 
 ## User Access
 
-I should note that this is a rather unstable shell...and it quits on you VERY frequently due to the operation timing out on TeamCity.&#x20;
+I should note that this is a rather unstable shell...and it quits on you VERY frequently due to the operation timing out on TeamCity.
 
 ### TeamCity Administrator Fail
 
@@ -303,7 +303,7 @@ Now that we have access as the service user, we don't have access to anything sp
 
 {% embed url="https://www.jetbrains.com/help/teamcity/super-user.html" %}
 
-Based on this, we just need to head to `C:\TeamCity\logs` and run `type * | Select-String "Super user authentication token"`.&#x20;
+Based on this, we just need to head to `C:\TeamCity\logs` and run `type * | Select-String "Super user authentication token"`.
 
 ```
 [2023-04-04 18:04:14,034] console                           [Info] [TeamCity] Super user authentication token: 
@@ -421,7 +421,7 @@ If you're unfamiliar with what this does, you can read more here:
 
 {% embed url="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/hh831740(v=ws.11)" %}
 
-The first thing we need to do is to enumerate all possible certificates to find what is vulnerable within this machine. This can be done using `certipy`.&#x20;
+The first thing we need to do is to enumerate all possible certificates to find what is vulnerable within this machine. This can be done using `certipy`.
 
 Unfortunately, there won't be any vulnerable templates that we can exploit because none of the templates present give us any enrollment permissions. Since the user is part of PKI Admins, we can take a closer look at the role and infer what permissions we have. I used Bloodhound to map the permissions, and didn't find much apart from this:
 
@@ -453,7 +453,7 @@ What these commands do is:
 * First generate a blank template file, then copy over the contents of the ESC1 JSON to create a certificate template file `default.json` that would be compatible with the machine
 * Create a new ADCSTemplate file using `default.json` and allow the PKI Admins group to have enrol permissions.
 
-Afterwards, we can run `certipy` to get a PFX file for the administrator. Keep in mind to do these steps fast because there's a scheduled task resetting the certificates.&#x20;
+Afterwards, we can run `certipy` to get a PFX file for the administrator. Keep in mind to do these steps fast because there's a scheduled task resetting the certificates.
 
 {% code overflow="wrap" %}
 ```bash

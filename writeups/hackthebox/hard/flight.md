@@ -56,7 +56,7 @@ With these credentials, we can view the shares that are present on this machine.
 
 <figure><img src="../../../.gitbook/assets/image (1909).png" alt=""><figcaption></figcaption></figure>
 
-The ones to investigate are Users, Web and Shared.&#x20;
+The ones to investigate are Users, Web and Shared.
 
 #### Users
 

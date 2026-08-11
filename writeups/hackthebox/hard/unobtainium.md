@@ -146,7 +146,7 @@ Then, we can begin our source code analysis
 
 ### Source Code Analysis
 
-It appears that this is the code for the application running on port 31337 of the machine. We can analyse `/src/js/app.js` to find this hint. We can also find a set of credentials.&#x20;
+It appears that this is the code for the application running on port 31337 of the machine. We can analyse `/src/js/app.js` to find this hint. We can also find a set of credentials.
 
 ```javascript
 $(document).ready(function(){
@@ -228,7 +228,7 @@ const app = express();
 var fs = require('fs');
 ```
 
-Then, there's further mention of the user and his credentials, as well as an `admin`. There was an `auth` function as well, and it uses `===`. Seems like guessing the `admin` password is not the way to go here.&#x20;
+Then, there's further mention of the user and his credentials, as well as an `admin`. There was an `auth` function as well, and it uses `===`. Seems like guessing the `admin` password is not the way to go here.
 
 ```javascript
 const users = [
@@ -418,7 +418,7 @@ devnode-deployment-776dbcf7d6-g4659   10.42.0.38
 devnode-deployment-776dbcf7d6-7gjgf   10.42.0.40
 ```
 
-When checking the IP address of the pod I had a shell on, it was running on 10.42.0.41. Perhaps the other pods were accessible from that machine? I wanted to enumerate these machines more.&#x20;
+When checking the IP address of the pod I had a shell on, it was running on 10.42.0.41. Perhaps the other pods were accessible from that machine? I wanted to enumerate these machines more.
 
 ### Container Escape
 
@@ -441,7 +441,7 @@ Port 3000 is the default port where Express applications run on. Earlier, in our
 
 ### Namespace Enumeration
 
-Now, within this new container, there was another token and ca.crt to be downloaded. Perhaps I would have new permissions with these.&#x20;
+Now, within this new container, there was another token and ca.crt to be downloaded. Perhaps I would have new permissions with these.
 
 When checking the `auth can-i` for all the namespaces, the `kube-system` one revealed something new.
 
@@ -523,7 +523,7 @@ Resources                                       Non-Resource URLs               
 
 ### Pod Escape
 
-As the administrator, one attack path we can do is to create a new pod that has root access to the file system and connect to it. This article is very useful in telling us how.&#x20;
+As the administrator, one attack path we can do is to create a new pod that has root access to the file system and connect to it. This article is very useful in telling us how.
 
 {% embed url="https://infosecwriteups.com/kubernetes-container-escape-with-hostpath-mounts-d1b86bd2fa3" %}
 
@@ -531,7 +531,7 @@ Essentially, we need to create a YAML file that has specifications on how our ne
 
 <figure><img src="../../../.gitbook/assets/image (3985).png" alt=""><figcaption></figcaption></figure>
 
-At the very bottom, we can find and use `localhost:5000/dev-alpine`. Then we can create our YAML file and then a new pod with custom settings.&#x20;
+At the very bottom, we can find and use `localhost:5000/dev-alpine`. Then we can create our YAML file and then a new pod with custom settings.
 
 Here's my YAML file:
 
@@ -566,8 +566,8 @@ $ kubectl exec node --stdin --tty -n kube-system --token $(cat admin_token) --se
 root
 ```
 
-Then we can capture the root flag. Afterwards, we can easily upgrade a shell into this machine. We can create an `authorized_keys` file and echo our public key in it.&#x20;
+Then we can capture the root flag. Afterwards, we can easily upgrade a shell into this machine. We can create an `authorized_keys` file and echo our public key in it.
 
 <figure><img src="../../../.gitbook/assets/image (2770).png" alt=""><figcaption></figcaption></figure>
 
-Rooted! Really good machine for learning source code analysis and Kubernetes enumerations.&#x20;
+Rooted! Really good machine for learning source code analysis and Kubernetes enumerations.

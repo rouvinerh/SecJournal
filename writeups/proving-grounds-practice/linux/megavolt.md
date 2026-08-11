@@ -15,7 +15,7 @@ PORT   STATE  SERVICE
 80/tcp open   http
 ```
 
-We can start proxying traffic through Burp.&#x20;
+We can start proxying traffic through Burp.
 
 ### OSTicket -> XSS Admin Cookie
 
@@ -61,7 +61,7 @@ Afterwards, in the settings, make sure to change the Attachment settings:
 
 <figure><img src="../../../.gitbook/assets/image (2897).png" alt=""><figcaption></figcaption></figure>
 
-Then, we need to open a new ticket and upload a PHP reverse shell.&#x20;
+Then, we need to open a new ticket and upload a PHP reverse shell.
 
 <figure><img src="../../../.gitbook/assets/image (1532).png" alt=""><figcaption></figcaption></figure>
 
@@ -88,7 +88,7 @@ Then, we can finally use this repository's script to trigger the shell:
 
 {% embed url="https://github.com/Und3r-r00t/osticket-shell" %}
 
-The exploit took me quite a few times before it worked. If it doesn't work, upload your shell with a different name. In my case, `shell.php` worked.&#x20;
+The exploit took me quite a few times before it worked. If it doesn't work, upload your shell with a different name. In my case, `shell.php` worked.
 
 <figure><img src="../../../.gitbook/assets/image (900).png" alt=""><figcaption></figcaption></figure>
 

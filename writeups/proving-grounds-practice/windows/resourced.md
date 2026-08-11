@@ -33,7 +33,7 @@ PORT      STATE SERVICE
 49776/tcp open  unknown
 ```
 
-This is an AD machine.&#x20;
+This is an AD machine.
 
 ### SMB Guest Creds -> Creds
 
@@ -74,7 +74,7 @@ user:[G.Goldberg] rid:[0x458]
 <TRUNCATED>
 ```
 
-In the description of the `v.ventz` user, there was a password of `HotelCalifornia194!`. Using this, we can do password spraying to test each user.&#x20;
+In the description of the `v.ventz` user, there was a password of `HotelCalifornia194!`. Using this, we can do password spraying to test each user.
 
 Here's the username list:
 
@@ -233,11 +233,11 @@ G.Goldberg:des-cbc-md5:3e20fd1a25687673
 [*] Cleaning up...
 ```
 
-Loads of hashes available. Now the question is which user is part of the Remote Management Group?&#x20;
+Loads of hashes available. Now the question is which user is part of the Remote Management Group?
 
 ### Bloodhound -> Shell
 
-We can use `bloodhound-python` to query the domain using the existing credentials we have.&#x20;
+We can use `bloodhound-python` to query the domain using the existing credentials we have.
 
 ```
 $ bloodhound-python -d resourced.local -u v.ventz -p 'HotelCalifornia194!' -c all -ns 192.168.219.175
@@ -263,7 +263,7 @@ We can then upload all of this information to `bloodhound`. Then, we find that `
 
 <figure><img src="../../../.gitbook/assets/image (3875).png" alt=""><figcaption></figcaption></figure>
 
-We can then `evil-winrm` in by passing the hash.&#x20;
+We can then `evil-winrm` in by passing the hash.
 
 <figure><img src="../../../.gitbook/assets/image (3850).png" alt=""><figcaption></figcaption></figure>
 
@@ -306,10 +306,10 @@ However, even with this ticket, it appears we still cannot access the administra
 
 ### Proper DA Shell
 
-This machine account fails to be useful to us because we aren't pivoting to another machine in the domain from this one. Instead, we can still use this machine account by simply requesting for the administrator ticket using `impacket-getST` on our Kali machine, which we can then use to get a shell as the administrator.&#x20;
+This machine account fails to be useful to us because we aren't pivoting to another machine in the domain from this one. Instead, we can still use this machine account by simply requesting for the administrator ticket using `impacket-getST` on our Kali machine, which we can then use to get a shell as the administrator.
 
 {% hint style="info" %}
-This might be possible with PsExec.exe on the domain itself, but I didn't test it out.&#x20;
+This might be possible with PsExec.exe on the domain itself, but I didn't test it out.
 {% endhint %}
 
 ```

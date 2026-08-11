@@ -16,7 +16,7 @@ PORT   STATE    SERVICE
 80/tcp open     http
 ```
 
-We have to add `forge.htb` to our `/etc/hosts` file to enumerate the website. Also, FTP is not a false positive here.&#x20;
+We have to add `forge.htb` to our `/etc/hosts` file to enumerate the website. Also, FTP is not a false positive here.
 
 ### Forge.htb Enum
 
@@ -71,7 +71,7 @@ Only localhost is allowed
 
 ### Redirect Bypass -> SSH Key
 
-All my attempts to access the admin panel via modifying HTTP headers didn't work. So we have to try something else.&#x20;
+All my attempts to access the admin panel via modifying HTTP headers didn't work. So we have to try something else.
 
 Since this server was in Python, and the administrator panel can only be accessed by `localhost`, I thought of creating a 'redirector' that would accept requests on the website and redirect us to the admin panel. Here's a good script for that:
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port)
 ```
 
-When we start this, the website would generate a link to an 'image', which would always fail to display because it's not an image.&#x20;
+When we start this, the website would generate a link to an 'image', which would always fail to display because it's not an image.
 
 <figure><img src="../../../.gitbook/assets/image (2703).png" alt=""><figcaption></figcaption></figure>
 
@@ -122,7 +122,7 @@ $ curl http://forge.htb/uploads/mIIQuMY5OzWN8Fa2f5uF
 </html>
 ```
 
-Let's read the announcements on the site.&#x20;
+Let's read the announcements on the site.
 
 ```markup
 <!DOCTYPE html>
@@ -184,7 +184,7 @@ drwxr-xr-x    3 1000     1000         4096 Aug 04  2021 snap
 -rw-r-----    1 0        1000           33 May 07 14:26 user.txt
 ```
 
-This looks like the user's directory, so let's check whether there's a `.ssh` folder present.&#x20;
+This looks like the user's directory, so let's check whether there's a `.ssh` folder present.
 
 ```
 $ curl http://forge.htb/uploads/EvkwW5i3ganDEIzW2doi
@@ -193,11 +193,11 @@ $ curl http://forge.htb/uploads/EvkwW5i3ganDEIzW2doi
 -rw-------    1 1000     1000          564 May 20  2021 id_rsa.pub
 ```
 
-We can grab the `id_rsa` flag through this and SSH in as `user`.&#x20;
+We can grab the `id_rsa` flag through this and SSH in as `user`.
 
 <figure><img src="../../../.gitbook/assets/image (1022).png" alt=""><figcaption></figcaption></figure>
 
-Grab the user flag.&#x20;
+Grab the user flag.
 
 ## Privilege Escalation
 
@@ -261,7 +261,7 @@ finally:
     quit()
 ```
 
-This program opens a port and then runs commands as `root`. The vulnerable part is when it opens `pdb` upon receivinig an input that is not a number.&#x20;
+This program opens a port and then runs commands as `root`. The vulnerable part is when it opens `pdb` upon receivinig an input that is not a number.
 
 <figure><img src="../../../.gitbook/assets/image (2754).png" alt=""><figcaption></figcaption></figure>
 

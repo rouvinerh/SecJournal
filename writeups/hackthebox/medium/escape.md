@@ -32,7 +32,7 @@ PORT      STATE SERVICE
 49714/tcp open  unknown
 ```
 
-Looks like an AD machine to me. Interestingly, they made port 1433 public facing.&#x20;
+Looks like an AD machine to me. Interestingly, they made port 1433 public facing.
 
 ### SMB Enum
 
@@ -73,7 +73,7 @@ smb: \> ls
   SQL Server Procedures.pdf           A    49551  Fri Nov 18 08:39:43 2022
 ```
 
-We can download this file and view it.&#x20;
+We can download this file and view it.
 
 ### SQL Server Procedures
 
@@ -81,7 +81,7 @@ This is the file contents:
 
 <figure><img src="../../../.gitbook/assets/image (4002).png" alt=""><figcaption></figcaption></figure>
 
-The next page contains a guest login for the SQL server. We also find a user called `brandon.brown`, who is likely some kind of database administrator.&#x20;
+The next page contains a guest login for the SQL server. We also find a user called `brandon.brown`, who is likely some kind of database administrator.
 
 <figure><img src="../../../.gitbook/assets/image (2859).png" alt=""><figcaption></figcaption></figure>
 

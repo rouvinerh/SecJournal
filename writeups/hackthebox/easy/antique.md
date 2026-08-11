@@ -14,9 +14,9 @@ When trying to use this Telnet port, we needed some credentials.
 
 <figure><img src="../../../.gitbook/assets/image (347).png" alt=""><figcaption></figcaption></figure>
 
-There's no way that we have to guess credentials, so I started scanning for UDP ports instead.  What I found were some SNMP ports, presumably for the printer.&#x20;
+There's no way that we have to guess credentials, so I started scanning for UDP ports instead.  What I found were some SNMP ports, presumably for the printer.
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (2107).png" alt=""><figcaption></figcaption></figure>
 
@@ -46,7 +46,7 @@ With this, a simple reverse shell would do, and also allow us to become the **lp
 
 <figure><img src="../../../.gitbook/assets/image (109).png" alt=""><figcaption></figcaption></figure>
 
-## Root Flag&#x20;
+## Root Flag
 
 I ran linpeas to enumerate for me and found port 631 to be active, while remaining undetected from nmap.
 
@@ -56,7 +56,7 @@ Using chisel to port forward, we can easily gain access to this instance. We fin
 
 <figure><img src="../../../.gitbook/assets/image (2104).png" alt=""><figcaption></figcaption></figure>
 
-This version of CUPS was vulnerable to a root file read exploit. Since this was a port forwarding kind of scenario and I was a bit lazy, I took a loot at the Metasploit exploit code to see what was going on.&#x20;
+This version of CUPS was vulnerable to a root file read exploit. Since this was a port forwarding kind of scenario and I was a bit lazy, I took a loot at the Metasploit exploit code to see what was going on.
 
 <figure><img src="../../../.gitbook/assets/image (743).png" alt=""><figcaption></figcaption></figure>
 

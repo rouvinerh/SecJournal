@@ -65,7 +65,7 @@ This is an obvious hint that we have to somehow use the **paddling oracle attack
 
 {% embed url="https://www.youtube.com/watch?v=4EgD4PEatA8" %}
 
-We can attempt to decrypt this cookie using `padbuster`.&#x20;
+We can attempt to decrypt this cookie using `padbuster`.
 
 ```
 $ padbuster http://10.129.64.184/index.php %2BJerWq%2FLA3RuOeAORmXt%2Bg7mwatyAe13 8 -cookies auth=%2BJerWq%2FLA3RuOeAORmXt%2Bg7mwatyAe13  -encoding 0
@@ -228,7 +228,7 @@ system("cat /etc/shadow"cat: /etc/shadow: Permission denied
 <... system resumed> )                                   = 256
 ```
 
-This binary did not use the full path for the `cat` command, thus allowing us to create our own malicious binary within any directory to execute commands as `root`.&#x20;
+This binary did not use the full path for the `cat` command, thus allowing us to create our own malicious binary within any directory to execute commands as `root`.
 
 To exploit this, execute the following commands:
 

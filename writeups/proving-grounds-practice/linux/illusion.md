@@ -16,7 +16,7 @@ PORT      STATE    SERVICE
 80/tcp    open     http
 ```
 
-We can start proxying traffic through Burp.&#x20;
+We can start proxying traffic through Burp.
 
 ### Web Enum -> Magic Hashes
 
@@ -34,7 +34,7 @@ Default credentials don't work here. Brute forcing also doesn't work. Since this
 
 {% embed url="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Type%20Juggling/README.md" %}
 
-This works because the `Location` header points to `dashboard.php` now.&#x20;
+This works because the `Location` header points to `dashboard.php` now.
 
 ### Orders -> SSTI
 
@@ -102,7 +102,7 @@ $ redis-cli -h 127.0.0.1
 NOAUTH Authentication required.
 ```
 
-In this case, we can try the hash that we found earlier.&#x20;
+In this case, we can try the hash that we found earlier.
 
 ```
 127.0.0.1:6379> AUTH sgm5ZgEsCrj4L/0fi/1XGUcGII2GTuAjo3eotCFNy6ZManKrLWQaRCTOE6QpyCojpyr+Rix12VYbdOkA

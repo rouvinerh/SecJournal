@@ -24,7 +24,7 @@ Port 80 is running PRTG Network Monitor 18.1.37.13946 (which is outdated):
 
 <figure><img src="../../../.gitbook/assets/image (2264).png" alt=""><figcaption></figcaption></figure>
 
-Since we have access to the entire file directory through FTP, we can search for the credentials for this. We can find some backup folders for PRNG Network Monitor within the machine.&#x20;
+Since we have access to the entire file directory through FTP, we can search for the credentials for this. We can find some backup folders for PRNG Network Monitor within the machine.
 
 <figure><img src="../../../.gitbook/assets/image (982).png" alt=""><figcaption></figcaption></figure>
 
@@ -36,7 +36,7 @@ I was able to find a RCE exploit online for this particular version:
 
 {% embed url="https://github.com/chcx/PRTG-Network-Monitor-RCE" %}
 
-In this version of PRTG, there are demo scripts that come downloaded with the software. The demo scripts are vulnerable to RCE (which no one had checked before) and we are allowed to run commands with 'Local System' privileges. This allows us to create new administrator user in the machine (which is what the script does).&#x20;
+In this version of PRTG, there are demo scripts that come downloaded with the software. The demo scripts are vulnerable to RCE (which no one had checked before) and we are allowed to run commands with 'Local System' privileges. This allows us to create new administrator user in the machine (which is what the script does).
 
 <figure><img src="../../../.gitbook/assets/image (1430).png" alt=""><figcaption></figcaption></figure>
 
@@ -44,4 +44,4 @@ Afterwards, we can `evil-winrm` in as this new user.
 
 <figure><img src="../../../.gitbook/assets/image (2097).png" alt=""><figcaption></figcaption></figure>
 
-This pentest user has administrator privileges over the machine, and thus we can capture all flags present.&#x20;
+This pentest user has administrator privileges over the machine, and thus we can capture all flags present.

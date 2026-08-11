@@ -81,7 +81,7 @@ We can fuzz to find this binary somewhere. Create a quck file with PATH variable
 /usr/games
 ```
 
-Then, use `wfuzz` to find the `activate_license` binary.&#x20;
+Then, use `wfuzz` to find the `activate_license` binary.
 
 ```
 $ wfuzz -c -w path_variables -u http://10.129.227.96/index.php?page=../../../../../../../..FUZZ/activate_license /usr/lib/python3/dist-packages/wfuzz/__init__.py:34: UserWarning:Pycurl is not compiled against Openssl. Wfuzz might not work correctly when fuzzing SSL sites. Check Wfuzz's documentation for more information.
@@ -118,7 +118,7 @@ activate_license: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynam
 
 This confirms that this is a binary exploitation challenge. We can being with reverse engineering the binary in `ghidra`.
 
-Anyways, we can continue with our enumeration of the webpages. We can use this LFI to read the source code of the pages. There was an `activate_license.php` file here too.&#x20;
+Anyways, we can continue with our enumeration of the webpages. We can use this LFI to read the source code of the pages. There was an `activate_license.php` file here too.
 
 ```php
 <?php
@@ -148,7 +148,7 @@ It seems that this thing takes the input from the file we uploaded and sends it 
 $ php -S localhost:8000
 ```
 
-Our script would have to send input to this file in order for it to be sent to the binary.&#x20;
+Our script would have to send input to this file in order for it to be sent to the binary.
 
 ### Proc + Binary Enum
 
@@ -217,7 +217,7 @@ NX is also enabled, so we probably need to do a Ret2Libc exploit after leaking t
 
 <figure><img src="../../../.gitbook/assets/image (2274).png" alt=""><figcaption></figcaption></figure>
 
-So we can probably overwrite this with a huge number of bytes. I ran the binary on my own machine on port 5555, and it seems to take some input.&#x20;
+So we can probably overwrite this with a huge number of bytes. I ran the binary on my own machine on port 5555, and it seems to take some input.
 
 <figure><img src="../../../.gitbook/assets/image (3915).png" alt=""><figcaption></figcaption></figure>
 
@@ -225,7 +225,7 @@ From reading `ghidra`, it appears that it does some SQL stuff with our input aft
 
 <figure><img src="../../../.gitbook/assets/image (239).png" alt=""><figcaption></figcaption></figure>
 
-So from this, it seems that the binary uses both `libc` and `libsqlite3` within this function. We can download both of them from the machine itself.&#x20;
+So from this, it seems that the binary uses both `libc` and `libsqlite3` within this function. We can download both of them from the machine itself.
 
 From reading a writeup, I learned that because we have access to the `libc` files directly, we can actually call `mprotect`. This function would basically make the stack executable, allowing us to inject shellcode instead of hopping all over the place with a Ret2Libc.
 
@@ -238,7 +238,7 @@ $ readelf -s libc-2.31.so| grep mprotect
 
 However, it should be noted that it is possible to run the exploit even without this. This is because we can just call `system` to execute our shell instead.
 
-Now, we need to figure out how to cause a crash in the binary such that we can control the execution flow. &#x20;
+Now, we need to figure out how to cause a crash in the binary such that we can control the execution flow. 
 
 ```
 $ gdb -q --args ./activate_license 1337
@@ -317,7 +317,7 @@ gdb-peda$ pattern_offset 0x73413973416a7341
 8304982355029422913 found at offset: 520
 ```
 
-So we have an offset of 520.&#x20;
+So we have an offset of 520.
 
 ### Exploitation
 
@@ -548,7 +548,7 @@ The `/usr/lib/emuemu/reg_helper` binary is used because it is owned by `root`. T
 
 <figure><img src="../../../.gitbook/assets/image (2228).png" alt=""><figcaption></figcaption></figure>
 
-This machine was hard for me, and I used a writeup for initial access and `emuemu` exploitation.&#x20;
+This machine was hard for me, and I used a writeup for initial access and `emuemu` exploitation.
 
 {% embed url="https://0xdf.gitlab.io/2022/08/13/htb-retired.html#abuse-binfmt_misc" %}
 

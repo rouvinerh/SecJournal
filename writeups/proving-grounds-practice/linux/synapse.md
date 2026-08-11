@@ -31,7 +31,7 @@ $ smbmap -H 192.168.201.149
         IPC$                                                    NO ACCESS       IPC Service (Samba 4.9.5-Debian)
 ```
 
-It is thus likely that there's a web exploit, so we can start proxying traffic through Burpsuite.&#x20;
+It is thus likely that there's a web exploit, so we can start proxying traffic through Burpsuite.
 
 ### Web Enum -> SSI Injection
 
@@ -47,7 +47,7 @@ I checked the user tab, and found that the user was called `mindsflee`:
 
 <figure><img src="../../../.gitbook/assets/image (3079).png" alt=""><figcaption></figcaption></figure>
 
-All of options were under construction, except for the one on the right most.&#x20;
+All of options were under construction, except for the one on the right most.
 
 <figure><img src="../../../.gitbook/assets/image (3617).png" alt=""><figcaption></figcaption></figure>
 
@@ -106,7 +106,7 @@ drwxr-xr-x 3 mindsflee mindsflee 4096 Jun 10  2021 ..
 -rw-r--r-- 1 mindsflee mindsflee  124 Jun 14  2021 creds.txt.gpg
 ```
 
-The `.gnupg` file contains some creds. Download these files back to our machine, and we can then try to decrypt it. Using `gpg`, we can attempt to import this key but it requires a passphrase.&#x20;
+The `.gnupg` file contains some creds. Download these files back to our machine, and we can then try to decrypt it. Using `gpg`, we can attempt to import this key but it requires a passphrase.
 
 We can crack this using `gpg2john` and `john`:
 
@@ -227,7 +227,7 @@ while True:
     conn.close()
 ```
 
-This program seems to open a Socket as `root` using the configuration of `synapse_commander.s` after we input any number from 1-3, since option 4 and all others would just re-run the script.&#x20;
+This program seems to open a Socket as `root` using the configuration of `synapse_commander.s` after we input any number from 1-3, since option 4 and all others would just re-run the script.
 
 Again, Hacktricks has a page for this:
 

@@ -101,7 +101,7 @@ Here's the PHP code:
 ?>
 ```
 
-This PHP runs for the service on port 8080. The vulnerability here is the fact that the website deserialises the output we generate.&#x20;
+This PHP runs for the service on port 8080. The vulnerability here is the fact that the website deserialises the output we generate.
 
 We can then submit a GET requests with this payload:
 

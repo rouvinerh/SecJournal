@@ -12,7 +12,7 @@ As usual we start with an Nmap scan:
 
 <figure><img src="../../../.gitbook/assets/image (3269).png" alt=""><figcaption></figcaption></figure>
 
-Take note of the `goodgames.htb` domain name.&#x20;
+Take note of the `goodgames.htb` domain name.
 
 ### SQL Injection
 
@@ -30,7 +30,7 @@ This login is bypassable with the `' OR 1=1 -- -` input for the `email` paramete
 
 Initially, I assumed that we needed to find credentials elsewhere and looked around the website. Understanding that there was an SQL Injection weakness earlier, we probably could dump out the credentials.
 
-I used `sqlmap` to automatically dump ot out, and got `admin@goodgames.htb:2b22337f218b2d82dfc3b6f77e7cb8ec` as the output. This hash could be cracked to give the password of `superadministrator`.&#x20;
+I used `sqlmap` to automatically dump ot out, and got `admin@goodgames.htb:2b22337f218b2d82dfc3b6f77e7cb8ec` as the output. This hash could be cracked to give the password of `superadministrator`.
 
 ### SSTI in Username
 
@@ -38,13 +38,13 @@ Once logged in, the page redirected us to a dashboard where we could update our 
 
 <figure><img src="../../../.gitbook/assets/image (3032).png" alt=""><figcaption></figcaption></figure>
 
-The profile updater takes the user input for full name and outputs it on the screen. I tested this with a `{{7*7}}` payload as this was running on Werkzeug, which was a Python based server (detected in Nmap scan earlier).&#x20;
+The profile updater takes the user input for full name and outputs it on the screen. I tested this with a `{{7*7}}` payload as this was running on Werkzeug, which was a Python based server (detected in Nmap scan earlier).
 
 I was pleased to see that it worked:
 
 <figure><img src="../../../.gitbook/assets/image (3188).png" alt=""><figcaption></figcaption></figure>
 
-With that, I proceeded to dump out the config of this server using `{{config.items()}}`.&#x20;
+With that, I proceeded to dump out the config of this server using `{{config.items()}}`.
 
 <figure><img src="../../../.gitbook/assets/image (1701).png" alt=""><figcaption></figcaption></figure>
 
@@ -80,7 +80,7 @@ Since there was no `augustus` user within the `/etc/passwd` file on the containe
 
 ## Privilege Escalation
 
-Earlier, we determined using `mount` that a possible mount point was the `/home/augustus` directory. Files that were edited while I was in the container were reflected within the host as well.&#x20;
+Earlier, we determined using `mount` that a possible mount point was the `/home/augustus` directory. Files that were edited while I was in the container were reflected within the host as well.
 
 When copying files into that directory, because I was a root user in the container, the owner of the files in the host was also root. So, I copied over `/bin/bash` and did `chmod +s bash` within the user directory.
 

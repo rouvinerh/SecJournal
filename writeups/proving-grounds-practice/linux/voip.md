@@ -152,7 +152,7 @@ This hash cracks easily:
 
 <figure><img src="../../../.gitbook/assets/image (1905).png" alt=""><figcaption></figcaption></figure>
 
-With this, we can login to port 80 as `adm_sip`.&#x20;
+With this, we can login to port 80 as `adm_sip`.
 
 <figure><img src="../../../.gitbook/assets/image (3780).png" alt=""><figcaption></figcaption></figure>
 

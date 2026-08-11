@@ -31,7 +31,7 @@ Wordlist Used:
 
 {% embed url="https://github.com/attackdebris/kerberos_enum_userlists/blob/master/A-Z.Surnames.txt" %}
 
-So now we have some possible users. I wanted to try and fuzz along this line, since we know that the usernames are in this format. Because this machine is rated insane, the username we need is probably not within any common wordlist.&#x20;
+So now we have some possible users. I wanted to try and fuzz along this line, since we know that the usernames are in this format. Because this machine is rated insane, the username we need is probably not within any common wordlist.
 
 So to circumvent this, I took the names.txt file from Seclists (/seclists/usernames/names/names.txt) then appended the front of each entry with a letter and brute forced it. From A - Z. This would produce a list of names with the prefix required.
 
@@ -105,7 +105,7 @@ Interesting!  The program here seems to be some form of script that creates the 
 nim c -d:mingw --app:gui --cc:gcc -d:danger -d:strip $1
 ```
 
-Poking around the shares, we don't seem to get much from it. I could decompiled the binary, and perhaps I could find a password there.&#x20;
+Poking around the shares, we don't seem to get much from it. I could decompiled the binary, and perhaps I could find a password there.
 
 The next step was to use Bloodhound, since we had credentials and a ticket.
 
@@ -113,11 +113,11 @@ The next step was to use Bloodhound, since we had credentials and a ticket.
 
 {% embed url="https://github.com/jazzpizazz/BloodHound.py-Kerberos" %}
 
-Now we just need to fire up bloodhound and neo4j to view this data in a neat format. Bloodhound reveals a few users that are significant.&#x20;
+Now we just need to fire up bloodhound and neo4j to view this data in a neat format. Bloodhound reveals a few users that are significant.
 
 <figure><img src="../../../.gitbook/assets/image (418).png" alt=""><figcaption></figcaption></figure>
 
-Out of all of these users, m.lovegod has the most privileges. The user owns the Network Audit group. **This group has GenericWrite over the WinRM\_User**, which I suspect is where the user flag would be. So our exploit path is clear.&#x20;
+Out of all of these users, m.lovegod has the most privileges. The user owns the Network Audit group. **This group has GenericWrite over the WinRM\_User**, which I suspect is where the user flag would be. So our exploit path is clear.
 
 <figure><img src="../../../.gitbook/assets/image (2749).png" alt=""><figcaption></figcaption></figure>
 
@@ -131,11 +131,11 @@ When I ran the binary on my Windows VM, it seems to exit straightaway. Weird, bu
 
 <figure><img src="../../../.gitbook/assets/image (3573).png" alt=""><figcaption></figcaption></figure>
 
-We now have credentials for this user!&#x20;
+We now have credentials for this user!
 
 ### Pivoting
 
-Now that we know that the `m.lovegod` user owns the Network Audit group, and members of that group have GenericWrite over the `winrm_user`, we need to somehow add him into the group. We can use `pywhisker` to do so.&#x20;
+Now that we know that the `m.lovegod` user owns the Network Audit group, and members of that group have GenericWrite over the `winrm_user`, we need to somehow add him into the group. We can use `pywhisker` to do so.
 
 First, we need to request a ST using `impacket-getTGT` using these credentials. Then we can export to `KRB5CCNAME`.
 
@@ -188,7 +188,7 @@ This would give us an evil\_winrm shell as the user and we can grab the flag.
 
 <figure><img src="../../../.gitbook/assets/image (737).png" alt=""><figcaption></figcaption></figure>
 
-The GenericWrite permission on the user allows us to write properties. Hence, we used `pywhisker` to add a new KeyCredential as `m.lovegod` to the `winrm_user` msDs-KeyCredentialLink attribute. This was done **because we don't have a shell**.&#x20;
+The GenericWrite permission on the user allows us to write properties. Hence, we used `pywhisker` to add a new KeyCredential as `m.lovegod` to the `winrm_user` msDs-KeyCredentialLink attribute. This was done **because we don't have a shell**.
 
 By creating a shadow credential through GenericWrite privileges, we can add more methods of which an account has to obtain a Kerberos TGT. pyWhisker is just a Python implementation of the main tool, Whisker. The main resource I used for my research was here:
 
@@ -208,7 +208,7 @@ First, we need the following:
 * Rubeus
 * RunasCs
 
-Then, we need to first add a Shadow Credential using KrbRelay through the `m.lovegod` account.&#x20;
+Then, we need to first add a Shadow Credential using KrbRelay through the `m.lovegod` account.
 
 {% code overflow="wrap" %}
 ```

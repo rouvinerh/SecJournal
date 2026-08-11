@@ -2,7 +2,7 @@
 
 ## Gaining Access
 
-Nmap scan revealed standard AD ports, and that port 80 was open.&#x20;
+Nmap scan revealed standard AD ports, and that port 80 was open.
 
 ### Hope Sharp
 
@@ -10,7 +10,7 @@ This website was another corporate domain. When scrolling through it, I found th
 
 <figure><img src="../../../.gitbook/assets/image (3604).png" alt=""><figcaption></figcaption></figure>
 
-If you look closely, there was a task with **Send password to Hope Sharp**. Then, **IsolationIsKey?** was the next line.&#x20;
+If you look closely, there was a task with **Send password to Hope Sharp**. Then, **IsolationIsKey?** was the next line.
 
 This tells me that there was an interesting password to find. As such, I created a bunch of possible usernames with the name Hope Sharp, and used `crackmapexec` to brute force these credentials. Found that `hope.sharp` was the username:
 
@@ -26,11 +26,11 @@ Additionaly, running `feroxbuster` on the website reveals some directories:
 403       29l       92w     1233c http://10.10.11.129/staff
 ```
 
-The `/staff` endpoint was interesting, but it was returning a 403 code.&#x20;
+The `/staff` endpoint was interesting, but it was returning a 403 code.
 
 ### Bloodhound
 
-After getting these credentials, I wanted to use Bloodhound to map out all objects within the domain. Since I don't have a shell yet, I used `bloodhound-python`.&#x20;
+After getting these credentials, I wanted to use Bloodhound to map out all objects within the domain. Since I don't have a shell yet, I used `bloodhound-python`.
 
 <figure><img src="../../../.gitbook/assets/image (3920).png" alt=""><figcaption></figcaption></figure>
 
@@ -108,11 +108,11 @@ Because these are certificates, perhaps they can be loaded into our browser for 
 
 <figure><img src="../../../.gitbook/assets/image (3509).png" alt=""><figcaption></figcaption></figure>
 
-We can easily crack this with `pfx2john` and `john`.&#x20;
+We can easily crack this with `pfx2john` and `john`.
 
 <figure><img src="../../../.gitbook/assets/image (957).png" alt=""><figcaption></figcaption></figure>
 
-Then we can load this in to our browsers.&#x20;
+Then we can load this in to our browsers.
 
 <figure><img src="../../../.gitbook/assets/image (3297).png" alt=""><figcaption></figcaption></figure>
 
@@ -122,7 +122,7 @@ Now, we can access the /staff page we were rejected from earlier. This would rev
 
 We can login as `sierra.frye` usingthe credentials we found earlier. For Computer Name, I guessed search and research based on the certificates I found, and **research** worked.
 
-### Powershell Web Access&#x20;
+### Powershell Web Access
 
 Now, we had a CLI as Sierra.frye.
 

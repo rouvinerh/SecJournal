@@ -19,7 +19,7 @@ The domain was `stocker.htb`, and we can add that to the `/etc/hosts` file.
 
 ### Subdomain Fuzzing
 
-There was nothing of interest on the website. `gobuster` scans and default enumeration did not really help out a lot.&#x20;
+There was nothing of interest on the website. `gobuster` scans and default enumeration did not really help out a lot.
 
 I decided to use `wfuzz` to fuzz the possible subdomains present on the website, and actually found one at `dev.stocker.htb`.
 
@@ -141,7 +141,7 @@ Remembering that this was an Express website, perhaps there was a Javascript fil
 
 <figure><img src="../../../.gitbook/assets/image (1072).png" alt=""><figcaption></figcaption></figure>
 
-With this password, we can `ssh` in as `angoose`.&#x20;
+With this password, we can `ssh` in as `angoose`.
 
 <figure><img src="../../../.gitbook/assets/image (1993).png" alt=""><figcaption></figcaption></figure>
 
@@ -199,4 +199,4 @@ bash-5.0# id
 uid=1001(angoose) gid=1001(angoose) euid=0(root) groups=1001(angoose)
 ```
 
-Pwned.&#x20;
+Pwned.

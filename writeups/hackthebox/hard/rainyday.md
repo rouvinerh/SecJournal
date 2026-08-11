@@ -56,7 +56,7 @@ Using this method, I was able to make out that there were 3 users, because enter
 
 <figure><img src="../../../.gitbook/assets/image (3642).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;I was able to get out the remaining hashes, which were for **root and gary.** We can crack these using john. Only one of them was crackable, and it was gary's.
+I was able to get out the remaining hashes, which were for **root and gary.** We can crack these using john. Only one of them was crackable, and it was gary's.
 
 <figure><img src="../../../.gitbook/assets/image (2159).png" alt=""><figcaption></figcaption></figure>
 
@@ -242,7 +242,7 @@ The next few tests confirms this:
 
 <figure><img src="../../../.gitbook/assets/image (3830).png" alt=""><figcaption></figcaption></figure>
 
-There seem to be some keywords being filtered out, most notably 'import' because I cannot run anything that has import within it.&#x20;
+There seem to be some keywords being filtered out, most notably 'import' because I cannot run anything that has import within it.
 
 ### Python Sandbox Escape
 
@@ -252,7 +252,7 @@ I found this a good read:
 
 {% embed url="https://stackoverflow.com/questions/73043035/what-is-class-base-subclasses" %}
 
-So there are a bunch of different subclasses, and this binary is executing something using the exec( ) function. There are also likely some filters.&#x20;
+So there are a bunch of different subclasses, and this binary is executing something using the exec( ) function. There are also likely some filters.
 
 I tested a bunch of payloads from here:
 
@@ -288,9 +288,9 @@ Another blind Sudo challenge in Python.  Except, all this does is hash passwords
 
 <figure><img src="../../../.gitbook/assets/image (110).png" alt=""><figcaption></figcaption></figure>
 
-This is, without question, similar to the initial hashes we found in the website. We probably need to crack the root hash we found a lot earlier to get get a root shell via SSH.&#x20;
+This is, without question, similar to the initial hashes we found in the website. We probably need to crack the root hash we found a lot earlier to get get a root shell via SSH.
 
-Now that we have this, we would need to somehow find out the salt for this password before cracking it. There is a length limit of 30 for this script.&#x20;
+Now that we have this, we would need to somehow find out the salt for this password before cracking it. There is a length limit of 30 for this script.
 
 ### Bcrypt Exploit
 
@@ -306,7 +306,7 @@ I used an online UTF-8 generator to try and find a valid combiantion of characte
 
 {% embed url="https://onlineutf8tools.com/generate-random-utf8" %}
 
-Here are 2 instances of using UTF characters in hashing this algorithm with the machine's script. If you were to verify these two hashes, they would be identical. The 123456 is not hashed in the end, because we have entered more than 72 bytes of data.&#x20;
+Here are 2 instances of using UTF characters in hashing this algorithm with the machine's script. If you were to verify these two hashes, they would be identical. The 123456 is not hashed in the end, because we have entered more than 72 bytes of data.
 
 <figure><img src="../../../.gitbook/assets/image (164).png" alt=""><figcaption></figcaption></figure>
 
@@ -331,9 +331,9 @@ This would output something like this:
 
 <figure><img src="../../../.gitbook/assets/image (2966).png" alt=""><figcaption></figcaption></figure>
 
-H is the first character of the salt. Repeated tests of this script shows that the first character of this hash does not change, indicating the salt is static and not randomly generated. We can thus pull out the salt char by char.&#x20;
+H is the first character of the salt. Repeated tests of this script shows that the first character of this hash does not change, indicating the salt is static and not randomly generated. We can thus pull out the salt char by char.
 
-We can keep dragging out the next few characters by changing the hashed password and the plaintext password, removing 1 byte at a time and adding one to our flag variable.&#x20;
+We can keep dragging out the next few characters by changing the hashed password and the plaintext password, removing 1 byte at a time and adding one to our flag variable.
 
 <figure><img src="../../../.gitbook/assets/image (654).png" alt=""><figcaption></figcaption></figure>
 

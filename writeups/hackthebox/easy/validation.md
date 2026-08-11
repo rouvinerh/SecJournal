@@ -22,7 +22,7 @@ When viewing our request, this is what we would see:
 
 <figure><img src="../../../.gitbook/assets/image (3203).png" alt=""><figcaption></figcaption></figure>
 
-A quick directory scan reveals there is an `account.php` endpoint on the machine.&#x20;
+A quick directory scan reveals there is an `account.php` endpoint on the machine.
 
 ```
 $ feroxbuster -u http://10.10.11.116 -x php

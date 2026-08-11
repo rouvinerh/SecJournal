@@ -6,7 +6,7 @@ description: >-
 
 # OSCP BOF (OUTDATED)
 
-For this section I will be using the buffer overflow room from TryHackMe. Good room for practicing the OSCP BOF.&#x20;
+For this section I will be using the buffer overflow room from TryHackMe. Good room for practicing the OSCP BOF.
 
 {% embed url="https://tryhackme.com/room/bufferoverflowprep" %}
 
@@ -137,7 +137,7 @@ The EIP is filled with \x41 (which translates back to "A"). So the program would
 
 ## Finding Offset
 
-When finding the offset, we need to use `/usr/share/metasploit-framework/tools/exploit/pattern_create.rb`, which is a script that would create a string of text for us to send again.&#x20;
+When finding the offset, we need to use `/usr/share/metasploit-framework/tools/exploit/pattern_create.rb`, which is a script that would create a string of text for us to send again.
 
 <figure><img src="../.gitbook/assets/image (3325).png" alt=""><figcaption></figcaption></figure>
 
@@ -155,21 +155,21 @@ Now, we know the exact offset is 634, and we need to fuzz for bad characters.
 
 > Bad characters are specific characters in hex that would cause corruption of data within an application. This corruption must be avoided to allow for whatever shellcode we inject to work properly.
 
-We can use `mona.py` from Immunity Debugger to first generate a `bytearray.bin` file which would contain all the bad characters. In console of Immunity, use `!mona bytearray -b "\x00"` to generate this file. The `-b` flag is used to indicate what bad characters are present, and we typically always include the null byte `\x00` as it tends to corrupt things as well.&#x20;
+We can use `mona.py` from Immunity Debugger to first generate a `bytearray.bin` file which would contain all the bad characters. In console of Immunity, use `!mona bytearray -b "\x00"` to generate this file. The `-b` flag is used to indicate what bad characters are present, and we typically always include the null byte `\x00` as it tends to corrupt things as well.
 
-Afterwards, fill in the exploit with the offset number and send the bad characters along with it. The program would crash, and we need to view the **values on the stack**.&#x20;
+Afterwards, fill in the exploit with the offset number and send the bad characters along with it. The program would crash, and we need to view the **values on the stack**.
 
 <figure><img src="../.gitbook/assets/image (929).png" alt=""><figcaption></figcaption></figure>
 
-Notice that the characters for 'A' ends, and then some special characters begin from there. In this case, the address is at `0x00e2fa18`. This is the address we need to start comparing from, because that's where the **bad characters that we sent in begins**.&#x20;
+Notice that the characters for 'A' ends, and then some special characters begin from there. In this case, the address is at `0x00e2fa18`. This is the address we need to start comparing from, because that's where the **bad characters that we sent in begins**.
 
-We can use `mona.py` to do so again, through `!mona compare -f C:\path\to\bytearray.bin -a 00e2fa18`. This would compare the characters from the bytearray we generated to the address of the stack at that value.&#x20;
+We can use `mona.py` to do so again, through `!mona compare -f C:\path\to\bytearray.bin -a 00e2fa18`. This would compare the characters from the bytearray we generated to the address of the stack at that value.
 
 <figure><img src="../.gitbook/assets/image (2342).png" alt=""><figcaption></figcaption></figure>
 
 So the bad characters are highlighted in this case. Before removing all of them, **take note that one bad character can sometimes cause the next byte to be corrupted**. For example, \x23 is a bad character, and causes \x24 to also become corrupted, but \x24 is not a bad character we need to avoid.
 
-So the bad characters so far are `\x00\x23\x3c\x83\xba`. Update the bad character strings from our exploit script and generate a new bytearray in mona using `!mona bytearray -b "\x00\x23\x3c\x83\xba"`. Then, run the script and let the program crash, while also **recomparing the address to the bytearray generated**.&#x20;
+So the bad characters so far are `\x00\x23\x3c\x83\xba`. Update the bad character strings from our exploit script and generate a new bytearray in mona using `!mona bytearray -b "\x00\x23\x3c\x83\xba"`. Then, run the script and let the program crash, while also **recomparing the address to the bytearray generated**.
 
 Take note that the address **can change, so look at the values of the stack to know where to start comparing from**. If we have successfully removed all bad characters, the output from the comparison would look like this:
 
@@ -179,17 +179,17 @@ If not, there would still be bad characters present, and we need to **repeat the
 
 ## JMP ESP
 
-Now, we need to find a `JMP ESP` instruction. The reason we need this is because once we control the EIP, we can tell it to go anywhere. Being in control of a `JMP ESP` instruction would allow us to 'jump' to the top of the stack (since ESP points there) and inject our shellcode there. This would allow us to **redirect our execution to the top of the stack reliably**.&#x20;
+Now, we need to find a `JMP ESP` instruction. The reason we need this is because once we control the EIP, we can tell it to go anywhere. Being in control of a `JMP ESP` instruction would allow us to 'jump' to the top of the stack (since ESP points there) and inject our shellcode there. This would allow us to **redirect our execution to the top of the stack reliably**.
 
-We can do this with Mona, and this can be done whether the binary is running or crashed. We have to run `!mona jmp -r esp -b "\x00\x23\3c\x83\xba"` to find this instruction.&#x20;
+We can do this with Mona, and this can be done whether the binary is running or crashed. We have to run `!mona jmp -r esp -b "\x00\x23\3c\x83\xba"` to find this instruction.
 
 <figure><img src="../.gitbook/assets/image (1835).png" alt=""><figcaption></figcaption></figure>
 
-There are quite a few to choose from, and I chose `\x62\x50\x12\x05`, which would work fine with our payload. When putting this address in, **take note to reverse it as we are working with a 32-bit machine**. This would mean that it is a **little-endian** arrangement. So in our exploit, we need to write the new value of the EIP as `\x05\x12\x50\x62`.&#x20;
+There are quite a few to choose from, and I chose `\x62\x50\x12\x05`, which would work fine with our payload. When putting this address in, **take note to reverse it as we are working with a 32-bit machine**. This would mean that it is a **little-endian** arrangement. So in our exploit, we need to write the new value of the EIP as `\x05\x12\x50\x62`.
 
 ## Generating Shellcode
 
-We can proceed with generating shellcode. This can be done through `msfvenom` and we can either gain a reverse shell or just spawn the calculator for a PoC. The `-b` flag would be where we put our bad characters, and `msfvenom` would generate the shellcode without these characters.&#x20;
+We can proceed with generating shellcode. This can be done through `msfvenom` and we can either gain a reverse shell or just spawn the calculator for a PoC. The `-b` flag would be where we put our bad characters, and `msfvenom` would generate the shellcode without these characters.
 
 For this binary, I wanted to spawn the calculator. The command to generate this is:
 
@@ -253,9 +253,9 @@ s.close()
 print ("\nDone!")
 ```
 
-Once we run this exploit on the binary again, the program crashes, and executes our shellcode, causing the calculator to pop out.&#x20;
+Once we run this exploit on the binary again, the program crashes, and executes our shellcode, causing the calculator to pop out.
 
-This is how the BOF machines for OSCP (which are basically a giveaway 25 points) work.&#x20;
+This is how the BOF machines for OSCP (which are basically a giveaway 25 points) work.
 
 ## Summary
 

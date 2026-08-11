@@ -10,7 +10,7 @@ Doing a detailed Nmap scan reveals a bit more about the services running on the 
 
 <figure><img src="../../../.gitbook/assets/image (1117).png" alt=""><figcaption></figcaption></figure>
 
-Port 8080 was running a Tomcat instance, and this might be the method used for a reverse shell via a malicious .war file. Port 60000 was also running some form of custom application.&#x20;
+Port 8080 was running a Tomcat instance, and this might be the method used for a reverse shell via a malicious .war file. Port 60000 was also running some form of custom application.
 
 Credentials were required for port 8080:
 
@@ -95,7 +95,7 @@ Reading the `app.log` file reveals some interesting stuff.
 
 <figure><img src="../../../.gitbook/assets/image (1189).png" alt=""><figcaption></figcaption></figure>
 
-First thing to note was that there was another IP address at 10.0.3.133. Next, this was using `wget` 1.16, which was a vulnerable version of the binary. Lastly, take a look at the timestamps. Notice how they occur exactly after every 2 minutes? Perhaps this was a cronjob running in the background that we needed to exploit.&#x20;
+First thing to note was that there was another IP address at 10.0.3.133. Next, this was using `wget` 1.16, which was a vulnerable version of the binary. Lastly, take a look at the timestamps. Notice how they occur exactly after every 2 minutes? Perhaps this was a cronjob running in the background that we needed to exploit.
 
 There were scripts for the exploit available on Github:
 

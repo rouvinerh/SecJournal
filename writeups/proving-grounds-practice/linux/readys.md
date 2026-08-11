@@ -46,7 +46,7 @@ NOAUTH Authentication required.
 
 ### Wordpress LFI -> Redis Creds
 
-I used `wpscan` on the website and found a vulnerable plugin.&#x20;
+I used `wpscan` on the website and found a vulnerable plugin.
 
 ```
 $ wpscan --api-token mytoken --enumerate p,t,u --url http://192.168.208.166
@@ -145,7 +145,7 @@ This script checks multiple files at one go (3 in this case) Based on GTFOBins, 
 ./tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
 ```
 
-To exploit this, we just need to create two files, one called `--checkpoint=1` and another called `--checkpoint-action=exec=bash ez.sh`.&#x20;
+To exploit this, we just need to create two files, one called `--checkpoint=1` and another called `--checkpoint-action=exec=bash ez.sh`.
 
 We can first create `ez.sh`:
 

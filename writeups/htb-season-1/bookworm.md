@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-Just two ports open. We have to add `bookworm.htb` to our `/etc/hosts` file to access the website.&#x20;
+Just two ports open. We have to add `bookworm.htb` to our `/etc/hosts` file to access the website.
 
 ### Bookworm -> Find XSS
 
@@ -69,7 +69,7 @@ This number incremented itself each time, and it was likely that this is the sam
 
 <figure><img src="../../.gitbook/assets/image (2686).png" alt=""><figcaption></figcaption></figure>
 
-We can try uploading some basic Javascript files (since this was likely an XSS-based initial access). After some trial and error, I found that by changing the `Content-Type` header to `image/jpeg`, we can bypass the content check and upload whatever we want.&#x20;
+We can try uploading some basic Javascript files (since this was likely an XSS-based initial access). After some trial and error, I found that by changing the `Content-Type` header to `image/jpeg`, we can bypass the content check and upload whatever we want.
 
 <figure><img src="../../.gitbook/assets/image (968).png" alt=""><figcaption></figcaption></figure>
 
@@ -95,7 +95,7 @@ Upgrade-Insecure-Requests: 1
 quantity=1&note=%3Cimg+src%3D%22http%3A%2F%2F10.10.14.34%2F%3Fbotcallback%22%3E
 ```
 
-This payload works in getting a callback from the machine itself.&#x20;
+This payload works in getting a callback from the machine itself.
 
 <figure><img src="../../.gitbook/assets/image (931).png" alt=""><figcaption></figcaption></figure>
 
@@ -345,7 +345,7 @@ It seems that this requires a `database.js` file to be run. So, we can read `/pr
 
 <figure><img src="../../.gitbook/assets/image (2152).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can `ssh` in using `frank` as the username.&#x20;
+Then, we can `ssh` in using `frank` as the username.
 
 <figure><img src="../../.gitbook/assets/image (2815).png" alt=""><figcaption></figcaption></figure>
 
@@ -479,7 +479,7 @@ Content-Disposition: form-data; name="outputType"
 -----------------------------292034445114065400543811074751--
 ```
 
-Then we can `ssh` in as `neil`.&#x20;
+Then we can `ssh` in as `neil`.
 
 <figure><img src="../../.gitbook/assets/image (2926).png" alt=""><figcaption></figcaption></figure>
 
@@ -582,7 +582,7 @@ except Exception as e:
 cnx.close()
 ```
 
-This uses the `postscript_file.write` to first write the file, and then it uses`ps2pdf` to convert it to a PDF. The parameter taken by the user is not sanitised, making this vulnerable to SQL PostScript Injection actually.&#x20;
+This uses the `postscript_file.write` to first write the file, and then it uses`ps2pdf` to convert it to a PDF. The parameter taken by the user is not sanitised, making this vulnerable to SQL PostScript Injection actually.
 
 We can find out more about writing PostScript here by Googling PostScript write files:
 

@@ -20,7 +20,7 @@ On the `cyberlaw.txt` file, we can find some hints on what to do next.
 
 <figure><img src="../../../.gitbook/assets/image (2062).png" alt=""><figcaption></figcaption></figure>
 
-Interesting. So there's a `chris` user and he hacked the website first.&#x20;
+Interesting. So there's a `chris` user and he hacked the website first.
 
 ### SQL Injection
 
@@ -186,7 +186,7 @@ Using `debugfs` on the `/dev/sda1` filesystem (which just looked off), we find o
 
 <figure><img src="../../../.gitbook/assets/image (1300).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;We can also find the private SSH key for `root`.
+We can also find the private SSH key for `root`.
 
 <figure><img src="../../../.gitbook/assets/image (3093).png" alt=""><figcaption></figcaption></figure>
 

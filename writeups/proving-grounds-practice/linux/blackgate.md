@@ -15,7 +15,7 @@ PORT     STATE SERVICE
 6379/tcp open  redis
 ```
 
-Only Redis. We can do a detailed scan for this port.&#x20;
+Only Redis. We can do a detailed scan for this port.
 
 ```
 $ sudo nmap -p 6379 -sC -sV -O -T4 192.168.197.176                                 

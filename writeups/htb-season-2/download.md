@@ -23,7 +23,7 @@ PORT      STATE    SERVICE
 63906/tcp filtered unknown
 ```
 
-A few filtered ports and just a web service. We have to add `download.htb` to our `/etc/hosts` file to view the website.&#x20;
+A few filtered ports and just a web service. We have to add `download.htb` to our `/etc/hosts` file to view the website.
 
 ### Web Enum -> LFI Source Code
 
@@ -43,7 +43,7 @@ If we click the Copy Link button, a small textbox appears in the top left with t
 
 <figure><img src="../../.gitbook/assets/image (4141).png" alt=""><figcaption></figcaption></figure>
 
-I found this rather fishy because it literally creates an element in the top left. There is a file called `copy.js` which contains the code for the function, but it does not have any glaring vulnerabilities.&#x20;
+I found this rather fishy because it literally creates an element in the top left. There is a file called `copy.js` which contains the code for the function, but it does not have any glaring vulnerabilities.
 
 I noted that there was a JWT like token present within the download, as well as a `.sig` cookie:
 
@@ -57,7 +57,7 @@ Here's the decoded token:
 
 The next thing to enumerate would be the login. I created a test user and enumerated the website some more:
 
-&#x20;
+
 
 <figure><img src="../../.gitbook/assets/image (4143).png" alt=""><figcaption></figcaption></figure>
 
@@ -73,7 +73,7 @@ The `.sig` cookie is different too, and based on the extension of it I think it 
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/nodejs-express" %}
 
-The similarities between the exploit found in this repository and the website were suspicious, but more enumeration could be done before going this route.&#x20;
+The similarities between the exploit found in this repository and the website were suspicious, but more enumeration could be done before going this route.
 
 Attempts to spoof tokens doesn't work, as they are likely being signed. The last thing I enumerated was the Download feature. It redirects us to this link:
 
@@ -323,15 +323,15 @@ Here are the facts so far and my deductions:
 * `.sig` , the key I found and how the token is structured -> Definitely need to use Cookie Monster somehow.
 * User is `wesley`, and hashes are unsalted and used directly for authentication -> Brute force is theoretically possible if done smartly.
 * There's a SQL query that is 100% injectable, but I don't know how to exploit it at this point.
-* The cookie is not validated in any way, it takes my input directly. It checks whether a `true` condition is returned from `findFirst` from the `prisma` API module -> Blind Injection based on where it redirects us?&#x20;
+* The cookie is not validated in any way, it takes my input directly. It checks whether a `true` condition is returned from `findFirst` from the `prisma` API module -> Blind Injection based on where it redirects us?
 
-Based on the facts above, there should be a method of which we can brute force the hash using a smartly created user cookie that is signed through Cookie Monster.&#x20;
+Based on the facts above, there should be a method of which we can brute force the hash using a smartly created user cookie that is signed through Cookie Monster.
 
 Since this uses `prisma` client API, we can try to inject some commands from that module based on their nested JSON queries possible.
 
 {% embed url="https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#advanced-example-update-a-nested-json-key-value" %}
 
-&#x20;I tried to use `contains` first in this cookie:
+I tried to use `contains` first in this cookie:
 
 ```
 {"user":{"username":{"contains": "WESLEY"}, "password":{"startsWith":"a"}}}
@@ -472,7 +472,7 @@ It's quite clear that we have to somehow escalate privileges to the `postgres` u
 2023/08/07 03:13:12 CMD: UID=0    PID=57091  | /lib/systemd/systemd-udevd
 ```
 
-There were also a lot of services being run by `root`.&#x20;
+There were also a lot of services being run by `root`.
 
 ```
 ls /etc/systemd/system
@@ -492,7 +492,7 @@ mdmonitor.service.wants                     vmtoolsd.service
 multipath-tools.service
 ```
 
-I checked for passwords, and found one within `download-site.service`.&#x20;
+I checked for passwords, and found one within `download-site.service`.
 
 ```
 wesley@download:/tmp$ cat /etc/systemd/system/download-site.service
@@ -513,7 +513,7 @@ Environment=DATABASE_URL="postgresql://download:<redacted>@localhost:5432/downlo
 WantedBy=multi-user.target
 ```
 
-With this, we can login to the PostgreSQL server via `psql`.&#x20;
+With this, we can login to the PostgreSQL server via `psql`.
 
 <figure><img src="../../.gitbook/assets/image (4149).png" alt=""><figcaption></figcaption></figure>
 
@@ -528,11 +528,11 @@ We can first enumerate the privileges we have with `\du`:
  postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 ```
 
-Interestingly, we are given the `pg_write_server_files` privilege. The database itself does not have any interesting information, so we are supposed to use this privilege to escalate to `postgres`.&#x20;
+Interestingly, we are given the `pg_write_server_files` privilege. The database itself does not have any interesting information, so we are supposed to use this privilege to escalate to `postgres`.
 
-Since we have an arbitrary write as this user, I thought of creating a `/bin/bash` SUID binary to escalate to it. Being able to write files as the `postgres` user is no good if we cannot execute it as `postgres`.&#x20;
+Since we have an arbitrary write as this user, I thought of creating a `/bin/bash` SUID binary to escalate to it. Being able to write files as the `postgres` user is no good if we cannot execute it as `postgres`.
 
-I noticed that `root` runs `su -l postgres`, meaning that that user is being logged into periodically. This means that files like `.bashrc` and `.profile` are being executed when this command is executed. Using our file write abilities, we can write in some commands to the `.bash_profile` file, which would be executed when `root` logs in as `postgres`.&#x20;
+I noticed that `root` runs `su -l postgres`, meaning that that user is being logged into periodically. This means that files like `.bashrc` and `.profile` are being executed when this command is executed. Using our file write abilities, we can write in some commands to the `.bash_profile` file, which would be executed when `root` logs in as `postgres`.
 
 I used this to spawn an SUID shell:
 
@@ -554,7 +554,7 @@ Then on a listener port, we would get a `postgres` shell:
 
 <figure><img src="../../.gitbook/assets/image (4151).png" alt=""><figcaption></figcaption></figure>
 
-However, the shell dies quickly, presumably because the connection cuts out when `root` runs `su -l` again. At least I know that this works.&#x20;
+However, the shell dies quickly, presumably because the connection cuts out when `root` runs `su -l` again. At least I know that this works.
 
 ### TTY Hijack -> Root
 
@@ -607,7 +607,7 @@ After waiting for a bit, the `root` flag appeared within the `/tmp` directory, c
 
 <figure><img src="../../.gitbook/assets/image (4153).png" alt=""><figcaption></figcaption></figure>
 
-Using this, we can create another one to get a reverse shell as `root` or run `chmod u+s /bin/bash`.&#x20;
+Using this, we can create another one to get a reverse shell as `root` or run `chmod u+s /bin/bash`.
 
 <figure><img src="../../.gitbook/assets/image (4154).png" alt=""><figcaption></figcaption></figure>
 

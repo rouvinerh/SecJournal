@@ -26,7 +26,7 @@ We can use the Adobe ColdFusion 8 RCE exploit. When running the exploit, we woul
 
 Checking the privileges we have, we can see that we have SeImpersonatePrivilege enabled.
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (2053).png" alt=""><figcaption></figcaption></figure>
 

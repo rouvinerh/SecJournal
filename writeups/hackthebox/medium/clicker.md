@@ -69,7 +69,7 @@ PORT      STATE SERVICE  VERSION
 58185/tcp open  mountd   1-3 (RPC #100005)
 ```
 
-Lots of RPC ports, and NFS is open on port 2049. We can also add `clicker.htb` to the `/etc/hosts` file.&#x20;
+Lots of RPC ports, and NFS is open on port 2049. We can also add `clicker.htb` to the `/etc/hosts` file.
 
 ### NFS -> Source Code
 
@@ -113,7 +113,7 @@ Archive:  clicker.htb_backup.zip
   inflating: clicker.htb/export.php
 ```
 
-We probably need to do source code review later, but for now we can move on to enumerating the website itself.&#x20;
+We probably need to do source code review later, but for now we can move on to enumerating the website itself.
 
 ### Web Enumeration + Source Code Review
 
@@ -167,7 +167,7 @@ if ($_SESSION["ROLE"] != "Admin") {
 ?>
 ```
 
-The `export.php` code is another file that contains this 'Admin' check, meaning we probably need to somehow become the administrator of this site, and then abuse a vulnerability within that code later.&#x20;
+The `export.php` code is another file that contains this 'Admin' check, meaning we probably need to somehow become the administrator of this site, and then abuse a vulnerability within that code later.
 
 Within the `diagnostic.php` file, there's another check and its for the `token` this time:
 
@@ -225,7 +225,7 @@ function save_profile($player, $args) {
 
 ### Admin Takeover
 
-Based on the source code above, I'm pretty sure that the `strtolower($key)` check can be bypassed. Also, it looks really intentionally left there. If we can bypass it and add the `Role` parameter, we can update it with `Admin` since it's directly passed directly to `$args[$key] = $value`.&#x20;
+Based on the source code above, I'm pretty sure that the `strtolower($key)` check can be bypassed. Also, it looks really intentionally left there. If we can bypass it and add the `Role` parameter, we can update it with `Admin` since it's directly passed directly to `$args[$key] = $value`.
 
 The only source I could find was this:
 
@@ -316,7 +316,7 @@ There's a lot of things going on here. In short, there are 3 parts to it:
 * Accepts one `extension` POST value that is NOT SANITISED (we can indicate PHP!)
 * If we don't specify a `.txt` or a `.json`, it will create a HTML file for us and output it somewhere on the machine. Since there is no validation on the parameters being passed in, and we can specify any file extension we want, we could potentially inject PHP code onto the machine to get RCE.
 
-To abuse this, we can easily change our `nickname` to a PHP payload using the same exploit to get admin. The code doesn't check for the `nickname` parameter, so we only need to URL encode our PHP payload.&#x20;
+To abuse this, we can easily change our `nickname` to a PHP payload using the same exploit to get admin. The code doesn't check for the `nickname` parameter, so we only need to URL encode our PHP payload.
 
 {% code overflow="wrap" %}
 ```
@@ -376,7 +376,7 @@ Use the binary to execute the following task:
         - 4: Deletes all users except the admin
 ```
 
-The `execute_query` file is an ELF binary, and has SUID set for `jack`.&#x20;
+The `execute_query` file is an ELF binary, and has SUID set for `jack`.
 
 {% code overflow="wrap" %}
 ```
@@ -434,7 +434,7 @@ The above can be converted to:
 ```
 {% endcode %}
 
-The above command was taking input from somewhere, and I assume it's a file. When taking another look at the `switch` statements, I noticed that there was a `default` case, which basically controlled `pcVar3`, the same variable contains filenames from the other `switch` cases.&#x20;
+The above command was taking input from somewhere, and I assume it's a file. When taking another look at the `switch` statements, I noticed that there was a `default` case, which basically controlled `pcVar3`, the same variable contains filenames from the other `switch` cases.
 
 The variable also had limited space since `calloc` is used to allocate memory for it. Since the command is printing verbose output, I tried specifying other files / directories:
 

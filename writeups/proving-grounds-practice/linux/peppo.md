@@ -35,7 +35,7 @@ ident-user-enum v1.0 ( http://pentestmonkey.net/tools/ident-user-enum )
 192.168.201.60:10000    eleanor
 ```
 
-`eleanor` was one of the users. I just tried some weak credentials, and it turns out `eleanor` was the SSH password.&#x20;
+`eleanor` was one of the users. I just tried some weak credentials, and it turns out `eleanor` was the SSH password.
 
 <figure><img src="../../../.gitbook/assets/image (1270).png" alt=""><figcaption></figcaption></figure>
 
@@ -59,7 +59,7 @@ eleanor@peppo:~$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 -rbash: PATH: readonly variable
 ```
 
-However, we can use `ed` to spawn a better shell and change this.&#x20;
+However, we can use `ed` to spawn a better shell and change this.
 
 <figure><img src="../../../.gitbook/assets/image (3084).png" alt=""><figcaption></figcaption></figure>
 

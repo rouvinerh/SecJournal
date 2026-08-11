@@ -30,7 +30,7 @@ Default creds of `administrator:administrator` works in logging us in:
 
 <figure><img src="../../../.gitbook/assets/image (1955).png" alt=""><figcaption></figcaption></figure>
 
-There are loads of vulnerabilities with this software.&#x20;
+There are loads of vulnerabilities with this software.
 
 ```
 $ searchsploit manageengine servicedesk Plus  
@@ -61,7 +61,7 @@ Zoho ManageEngine ServiceDesk Plus MSP 9.4 - User Enumerat | java/webapps/50027.
 ----------------------------------------------------------- ---------------------------------
 ```
 
-I was lazy, so I used `msfconsole` to exploit this easily.&#x20;
+I was lazy, so I used `msfconsole` to exploit this easily.
 
 ```
 msf6 exploit(multi/http/manageengine_auth_upload) > set USERNAME administrator

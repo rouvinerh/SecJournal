@@ -30,7 +30,7 @@ However, none of the exploits worked here and I was stuck.
 
 ### Subdomain Fuzzing
 
-The whole payroll bit was a rabbit hole, and I could not make anything work. As such, I started to fuzz subdomains again, but found nothing from it.&#x20;
+The whole payroll bit was a rabbit hole, and I could not make anything work. As such, I started to fuzz subdomains again, but found nothing from it.
 
 I then tried to fuzz with the `preprod-` bit prefixed, and found a new domain:
 

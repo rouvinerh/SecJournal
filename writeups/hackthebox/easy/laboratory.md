@@ -16,7 +16,7 @@ PORT    STATE SERVICE
 443/tcp open  https
 ```
 
-We have to add `laboratory.htb` to our `/etc/hosts` file to access the web ports.&#x20;
+We have to add `laboratory.htb` to our `/etc/hosts` file to access the web ports.
 
 ### Laboratory -> Gitlab RCE
 
@@ -42,7 +42,7 @@ ID           Response   Lines    Word       Chars       Payload
 000000262:   302        0 L      5 W        105 Ch      "git"
 ```
 
-When we visit this subdomain, it reveals a GitLab instance.&#x20;
+When we visit this subdomain, it reveals a GitLab instance.
 
 <figure><img src="../../../.gitbook/assets/image (415).png" alt=""><figcaption></figcaption></figure>
 
@@ -144,7 +144,7 @@ The main thing I was looking for was credentials to any other users on the Gitla
 
 {% embed url="https://docs.gitlab.com/ee/security/reset_user_password.html" %}
 
-The documentation states that need to start a rails console, which we can do using `gitlab-rails console`.&#x20;
+The documentation states that need to start a rails console, which we can do using `gitlab-rails console`.
 
 ```
 git@git:/$ gitlab-rails console
@@ -163,7 +163,7 @@ User.admins
 => #<ActiveRecord::Relation [#<User id:1 @dexter>]>
 ```
 
-Then, we can actually reset the password of `dexter`.&#x20;
+Then, we can actually reset the password of `dexter`.
 
 ```
 irb(main):005:0> user = User.find_by_username 'dexter'

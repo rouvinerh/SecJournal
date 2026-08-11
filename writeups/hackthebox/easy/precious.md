@@ -105,7 +105,7 @@ When searching along the lines of Ruby deserialisation attacks through YAML.load
 
 {% embed url="https://blog.stratumsecurity.com/2021/06/09/blind-remote-code-execution-through-yaml-deserialization/" %}
 
-How this works is thorugh implementing a gadget chain that was previously used with other Ruby YAML exploits. This basically gives us RCE over the machine as root.&#x20;
+How this works is thorugh implementing a gadget chain that was previously used with other Ruby YAML exploits. This basically gives us RCE over the machine as root.
 
 We just need to put the malicious YAML file in some writeable place and execute it. Works because the script does not check for an absolute path. Here's the PoC:
 

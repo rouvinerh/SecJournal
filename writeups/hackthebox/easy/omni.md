@@ -95,4 +95,4 @@ The administrator flag was also encrytped using the same method, so we have to f
 PS C:\Data\Users\app> (Import-CliXml -Path C:\data\users\administrator\root.txt).GetNetworkCredential().Password
 ```
 
-Weird machine, but I do appreciate the unique flags.&#x20;
+Weird machine, but I do appreciate the unique flags.

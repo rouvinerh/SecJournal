@@ -59,7 +59,7 @@ Wneh an image is uploaded, the metadata of the image is printed on screen below:
 
 <figure><img src="../../../.gitbook/assets/image (3313).png" alt=""><figcaption></figcaption></figure>
 
-This was the output of `exiftool`, which has some RCE attacks possible through metadata.&#x20;
+This was the output of `exiftool`, which has some RCE attacks possible through metadata.
 
 {% embed url="https://github.com/OneSecCyber/JPEG_RCE" %}
 
@@ -82,7 +82,7 @@ After changing the `exploit.py` file to have the correct port and IP address, I 
 
 ## Privilege Escalation
 
-We cannot grab the user flag yet.&#x20;
+We cannot grab the user flag yet.
 
 ### Morgify
 
@@ -141,7 +141,7 @@ How the exploit works is thorugh embedding XML code within an SVG file. Here's t
 </image>
 ```
 
-This uses a base64 encoded `bash` one-liner reverse shell. After waiting for a little bit, we should get a shell as `thomas`.&#x20;
+This uses a base64 encoded `bash` one-liner reverse shell. After waiting for a little bit, we should get a shell as `thomas`.
 
 <figure><img src="../../../.gitbook/assets/image (584).png" alt=""><figcaption></figcaption></figure>
 

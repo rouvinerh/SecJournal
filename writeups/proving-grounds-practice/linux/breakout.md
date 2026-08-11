@@ -22,7 +22,7 @@ Port 80 reveals a Gitlab instance:
 
 <figure><img src="../../../.gitbook/assets/image (2899).png" alt=""><figcaption></figcaption></figure>
 
-I tried registering a user, but it wasn't allowed since the Gitlab administrator needed to approve first. I ran a `feroxbuster` scan to enumerate directories.&#x20;
+I tried registering a user, but it wasn't allowed since the Gitlab administrator needed to approve first. I ran a `feroxbuster` scan to enumerate directories.
 
 ```
 $ feroxbuster -u http://192.168.183.182
@@ -67,7 +67,7 @@ Using this user, we can enumerate the version of Gitlab running:
 
 <figure><img src="../../../.gitbook/assets/image (1309).png" alt=""><figcaption></figcaption></figure>
 
-This is vulnerable to the Gitlab Exiftool RCE exploit.&#x20;
+This is vulnerable to the Gitlab Exiftool RCE exploit.
 
 {% embed url="https://github.com/CsEnox/Gitlab-Exiftool-RCE" %}
 
@@ -85,7 +85,7 @@ Successfully Authenticated
 
 ### LinPEAS -> SSH Key
 
-I ran `linpeas.sh` and it found some potential SSH keys.&#x20;
+I ran `linpeas.sh` and it found some potential SSH keys.
 
 ```
 [+] Searching ssl/ssh files
@@ -187,4 +187,4 @@ We can then use this key to `ssh` in as `root`:
 
 <figure><img src="../../../.gitbook/assets/image (2601).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

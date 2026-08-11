@@ -67,11 +67,11 @@ smb: \> ls
   NOC_Reminder.pdf                   AR   106977  Mon Jun 20 11:00:32 2022
 ```
 
-When we view the PDF, it talks about how the systems are vulnerable to some CVEs, and that we have to send an email to `itsupport@outdated.htb` for it.&#x20;
+When we view the PDF, it talks about how the systems are vulnerable to some CVEs, and that we have to send an email to `itsupport@outdated.htb` for it.
 
 <figure><img src="../../../.gitbook/assets/image (1209).png" alt=""><figcaption></figcaption></figure>
 
-We have to sent a link to web applications, meaning someone will click on our links. We can start with researching the vulnerabilities listed in the PDF. The first CVE (also known as Follina) is an RCE vulnerability that makes use of a HTML file that the user has to click to execute arbitrary code.&#x20;
+We have to sent a link to web applications, meaning someone will click on our links. We can start with researching the vulnerabilities listed in the PDF. The first CVE (also known as Follina) is an RCE vulnerability that makes use of a HTML file that the user has to click to execute arbitrary code.
 
 This looks like the one that we need. I used this PoC below:
 
@@ -100,9 +100,9 @@ After waiting for a little bit, we should get a hit on both HTTP servers (one fo
 
 ## Privilege Escalation
 
-We can't grab the user flag yet, so let's look around.&#x20;
+We can't grab the user flag yet, so let's look around.
 
-### Shadow Credentials&#x20;
+### Shadow Credentials
 
 We didn't have much privileges or access to files on the machine, so let's use Bloodhound to map the domain out and view the privileges that we have. In this case, we have to download `SharpHound.exe` onto the machine and get the files:
 
@@ -124,11 +124,11 @@ Then we just need to transfer this file over to our machine via `copy`. Afterwar
 
 <figure><img src="../../../.gitbook/assets/image (399).png" alt=""><figcaption></figcaption></figure>
 
-The `AddKeyCredentialLink` is exploitable using Shadow Credentials.&#x20;
+The `AddKeyCredentialLink` is exploitable using Shadow Credentials.
 
 {% embed url="https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/shadow-credentials" %}
 
-We have to download `whisker.exe` onto the machine. First, we can compile it in VS Code 2022 using a Windows machine. Then we can download this back to our Kali machine and put it on the machine.&#x20;
+We have to download `whisker.exe` onto the machine. First, we can compile it in VS Code 2022 using a Windows machine. Then we can download this back to our Kali machine and put it on the machine.
 
 Then run this:
 

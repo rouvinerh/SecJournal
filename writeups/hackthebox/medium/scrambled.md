@@ -12,7 +12,7 @@ Nmap Scan:
 
 ### ScrambleCorp
 
-The website was another corporate webpage.&#x20;
+The website was another corporate webpage.
 
 <figure><img src="../../../.gitbook/assets/image (986).png" alt=""><figcaption></figcaption></figure>
 
@@ -42,7 +42,7 @@ Armed with one user, I attmepted to request for a TGT using his username as the 
 
 <figure><img src="../../../.gitbook/assets/image (3754).png" alt=""><figcaption></figcaption></figure>
 
-Now we have one ticket, we can attempt to access some SMB shares using `smbclient.py`.&#x20;
+Now we have one ticket, we can attempt to access some SMB shares using `smbclient.py`.
 
 <figure><img src="../../../.gitbook/assets/image (3651).png" alt=""><figcaption></figcaption></figure>
 
@@ -64,7 +64,7 @@ We can use `getUserSPNs.py` to do so.
 
 <figure><img src="../../../.gitbook/assets/image (649).png" alt=""><figcaption></figcaption></figure>
 
-Afterwards, we can retrieve the tickets using the `-request` flag. Thsi would give us a hash that we can crack using `john`.&#x20;
+Afterwards, we can retrieve the tickets using the `-request` flag. Thsi would give us a hash that we can crack using `john`.
 
 <figure><img src="../../../.gitbook/assets/image (392).png" alt=""><figcaption></figcaption></figure>
 
@@ -106,7 +106,7 @@ I took a look at the UserImport table and found some new credentials.
 
 <figure><img src="../../../.gitbook/assets/image (2761).png" alt=""><figcaption></figcaption></figure>
 
-With these credentials, we can attempt to `evil-winrm` in. However this does not work as the user is not part of the Remote Management Group.&#x20;
+With these credentials, we can attempt to `evil-winrm` in. However this does not work as the user is not part of the Remote Management Group.
 
 Instead, I used some remote Powershell to gain RCE via ScriptBlocks.
 
@@ -122,7 +122,7 @@ Taking a look around the machine, we can go ahead and view all the other Shares 
 
 <figure><img src="../../../.gitbook/assets/image (1818).png" alt=""><figcaption></figcaption></figure>
 
-Transferred this back to my machine via nc.exe, and then took a look at it using `strings`.&#x20;
+Transferred this back to my machine via nc.exe, and then took a look at it using `strings`.
 
 <figure><img src="../../../.gitbook/assets/image (2894).png" alt=""><figcaption></figcaption></figure>
 
@@ -143,7 +143,7 @@ public bool Logon(string Username, string Password)
         }
 ```
 
-There was a custom backdoor using the `scrmdev` user! We can easily login then. Afterwards, I took a look back at port 4411 on the machine, which was running this binary as I found out the binary accepts some commands based on reading the dnSpy code.&#x20;
+There was a custom backdoor using the `scrmdev` user! We can easily login then. Afterwards, I took a look back at port 4411 on the machine, which was running this binary as I found out the binary accepts some commands based on reading the dnSpy code.
 
 We can send LIST\_ORDERS to the port, and it would return some base64 stuff:
 

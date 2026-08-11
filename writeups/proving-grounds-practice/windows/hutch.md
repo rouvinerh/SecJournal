@@ -37,7 +37,7 @@ PORT      STATE SERVICE
 49687/tcp open  unknown
 ```
 
-An AD machine.&#x20;
+An AD machine.
 
 ### Initial Enumeration -> Creds
 
@@ -80,7 +80,7 @@ $ davtest -url http://192.168.197.122
 OPEN            FAIL:   http://192.168.197.122  Unauthorized. Basic realm="192.168.197.122"
 ```
 
-For SMB, `enum4linux` reveals nothing of interest regarding the domain, but it does accept null credentials.&#x20;
+For SMB, `enum4linux` reveals nothing of interest regarding the domain, but it does accept null credentials.
 
 <figure><img src="../../../.gitbook/assets/image (1023).png" alt=""><figcaption></figcaption></figure>
 
@@ -96,7 +96,7 @@ At the very end of the file, we can find some credentials:
 
 <figure><img src="../../../.gitbook/assets/image (234).png" alt=""><figcaption></figcaption></figure>
 
-This user's SAM Account Name is listed as `fmcsorley`, but we cannot use these credentials to `evil-winrm` in it seems. &#x20;
+This user's SAM Account Name is listed as `fmcsorley`, but we cannot use these credentials to `evil-winrm` in it seems. 
 
 ### Davtest -> RCE
 
@@ -173,7 +173,7 @@ PUT Shell: http://192.168.197.122/DavTestDir_YuAxJmlk/YuAxJmlk_aspx_cmd.aspx
 
 <figure><img src="../../../.gitbook/assets/image (3791).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can easily get a reverse shell as this user.&#x20;
+Then, we can easily get a reverse shell as this user.
 
 <figure><img src="../../../.gitbook/assets/image (1456).png" alt=""><figcaption></figcaption></figure>
 
@@ -181,7 +181,7 @@ Then, we can easily get a reverse shell as this user.&#x20;
 
 ### LAPS-> Administrator Creds
 
-On the machine, LAPS is installed.&#x20;
+On the machine, LAPS is installed.
 
 ```
  Directory of C:\Program Files
@@ -233,4 +233,4 @@ We can then `evil-winrm` in using it:
 
 <figure><img src="../../../.gitbook/assets/image (310).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

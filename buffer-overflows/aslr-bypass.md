@@ -15,17 +15,17 @@ With ASLR enabled, the library would be **loaded at different places in memory**
 Functions are called based on **offsets**. For example, if the libc library is loaded at `0x10000000`, and the offset for the `printf()` function is `0x00001000`, then when a program is run and `printf()` is called, it is mapped at `0x10001000`. \
 Generally, base address (where library is called) + offset = memory location of function.
 
-The vulnerability arises because when ASLR is enabled, **the offset does not change and is constant**. So, if we are able to find the base address where the library is called, we can use the constant offsets to load certain functions.&#x20;
+The vulnerability arises because when ASLR is enabled, **the offset does not change and is constant**. So, if we are able to find the base address where the library is called, we can use the constant offsets to load certain functions.
 
 ### **Methods**
 
 To bypass ASLR, there are a few methods possible
 
 * Information Leak Vulnerability
-  * Can be an LFI or anything else that lets us **read memory locations on the machine**.&#x20;
+  * Can be an LFI or anything else that lets us **read memory locations on the machine**.
   * Memory disclosure vulnerabilities also can work.
 * Brute Forcing
-  * Perhaps the range of addresses where the library is loaded is rather small. This indicates that the base address could be brute forced and a simple for loop can cover all of it rather quickly.&#x20;
+  * Perhaps the range of addresses where the library is loaded is rather small. This indicates that the base address could be brute forced and a simple for loop can cover all of it rather quickly.
   * Done in the October box from HTB.
 * Memory Spraying
   * Involves using an amplification gadget, which is a piece of code that takes an existing chunk of data and copies it, allowing the attacker to spray a large amount of memory by only sending a relatively small number of bytes.
@@ -54,11 +54,11 @@ $ cat /proc/407/maps
 7ffe9932e000-7ffe99330000 r-xp 00000000 00:00 0                          [vdso]
 ```
 
-This provides memory addresses for each loaded library as well as the program itself. It also identifes areas of memory that are writable or executable.&#x20;
+This provides memory addresses for each loaded library as well as the program itself. It also identifes areas of memory that are writable or executable.
 
 Now, suppose we do this multiple times, we can find out a few things like:
 
-* How wide is the range of addresses? Can it be brute-forced?&#x20;
+* How wide is the range of addresses? Can it be brute-forced?
 * Where is the stack loaded?
 * Where is the heap relative to the binary?
 
@@ -77,7 +77,7 @@ The leak is exploited through using the `puts()` function to print the address o
 
 To do this, we would need 3 things:
 
-1. Address of `pop rdi` to pass the argument to the RDI register, which would be used to puts.&#x20;
+1. Address of `pop rdi` to pass the argument to the RDI register, which would be used to puts.
 2. Address of GOT table where the `puts` in libc is.
 3. Address of puts to print the address leaked.
 
@@ -118,7 +118,7 @@ But wait, why do we need the `main()` address? Well, this is because once our pr
 
 By using the main address function, we can 'preserve' this address and make the program wait at `main()` for the second stage of our exploit.
 
-The next part of the exploit would be a basic ret2libc or ROP chain, depending on whether NX is enabled or what is possible. For this example, I will be using a simple ret2libc exploit. Since the offsets of the functions needed for this are **constant**, all we need to do now is use the address of `puts` to dump the function of the library.&#x20;
+The next part of the exploit would be a basic ret2libc or ROP chain, depending on whether NX is enabled or what is possible. For this example, I will be using a simple ret2libc exploit. Since the offsets of the functions needed for this are **constant**, all we need to do now is use the address of `puts` to dump the function of the library.
 
 First we need to find the address of the `puts()` function within the `libc` file, as well as the `system()`, `/bin/sh`, and `exit()` for our ret2libc.
 
@@ -173,9 +173,9 @@ And this is how we bypass ASLR using an Information Leak.
 
 ## Memory Spraying
 
-To bypass ASLR without the above method is a lot more difficult. This would require memory spraying, which lets us map contiguous memory of a given size, on a given range of addresses.&#x20;
+To bypass ASLR without the above method is a lot more difficult. This would require memory spraying, which lets us map contiguous memory of a given size, on a given range of addresses.
 
-This abuses a **memory leak, a bug of which memory is never 'freed'** and triggering it multiple times until the desired amount of memory has been leaked. Also, it uses an **amplification gadget** which is a piece of code that takes an existing chunk of data and copies it, allowing the attacker to spray a large memory range by only sending a small number of bytes.&#x20;
+This abuses a **memory leak, a bug of which memory is never 'freed'** and triggering it multiple times until the desired amount of memory has been leaked. Also, it uses an **amplification gadget** which is a piece of code that takes an existing chunk of data and copies it, allowing the attacker to spray a large memory range by only sending a small number of bytes.
 
 For now, I don't have enough knowledge on this to write a proper explanation, so here's a good resource I used to (sort of) understand what's going on.
 

@@ -2,7 +2,7 @@
 
 Looking at the process, there are some vulnerabilities in the checking of the system. They are as follows:
 
-* The TGS only checks the Service Principal Name of the client to verify that it's the right user and if presented a TGT, so what happens if one spoofs the SPN?&#x20;
+* The TGS only checks the Service Principal Name of the client to verify that it's the right user and if presented a TGT, so what happens if one spoofs the SPN?
 * Or what happens if the service account is compromised? Perhaps anyone can request for TGT's, and since they are encrypted with the user password, one can perhaps convert this to a hash and crack it if password is not complex.
 * Once we have compromised the system, with access to the administrator, we can theoretically keep requesting tickets to access other parts of the domain to collect more information if needed.
 
@@ -68,7 +68,7 @@ Unconstrained delegation is a privilege that can be assigned to a user. **When a
 
 This means the ticket can be used to sort of impersonate the authenticated user, and access other services on that user's behalf. An example use case is when a database admin can log in to any computer to retrieve information and manage the database. The ticket would then be automatically cached into the memory of that computer the user uses.
 
-Naturally, this isn't secure, because someone with unauthorized acccess can basically have a TGT to crack immediately, and would be able to decipher user passwords. Either that or they can Pass The Ticket and be able to do other stuff as that user.&#x20;
+Naturally, this isn't secure, because someone with unauthorized acccess can basically have a TGT to crack immediately, and would be able to decipher user passwords. Either that or they can Pass The Ticket and be able to do other stuff as that user.
 
 {% code title="Enumeration" overflow="wrap" %}
 ```powershell
@@ -227,7 +227,7 @@ Make sure that your password is complex enough, so in the case whereby your tick
 
 ### Check Privileges <a href="#check-privileges" id="check-privileges"></a>
 
-Ensure that correct privileges are maintained across all objects, so as to avoid the use case where compromised users are able to request for tickets or whatever.&#x20;
+Ensure that correct privileges are maintained across all objects, so as to avoid the use case where compromised users are able to request for tickets or whatever.
 
 To prevent AS-REP Roasting in particular, Kerberos PreAuth must be enabled on the servers to prevent any user from requesting tickets without credentials. This can be done using the following:
 
@@ -236,7 +236,7 @@ Get-ADUser -Filter 'useraccountcontrol -band 4194304' -Properties useraccountcon
 (Get-ACL "AD:\$((Get-ADUser -Filter 'useraccountcontrol -band 4194304').distinguishedname)").access
 ```
 
-Apart from enabling these, you would also want to check if **they are disabled at all**. This can be done through monitoring Event **4738 or 5136.** These events check for changes within the Preauth configuration.&#x20;
+Apart from enabling these, you would also want to check if **they are disabled at all**. This can be done through monitoring Event **4738 or 5136.** These events check for changes within the Preauth configuration.
 
 ### Update Kerberos <a href="#update-kerberos" id="update-kerberos"></a>
 
@@ -248,7 +248,7 @@ When an attacker is abusing silver or golden tickets, the logs would generally s
 
 ### Enable Kerberos PreAuth
 
-This would basically block all AS-REP Roasting and prevent the requesting of tickets without a password.&#x20;
+This would basically block all AS-REP Roasting and prevent the requesting of tickets without a password.
 
 ## References <a href="#references" id="references"></a>
 

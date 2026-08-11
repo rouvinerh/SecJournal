@@ -59,7 +59,7 @@ ________________________________________________
 git                     [Status: 200, Size: 13201, Words: 1009, Lines: 268, Duration: 190ms]
 ```
 
-Let's add this to our hosts file and enumerate further.&#x20;
+Let's add this to our hosts file and enumerate further.
 
 ### Gitea Source Code
 
@@ -146,7 +146,7 @@ Viewing the Gitea users, we can find two:
 
 <figure><img src="../../.gitbook/assets/image (2283).png" alt=""><figcaption></figcaption></figure>
 
-We might need to use these somehow. Also, the script seems to be vulnerable to blind NoSQL injection based on the error messages it sends. Based on the `auth.php` script, if get a `true` condition, we would get the `Check inbox for 2FA token` message. If not, we would get the `Invalid email or password` error.&#x20;
+We might need to use these somehow. Also, the script seems to be vulnerable to blind NoSQL injection based on the error messages it sends. Based on the `auth.php` script, if get a `true` condition, we would get the `Check inbox for 2FA token` message. If not, we would get the `Invalid email or password` error.
 
 ### XSS + CSRF
 
@@ -202,7 +202,7 @@ Then, we would receive a callback with the page contents:
 
 <figure><img src="../../.gitbook/assets/image (3064).png" alt=""><figcaption></figcaption></figure>
 
-We have successfully stole the page, and now we can exploit this by stealing the token via NoSQL injection as found earlier. Based on this, we can attempt to send requests to `auth.php` and possibly brute force the password for a user.&#x20;
+We have successfully stole the page, and now we can exploit this by stealing the token via NoSQL injection as found earlier. Based on this, we can attempt to send requests to `auth.php` and possibly brute force the password for a user.
 
 Since we can use XSS, we can make the webpage process Javascript that is hosted on our HTTP server. First, I created a quick script to send the XSS payload and retrieve the inquiries URL that we need to visit to trigger the payload.
 

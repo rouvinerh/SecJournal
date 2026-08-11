@@ -74,7 +74,7 @@ PORT      STATE SERVICE          VERSION
 |_  http/1.1
 ```
 
-The most interesting ports were these. Seems like Port 8443 provided us with a lot of DNS related information, particularly minikubeCA and kubernetes.&#x20;
+The most interesting ports were these. Seems like Port 8443 provided us with a lot of DNS related information, particularly minikubeCA and kubernetes.
 
 > Kubernetes is an open-source container orchestration system designed by Google. It supports Docker and relies on pods and nodes.
 
@@ -139,9 +139,9 @@ Within the first one, we can find these things:
 
 <figure><img src="../../../.gitbook/assets/image (1563).png" alt=""><figcaption></figcaption></figure>
 
-These were the 3 things that could potentially be used to impersonate something, or create new pods. Transferred the certificate and token via base64 encoding. First we need to enumerate what are the permissions that I have over the Kubernetes instances. Since we have a valid certificate, it means we need to shift back to port 8443, which is the Mnikube API port.&#x20;
+These were the 3 things that could potentially be used to impersonate something, or create new pods. Transferred the certificate and token via base64 encoding. First we need to enumerate what are the permissions that I have over the Kubernetes instances. Since we have a valid certificate, it means we need to shift back to port 8443, which is the Mnikube API port.
 
-This can be done easily using the kubectl command.&#x20;
+This can be done easily using the kubectl command.
 
 ```
 $ kubectl --server https://10.129.96.167:8443 --certificate-authority=ca.crt --token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ii05aHdwa3VKeUxWaEU1bi1iZ0NTQ3R2NDBhT0FqemVrV19NUFo3NXp6S0UifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzAxNTg0NzEzLCJpYXQiOjE2NzAwNDg3MTMsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImY1YTVmYzkyLTY5OWUtNGJmMy1iYWYzLTFlZDBhZTEzNTljOSJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImM0ZGFkYWUwLTcwNjUtNGM5Yy05YjEyLTQ0NDQzNzkzZTdhNiJ9LCJ3YXJuYWZ0ZXIiOjE2NzAwNTIzMjB9LCJuYmYiOjE2NzAwNDg3MTMsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.ZZ-asc20WNQNkD1ej06ZaxstD3YPun-jwXO4EzC7JczE2m--f41XwYyvAsM1gFKLo6zqcFNL_QH3hTDF7_IFQfqssT9pvdQj0hWPdT0SUxRwAGZ2AHplZ-FgGVAj_GGRLBb_oByUtqA5fSwn674dnENh8OKhvRmt5Oj0Oe-dpjCZ7K_Z9N_Sl7qLBurnwIc24zCl_SNmO_RnVmJ1x33ziYpN154DbZqoj_A8s52ZvXHYCgFV5y_z-8mJeSQ15FVk-McAW0n-p0v8QvCCMzCyrMsVjthBc2gFG-G3yIYZUDVIJTYYYlVgQNJLKU6hHSUyhscjKNR2Vwm5yKgHRliFPw get pod
@@ -149,7 +149,7 @@ NAME    READY   STATUS    RESTARTS   AGE
 nginx   1/1     Running   0          7h40m
 ```
 
-We can find some interesting permissions with the auth can-i command.&#x20;
+We can find some interesting permissions with the auth can-i command.
 
 ```
 $ kubectl --server https://10.129.96.167:8443 --certificate-authority=ca.crt --token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ii05aHdwa3VKeUxWaEU1bi1iZ0NTQ3R2NDBhT0FqemVrV19NUFo3NXp6S0UifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzAxNTg0NzEzLCJpYXQiOjE2NzAwNDg3MTMsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0IiwicG9kIjp7Im5hbWUiOiJuZ2lueCIsInVpZCI6ImY1YTVmYzkyLTY5OWUtNGJmMy1iYWYzLTFlZDBhZTEzNTljOSJ9LCJzZXJ2aWNlYWNjb3VudCI6eyJuYW1lIjoiZGVmYXVsdCIsInVpZCI6ImM0ZGFkYWUwLTcwNjUtNGM5Yy05YjEyLTQ0NDQzNzkzZTdhNiJ9LCJ3YXJuYWZ0ZXIiOjE2NzAwNTIzMjB9LCJuYmYiOjE2NzAwNDg3MTMsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.ZZ-asc20WNQNkD1ej06ZaxstD3YPun-jwXO4EzC7JczE2m--f41XwYyvAsM1gFKLo6zqcFNL_QH3hTDF7_IFQfqssT9pvdQj0hWPdT0SUxRwAGZ2AHplZ-FgGVAj_GGRLBb_oByUtqA5fSwn674dnENh8OKhvRmt5Oj0Oe-dpjCZ7K_Z9N_Sl7qLBurnwIc24zCl_SNmO_RnVmJ1x33ziYpN154DbZqoj_A8s52ZvXHYCgFV5y_z-8mJeSQ15FVk-McAW0n-p0v8QvCCMzCyrMsVjthBc2gFG-G3yIYZUDVIJTYYYlVgQNJLKU6hHSUyhscjKNR2Vwm5yKgHRliFPw auth can-i --list
@@ -183,7 +183,7 @@ Then I went to do some research on what these mean, and what I could do with the
 
 {% embed url="https://infosecwriteups.com/kubernetes-container-escape-with-hostpath-mounts-d1b86bd2fa3" %}
 
-So this creates another pod which basically mounts back on the original container's root directory. This would involve creating a new YAML file that would serve as the settings for the new pod. I based a lot of it on the current nginx pod that is running.&#x20;
+So this creates another pod which basically mounts back on the original container's root directory. This would involve creating a new YAML file that would serve as the settings for the new pod. I based a lot of it on the current nginx pod that is running.
 
 My file looks like this:
 
@@ -213,7 +213,7 @@ After creating this, I was able to mount onto my newly created pod.
 
 <figure><img src="../../../.gitbook/assets/image (1466).png" alt=""><figcaption></figcaption></figure>
 
-From there, we can head into the /mnt directory and read the root flag.&#x20;
+From there, we can head into the /mnt directory and read the root flag.
 
 <figure><img src="../../../.gitbook/assets/image (379).png" alt=""><figcaption></figcaption></figure>
 

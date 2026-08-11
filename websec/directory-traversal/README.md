@@ -73,7 +73,7 @@ Sometimes, a website could block `../` character sequences. In this case, one ca
 
 ### Downloading Files
 
-Sometimes, we can access certain and download files and even binaries via directory traversal. We can check what's by looking into the /proc directory and install the files via curl and the -o flag. Retired from HTB is a machine that uses this, and we can download a binary that is vulnerbale to a ROP chaining vulnerability that would give us an initial shell.&#x20;
+Sometimes, we can access certain and download files and even binaries via directory traversal. We can check what's by looking into the /proc directory and install the files via curl and the -o flag. Retired from HTB is a machine that uses this, and we can download a binary that is vulnerbale to a ROP chaining vulnerability that would give us an initial shell.
 
 ## Testing
 

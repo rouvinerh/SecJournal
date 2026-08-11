@@ -8,11 +8,11 @@ Nmap scan results:
 
 ### Port 80
 
-The website was some form of corporate website.&#x20;
+The website was some form of corporate website.
 
 <figure><img src="../../../.gitbook/assets/image (146).png" alt=""><figcaption></figcaption></figure>
 
-However, checking for directories or other web exploits was rather unsuccessful, as I did not find anything of use.&#x20;
+However, checking for directories or other web exploits was rather unsuccessful, as I did not find anything of use.
 
 ### SNMP
 
@@ -86,7 +86,7 @@ Then, we can gain a reverse shell via a Python3 shell.
 
 <figure><img src="../../../.gitbook/assets/image (2590).png" alt=""><figcaption></figcaption></figure>
 
-### Exploiting PATH&#x20;
+### Exploiting PATH
 
 I ran another LinPEAS as `matt`, and found that the root user was running some processes.
 

@@ -30,7 +30,7 @@ PORT      STATE SERVICE
 49669/tcp open  unknown
 ```
 
-FTP doesn't accept anonymous logins and RDP is open for this machine.&#x20;
+FTP doesn't accept anonymous logins and RDP is open for this machine.
 
 ### Web Enumeration -> User Creds
 
@@ -38,7 +38,7 @@ Port 80 was weird:
 
 <figure><img src="../../../.gitbook/assets/image (502).png" alt=""><figcaption></figcaption></figure>
 
-Port 8089 was slightly weirder:&#x20;
+Port 8089 was slightly weirder:
 
 <figure><img src="../../../.gitbook/assets/image (1057).png" alt=""><figcaption></figcaption></figure>
 
@@ -50,7 +50,7 @@ Meanwhile on port 33333, we needed a token of some sorts:
 
 <figure><img src="../../../.gitbook/assets/image (1915).png" alt=""><figcaption></figcaption></figure>
 
-And this is all the information we have. I experimented with sending POST requests instead of GET requests, and it actually returned something from port 33333.&#x20;
+And this is all the information we have. I experimented with sending POST requests instead of GET requests, and it actually returned something from port 33333.
 
 <figure><img src="../../../.gitbook/assets/image (277).png" alt=""><figcaption></figcaption></figure>
 
@@ -102,7 +102,7 @@ ariah@NICKEL C:\ftp>curl http://nickel/?whoami
 </body></html>
 ```
 
-It seems that we have a SYSTEM shell with this command endpoint. What we can do is just add `ariah` to the Administrators group.&#x20;
+It seems that we have a SYSTEM shell with this command endpoint. What we can do is just add `ariah` to the Administrators group.
 
 ```
 ariah@NICKEL C:\ftp>curl http://nickel/?net%20localgroup%20administrators%20ariah%20/add     

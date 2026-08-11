@@ -28,11 +28,11 @@ PORT      STATE SERVICE
 49669/tcp open  unknown
 ```
 
-Lots of ports open.&#x20;
+Lots of ports open.
 
 ### Rabbit Holes
 
-Port 80 just shows an IIS server default page, with no further directories. FTP does allow for anonymous access, but there aren't any files within it.&#x20;
+Port 80 just shows an IIS server default page, with no further directories. FTP does allow for anonymous access, but there aren't any files within it.
 
 ### SmarterMail RCE
 

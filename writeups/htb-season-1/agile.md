@@ -116,7 +116,7 @@ Just add `localhost:41829` to the Discover Network Targets portion, and we will 
 
 <figure><img src="../../.gitbook/assets/image (1838).png" alt=""><figcaption></figcaption></figure>
 
-We can inspect this to basically spy on the user.&#x20;
+We can inspect this to basically spy on the user.
 
 <figure><img src="../../.gitbook/assets/image (969).png" alt=""><figcaption></figcaption></figure>
 

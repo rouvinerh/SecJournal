@@ -307,7 +307,7 @@ check_file=`date +%N`
 /usr/bin/rm -rf /opt/backups/*
 ```
 
-The weird part about this script is the `/opt/backups/checksum` file and the sleep 5 in between, almost as if it's to give us time to execute something. Upon checking my permissions, it seems that I am able to create files within the `/opt/backups` folder.&#x20;
+The weird part about this script is the `/opt/backups/checksum` file and the sleep 5 in between, almost as if it's to give us time to execute something. Upon checking my permissions, it seems that I am able to create files within the `/opt/backups` folder.
 
 One possible exploit is to replace the file with a symlink to another file. In this machine's case, we can replace the `checksum` file with a symlink to the `/root` folder.
 

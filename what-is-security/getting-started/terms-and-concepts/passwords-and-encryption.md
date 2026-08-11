@@ -1,8 +1,8 @@
 # Passwords and Encryption
 
-There are 3 main groups of encryption that is used in cybersecurity. These are used to convert normal language and numbers into something that is totally unreadable by humans.&#x20;
+There are 3 main groups of encryption that is used in cybersecurity. These are used to convert normal language and numbers into something that is totally unreadable by humans.
 
-The uncrypted forms of data is called a **plaintext,** and when encoded, it is called **ciphertext**.&#x20;
+The uncrypted forms of data is called a **plaintext,** and when encoded, it is called **ciphertext**.
 
 The 3 main types of encryption are:
 
@@ -10,7 +10,7 @@ The 3 main types of encryption are:
 2. Asymmetric Encryption
 3. Hashes
 
-Encryption is important because it protects **data at rest**. Meaning, passwords and other credentials stored in databases would all have to be encrypted, ensuring that if there's a leak, the information would at least be hard to read and spread.&#x20;
+Encryption is important because it protects **data at rest**. Meaning, passwords and other credentials stored in databases would all have to be encrypted, ensuring that if there's a leak, the information would at least be hard to read and spread.
 
 One key thing to note about encryption is that, **if anything about the algorithm is predictable, the encryption will be broken**. Everything has to be as random as possible in order to make sure that people aren't able to brute force what we do.
 
@@ -24,17 +24,17 @@ Common types of encryption that use these are:
 
 * Rivest Cipher 4 (RC4), RC5 and RC6
 * Advanced Encryption Standard (AES)
-* Blowfish&#x20;
+* Blowfish
 
 Symmetric encryption would have varying key lengths, and hence they are encoded differently. For example, here's AES in action.
 
 <figure><img src="../../../.gitbook/assets/image (1866).png" alt=""><figcaption></figcaption></figure>
 
-This is AES-128 working, and the 128 means 128-bits. 8 bits make up 1 byte, hence there are 16 bytes for the key length and the initialisation vector. The IV is not another key, but rather an added security vector (which I won't go into here).&#x20;
+This is AES-128 working, and the 128 means 128-bits. 8 bits make up 1 byte, hence there are 16 bytes for the key length and the initialisation vector. The IV is not another key, but rather an added security vector (which I won't go into here).
 
 AES-128 is one of the most secure encryption standards today. With current supercomputers, a brute force attack i.e. trying out all possible keys would take about **1 billion years** before succeeding.
 
-As the byte size increases, the number of possible combinations increases. At AES-256, there are basically 2^255 possible combinations that make up the key.&#x20;
+As the byte size increases, the number of possible combinations increases. At AES-256, there are basically 2^255 possible combinations that make up the key.
 
 To give you an idea how large that is, theoretically, if you had a supercomputer at the beginning of the Universe at the Big Bang, and you started brute forcing the algorithm there with the computer iterating through one try per second, you would not even be half way done if you've been trying this very moment.
 
@@ -50,7 +50,7 @@ A sends a message in plaintext, which is then encrypted with **B's public key**.
 
 <figure><img src="../../../.gitbook/assets/image (1102).png" alt=""><figcaption></figcaption></figure>
 
-The public key is one that is public, and you can share that with everybody no matter who they are. It's on the Internet, and likely loads of other computers have your public key. The **private key is the one you cannot leak.**  Both of these keys are unique to just you, because there's just that many. As such, your public key can be used to **verify that it is indeed you** that I have sent the message to.&#x20;
+The public key is one that is public, and you can share that with everybody no matter who they are. It's on the Internet, and likely loads of other computers have your public key. The **private key is the one you cannot leak.**  Both of these keys are unique to just you, because there's just that many. As such, your public key can be used to **verify that it is indeed you** that I have sent the message to.
 
 SSH uses this kind of asymmetric encryption formula. When we add our SSH key to our Github Repository, we can then SSH into Github and be able to do stuff with it. This is because when we add our key, what we are doing is adding our public key into the Github database, and telling it to authorize any requests that have this private key.
 
@@ -65,7 +65,7 @@ Here are examples of asymmetric encryption:
 * Elliptical Curve Cryptography (ECC)
 * Diffie-Hellman exchange method
 
-The most commonly used one is RSA, which was named after the people that invented it. When I showcased `ssh-keygen` , we can see that it uses RSA as well.&#x20;
+The most commonly used one is RSA, which was named after the people that invented it. When I showcased `ssh-keygen` , we can see that it uses RSA as well.
 
 In RSA alone, the minimum key length is 2048 bits, up till 4096 bits. Remember how AES only has up till 256 bits? Yeah so algorithms like this are really secure and widely used everywhere.
 
@@ -89,15 +89,15 @@ Hashes are unique (most of the time) for each input, and they would truncate all
 
 Hashes are used for verifying integrity of information. For example, when downloading a file from the Internet, sometimes they would provide for the file hash signature, and we can check the downloaded file's signature. **If the signatures match, then it is the same file.**
 
-Hashes do not have infinite length, hence there are bound to be different inputs that would basically end up having the same hash output. This is something called a **collision.**&#x20;
+Hashes do not have infinite length, hence there are bound to be different inputs that would basically end up having the same hash output. This is something called a **collision.**
 
 Apart from just verifying integrity, hashes can sometimes be used in databases where passwords and other sensitive information is stored. Storing it in hashes would look something like this.
 
 <figure><img src="../../../.gitbook/assets/pw2.png" alt=""><figcaption></figcaption></figure>
 
-When some user signs in, instead of taking the plaintext password out from the database, what can be done instead **is taking the user input and hashing it, followed by comparing it to the database entry**. If they match, you are authorized.&#x20;
+When some user signs in, instead of taking the plaintext password out from the database, what can be done instead **is taking the user input and hashing it, followed by comparing it to the database entry**. If they match, you are authorized.
 
-This method is kind of safe(?), but gives rise to its own set of problems, like a technique called **Pass The Hash (PTH),** which I will cover in another section.&#x20;
+This method is kind of safe(?), but gives rise to its own set of problems, like a technique called **Pass The Hash (PTH),** which I will cover in another section.
 
 Hashes also have their own set of issues when parsed into certain languages for comparing, one example being the **PHP Type Juggling Attack.**
 
@@ -107,7 +107,7 @@ Hashes cannot be decoded, but computers are still able to sometimes crack the ha
 
 If all else fails, these tools can just brute force every single possible character possible until it finds it. If your password is short enough, then this can be done really quickly.
 
-Hashes shown in the pictures above aren't very secure, because they come from easily guessable words. As such, it is possible to crack this using a hash cracker, **like John The Ripper, Hashcat or CrackStation**.&#x20;
+Hashes shown in the pictures above aren't very secure, because they come from easily guessable words. As such, it is possible to crack this using a hash cracker, **like John The Ripper, Hashcat or CrackStation**.
 
 So make sure your passwords are complex and not common!
 

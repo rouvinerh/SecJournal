@@ -49,7 +49,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /uploadedfiles        (Status: 301) [Size: 0]
 ```
 
-The ASPX page was a simple file upload.&#x20;
+The ASPX page was a simple file upload.
 
 <figure><img src="../../../.gitbook/assets/image (1326).png" alt=""><figcaption></figcaption></figure>
 
@@ -152,7 +152,7 @@ Network Card(s):           1 NIC(s) Installed.
                                  [03]: dead:beef::4112:6417:a55f:fe64
 ```
 
-This was running Windows Datacenter 2008 and had no hotfixes applied. This means it is vulnerable to MS15-051.&#x20;
+This was running Windows Datacenter 2008 and had no hotfixes applied. This means it is vulnerable to MS15-051.
 
 {% embed url="https://github.com/hfiref0x/CVE-2015-1701/tree/master/Compiled" %}
 

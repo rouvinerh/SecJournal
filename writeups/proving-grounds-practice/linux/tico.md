@@ -47,7 +47,7 @@ Port 80 had a Markdown Editor:
 
 <figure><img src="../../../.gitbook/assets/image (365).png" alt=""><figcaption></figcaption></figure>
 
-Again, there was nothing interesting with this. We could try XSS injection or something, but there's no hint that a user is viewing this.&#x20;
+Again, there was nothing interesting with this. We could try XSS injection or something, but there's no hint that a user is viewing this.
 
 ### NodeBB -> Admin Takeover
 
@@ -75,7 +75,7 @@ Intercept this response to see a JSON request being sent:
 
 <figure><img src="../../../.gitbook/assets/image (3022).png" alt=""><figcaption></figcaption></figure>
 
-Replace the `uid` value with '1', and then let the requests pass through. We can then login as `admin` with the new password I set.&#x20;
+Replace the `uid` value with '1', and then let the requests pass through. We can then login as `admin` with the new password I set.
 
 <figure><img src="../../../.gitbook/assets/image (3365).png" alt=""><figcaption></figcaption></figure>
 
@@ -85,7 +85,7 @@ We can access the admin dashboard to see the plugins:
 
 <figure><img src="../../../.gitbook/assets/image (1897).png" alt=""><figcaption></figcaption></figure>
 
-This confirms that the Emoji plugin is installed, and we can try the other exploit. The public expoit attempts to write our SSH public key into the `authorized_keys` folder of `root`.&#x20;
+This confirms that the Emoji plugin is installed, and we can try the other exploit. The public expoit attempts to write our SSH public key into the `authorized_keys` folder of `root`.
 
 ```
 $ python3 49813.py

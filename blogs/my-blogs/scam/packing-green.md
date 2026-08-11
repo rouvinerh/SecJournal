@@ -24,7 +24,7 @@ Within the invoice, we can also find some other interesting information:
 
 <figure><img src="../../../.gitbook/assets/image (214).png" alt=""><figcaption></figcaption></figure>
 
-I ran a check on these UEN numbers, and they are legit and from the Fu Luxe company. I just found it odd that they would bill me through XERO instead of doing an email to the company's finance team, or calling me directly.&#x20;
+I ran a check on these UEN numbers, and they are legit and from the Fu Luxe company. I just found it odd that they would bill me through XERO instead of doing an email to the company's finance team, or calling me directly.
 
 `exiftool` doesn't reveal anything interesting about this PDF:
 
@@ -60,14 +60,14 @@ We can also take a look at the 'items' that I 'ordered':
 
 <figure><img src="../../../.gitbook/assets/image (1441).png" alt=""><figcaption></figcaption></figure>
 
-I found it quite hilarious that their mathematics was correct.&#x20;
+I found it quite hilarious that their mathematics was correct.
 
 ## Conclusion
 
-I honestly cannot tell if this was an honest mistake, or if this was a scam. It's certainly shady, and being paranoid is a result of seeing all the scams around.&#x20;
+I honestly cannot tell if this was an honest mistake, or if this was a scam. It's certainly shady, and being paranoid is a result of seeing all the scams around.
 
 ## Update
 
-Turns out this might've been a legit person. Asked me if I was working at \<LEGIT COMPANY NAME> and I said no, they said sorry.&#x20;
+Turns out this might've been a legit person. Asked me if I was working at \<LEGIT COMPANY NAME> and I said no, they said sorry.
 
-Whoops. May or may not have replied with funny things.&#x20;
+Whoops. May or may not have replied with funny things.

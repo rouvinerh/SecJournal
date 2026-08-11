@@ -44,7 +44,7 @@ First thing I took note of was the outdated Wordpress site on port 80.
 
 ### Wordpress -> RCE
 
-I ran a `wpscan` on the port 80 application.&#x20;
+I ran a `wpscan` on the port 80 application.
 
 ```
 $ wpscan --api-token <API> --enumerate p,t,u --url http://192.168.183.105
@@ -181,6 +181,6 @@ This would spawn a `dosbox` instance (which is basically a cmd.exe instance). Us
 
 <figure><img src="../../../.gitbook/assets/image (2937).png" alt=""><figcaption></figcaption></figure>
 
-There's no scrolling on this Dosbox instance, and the handling of control characters is a little inaccurate (so you can't really backspace). Other than that, we have `root` access over the file system and can do whatever we want.&#x20;
+There's no scrolling on this Dosbox instance, and the handling of control characters is a little inaccurate (so you can't really backspace). Other than that, we have `root` access over the file system and can do whatever we want.
 
 Rooted!

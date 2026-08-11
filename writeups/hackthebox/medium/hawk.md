@@ -87,7 +87,7 @@ This is clearly the next step. As such, we need to use the SSH credentials we ha
 
 <figure><img src="../../../.gitbook/assets/image (2378).png" alt=""><figcaption></figcaption></figure>
 
-Afterwards, we can access the service by going to `http://127.0.0.1:8082`.&#x20;
+Afterwards, we can access the service by going to `http://127.0.0.1:8082`.
 
 <figure><img src="../../../.gitbook/assets/image (1351).png" alt=""><figcaption></figcaption></figure>
 

@@ -1,10 +1,10 @@
 # ROP Chaining
 
-Return Oriented Programming (ROP) is technique that is able to bypass the NX security feature as well. **Technically, Ret2Libc is a subset of ROP**.&#x20;
+Return Oriented Programming (ROP) is technique that is able to bypass the NX security feature as well. **Technically, Ret2Libc is a subset of ROP**.
 
-ROP involves the creation of new stack frames through controlling of return addresses to **jump** to different fragments of code, called gadgets. Ret2libc is a type of ROP because we still create stack frames, however we are simply utilizing the `system()` function to gain a shell instead. &#x20;
+ROP involves the creation of new stack frames through controlling of return addresses to **jump** to different fragments of code, called gadgets. Ret2libc is a type of ROP because we still create stack frames, however we are simply utilizing the `system()` function to gain a shell instead. 
 
-For ROP Chaining, we jump to different fragments of code and sort of 'build' a program within the program by chaining the different fragments together. ROP is really cool because we can literally **program the code to execute what we want**, and create new routines that are not intended at all.&#x20;
+For ROP Chaining, we jump to different fragments of code and sort of 'build' a program within the program by chaining the different fragments together. ROP is really cool because we can literally **program the code to execute what we want**, and create new routines that are not intended at all.
 
 ## How it Works
 
@@ -55,7 +55,7 @@ Most importantly, for now, we will disable ASLR to allow for easier exploitation
 
 ### Code Analysis
 
-There are 3 functions witin the code that are not meant to be executed in anyway. The program starts at `main()`, which calls the `rop()` function to execute a `strcpy(buffer, string)` instruction. We already know that `strcpy()` is vulnerable to buffer overflow because it does not check for length.&#x20;
+There are 3 functions witin the code that are not meant to be executed in anyway. The program starts at `main()`, which calls the `rop()` function to execute a `strcpy(buffer, string)` instruction. We already know that `strcpy()` is vulnerable to buffer overflow because it does not check for length.
 
 The goal here is to trigger **all 3 of these functions using basic ROP chaining in numerical order**. First, we know to overflow the `strcpy()` function, which I want to use to call `fun1()`. Then, `fun1()` would return and call `fun2()`, and this repeats until all are called, then I would call `exit()` to let the program quit.
 
@@ -97,15 +97,15 @@ The number of As would be 58, which is offset of 62 - 4 since we need the next 4
 
 <figure><img src="../.gitbook/assets/image (1261).png" alt=""><figcaption></figcaption></figure>
 
-We have successfully called all other functions without the program meaning to do so. In this case, notice how it **does not cause a segmentation fault.** This is mainly because we called `exit(),`which is used to exit the program gracefully.&#x20;
+We have successfully called all other functions without the program meaning to do so. In this case, notice how it **does not cause a segmentation fault.** This is mainly because we called `exit(),`which is used to exit the program gracefully.
 
 In essence, this is how ROP chaining would work on an ASLR-disabled function.
 
 ## With Variables
 
-Now suppose that we change our program a bit to have the functions take in some variable. So, after returning to the address of the function, we would need to include some bytes representing the **arguments** for the function.&#x20;
+Now suppose that we change our program a bit to have the functions take in some variable. So, after returning to the address of the function, we would need to include some bytes representing the **arguments** for the function.
 
-For example, a function `fun1(int a, int b)` would need to have 2 integers be passed in before we can run the function. Else the program would complain that we did not supply enough variables and end. Potentially, **these variables can be manipulated with our own variables**. Suppose a function takes in a command and passes it to a `system()` call, then we can use ROP chaining to return to that function and include the specific command we want.&#x20;
+For example, a function `fun1(int a, int b)` would need to have 2 integers be passed in before we can run the function. Else the program would complain that we did not supply enough variables and end. Potentially, **these variables can be manipulated with our own variables**. Suppose a function takes in a command and passes it to a `system()` call, then we can use ROP chaining to return to that function and include the specific command we want.
 
 So our payload would look like this:
 
@@ -117,11 +117,11 @@ If we **do not wish to enter this function and want to hop around more**, then w
 
 ### ROP Gadgets
 
-ROP gadgets are basically sequences of CPU instructions that are **already present in the program** that is being run. One example of a ROP gadget is the `JMP ESP` instructions that we used in the OSCP BOF example.&#x20;
+ROP gadgets are basically sequences of CPU instructions that are **already present in the program** that is being run. One example of a ROP gadget is the `JMP ESP` instructions that we used in the OSCP BOF example.
 
 Most of the time, these gadgets can be exploited to execute **almost any code**, and commonly end with the `ret` instruction. These gadgets bypass DEP because **there is no executable code from the stack,** and instead executable code is **manipulated** to achieve the same effect.
 
-In `gdb-peda`, there is a command `ropgadget` which can find the addresses of these gadgets for us.&#x20;
+In `gdb-peda`, there is a command `ropgadget` which can find the addresses of these gadgets for us.
 
 We can change the vulnerable code above to include variables needed:
 
@@ -162,9 +162,9 @@ payload = AAA... + BBBB + &fun1() + &fun2 + &pop;ret + <rop2 arg1> + &rop3() + &
 ```
 {% endcode %}
 
-The reason we want to include the first `pop; ret` is because we want to first `pop` the `rop2 arg1` variable out of the stack (to remove interference with our jumping) and then hop to `rop3`.&#x20;
+The reason we want to include the first `pop; ret` is because we want to first `pop` the `rop2 arg1` variable out of the stack (to remove interference with our jumping) and then hop to `rop3`.
 
-Afterwards, because `rop3` takes 2 arguments, we would need to have 2 `pop` instructions to remove the 2 variables passed to `rop3` from the stack and then call `exit()` as per normal afterwards.&#x20;
+Afterwards, because `rop3` takes 2 arguments, we would need to have 2 `pop` instructions to remove the 2 variables passed to `rop3` from the stack and then call `exit()` as per normal afterwards.
 
 We can take a look at the ROP gadgets that we have on hand for this binary.
 

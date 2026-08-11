@@ -58,7 +58,7 @@ Then, we can use this to spawn a reverse shell.
 
 ## Privilege Escalation
 
-We can find another user called `player`.&#x20;
+We can find another user called `player`.
 
 <figure><img src="../../../.gitbook/assets/image (1822).png" alt=""><figcaption></figcaption></figure>
 

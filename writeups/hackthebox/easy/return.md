@@ -38,7 +38,7 @@ PORT      STATE SERVICE
 
 ### SMB Enum
 
-`enum4linux` returned nothong of interest with both null and guest credentials.&#x20;
+`enum4linux` returned nothong of interest with both null and guest credentials.
 
 ### LDAP
 
@@ -54,7 +54,7 @@ When we view the settings, this is what we see:
 
 <figure><img src="../../../.gitbook/assets/image (1257).png" alt=""><figcaption></figcaption></figure>
 
-This looks poisanable since we can control the server address. As such, I started `responder`.&#x20;
+This looks poisanable since we can control the server address. As such, I started `responder`.
 
 ```bash
 $ sudo responder -I tun0
@@ -63,7 +63,7 @@ LDAP] Cleartext Client   : 10.129.95.241
 [LDAP] Cleartext Password : 1edFg43012!!
 ```
 
-We now have some credentials. We can use these to login with `evil-winrm`.&#x20;
+We now have some credentials. We can use these to login with `evil-winrm`.
 
 <figure><img src="../../../.gitbook/assets/image (3470).png" alt=""><figcaption></figcaption></figure>
 
@@ -95,7 +95,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set      Enabled
 SeTimeZonePrivilege           Change the time zone                Enabled
 ```
 
-With this, we can save the `system` and `sam` files, then dump the hashes with `secretsdump.py`.&#x20;
+With this, we can save the `system` and `sam` files, then dump the hashes with `secretsdump.py`.
 
 ```
 reg save hklm\sam c:\users\svc-printer\sam
@@ -168,9 +168,9 @@ Since we have privileges over some of the services, we can follow this article o
 
 {% embed url="https://www.hackingarticles.in/windows-privilege-escalation-server-operator-group/" %}
 
-However, it seems that although we have privileges over these services, we cannot restart them for some reason. So we need to find a service that is currently stopped, then change its configuration and start it.&#x20;
+However, it seems that although we have privileges over these services, we cannot restart them for some reason. So we need to find a service that is currently stopped, then change its configuration and start it.
 
-Again, we fail in this aspect because we don't have access to the Service Control Manager to view what we can control. So in this case, I used a writeup and saw that they used the VSS service to do the exploit.&#x20;
+Again, we fail in this aspect because we don't have access to the Service Control Manager to view what we can control. So in this case, I used a writeup and saw that they used the VSS service to do the exploit.
 
 ```
 *Evil-WinRM* PS C:\Users\svc-printer\Documents> sc.exe query VSS

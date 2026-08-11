@@ -10,7 +10,7 @@ We start with an Nmap scan as usual:
 
 <figure><img src="../../../.gitbook/assets/image (135).png" alt=""><figcaption></figcaption></figure>
 
-From here, we can view Port 80.&#x20;
+From here, we can view Port 80.
 
 ### API Enumeration
 
@@ -20,7 +20,7 @@ Here, we can view an API that we need to exploit.
 
 Starting with a Gobuster, we can find out the different endpoints for this:
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (890).png" alt=""><figcaption></figcaption></figure>
 
@@ -30,7 +30,7 @@ At the `/api/v1` endpoint, we find that that there is a `/user` endpoint that we
 
 <figure><img src="../../../.gitbook/assets/image (3817).png" alt=""><figcaption></figcaption></figure>
 
-From here, we can check the `admin` user with an ID of 1.&#x20;
+From here, we can check the `admin` user with an ID of 1.
 
 <figure><img src="../../../.gitbook/assets/image (2774).png" alt=""><figcaption></figcaption></figure>
 
@@ -110,7 +110,7 @@ We can easily beautify this and read the dependencies it has.
 
 <figure><img src="../../../.gitbook/assets/image (1921).png" alt=""><figcaption></figcaption></figure>
 
-What I did was to check all of these files. For example, for the `app.api.v1.api` portion, it would be located at the `/home/htb/uhc/app/api/v1/api.py` file. When reading these files, I wanted to find out the JWT token Secret so I could create and spoof my own with the Debug permission set.&#x20;
+What I did was to check all of these files. For example, for the `app.api.v1.api` portion, it would be located at the `/home/htb/uhc/app/api/v1/api.py` file. When reading these files, I wanted to find out the JWT token Secret so I could create and spoof my own with the Debug permission set.
 
 The most interesting one was the `deps.py` file. This file had imported the JWT secret from the `core/config.py` directory.
 

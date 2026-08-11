@@ -35,7 +35,7 @@ I don't usually come across this, and it appears to be intentionally left there 
 
 <figure><img src="../../../.gitbook/assets/image (1137).png" alt=""><figcaption></figcaption></figure>
 
-Interesting! We can add that to our `hosts` file and view it.&#x20;
+Interesting! We can add that to our `hosts` file and view it.
 
 ### API Reviews
 
@@ -47,7 +47,7 @@ When we head to the `/reviews` directory, we would see some JSON
 
 <figure><img src="../../../.gitbook/assets/image (2756).png" alt=""><figcaption></figcaption></figure>
 
-I ran `gobuster` to scan the directories present on this website and check if we can find anything new.&#x20;
+I ran `gobuster` to scan the directories present on this website and check if we can find anything new.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -u http://api-prod.horizontall.htb -t 100
@@ -124,7 +124,7 @@ chisel server -p 5555 --reverse
 chisel client 10.10.14.2:5555 R:8000:127.0.0.1:8000
 ```
 
-Then we can visit the page!&#x20;
+Then we can visit the page!
 
 ### Laravel Debug RCE
 

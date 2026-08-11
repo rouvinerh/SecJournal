@@ -26,7 +26,7 @@ First thing I noticed was the **phone numbers**. Normally machines, I see number
 
 <figure><img src="../../../.gitbook/assets/image (3878).png" alt=""><figcaption></figcaption></figure>
 
-Again, phone numbers are unique here. This made me think about every little detail in the website, including the names of the users.&#x20;
+Again, phone numbers are unique here. This made me think about every little detail in the website, including the names of the users.
 
 There wasn't much more on the website, and we were just left with FTP and SSH.
 
@@ -126,7 +126,7 @@ Wrong Password !!!
 ```
 {% endcode %}
 
-I didn't recognise this `backup` binary, so I downloaded it back to my machine and opened it up in `ghidra`.&#x20;
+I didn't recognise this `backup` binary, so I downloaded it back to my machine and opened it up in `ghidra`.
 
 ### Ghidra + Ltrace -> Command Injection
 
@@ -181,7 +181,7 @@ We can first grab the `pw` global variable from the binary:
 
 <figure><img src="../../../.gitbook/assets/image (3116).png" alt=""><figcaption></figcaption></figure>
 
-And then we can create a script in Python to decrypt this.&#x20;
+And then we can create a script in Python to decrypt this.
 
 ```python
 #!/usr/bin/python3
@@ -211,7 +211,7 @@ We can move on to the `copy()` function now:
 
 <figure><img src="../../../.gitbook/assets/image (1315).png" alt=""><figcaption></figcaption></figure>
 
-All the binaries use their full path values, so no path hijacks here. However, this seems to use directories within `/var/logs` and `/home/FTP`. I was already thinking of command injection using subshells, and it seems that this is the exploit needed.&#x20;
+All the binaries use their full path values, so no path hijacks here. However, this seems to use directories within `/var/logs` and `/home/FTP`. I was already thinking of command injection using subshells, and it seems that this is the exploit needed.
 
 We can use FTP to a few malicious files since we don't have write access over those directories:
 

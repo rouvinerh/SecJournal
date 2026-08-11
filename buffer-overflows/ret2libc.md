@@ -6,9 +6,9 @@ Compared to the OSCP buffer overflow, where we simply use `jmp esp` to go to the
 
 ## How it Works
 
-When we run a binary that uses functions from a library, these libraries are **loaded into the program's virtual space**. For example, the standard C library shared object located at `/lib/i386-linux-gnu/libc-*.so` is loaded for Linux, and it's the `ntdll.dll` file loaded for Windows.&#x20;
+When we run a binary that uses functions from a library, these libraries are **loaded into the program's virtual space**. For example, the standard C library shared object located at `/lib/i386-linux-gnu/libc-*.so` is loaded for Linux, and it's the `ntdll.dll` file loaded for Windows.
 
-To gain RCE, we would need to find the `system()` function, which lives in the `libc` library. The EIP that we gain control of woulud then be used to _jump_ to this function by overflowing it with its return address. After moving to this function, we would need to **execute shell commands passed to this function**. For most cases, the command for RCE is `/bin/sh`.&#x20;
+To gain RCE, we would need to find the `system()` function, which lives in the `libc` library. The EIP that we gain control of woulud then be used to _jump_ to this function by overflowing it with its return address. After moving to this function, we would need to **execute shell commands passed to this function**. For most cases, the command for RCE is `/bin/sh`.
 
 Basically, we would force a program to call `system("/bin/sh")` through manipulation of the EIP. Here's a visual representation of how it works:
 
@@ -72,7 +72,7 @@ I first found the `/bin/sh` address using `strings -a -t x /lib/i386-linux-gnu/l
 
 The offset is `0x0015ba0b`, and when added to the base address found earlier, we would get `0xb7f74a0b`. So `/bin/sh` is there.
 
-Then, we need to find the `system()` function. I did so using `objdump` .&#x20;
+Then, we need to find the `system()` function. I did so using `objdump` .
 
 <figure><img src="../.gitbook/assets/image (1858).png" alt=""><figcaption></figcaption></figure>
 
@@ -80,7 +80,7 @@ Adding the offset, we would get `0xb7e53da0`. Lastly, we need `exit()` , which i
 
 <figure><img src="../.gitbook/assets/image (2651).png" alt=""><figcaption></figcaption></figure>
 
-`0xb7e479d0` is where `exit()` lives.&#x20;
+`0xb7e479d0` is where `exit()` lives.
 
 ### Exploit
 

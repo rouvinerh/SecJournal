@@ -4,7 +4,7 @@ description: ''' OR ''1= ''1'' -- -'
 
 # SQL Injection
 
-Structured Query Language (SQL) is a language used to communicate and interact with relational databases. SQL Databases, such as PostGreSQL, MySQL, MSSQL and Oracle.&#x20;
+Structured Query Language (SQL) is a language used to communicate and interact with relational databases. SQL Databases, such as PostGreSQL, MySQL, MSSQL and Oracle.
 
 SQL Injection on the other hand, is the injection of SQL queries to manipulate the database into executing queries to extract data or even achieve command execution.
 
@@ -88,7 +88,7 @@ All the earlier vulnerabilities return the query's result. But what if it doesn'
 
 There are 2 types of Blind SQL Injection, **time-based and boolean-based.**
 
-### Boolean-Based&#x20;
+### Boolean-Based
 
 Boolean-based SQL Injection relies on the website returning different results when a `true` and `false` query is processed. For example, a `false` condition can return a different error message or a 404.
 

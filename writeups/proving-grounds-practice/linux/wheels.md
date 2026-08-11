@@ -15,7 +15,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-We can proxy traffic through Burpsuite.&#x20;
+We can proxy traffic through Burpsuite.
 
 ### Web Enum -> XPath Injection
 
@@ -29,7 +29,7 @@ At the bottom of the page, we can find an email:
 
 <figure><img src="../../../.gitbook/assets/image (3738).png" alt=""><figcaption></figcaption></figure>
 
-I tried to register an `administrator` user with this email, and it worked in showing us the Employee Portal.&#x20;
+I tried to register an `administrator` user with this email, and it worked in showing us the Employee Portal.
 
 <figure><img src="../../../.gitbook/assets/image (3140).png" alt=""><figcaption></figcaption></figure>
 
@@ -107,7 +107,7 @@ selene
 ```
 {% endcode %}
 
-I used `ltrace` to see what calls were being made.&#x20;
+I used `ltrace` to see what calls were being made.
 
 ```
 bob@wheels:~$ ltrace /opt/get-list

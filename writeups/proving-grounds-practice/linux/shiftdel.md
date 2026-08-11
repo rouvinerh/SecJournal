@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8888/tcp open  sun-answerbook
 ```
 
-Just 2 ports on the website.&#x20;
+Just 2 ports on the website.
 
 ### Web Enumeration -> WP Creds
 
@@ -99,7 +99,7 @@ With these credentials, we can login to the dashboard and begin checking out the
 
 ### Arbitrary File Deletion -> RCE
 
-`wpscan` revealed many different types of exploits, including an authenticated RCE. However, since we aren't the administrator of Wordpress, it's unlikely that we can directly get RCE through WP. So, I turned my attention towards exploiting phpMyAdmin.&#x20;
+`wpscan` revealed many different types of exploits, including an authenticated RCE. However, since we aren't the administrator of Wordpress, it's unlikely that we can directly get RCE through WP. So, I turned my attention towards exploiting phpMyAdmin.
 
 Out of all the exploits that are available, it seemed that the Arbitrary File Delete works:
 

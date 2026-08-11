@@ -44,7 +44,7 @@ C? When we view the page source, there's also this part here:
 </form>
 ```
 
-There's a commented ciphertext, and there's also something which takes a parameter. We can try putting this ciphertext as the parameter requested.&#x20;
+There's a commented ciphertext, and there's also something which takes a parameter. We can try putting this ciphertext as the parameter requested.
 
 <figure><img src="../../../.gitbook/assets/image (1004).png" alt=""><figcaption></figcaption></figure>
 
@@ -54,9 +54,9 @@ If we remove some characters, then it loads something else.
 
 That's literally all of the enumeration that is possible to do.
 
-### Paddling Oracle Attack -> RDP&#x20;
+### Paddling Oracle Attack -> RDP
 
-The first thing we can note is the AES mode used, which is CBC. This mode is insecure against a paddle oracle attack. For this application, it appears that when a parameter `c` (short for ciphertext) is submitted, we get a '1' if it has valid padding, else we get a '0'. This explains why the ciphertext, when submitted returns a '1'. This confirms that we need to use this attack to get the ciphertext out.&#x20;
+The first thing we can note is the AES mode used, which is CBC. This mode is insecure against a paddle oracle attack. For this application, it appears that when a parameter `c` (short for ciphertext) is submitted, we get a '1' if it has valid padding, else we get a '0'. This explains why the ciphertext, when submitted returns a '1'. This confirms that we need to use this attack to get the ciphertext out.
 
 Here's a full video explaining the paddle oracle attack (which I needed to know for my exam lol):
 
@@ -114,7 +114,7 @@ This would brute force every single character out. Here's the output of it:
 [+] Decrypted value (ASCII): WormAloeVat7
 ```
 
-We get a password! SSH is not open on the machine, but RDP is. `xfreerdp` can be used to connect to it.&#x20;
+We get a password! SSH is not open on the machine, but RDP is. `xfreerdp` can be used to connect to it.
 
 ```
 $ xfreerdp /u:victor /p:WormAloeVat7 /v:192.168.233.119
@@ -132,7 +132,7 @@ I downloaded and ran `winPEASx64.exe` on the machine, and found this output:
 
 <figure><img src="../../../.gitbook/assets/image (1778).png" alt=""><figcaption></figcaption></figure>
 
-It's pretty trivial to get an administrator shell from this.&#x20;
+It's pretty trivial to get an administrator shell from this.
 
 <figure><img src="../../../.gitbook/assets/image (1278).png" alt=""><figcaption></figcaption></figure>
 

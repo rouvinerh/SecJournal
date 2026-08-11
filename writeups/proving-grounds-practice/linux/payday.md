@@ -49,7 +49,7 @@ CS-Cart 4.3.10 - XML External Entity Injection             | php/webapps/40770.t
 ----------------------------------------------------------- ---------------------------------
 ```
 
-We can take a look at the authenticated RCE, since we can login using `admin:admin`.&#x20;
+We can take a look at the authenticated RCE, since we can login using `admin:admin`.
 
 ```
 $ cat 48891.txt
@@ -65,7 +65,7 @@ We can then access `admin.php` with the same credentials:
 
 <figure><img src="../../../.gitbook/assets/image (3466).png" alt=""><figcaption></figcaption></figure>
 
-Head to 'Template Editor' and upload the file that we want.&#x20;
+Head to 'Template Editor' and upload the file that we want.
 
 <figure><img src="../../../.gitbook/assets/image (3463).png" alt=""><figcaption></figcaption></figure>
 

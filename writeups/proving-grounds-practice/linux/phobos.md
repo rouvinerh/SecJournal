@@ -46,7 +46,7 @@ The `/svn` directory requires credentials:
 
 <figure><img src="../../../.gitbook/assets/image (3026).png" alt=""><figcaption></figcaption></figure>
 
-Using `admin:admin` doesn't work for this. When we view the traffic in Burpsuite, we can see that the `Authorization` header is added and it uses the Basic Base64 method of authenticating users.&#x20;
+Using `admin:admin` doesn't work for this. When we view the traffic in Burpsuite, we can see that the `Authorization` header is added and it uses the Basic Base64 method of authenticating users.
 
 I ran another directory scan with `wfuzz` this time using this header, and managed to find one directory:
 
@@ -99,9 +99,9 @@ def remove_view_submissions(request):
     return render(request,template_name='submissions.html',context=context)
 ```
 
-This bit of code does not validate the name of the file that is being deleted. In this case, we can attempt to upload a file with a name to inject code.&#x20;
+This bit of code does not validate the name of the file that is being deleted. In this case, we can attempt to upload a file with a name to inject code.
 
-However, when trying to exploit this thing, the `internal` website does not seem to be working with all the links being broken.&#x20;
+However, when trying to exploit this thing, the `internal` website does not seem to be working with all the links being broken.
 
 <figure><img src="../../../.gitbook/assets/image (1421).png" alt=""><figcaption></figcaption></figure>
 
@@ -156,7 +156,7 @@ The website led us to this login page:
 
 <figure><img src="../../../.gitbook/assets/image (3206).png" alt=""><figcaption></figcaption></figure>
 
-Remember that we have the source code of this website, so we can find all the endpoints at the `views.py` file we saw earlier. The `/register` directory lets us register a new user.&#x20;
+Remember that we have the source code of this website, so we can find all the endpoints at the `views.py` file we saw earlier. The `/register` directory lets us register a new user.
 
 <figure><img src="../../../.gitbook/assets/image (1809).png" alt=""><figcaption></figcaption></figure>
 
@@ -212,7 +212,7 @@ This looks vulnerable to LFI, and testing it reveals that it works!
 
 Earlier, the repository comments mentioned something about a UFW firewall. A quick google search on its files reveal that the rules are stored at `/etc/ufw/user.rules`, which can be read using the LFI:
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (3976).png" alt=""><figcaption></figcaption></figure>
 
@@ -264,7 +264,7 @@ This wold give us a shell as `www-data`:
 
 <figure><img src="../../../.gitbook/assets/image (3408).png" alt=""><figcaption></figcaption></figure>
 
-The user flag is within the `/var/www` directory.&#x20;
+The user flag is within the `/var/www` directory.
 
 ## Privilege Escalation
 
@@ -321,7 +321,7 @@ There are some hashes present, and all 3 are crackable:
 
 The last password was for the user `root`, and we can try an `su`, which ends up working:
 
-&#x20;
+
 
 <figure><img src="../../../.gitbook/assets/image (3603).png" alt=""><figcaption></figcaption></figure>
 

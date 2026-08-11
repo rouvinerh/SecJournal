@@ -26,7 +26,7 @@ When viewing the page source, we can find this small bit of Javascript that dict
 
 The query is likely being truncated. What we can do is an SQL Truncation attack. Basically, the idea is to send an input (via Burpsuite) that is padded by spaces until the maximum length when registering for a new user.
 
-For example, if we send a username of `admin     a` (with 5 spaces), the database would truncate that to 10 characters, and only see `admin`. Thus, when registering for a new user, the database would create another entry for our malicious user, which would be viewed the same as the actual `admin` entry.&#x20;
+For example, if we send a username of `admin     a` (with 5 spaces), the database would truncate that to 10 characters, and only see `admin`. Thus, when registering for a new user, the database would create another entry for our malicious user, which would be viewed the same as the actual `admin` entry.
 
 This would allow us to login as the administrator by using our own credentials. Firstly, we can confirm that the `admin` user exists on this website.
 
@@ -85,7 +85,7 @@ I ran a `pspy64` on the machine to view the processes that were running on the m
 
 <figure><img src="../../../.gitbook/assets/image (2019).png" alt=""><figcaption></figcaption></figure>
 
-Also, within the `/home/reader/backups` directory, there were a few `access.log` files that were   being written to every few seconds.&#x20;
+Also, within the `/home/reader/backups` directory, there were a few `access.log` files that were   being written to every few seconds.
 
 When checking version of `logrotate` used, we see that it is outdated.
 

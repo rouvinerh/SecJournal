@@ -81,7 +81,7 @@ Upgrade-Insecure-Requests: 1
 url=http%3A%2F%2F127.0.0.1%3A8080
 ```
 
-This looks vulnerable to a SSRF, and we can confirm it is.&#x20;
+This looks vulnerable to a SSRF, and we can confirm it is.
 
 <figure><img src="../../../.gitbook/assets/image (2632).png" alt=""><figcaption></figcaption></figure>
 
@@ -97,7 +97,7 @@ PHPFusion 9.03.50 - Remote Code Execution                  | php/webapps/49911.p
 ----------------------------------------------------------- ---------------------------------
 ```
 
-We can download and view the RCE exploit to find that the exploit is triggered by sending a request to `/infusions/downloads/downloads.php?cat_id=${system(ls)}`.&#x20;
+We can download and view the RCE exploit to find that the exploit is triggered by sending a request to `/infusions/downloads/downloads.php?cat_id=${system(ls)}`.
 
 Using the exploit, we can create a payload generator as such:
 
@@ -165,7 +165,7 @@ www-data@Surf:/var/www$ ls
 html  server
 ```
 
-We can find credentials inside the `server` file for the user `james`.&#x20;
+We can find credentials inside the `server` file for the user `james`.
 
 ```php
 www-data@Surf:/var/www/server/administration/config$ cat config.php 
@@ -234,7 +234,7 @@ james@Surf:/home$ ls -la /var/backups/database-backup.php
 -rwxr-xr-x 1 www-data www-data 2758 Nov  9  2021 /var/backups/database-backup.php
 ```
 
-The exploit would be to write a small snippet making `/bin/bash` an SUID binary and then executing it as `james`.&#x20;
+The exploit would be to write a small snippet making `/bin/bash` an SUID binary and then executing it as `james`.
 
 We can use `vi` to edit the file to include `system("chmod u+s /bin/bash");`, and then use `:wq!` to force the save. Afterwards, when we can run the file using `sudo` as `james`:
 

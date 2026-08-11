@@ -34,7 +34,7 @@ Then, we can run the script and a shell would pop on our listener port.
 
 ### Directory Misconfig
 
-When I ran WinPEASx64 on this machine, there was a lot of indication that we had AllAccess to the administrator's desktop.&#x20;
+When I ran WinPEASx64 on this machine, there was a lot of indication that we had AllAccess to the administrator's desktop.
 
 <figure><img src="../../../.gitbook/assets/image (754).png" alt=""><figcaption></figcaption></figure>
 
@@ -42,7 +42,7 @@ However, we cannot read the root flag for some reason.
 
 <figure><img src="../../../.gitbook/assets/image (3376).png" alt=""><figcaption></figcaption></figure>
 
-We can check the permissions using `icacls`.&#x20;
+We can check the permissions using `icacls`.
 
 <figure><img src="../../../.gitbook/assets/image (733).png" alt=""><figcaption></figcaption></figure>
 

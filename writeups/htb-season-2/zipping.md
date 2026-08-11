@@ -41,7 +41,7 @@ There is a shop feature located on the site, which was rather uninteresting exce
 
 <figure><img src="../../.gitbook/assets/image (4173).png" alt=""><figcaption></figcaption></figure>
 
-The `page` parameter was a really obvious LFI. The page is based in PHP, so I assumed that this was loading `products.php`. If we can figure out how to upload a shell on the machine like `rev.php`, it would potentially have to be triggered using this. All theory here, I have no source code yet.&#x20;
+The `page` parameter was a really obvious LFI. The page is based in PHP, so I assumed that this was loading `products.php`. If we can figure out how to upload a shell on the machine like `rev.php`, it would potentially have to be triggered using this. All theory here, I have no source code yet.
 
 The 'Work with Us' part was rather interesting:
 
@@ -64,7 +64,7 @@ This would generate a file for us:
 
 <figure><img src="../../.gitbook/assets/image (4172).png" alt=""><figcaption></figcaption></figure>
 
-It should be noted that the hash in the URL is just the MD5 hash of the `test.zip` file.&#x20;
+It should be noted that the hash in the URL is just the MD5 hash of the `test.zip` file.
 
 ```
 $ md5sum test.zip
@@ -116,7 +116,7 @@ Using this, we can read whatever file we want. The first thing I want to read is
             ?>
 ```
 
-The next thing to read is the code for the shop.&#x20;
+The next thing to read is the code for the shop.
 
 {% code overflow="wrap" %}
 ```php
@@ -183,7 +183,7 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ```
 {% endcode %}
 
-The above does not have any input validation for the `id` parameter, which is user-controlled.&#x20;
+The above does not have any input validation for the `id` parameter, which is user-controlled.
 
 When we attempt SQL Injection via `'` character within the shop and render it in Burp, we see this:
 
@@ -244,9 +244,9 @@ if (isset($_GET['id'])) {
 ?>
 ```
 
-The regex there looks quite hard to bypass, and combined with the fact that the box name is Zipper, it's obvious that this isn't the intended method.&#x20;
+The regex there looks quite hard to bypass, and combined with the fact that the box name is Zipper, it's obvious that this isn't the intended method.
 
-### Null Byte Bypass -> RCE&#x20;
+### Null Byte Bypass -> RCE
 
 SQL Injection failed, so it's back to the Zip file method. This is the code that checks whether or not there's a valid file in the zip:
 
@@ -267,7 +267,7 @@ $zip = new ZipArchive;
         }
 ```
 
-The only check present is the `pathinfo` function, of which it can be bypassed.&#x20;
+The only check present is the `pathinfo` function, of which it can be bypassed.
 
 {% embed url="https://forums.hak5.org/topic/39958-bypassing-pathinfo-or-getimagesize-php-shell-upload/" %}
 
@@ -295,7 +295,7 @@ We can then visit that site and get a shell (without the `.pdf` at the end):
 
 ## Privilege Escalation
 
-### Sudo Privileges -> Stock Binary&#x20;
+### Sudo Privileges -> Stock Binary
 
 When checking `sudo` privileges, this is what I see:
 

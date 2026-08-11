@@ -12,7 +12,7 @@ Port 80 is a Wordpress Site that has a post referencing a plugin and a wiki syst
 
 <figure><img src="../../../.gitbook/assets/image (2844).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;We can use `gobuster` on the website to find some hidden content.
+We can use `gobuster` on the website to find some hidden content.
 
 <figure><img src="../../../.gitbook/assets/image (1600).png" alt=""><figcaption></figcaption></figure>
 

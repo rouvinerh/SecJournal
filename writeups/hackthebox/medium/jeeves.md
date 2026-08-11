@@ -50,7 +50,7 @@ There were also other passwords that were found by viewing the DC Recovery PW.
 
 <figure><img src="../../../.gitbook/assets/image (2984).png" alt=""><figcaption></figcaption></figure>
 
-Using the first NTLM hash we found, we can Pass The Hash to gain a shell as the administrator through `pth-winexe`.&#x20;
+Using the first NTLM hash we found, we can Pass The Hash to gain a shell as the administrator through `pth-winexe`.
 
 <figure><img src="../../../.gitbook/assets/image (1453).png" alt=""><figcaption></figcaption></figure>
 
@@ -60,7 +60,7 @@ When trying to capture the root flag, this is what we see:
 
 <figure><img src="../../../.gitbook/assets/image (178).png" alt=""><figcaption></figcaption></figure>
 
-The hint to look deeper indicates that we should look within the Windows Data Stream. In short, Windows Data Stream is an alternate place for us to store bytes of data that aren't otherwise viewable via the conventional methods.&#x20;
+The hint to look deeper indicates that we should look within the Windows Data Stream. In short, Windows Data Stream is an alternate place for us to store bytes of data that aren't otherwise viewable via the conventional methods.
 
 {% embed url="https://owasp.org/www-community/attacks/Windows_alternate_data_stream" %}
 

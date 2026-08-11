@@ -56,11 +56,11 @@ PORT     STATE SERVICE VERSION
 |_http-open-proxy: Proxy might be redirecting requests
 ```
 
-Port 6667 is indeed running IRC, and it has some functionality.&#x20;
+Port 6667 is indeed running IRC, and it has some functionality.
 
 ### Web Enum
 
-Port 80 was entirely static.&#x20;
+Port 80 was entirely static.
 
 <figure><img src="../../../.gitbook/assets/image (3162).png" alt=""><figcaption></figcaption></figure>
 
@@ -72,7 +72,7 @@ I had no credentials, so let's move on first.
 
 ### IRC -> Source Code -> RCE
 
-I used `nc` to first enumerate the IRC server. Initially when connecting, it tells me that it cannot resolve my hostname, which we can fix by using `NICK`.&#x20;
+I used `nc` to first enumerate the IRC server. Initially when connecting, it tells me that it cannot resolve my hostname, which we can fix by using `NICK`.
 
 <figure><img src="../../../.gitbook/assets/image (1387).png" alt=""><figcaption></figcaption></figure>
 
@@ -117,7 +117,7 @@ LIST
 :irc.spaghetti.lan 323 ran213eqdw123 :End of channel list.
 ```
 
-&#x20;I decided to use a GUI tool called `pidgin` to connect to the IRC server instead. We just have to add `irc.spaghetti.lan` to our `/etc/hosts` file. I used the same username as per what I nicked myself earlier.
+I decided to use a GUI tool called `pidgin` to connect to the IRC server instead. We just have to add `irc.spaghetti.lan` to our `/etc/hosts` file. I used the same username as per what I nicked myself earlier.
 
 <figure><img src="../../../.gitbook/assets/image (1374).png" alt=""><figcaption></figcaption></figure>
 
@@ -217,7 +217,7 @@ do
 done
 ```
 
-The script basically sends emails to users. However, I noticed that the parameters from the MySQL database aren't sanitised at all, and passed directly into the `mail` command. This opens up a chance for injecting some commands. `${RESULT[0]}` is the parameter that is vulnerable, and it is the `username` parameter from the database.&#x20;
+The script basically sends emails to users. However, I noticed that the parameters from the MySQL database aren't sanitised at all, and passed directly into the `mail` command. This opens up a chance for injecting some commands. `${RESULT[0]}` is the parameter that is vulnerable, and it is the `username` parameter from the database.
 
 To exploit this, we can first put a reverse shell script within the host and `chmod` it:
 
@@ -242,7 +242,7 @@ $CONF['database_name'] = 'postfixadmin';
 <TRUNCATED>
 ```
 
-From here, we can login to the database and use the `postfixadmin` database.&#x20;
+From here, we can login to the database and use the `postfixadmin` database.
 
 ```
 hostmaster@spaghetti:/var/www/postfixadmin$ mysql -u postfixadmin -pP4s8vV0r6

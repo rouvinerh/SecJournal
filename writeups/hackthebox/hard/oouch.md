@@ -96,9 +96,9 @@ Using the connect options shows us this:
 
 <figure><img src="../../../.gitbook/assets/image (3894).png" alt=""><figcaption></figcaption></figure>
 
-When we click authorize, we just are logged in as the same user it seems.&#x20;
+When we click authorize, we just are logged in as the same user it seems.
 
-### Authorisation Server&#x20;
+### Authorisation Server
 
 On Port 8000, all we see is this:
 
@@ -168,7 +168,7 @@ I did not have any credentials for now. After creating this account and re-testi
 
 <figure><img src="../../../.gitbook/assets/image (3808).png" alt=""><figcaption></figcaption></figure>
 
-The website recognises my new OAuth account that I created and is considered 'connected'.&#x20;
+The website recognises my new OAuth account that I created and is considered 'connected'.
 
 ### OAuth Forced Linking
 
@@ -180,9 +180,9 @@ We can view the HTTP requests throguh Burpsuite to see what exactly is happening
 
 <figure><img src="../../../.gitbook/assets/image (2169).png" alt=""><figcaption></figcaption></figure>
 
-These 4 requests are essentially the OAuth mechanism, and there is the access token in a POST request. Our goal is to authenticate as `qtc`, since he probably is the administrator user of this machine. As such, we can use a CSRF attack because this implementation of OAuth does not seem to send the `state` parameter. Earlier, we found a method to make the administrator `qtc` click links by sending it in the Contact form.&#x20;
+These 4 requests are essentially the OAuth mechanism, and there is the access token in a POST request. Our goal is to authenticate as `qtc`, since he probably is the administrator user of this machine. As such, we can use a CSRF attack because this implementation of OAuth does not seem to send the `state` parameter. Earlier, we found a method to make the administrator `qtc` click links by sending it in the Contact form.
 
-This can be used to link the `qtc` account to ours.&#x20;
+This can be used to link the `qtc` account to ours.
 
 To exploit this, we first need to create some kind of new account and intercept the POST request created from accessing `/oauth/connect` . We need to intercept this response:
 
@@ -228,7 +228,7 @@ This is request that links accounts together. **We need to drop this using Burps
 http://consumer.oouch.htb:5000/oauth/connect/token?code=IhKT0Gc97DNDoVQp2Urhfun5pcl4Vj
 ```
 
-&#x20;Send this in the Contact Form and wait for a little bit. Then, we can attempt to use OAuth by accessing `/oauth/login` on the consumer server. If done correctly, this is what we would see in the Documents section:
+Send this in the Contact Form and wait for a little bit. Then, we can attempt to use OAuth by accessing `/oauth/login` on the consumer server. If done correctly, this is what we would see in the Documents section:
 
 <figure><img src="../../../.gitbook/assets/image (2649).png" alt=""><figcaption></figcaption></figure>
 
@@ -236,13 +236,13 @@ Great! Now we have credentials to access some other stuff. There's an SSH key so
 
 ### Registering -> Steal Token
 
-Now that we have credentials, we can register somewhere. I used `gobuster` to scan the authorization server, and found another endpoint at `/oauth/applications/register`.&#x20;
+Now that we have credentials, we can register somewhere. I used `gobuster` to scan the authorization server, and found another endpoint at `/oauth/applications/register`.
 
 <figure><img src="../../../.gitbook/assets/image (3047).png" alt=""><figcaption></figcaption></figure>
 
 Based on the documents, it seems that the `/api/get_user` endpoint supports a GET method, meaning the authorization parameter is probably a token. Problem is, we don't have any credentials or tokens from `qtc`, we only forced a link. The next step is to steal a token or password, and I'm guessing we need him to click another link.
 
-We can create a fake request that redirects the user to our our machine. This works because we have all the parameters we need on this page alone.&#x20;
+We can create a fake request that redirects the user to our our machine. This works because we have all the parameters we need on this page alone.
 
 As such, we can fill up the registering form as such:
 
@@ -313,7 +313,7 @@ Now that we have access to this, we need to find the SSH key. After testing out 
 
 <figure><img src="../../../.gitbook/assets/image (1512).png" alt=""><figcaption></figcaption></figure>
 
-Then we can just SSH in as `qtc`.&#x20;
+Then we can just SSH in as `qtc`.
 
 <figure><img src="../../../.gitbook/assets/image (2789).png" alt=""><figcaption></figcaption></figure>
 
@@ -352,7 +352,7 @@ There was some kind of cronjob going on, and there are docker containers present
        valid_lft forever preferred_lft forever
 ```
 
-We can probably SSH into some of them. Rough guesing let me SSH into `172.18.0.4`.&#x20;
+We can probably SSH into some of them. Rough guesing let me SSH into `172.18.0.4`.
 
 <figure><img src="../../../.gitbook/assets/image (1423).png" alt=""><figcaption></figcaption></figure>
 
@@ -494,7 +494,7 @@ Based on the configuration file, there's a severe misconfiguration because the `
 
 {% embed url="https://github.com/wofeiwo/webcgi-exploits" %}
 
-I'm not going to pretend I can understand and read the explanation of the exploit in Chinese. **Before sending this file over, we need to remove the import bytes portion**. Then, we can import this file into our machine, transfer it to the main machine and then the Docker container.&#x20;
+I'm not going to pretend I can understand and read the explanation of the exploit in Chinese. **Before sending this file over, we need to remove the import bytes portion**. Then, we can import this file into our machine, transfer it to the main machine and then the Docker container.
 
 We can set up a listener port on the main machine, and execute use a simple bash one-liner to get a reverse shell:
 
@@ -509,7 +509,7 @@ qtc@de8d92c274d6:~$ python3 rce.py -m unix -u /tmp/uwsgi.socket -c 'bash -c "bas
 
 As `www-data`, we have some permissions over `dbus`. Well, Hacktricks kinda spoiled the exploit for me because it revealed the exact command to use to get RCE as root using `dbus-send`.
 
-How this exploit works is that the main machine is running `iptables` to block the IP addresses (remember the cronjob?). As such, we can try to test whether the input being sent there is sanitised. If it is not, we have a chance to inject code. To do this, we would need a method to send `dbus` messages, and this can be done with `dbus-send`.&#x20;
+How this exploit works is that the main machine is running `iptables` to block the IP addresses (remember the cronjob?). As such, we can try to test whether the input being sent there is sanitised. If it is not, we have a chance to inject code. To do this, we would need a method to send `dbus` messages, and this can be done with `dbus-send`.
 
 {% embed url="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/d-bus-enumeration-and-command-injection-privilege-escalation#exploit-it" %}
 

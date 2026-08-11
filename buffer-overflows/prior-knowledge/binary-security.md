@@ -16,13 +16,13 @@ int main(){
 }
 ```
 
-This is a program that basically executes a `system` function, which allows us to execute any command we want as if we were in a command terminal. Each time a program uses a library, it would call that library to find the pre-defined functions that it needs, in this case `system` from `stdlib.h`.  This `system` function lives within the `stdlib.h`, and has a specific address of which it exists. This address is specified as an offset.&#x20;
+This is a program that basically executes a `system` function, which allows us to execute any command we want as if we were in a command terminal. Each time a program uses a library, it would call that library to find the pre-defined functions that it needs, in this case `system` from `stdlib.h`.  This `system` function lives within the `stdlib.h`, and has a specific address of which it exists. This address is specified as an offset.
 
-For example if the base address is loaded at `0x12345678`, and the offset is `0x00000001`, then the `system` function would be at `0x12345677` within the library on our machine.&#x20;
+For example if the base address is loaded at `0x12345678`, and the offset is `0x00000001`, then the `system` function would be at `0x12345677` within the library on our machine.
 
 Without ASLR, the address of which this function exists in is **always the same**. The memory address is static, and this can be rather dangerous as predictability can allow for buffer overflows (which rely on memory addresses) to be rather easy.
 
-With ASLR, the OS loads the same executable at **different locations in memory each time**. This means that everytime we run this program, the memory addresses are completely different. This would mean that the function effectively 'lives' at a different area as well.&#x20;
+With ASLR, the OS loads the same executable at **different locations in memory each time**. This means that everytime we run this program, the memory addresses are completely different. This would mean that the function effectively 'lives' at a different area as well.
 
 ## DEP
 
@@ -30,7 +30,7 @@ Data Execution Prevention (DEP) is a defensive hardware and software measure tha
 
 ## Canary / Stack Cookie
 
-This measure would place a value next to the return address on the stack. This prefix would prevent for the attackers from controlling the EIP and returning to wherever they want.&#x20;
+This measure would place a value next to the return address on the stack. This prefix would prevent for the attackers from controlling the EIP and returning to wherever they want.
 
 The function prologue would load this value into its location, and everytime there is a return statement, the program checks to see if this value has been edited in any way. If it has, the program does not continue with execution. If nothing is detected, then it will continue as per normal.
 
@@ -44,34 +44,34 @@ When .elf binaries are compiled, they contain a look-up table called the **Globa
 
 For example, let's say we call the `puts()` function within our program. Our program does not actually have the `puts()` function within it, but it is compiled as `puts@plt`. This is because the program **does not actually know where it is yet**. So, the function jumps to the PLT entry of `puts()` and there are two things that can happen:
 
-* If there is a GOT entry for `puts()`, then it jumps to the address stored there and executes.&#x20;
+* If there is a GOT entry for `puts()`, then it jumps to the address stored there and executes.
 * If there isn't a GOT entry for it, it will resolve it and jump there afterwards. This address is stored and **does not usually change**. This is also known as 'lazy binding'.
 
 This raises a few vulnerabilities:
 
 * The PLT is at a **fixed location from the .text section,** else the program would not know where to go to find functions.
-* GOT contains data used by different parts of the program directly, and **is also located at a known static address**.&#x20;
+* GOT contains data used by different parts of the program directly, and **is also located at a known static address**.
 * **Once a function is called, its address is saved and does not change within the GOT**.
 * The GOT contains the **actual addresses in memory** of `libc` functions within it. When the PLT gets called, it reads the GOT address and redirects execution there. Else, it coordinates with the `ld.so` file, known as a **dynamic linker**, to get the function address and store it in the GOT.
 
-Because of how it is structured, **calling the PLT address of a function is the same as calling the function itself**. The GOT address contains addresses of functions in `libc`, and this table is part of the binary at a **static location with a constant offset away from the base address**.&#x20;
+Because of how it is structured, **calling the PLT address of a function is the same as calling the function itself**. The GOT address contains addresses of functions in `libc`, and this table is part of the binary at a **static location with a constant offset away from the base address**.
 
 As such, attackers can do the following if they are able to write bytes in a specific location in memory:
 
-* Redirect execution of a function to its PLT entry. We can call `system()` through the table without jumping to `libc`.&#x20;
-* If RELRO is partial or disabled, **attackers can overwrite the GOT entries** and execute code on the vulnerable machine.&#x20;
-* If ASLR is disabled, we can find the addresses of the `libc` functions.&#x20;
-* If ASLR is enabled, we can **can leak the base address** of the binary to find the functions through calculating the offsets. This can be easily done **if we have LFI on the machine,** as we can read the `/proc/<pid>/maps` directory to find the exact address that each library is loaded at, thus finding the base address.&#x20;
+* Redirect execution of a function to its PLT entry. We can call `system()` through the table without jumping to `libc`.
+* If RELRO is partial or disabled, **attackers can overwrite the GOT entries** and execute code on the vulnerable machine.
+* If ASLR is disabled, we can find the addresses of the `libc` functions.
+* If ASLR is enabled, we can **can leak the base address** of the binary to find the functions through calculating the offsets. This can be easily done **if we have LFI on the machine,** as we can read the `/proc/<pid>/maps` directory to find the exact address that each library is loaded at, thus finding the base address.
 
 ### Security Measures
 
-RELRO would **harden** the binary by making sure that we **do not have any ability to overwrite the GOT table**. There is **partial RELRO** and **full RELRO**.&#x20;
+RELRO would **harden** the binary by making sure that we **do not have any ability to overwrite the GOT table**. There is **partial RELRO** and **full RELRO**.
 
 With partial RELRO, it is possible to do a 'GOT Overwrite' attack, where the GOT address is overwritten with the location of another function or with a ROP gadget that an attacker can run. In essence, we can force the GOT to point towards an address we can control, which can lead to RCE.
 
 With Full RELRO, we cannot do anything with it. The GOT and PLT are all read-only, and **any attempts to overwrite them would crash the program**. This prevents any tampering with addresses within the binary.
 
-Most binaries are compiled with partial RELRO by default, as Full RELRO has a significant effect on program startup time since all symbols must be resolved before a program is started. In large programs, the effect is quite visible.&#x20;
+Most binaries are compiled with partial RELRO by default, as Full RELRO has a significant effect on program startup time since all symbols must be resolved before a program is started. In large programs, the effect is quite visible.
 
 Here's a writeup to a GOT Overwrite exploit:
 
@@ -79,7 +79,7 @@ Here's a writeup to a GOT Overwrite exploit:
 
 ## Compiler Flags
 
-To compile binaries with these security measures, we have to include **specific flags** when compiling. Below is a list of flags for the `gcc` compiler.&#x20;
+To compile binaries with these security measures, we have to include **specific flags** when compiling. Below is a list of flags for the `gcc` compiler.
 
 ```
 GCC Security related flags and options:
@@ -147,7 +147,7 @@ We can breakdown the output from this:
 * FORTIFY has been **disabled**, meaning there are no checks for buffer overflows within the binary (indicating this binary is vulnerable!)
 * NX has been **enabled**, meaning that **no execute is enabled**. This means the memory within the stack is non-executable and DEP has been enabled. **Thus, no shellcode injection here.**
 * PIE has been **enabled**, meaning ASLR is enabled. This makes all attacks significantly more difficult as addresses change each time it is run.
-* RELRO is on **FULL,** meaning that the binary is **fully read-only** and its contents cannot be edited throughout the execution of it. So the GOT and PLT tables cannot be edited in any way.&#x20;
+* RELRO is on **FULL,** meaning that the binary is **fully read-only** and its contents cannot be edited throughout the execution of it. So the GOT and PLT tables cannot be edited in any way.
 
 With this knowledge, we would need to use a debugger to see the application better. For this machine in HTB, it was vulnerable to ROP chaning leading to RCE, as that was the only option.
 

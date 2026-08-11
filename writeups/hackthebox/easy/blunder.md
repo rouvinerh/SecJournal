@@ -86,7 +86,7 @@ When we check `sudo` privileges, we can see that this one is a bit different.
 
 <figure><img src="../../../.gitbook/assets/image (4051).png" alt=""><figcaption></figcaption></figure>
 
-The `!root` bit means that we cannot run `/bin/bash` as root, but we can run it as any other user. Googling for `sudo !root` bypasses led me to this exploit.&#x20;
+The `!root` bit means that we cannot run `/bin/bash` as root, but we can run it as any other user. Googling for `sudo !root` bypasses led me to this exploit.
 
 {% embed url="https://www.exploit-db.com/exploits/47502" %}
 

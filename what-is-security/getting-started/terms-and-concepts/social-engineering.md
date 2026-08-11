@@ -54,9 +54,9 @@ This basically shows us the credentials that we had used to sign in. As such, we
 
 This is the simplest example of what happens in a phishing attack, and the thing is, fake websites that do the same are all sent everyday, through text, email or whatever.
 
-Setting this up with Kali took less than 20 seconds, and you best believe that it's just as easy for an attacker to set it up. In fact, there are merchants on the black market that would help one set up this kind of scam and send out everywhere.&#x20;
+Setting this up with Kali took less than 20 seconds, and you best believe that it's just as easy for an attacker to set it up. In fact, there are merchants on the black market that would help one set up this kind of scam and send out everywhere.
 
-This is something called credential harvesting, and there are many others. Some links have hidden Javascript that is executed when you visit it, causing for viruses to be downloaded onto your device. &#x20;
+This is something called credential harvesting, and there are many others. Some links have hidden Javascript that is executed when you visit it, causing for viruses to be downloaded onto your device. 
 
 In short, phishing is really easy to do, and to fall victim to.
 
@@ -78,7 +78,7 @@ While anti-viruses can pick up on these macros rather easily, there are still wa
 
 This showcases how a file can contain some hidden commands within it. The above example is not exactly encoded super well to avoid anti-viruses, but will definitely avoid the human eye.
 
-We can then set the macro to perhaps execute when the file is opened.&#x20;
+We can then set the macro to perhaps execute when the file is opened.
 
 <figure><img src="../../../.gitbook/assets/image (1467).png" alt=""><figcaption></figcaption></figure>
 
@@ -90,7 +90,7 @@ Why does this work? Manipulation of NTLM challenge requests and setting up rogue
 
 <figure><img src="../../../.gitbook/assets/image (816).png" alt=""><figcaption></figcaption></figure>
 
-For this example, I managed to retrieve the user password just by using this Word document.&#x20;
+For this example, I managed to retrieve the user password just by using this Word document.
 
 In fact, this method is so easy to do, that there are scripts out there that would generate the files for me automatically, although they wouldn't bypass any defences.
 
@@ -114,7 +114,7 @@ Another thing to check for is domain name. Here are some fake websites:
 
 We can see that the links look similar if you're not looking carefully. Most of these can be potential scam website (I wouldn't know), or at least temporarily leased domains used for scams.
 
-### Check sender and content&#x20;
+### Check sender and content
 
 When receiving files from an unidentified sender, always make sure that the sender's email is legit and from authorized people.
 
@@ -122,13 +122,13 @@ If we open some kind of Microsoft document accidentally, no worries, you're stil
 
 <figure><img src="../../../.gitbook/assets/enable-macros-excel.png" alt=""><figcaption></figcaption></figure>
 
-**Just never click this enable content button.** This one button is the last line of defence between you and the attacker. Microsoft doesn't tell you about this (which is really stupid), and that's the reason so many people become victims.&#x20;
+**Just never click this enable content button.** This one button is the last line of defence between you and the attacker. Microsoft doesn't tell you about this (which is really stupid), and that's the reason so many people become victims.
 
 Next, always check the content of the email or message and make sure you're supposed to receive it and that the content is legit. Taking a few more seconds to scan through the content is way better than falling victim to phishing.
 
 ### Never click links
 
-I hardly ever click links from random people I don't know, so you should too. You never know what they are gonna do.&#x20;
+I hardly ever click links from random people I don't know, so you should too. You never know what they are gonna do.
 
-The amount of dangers from visiting a website is not limited to if you enter your credentials, but a lot of Cross-Site Scripting can be used by attackers to deliver their payload.&#x20;
+The amount of dangers from visiting a website is not limited to if you enter your credentials, but a lot of Cross-Site Scripting can be used by attackers to deliver their payload.
 

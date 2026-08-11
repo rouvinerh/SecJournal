@@ -70,7 +70,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /bugtracker           (Status: 301) [Size: 323] [--> http://192.168.201.204/bugtracker/]
 ```
 
-`/bugtracker` looks interesting. It brought me to a login page stating that the admin directory is a security risk.&#x20;
+`/bugtracker` looks interesting. It brought me to a login page stating that the admin directory is a security risk.
 
 <figure><img src="../../../.gitbook/assets/image (953).png" alt=""><figcaption></figcaption></figure>
 
@@ -88,7 +88,7 @@ If we just click on the Install button without filling in any details, we are br
 
 <figure><img src="../../../.gitbook/assets/image (1165).png" alt=""><figcaption></figcaption></figure>
 
-There's a configuration file mentioned at the bottom of the page, and it also shows that the web page is able to interact with the SQL instance.&#x20;
+There's a configuration file mentioned at the bottom of the page, and it also shows that the web page is able to interact with the SQL instance.
 
 ### Rogue MySQL LFI -> MySQL Creds
 
@@ -130,7 +130,7 @@ This grants us the MySQL creds, which we can use to login:
 
 ### Bugtracker Creds -> RCE
 
-With access to the database, we can view the password of the administrator of the MantisBT instance.&#x20;
+With access to the database, we can view the password of the administrator of the MantisBT instance.
 
 ```
 MariaDB [bugtracker]> select * from mantis_user_table;
@@ -148,7 +148,7 @@ This hash can be cracked on CrackStation:
 
 Now, there are RCE exploits for this, but the one from `searchsploit` also abuses another exploit to do with password resetting for the administrator user.
 
-First of all, that doesn't seem to work for this machine, and secondly, we already have the administrator password. In this case, I manually exploited the machine while using the PoC as a guideline.&#x20;
+First of all, that doesn't seem to work for this machine, and secondly, we already have the administrator password. In this case, I manually exploited the machine while using the PoC as a guideline.
 
 We can first login as the administrator:
 

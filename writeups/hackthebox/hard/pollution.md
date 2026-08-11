@@ -63,7 +63,7 @@ There could be an API backend, but I wasn't able to find it using normal means. 
 
 ### Finding Subhosts
 
-I knew that there was some hidden servers or something within the website, as the API hint was quite obvious. Understanding that the website was named 'Collect', I used `collect.htb` as a domain and tried to fuzz vhosts.&#x20;
+I knew that there was some hidden servers or something within the website, as the API hint was quite obvious. Understanding that the website was named 'Collect', I used `collect.htb` as a domain and tried to fuzz vhosts.
 
 Regular fuzzing did not do much for me, but when I fuzzed the HTTP Host header using `wfuzz`, I was able to find some results.
 
@@ -189,7 +189,7 @@ We can use this command to do so:
 
 `set PHPREDIS_SESSION:e50hu9lk5rkblb7tdlm3310fk4 "username|s:10:"testing123";role|s:5:"admin";auth|s:1:"a";"`
 
-Then, replace the cookie and login to the `developers.collect.htb` endpoint.&#x20;
+Then, replace the cookie and login to the `developers.collect.htb` endpoint.
 
 <figure><img src="../../../.gitbook/assets/image (2527).png" alt=""><figcaption></figcaption></figure>
 
@@ -333,7 +333,7 @@ const messages_send = async(req,res)=>{
 module.exports = { messages_send };
 ```
 
-So there was this `_.merge` function being used. This function was vulnerable to a Lodash Merge Pollution attack, which allows for RCE as root.&#x20;
+So there was this `_.merge` function being used. This function was vulnerable to a Lodash Merge Pollution attack, which allows for RCE as root.
 
 Prototype pollution basically allows us to control the default values of the object's properties, and we can tamper with the application logic. Since there is an `exec` function right after this that executes a pre-determined command, we can use this exploit to 'alter' the values passed into this.
 
@@ -412,7 +412,7 @@ curl http://127.0.0.1:3000/admin/messages/send -H "X-Access-Token: eyJhbGciOiJIU
 ```
 {% endcode %}
 
-This would call a child\_process to execute `chmod +s /usr/bin/bash`.&#x20;
+This would call a child\_process to execute `chmod +s /usr/bin/bash`.
 
 <figure><img src="../../../.gitbook/assets/image (766).png" alt=""><figcaption></figcaption></figure>
 

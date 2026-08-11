@@ -132,7 +132,7 @@ if __name__ == '__main__':
 ```
 {% endcode %}
 
-So there's a DLL file somewhere that is used to read orders from an `orders.txt` file. Websockets are used to connect to port 5000. We should find this DLL file, but I don't know where to look as of now. Instead, we can try writing a script to connect to this WebSocket and abuse it somehow as it does not seem to take any user input.&#x20;
+So there's a DLL file somewhere that is used to read orders from an `orders.txt` file. Websockets are used to connect to port 5000. We should find this DLL file, but I don't know where to look as of now. Instead, we can try writing a script to connect to this WebSocket and abuse it somehow as it does not seem to take any user input.
 
 I tested this by changing `ReadOrder` to `WriteOrder` and creating this script here to connect:
 
@@ -251,9 +251,9 @@ We know that this is a .NET related JSON deserialisation exploit based on the DL
 }
 ```
 
-For our payload, we would first need to add the the 'RemoveOrder' function, then nest our payload within it. Since the TypeNameHandling = 4, the `$type` variable has to call the root object's type, in this case it would be `bagel_server.file,bagel` as per the DLL object names.&#x20;
+For our payload, we would first need to add the the 'RemoveOrder' function, then nest our payload within it. Since the TypeNameHandling = 4, the `$type` variable has to call the root object's type, in this case it would be `bagel_server.file,bagel` as per the DLL object names.
 
-Afterwards, we can call the `ReadFile` function to read whatever file we want.&#x20;
+Afterwards, we can call the `ReadFile` function to read whatever file we want.
 
 This was my code and output: (took a while of testing)
 

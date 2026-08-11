@@ -62,7 +62,7 @@ On the main page, there were the type of conversions available, which were **str
 
 <figure><img src="../../../.gitbook/assets/image (430).png" alt=""><figcaption></figcaption></figure>
 
-This was the only page that didn't have any API endpoint to use. When checking out `/v2` and `/v1`, it just tells me the page is under construction due to security issues.&#x20;
+This was the only page that didn't have any API endpoint to use. When checking out `/v2` and `/v1`, it just tells me the page is under construction due to security issues.
 
 I decided to enumerate for subhosts with `wfuzz` because I had to find something to do with images for this machine. I managed to find another subdomain at `image.haxtables.htb`.
 
@@ -149,7 +149,7 @@ echo $response;
 ?>
 ```
 
-This file was taking JSON input from the user and doing...something. The most notable thing was the usage of `php://input`, where it is possible to inject code into this via a POST parameter.&#x20;
+This file was taking JSON input from the user and doing...something. The most notable thing was the usage of `php://input`, where it is possible to inject code into this via a POST parameter.
 
 We can read the `/var/www/api/utils.php` file to get a clearer picture of what's going on.
 
@@ -186,7 +186,7 @@ function make_api_call($action, $data, $uri_path, $is_file = false){
     }
 ```
 
-This functio was taking the JSON data and checking for SSRF (poorly). It only checks for 127.0.0.1 and not hte actual domain name. This is definitely vulnerable, but I could not make this work.&#x20;
+This functio was taking the JSON data and checking for SSRF (poorly). It only checks for 127.0.0.1 and not hte actual domain name. This is definitely vulnerable, but I could not make this work.
 
 ### Getting Stuck - Finding .git
 

@@ -17,7 +17,7 @@ PORT      STATE    SERVICE
 445/tcp   open     microsoft-d
 ```
 
-We might need to exploit SMTP to 'forward' messages.&#x20;
+We might need to exploit SMTP to 'forward' messages.
 
 ### SMB Shares -> Teamviewer Creds
 
@@ -70,7 +70,7 @@ Don't worry about the password, it's well encrypted!
 Root!
 ```
 
-TeamViewer credentials can actually be decrypted.&#x20;
+TeamViewer credentials can actually be decrypted.
 
 {% embed url="https://whynotsecurity.com/blog/teamviewer/" %}
 
@@ -188,7 +188,7 @@ smb: \> ls
   .forward                           AH       25  Tue Aug 24 18:23:05 2021
 ```
 
-There's an interesting folder called `.forward` present.&#x20;
+There's an interesting folder called `.forward` present.
 
 ```
 $ cat .forward                                                                 
@@ -251,7 +251,7 @@ Reading the manual for `ssh` reveals the `-X` flag is for x11 forwarding:
              ssh_config(5) for more information
 ```
 
-In short, this allows us to spawn the GUI needed to exploit this. Dropping our SSH key doesn't work, so we need to find creds for `fox`.&#x20;
+In short, this allows us to spawn the GUI needed to exploit this. Dropping our SSH key doesn't work, so we need to find creds for `fox`.
 
 The `/home` directory had some other users, and one had a `.bash_history` folder:
 
@@ -272,7 +272,7 @@ CIARLARIELLOkj99
 ssh mara@192.168.0.191
 ```
 
-This password works for `fox`.&#x20;
+This password works for `fox`.
 
 <figure><img src="../../../.gitbook/assets/image (3455).png" alt=""><figcaption></figcaption></figure>
 

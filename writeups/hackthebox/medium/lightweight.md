@@ -26,11 +26,11 @@ First, we can SSH using our IP address as the username and password. We can view
 
 <figure><img src="../../../.gitbook/assets/image (3680).png" alt=""><figcaption></figcaption></figure>
 
-The most interesting part was the within the `/etc/passwd` file, a completely new user was being created for each IP address.&#x20;
+The most interesting part was the within the `/etc/passwd` file, a completely new user was being created for each IP address.
 
 ### Sniffing
 
-I was stuck here for a long time because I could not find anything of interest on the machine that we could access.&#x20;
+I was stuck here for a long time because I could not find anything of interest on the machine that we could access.
 
 I found it really odd that LDAP was listening on the machine and I did not know what it was doing. As a last resort, I sniffed the traffic of LDAP using `tcpdump` on port 389. Surprisingly, I found some credentials in plaintext.
 

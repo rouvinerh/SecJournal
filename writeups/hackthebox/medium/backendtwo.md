@@ -18,7 +18,7 @@ Port 80 brings us to an API again, with the admin user still being viewable.
 
 ### Creating User
 
-We can do the same stuff to create, signin as a user and receive the JWT token for it.&#x20;
+We can do the same stuff to create, signin as a user and receive the JWT token for it.
 
 <figure><img src="../../../.gitbook/assets/image (3386).png" alt=""><figcaption></figcaption></figure>
 

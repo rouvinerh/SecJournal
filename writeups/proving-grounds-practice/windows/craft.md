@@ -28,7 +28,7 @@ I tried to upload an image, and this triggered an error:
 
 <figure><img src="../../../.gitbook/assets/image (686).png" alt=""><figcaption></figcaption></figure>
 
-An ODT file is similar to a Microsoft Word document, which can be created using `libreoffice`. Seeing that we can only upload ODT files, this machine might have a script opening the files and being able to trigger some macros embedded within the file.&#x20;
+An ODT file is similar to a Microsoft Word document, which can be created using `libreoffice`. Seeing that we can only upload ODT files, this machine might have a script opening the files and being able to trigger some macros embedded within the file.
 
 We can use `msfconsole` to generate this file:
 

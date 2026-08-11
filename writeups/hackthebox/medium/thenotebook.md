@@ -43,11 +43,11 @@ Upgrade-Insecure-Requests: 1
 ```
 {% endcode %}
 
-We can take a look at this cookie within jwt.io and see that it uses a private key hosted on the server.&#x20;
+We can take a look at this cookie within jwt.io and see that it uses a private key hosted on the server.
 
 <figure><img src="../../../.gitbook/assets/image (2234).png" alt=""><figcaption></figcaption></figure>
 
-The token is spoofable, similar to another machine Unicode. We can generate our own private key using `openssl` and use it to spoof the token by replacing the `kid` parameter with a link hosting the key instead. Also, we can change `admin_cap` to be 1.&#x20;
+The token is spoofable, similar to another machine Unicode. We can generate our own private key using `openssl` and use it to spoof the token by replacing the `kid` parameter with a link hosting the key instead. Also, we can change `admin_cap` to be 1.
 
 ```bash
 openssl genrsa -out priv.key 2048
@@ -55,7 +55,7 @@ openssl genrsa -out priv.key 2048
 
 <figure><img src="../../../.gitbook/assets/image (2323).png" alt=""><figcaption></figcaption></figure>
 
-When we use this token after refreshing the page, we can see an Admin Panel present.&#x20;
+When we use this token after refreshing the page, we can see an Admin Panel present.
 
 <figure><img src="../../../.gitbook/assets/image (1161).png" alt=""><figcaption></figcaption></figure>
 
@@ -138,7 +138,7 @@ home/noah/.ssh/authorized_keys
 home/noah/.ssh/id_rsa.pub
 ```
 
-We can grab the `id_rsa` file and `ssh` in as `noah`.&#x20;
+We can grab the `id_rsa` file and `ssh` in as `noah`.
 
 ### Sudo Privileges
 
@@ -156,7 +156,7 @@ noah@thenotebook:~$ docker --version
 Docker version 18.06.0-ce, build 0ffa825
 ```
 
-It seems that we can run docker as `root`. Googling for exploits pertaining to this version reveals a CVE that allows for RCE. This is caused by an outdated `runc` binary that is run from the container.&#x20;
+It seems that we can run docker as `root`. Googling for exploits pertaining to this version reveals a CVE that allows for RCE. This is caused by an outdated `runc` binary that is run from the container.
 
 {% embed url="https://github.com/Frichetten/CVE-2019-5736-PoC" %}
 
@@ -195,7 +195,7 @@ root@0f4c2517af40:/opt/webapp# ./main
 ```
 {% endcode %}
 
-Then, we can just `ssh` into `root`.&#x20;
+Then, we can just `ssh` into `root`.
 
 <figure><img src="../../../.gitbook/assets/image (1358).png" alt=""><figcaption></figcaption></figure>
 

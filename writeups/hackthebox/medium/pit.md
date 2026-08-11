@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 9090/tcp open  zeus-admin
 ```
 
-2 HTTP ports for this one.&#x20;
+2 HTTP ports for this one.
 
 ### Web Rabbit Holes
 
@@ -157,7 +157,7 @@ $ curl http://dms-pit.htb/seeddms51x/data/1048576/30/1.php?cmd=id
 uid=992(nginx) gid=988(nginx) groups=988(nginx) context=system_u:system_r:httpd_t:s0
 ```
 
-Great! I tried to get a reverse shell as this user, but it seems that I couldn't even download any files or make any external connections. So we probably need to look around further.&#x20;
+Great! I tried to get a reverse shell as this user, but it seems that I couldn't even download any files or make any external connections. So we probably need to look around further.
 
 ### CentOS Credentials
 
@@ -188,7 +188,7 @@ Within `settings.xml`, we can find a set of credentials
 <database dbDriver="mysql" dbHostname="localhost" dbDatabase="seeddms" dbUser="seeddms" dbPass="ied^ieY6xoquu" doNotCheckVersion="false">
 ```
 
-This doesn't work with SSH, but we can use this to login to the CentOS interface as `michelle`.&#x20;
+This doesn't work with SSH, but we can use this to login to the CentOS interface as `michelle`.
 
 <figure><img src="../../../.gitbook/assets/image (3011).png" alt=""><figcaption></figcaption></figure>
 

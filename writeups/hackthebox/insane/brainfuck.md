@@ -43,7 +43,7 @@ Here's the HTML frames we need:
 </form>
 ```
 
-Afterwards, we just need to set this up on a Python server and visit the site. The username is based on the username of the first post we saw.&#x20;
+Afterwards, we just need to set this up on a Python server and visit the site. The username is based on the username of the first post we saw.
 
 <figure><img src="../../../.gitbook/assets/image (121).png" alt=""><figcaption></figcaption></figure>
 
@@ -81,9 +81,9 @@ We can read both the emails, and one of them has credentials for a forum page.
 
 <figure><img src="../../../.gitbook/assets/image (1367).png" alt=""><figcaption></figcaption></figure>
 
-These are probably credentials for the secret subdomain we found earlier.&#x20;
+These are probably credentials for the secret subdomain we found earlier.
 
-### Forum Page&#x20;
+### Forum Page
 
 We can login to the forum page here using the credentials we found earlier. Then, we can view the pages that are present.
 

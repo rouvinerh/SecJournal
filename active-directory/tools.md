@@ -17,11 +17,11 @@ Powershell scripts are used to make enumeration and exploitation easy. Powershel
 
 ### PowerView
 
-By far my favourite, because it makes enumeration easy. In essence, this circumvents the need for hard enumeration and allows us to view the domain objects clearly, and also exploit where needed.&#x20;
+By far my favourite, because it makes enumeration easy. In essence, this circumvents the need for hard enumeration and allows us to view the domain objects clearly, and also exploit where needed.
 
 ### Powermad
 
-Sort of like PowerView, but easier in some aspects to use. Some of the commands used here, such as adding users, is more simple than that of PowerView.&#x20;
+Sort of like PowerView, but easier in some aspects to use. Some of the commands used here, such as adding users, is more simple than that of PowerView.
 
 ### Sharphound
 
@@ -146,12 +146,12 @@ Here's a use case of the Sharphound.ps1, and the zip file it generates containin
 
 <figure><img src="../.gitbook/assets/image (1008).png" alt=""><figcaption></figcaption></figure>
 
-Ths is an example of what the graphing application would look like, and we can see how each node (object) is mapped and linked to other objects.&#x20;
+Ths is an example of what the graphing application would look like, and we can see how each node (object) is mapped and linked to other objects.
 
-For this example, we can see how a group has **WriteDacl** privileges over another part of the domain, and that the user **svc-alfresco** is part of the group, and hence has the same privileges by transitivity.&#x20;
+For this example, we can see how a group has **WriteDacl** privileges over another part of the domain, and that the user **svc-alfresco** is part of the group, and hence has the same privileges by transitivity.
 
 We can find out more information from each line and whether it can be abused by right-clicking on it and using more info.
 
 <figure><img src="../.gitbook/assets/image (2740).png" alt=""><figcaption><p><em>Abuse Info on GenericAll Privilege</em></p></figcaption></figure>
 
-Bloodhound is insanely useful and fast for mapping a domain out, and it even gives clear instructions and information about each abusable privilege.&#x20;
+Bloodhound is insanely useful and fast for mapping a domain out, and it even gives clear instructions and information about each abusable privilege.

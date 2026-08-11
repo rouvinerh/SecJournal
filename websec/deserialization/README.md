@@ -12,7 +12,7 @@ Suppose that a PHP website (that I have the source code to) checks for a `user_c
 
 This usage of `unserialize()` is dangerous since it allows for code execution if given a specific `user_cookie` value, allowing for attackers to send in malicious payloads to be deserialized.
 
-Most of the time, the flaw comes from the general lack of understanding of how dangerous deserializing user-controllable data can be. Ideally, user input should **never be deserialized at all**.&#x20;
+Most of the time, the flaw comes from the general lack of understanding of how dangerous deserializing user-controllable data can be. Ideally, user input should **never be deserialized at all**.
 
 This kind of attack mainly leads to RCE or DoS conditions on a website.
 

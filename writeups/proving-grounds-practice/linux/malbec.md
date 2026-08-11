@@ -67,7 +67,7 @@ ftp> ls
 -rwxrwxrwx   1 carlos   carlos     108304 Jan 25  2021 malbec.exe
 ```
 
-We can download this `.exe` file to a Windows machine for some reverse engineering.&#x20;
+We can download this `.exe` file to a Windows machine for some reverse engineering.
 
 <figure><img src="../../../.gitbook/assets/image (3567).png" alt=""><figcaption><p><em>Old IP from Old Writeup</em></p></figcaption></figure>
 
@@ -75,7 +75,7 @@ When we check the listening ports on our Windows machine, we would see that `mal
 
 <figure><img src="../../../.gitbook/assets/image (1062).png" alt=""><figcaption></figcaption></figure>
 
-This machine thus becomes a classic buffer overflow exploit as per OSCP. For this particular binary, there weren't any bad characters (other than the NULL byte) and it was just a matter of fuzzing the offset required.&#x20;
+This machine thus becomes a classic buffer overflow exploit as per OSCP. For this particular binary, there weren't any bad characters (other than the NULL byte) and it was just a matter of fuzzing the offset required.
 
 I won't be going through how to do it since the OSCP BOF style is prett well-documented already, so here's the final script I used:
 
@@ -147,7 +147,7 @@ The last was a misconfiguration of the `ld.so` files:
 
 <figure><img src="../../../.gitbook/assets/image (3234).png" alt=""><figcaption></figcaption></figure>
 
-This was interesting, because it appears that the user's home directory is the part of the configuration, meaning that `.so` files are executed from this directory. We can run `ldd` for the `messenger` binary to check where it loads its shared object files.&#x20;
+This was interesting, because it appears that the user's home directory is the part of the configuration, meaning that `.so` files are executed from this directory. We can run `ldd` for the `messenger` binary to check where it loads its shared object files.
 
 ```
 carlos@malbec:/tmp$ ldd /usr/bin/messenger 
@@ -157,7 +157,7 @@ carlos@malbec:/tmp$ ldd /usr/bin/messenger
         /lib64/ld-linux-x86-64.so.2 (0x00007f64cb80a000)
 ```
 
-So it appears that `libmalbec.so` is not found, and it loads it from `/home/carlos`. This means that we can just create a malicious `libmalbec.so` file that gives us a shell, and since `messenger` is an SUID binary, the shell will be with `root` privileges.&#x20;
+So it appears that `libmalbec.so` is not found, and it loads it from `/home/carlos`. This means that we can just create a malicious `libmalbec.so` file that gives us a shell, and since `messenger` is an SUID binary, the shell will be with `root` privileges.
 
 Here's the source code I took from HackTricks:
 

@@ -16,4 +16,4 @@ Pick any that you'd like, and we can get a reverse shell as the user.
 
 ## Privilege Escalation
 
-Really old machine, so it's vulnerable to MS16-098 exploit.&#x20;
+Really old machine, so it's vulnerable to MS16-098 exploit.

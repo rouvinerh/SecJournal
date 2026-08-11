@@ -83,7 +83,7 @@ Googling about this error leads me to a post about gRPC servers.
 
 {% embed url="https://stackoverflow.com/questions/59048926/php-curl-received-http-0-9-when-not-allowed" %}
 
-There are specific tools that are used to interact with this software, and we can test a few of them to make sure that this is gRPC. I googled for tools that could enumerate this, and found `grpc-client-cli`.&#x20;
+There are specific tools that are used to interact with this software, and we can test a few of them to make sure that this is gRPC. I googled for tools that could enumerate this, and found `grpc-client-cli`.
 
 {% embed url="https://github.com/vadimi/grpc-client-cli" %}
 
@@ -145,7 +145,7 @@ Response size: 166 bytes
 ```
 {% endcode %}
 
-So obviously, we have to exploit this to get the administrator account somehow. When I try to use the getInfo function, it complains that I don't have a valid token.&#x20;
+So obviously, we have to exploit this to get the administrator account somehow. When I try to use the getInfo function, it complains that I don't have a valid token.
 
 ```bash
 Message json (type ? to see defaults): ?
@@ -345,4 +345,4 @@ $ curl -i -s -k -X $'POST' \
 
 <figure><img src="../../.gitbook/assets/image (3224).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

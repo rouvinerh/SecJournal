@@ -59,11 +59,11 @@ $ feroxbuster -u http://api.mentorquotes.htb
 <TRUNCATED>
 ```
 
-These are some interesting endpoints, and I think viewing the Documentation is the most important.&#x20;
+These are some interesting endpoints, and I think viewing the Documentation is the most important.
 
 <figure><img src="../../../.gitbook/assets/image (1334).png" alt=""><figcaption></figcaption></figure>
 
-This is a token-based API, so when we register a new user, it would return a JWT token to us. We either have to spoof the token to become the administrator to read sensitive information, OR we have to find an injection point for RCE.&#x20;
+This is a token-based API, so when we register a new user, it would return a JWT token to us. We either have to spoof the token to become the administrator to read sensitive information, OR we have to find an injection point for RCE.
 
 One thing to take note of was the `Send email to James` link, which would send an email to `james@mentorquotes.htb`, and it is implied he owns the website (and is probably the administrator of this API).
 
@@ -110,7 +110,7 @@ I found out later that this method was unintended, and it did work for a while b
 
 ### SNMP Brute -> James PW
 
-I was a bit stuck here, so I referred to a writeup. Turns out, SNMP is open on this machine.&#x20;
+I was a bit stuck here, so I referred to a writeup. Turns out, SNMP is open on this machine.
 
 ```
 $ sudo nmap --min-rate 5000 -sU 10.129.228.102     
@@ -123,7 +123,7 @@ PORT      STATE  SERVICE
 161/udp   open   snmp
 ```
 
-The default community string `public` did return some information, but it was very limited. There should be another community string present, and we had to brute force it.&#x20;
+The default community string `public` did return some information, but it was very limited. There should be another community string present, and we had to brute force it.
 
 We can run `snmpbrute.py` to find the possible community strings:
 
@@ -214,7 +214,7 @@ $ curl -X GET http://api.mentorquotes.htb/users/ -H 'Authorization: eyJ0eXAiOiJK
 ```
 {% endcode %}
 
-Earlier, we found an `/admin/backup` endpoint, so let's use that.&#x20;
+Earlier, we found an `/admin/backup` endpoint, so let's use that.
 
 <pre data-overflow="wrap"><code>$ curl -X GET http://api.mentorquotes.htb/admin/ -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW50b3JxdW90ZXMuaHRiIn0.peGpmshcF666bimHkYIBKQN7hj5m785uKcjwbD--Na0' | jq
 
@@ -246,7 +246,7 @@ $ curl -X GET http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0eX
 }
 </code></pre>
 
-It appears that the `/backup` one requires a JSON input. If an empty object is supplied, it complains and asks for a `path` variable.&#x20;
+It appears that the `/backup` one requires a JSON input. If an empty object is supplied, it complains and asks for a `path` variable.
 
 {% code overflow="wrap" %}
 ```
@@ -258,7 +258,7 @@ $ curl -X POST http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0e
 ```
 {% endcode %}
 
-I don't really know what they are doing in the backend, but we can try some command injection point just in case.&#x20;
+I don't really know what they are doing in the backend, but we can try some command injection point just in case.
 
 {% code overflow="wrap" %}
 ```

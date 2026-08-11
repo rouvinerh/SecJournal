@@ -52,7 +52,7 @@ We can use `50108.py` to exploit this. Since we created our own low priv user, w
 
 <figure><img src="../../../.gitbook/assets/image (1867).png" alt=""><figcaption></figcaption></figure>
 
-Then, we also need to change the `password` of the low priv user to the one that we used.&#x20;
+Then, we also need to change the `password` of the low priv user to the one that we used.
 
 <figure><img src="../../../.gitbook/assets/image (3007).png" alt=""><figcaption></figcaption></figure>
 
@@ -88,7 +88,7 @@ rocketchat@chatty:~$ find / -perm -u=s -type f 2>/dev/null
 /usr/local/sbin/maidag
 ```
 
-I didn't recognise `maidag`, and so enumerated it first.&#x20;
+I didn't recognise `maidag`, and so enumerated it first.
 
 ```
 rocketchat@chatty:~$ /usr/local/sbin/maidag --version
@@ -107,7 +107,7 @@ There are online exploits on Github to make this process as easy as possible:
 
 {% embed url="https://github.com/bcoles/local-exploits/tree/master/CVE-2019-18862" %}
 
-I used `exploit.ldpreload.sh` and ran it on the machine. This would spawn a binary `sh` within `/var/tmp` that would give us a `root` shell.&#x20;
+I used `exploit.ldpreload.sh` and ran it on the machine. This would spawn a binary `sh` within `/var/tmp` that would give us a `root` shell.
 
 <figure><img src="../../../.gitbook/assets/image (526).png" alt=""><figcaption></figcaption></figure>
 

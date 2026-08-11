@@ -6,7 +6,7 @@ Nmap scan:
 
 <figure><img src="../../../.gitbook/assets/image (2990).png" alt=""><figcaption></figcaption></figure>
 
-Interesting stuff.&#x20;
+Interesting stuff.
 
 ### Port 9999 Backup
 
@@ -18,7 +18,7 @@ Going to `/backup` reveals some credentials and another hidden directory.
 
 <figure><img src="../../../.gitbook/assets/image (1077).png" alt=""><figcaption></figcaption></figure>
 
-There was nothing interesting in these files, but I found it rather odd that the `/backup` folder had the `loop/` directory within it.&#x20;
+There was nothing interesting in these files, but I found it rather odd that the `/backup` folder had the `loop/` directory within it.
 
 I proceeded to run `feroxbuster` on the website to recursively enumerate all directories present. This allowed me to find the `/dev/backup` folder which contained another directory.
 

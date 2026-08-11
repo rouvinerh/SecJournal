@@ -26,7 +26,7 @@ Instead, we can use this machine to enumerate the box instance. I noticed that t
 
 <figure><img src="../../../.gitbook/assets/image (2669).png" alt=""><figcaption></figcaption></figure>
 
-I opeted to view the files in that directory using `dir /s`.&#x20;
+I opeted to view the files in that directory using `dir /s`.
 
 <figure><img src="../../../.gitbook/assets/image (1187).png" alt=""><figcaption></figcaption></figure>
 
@@ -54,7 +54,7 @@ After extracting both of these files, we can use this tool to decrypt them:
 
 <figure><img src="../../../.gitbook/assets/image (2433).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can `evil-winrm` in as `oliver`.&#x20;
+Then, we can `evil-winrm` in as `oliver`.
 
 <figure><img src="../../../.gitbook/assets/image (3648).png" alt=""><figcaption></figcaption></figure>
 
@@ -94,11 +94,11 @@ Then we can evil-winrm in.
 
 ### Smith to Maria
 
-Because we had `GenericWrite` over `maria` now, we can set an SPN for the user `maria` and Kerberoast the user.&#x20;
+Because we had `GenericWrite` over `maria` now, we can set an SPN for the user `maria` and Kerberoast the user.
 
-However, this did not work out well as I was not able to make use of the ticket. Furthermore, the firewall was still up and I could not transfer files around easily. As such, I opted to read the `maria` user's directory to see what files are present since we cannot do anything else.&#x20;
+However, this did not work out well as I was not able to make use of the ticket. Furthermore, the firewall was still up and I could not transfer files around easily. As such, I opted to read the `maria` user's directory to see what files are present since we cannot do anything else.
 
-As `smith`, we can create a malicious Powershell script and change the logon script for `maria`.&#x20;
+As `smith`, we can create a malicious Powershell script and change the logon script for `maria`.
 
 <figure><img src="../../../.gitbook/assets/image (3350).png" alt=""><figcaption></figcaption></figure>
 
@@ -131,4 +131,4 @@ Afterwards, we can re-logon using `evil-winrm` and see that we have full adminis
 
 <figure><img src="../../../.gitbook/assets/image (3967).png" alt=""><figcaption></figcaption></figure>
 
-We can then access the administrator desktop and capture the root flag.&#x20;
+We can then access the administrator desktop and capture the root flag.

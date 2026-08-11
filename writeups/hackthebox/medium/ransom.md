@@ -18,7 +18,7 @@ The website was some type of Incident Response site, from E Corp.
 
 <figure><img src="../../../.gitbook/assets/image (2115).png" alt=""><figcaption></figcaption></figure>
 
-I tried logging in with some random password, and intercepted the response in Burpsuite to see how the login was handled. Found the `/api` endpoint.&#x20;
+I tried logging in with some random password, and intercepted the response in Burpsuite to see how the login was handled. Found the `/api` endpoint.
 
 <figure><img src="../../../.gitbook/assets/image (2847).png" alt=""><figcaption></figcaption></figure>
 
@@ -36,7 +36,7 @@ We can grab the user flag and also the `homedirectory.zip` file. Upon running an
 
 <figure><img src="../../../.gitbook/assets/image (1136).png" alt=""><figcaption></figcaption></figure>
 
-When attempting to unzip the file, we can find some SSH keys within it.&#x20;
+When attempting to unzip the file, we can find some SSH keys within it.
 
 <figure><img src="../../../.gitbook/assets/image (387).png" alt=""><figcaption></figcaption></figure>
 
@@ -76,7 +76,7 @@ Version = 20
 Volume Index = 0
 ```
 
-This was using ZipCrypto Deflate as the method of zipping.&#x20;
+This was using ZipCrypto Deflate as the method of zipping.
 
 ### Decrypting ZIP
 
@@ -84,9 +84,9 @@ Googling a little led me to this repository with instructions on how to recover 
 
 {% embed url="https://github.com/kimci86/bkcrack/blob/master/example/tutorial.md" %}
 
-This attack is made possible due to legacy encryption being used, and this form of encryption was vulnerable to the **known plaintext attack**. We would need to have at least 12 bytes of data, with 8 being contiguous to decrypt the password.&#x20;
+This attack is made possible due to legacy encryption being used, and this form of encryption was vulnerable to the **known plaintext attack**. We would need to have at least 12 bytes of data, with 8 being contiguous to decrypt the password.
 
-Because this was simply a home directory with common files like `.bash_logout`, we can easily create another zip file with our machine's `.bash_logout` file and then find the keys using `bkcrack`.&#x20;
+Because this was simply a home directory with common files like `.bash_logout`, we can easily create another zip file with our machine's `.bash_logout` file and then find the keys using `bkcrack`.
 
 <figure><img src="../../../.gitbook/assets/image (1284).png" alt=""><figcaption></figcaption></figure>
 

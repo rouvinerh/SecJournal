@@ -40,7 +40,7 @@ function init() {
 window.onload = init;
 ```
 
-These credentials don't tell me anything new, so let's move on. At the bottom of the gallery, we can download images.&#x20;
+These credentials don't tell me anything new, so let's move on. At the bottom of the gallery, we can download images.
 
 <figure><img src="../../../.gitbook/assets/image (1409).png" alt=""><figcaption></figcaption></figure>
 
@@ -66,7 +66,7 @@ Upgrade-Insecure-Requests: 1
 photo=voicu-apostol-MWER49YaD-M-unsplash.jpg&filetype=jpg&dimensions=3000x2000
 ```
 
-I didn't know how this was handling photos, but the long processing time between requests indicates to me that these photos might be dynamically generated instead of having all the possible combinations of photos stored on the website. This means that the parameters could be passed into a command, and then the image is returned.&#x20;
+I didn't know how this was handling photos, but the long processing time between requests indicates to me that these photos might be dynamically generated instead of having all the possible combinations of photos stored on the website. This means that the parameters could be passed into a command, and then the image is returned.
 
 I tried some basic command injection, and found that the `filetype` parameter was vulnerable:
 

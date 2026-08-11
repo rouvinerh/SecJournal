@@ -6,13 +6,13 @@ description: Mainly using open-source tools.
 
 ## Environment Creation
 
-In most exercises, there should be some kind of 'range' of which we can run our attacks without affecting the main production environment. This is where the development of a simulated testbed is required.&#x20;
+In most exercises, there should be some kind of 'range' of which we can run our attacks without affecting the main production environment. This is where the development of a simulated testbed is required.
 
 ### Vagrant
 
 Vagrant is an open-source software project developed by Hashicorp that enables the building and maintaining of portable virtual software development environments.
 
-In layman terms, it allows for us to script the spinning up of Virtual Machines using providers like VirutalBox or VMWare automatically and quickly using a `Vagrantfile` script.&#x20;
+In layman terms, it allows for us to script the spinning up of Virtual Machines using providers like VirutalBox or VMWare automatically and quickly using a `Vagrantfile` script.
 
 {% embed url="https://developer.hashicorp.com/vagrant/docs/vagrantfile" %}
 
@@ -80,25 +80,25 @@ vagrant destroy linux [--force] ## does not prompt if --force specified
 
 The above `Vagrantfile` sets up the machines on one host machine, so it is ideal if we do not have or want to use Cloud providers to host our machines. However, take note that setting up multiple VMs is hardware intensive and requires lots of space and RAM, so change the `v.memory` and `v.cpus` according to your needs.
 
-The fast provisioning and destruction of VMs using Vagrant makes it great for setting up environments quickly for adversary emulation, malware analysis or just general testing without affecting our host machine. There are loads of Github repositories out there for stuff like Windows Reverse Engineering or Malware Analysis ready to go.&#x20;
+The fast provisioning and destruction of VMs using Vagrant makes it great for setting up environments quickly for adversary emulation, malware analysis or just general testing without affecting our host machine. There are loads of Github repositories out there for stuff like Windows Reverse Engineering or Malware Analysis ready to go.
 
 ### Terraform
 
-Terraform is another open-source software tool created by Hashicorp. The main difference between this and Vagrant is that Terraform is able to deploy infrastructure using services like AWS a bit easier, and do all the same stuff that Vagrant can do.&#x20;
+Terraform is another open-source software tool created by Hashicorp. The main difference between this and Vagrant is that Terraform is able to deploy infrastructure using services like AWS a bit easier, and do all the same stuff that Vagrant can do.
 
 {% embed url="https://developer.hashicorp.com/terraform/docs" %}
 
-I won't delve into Terraform scripts too much, since the documentation by Hashicorp is pretty comprehensive and easy to use.&#x20;
+I won't delve into Terraform scripts too much, since the documentation by Hashicorp is pretty comprehensive and easy to use.
 
 ## Automated Adversary
 
-Now that we have provisioned our simulated enterprise environment, we need a way to simulate our adversary based on our threat model (ie. if you are a financial institution, emulate FIN groups instead of groups that target OT / ICS sectors).&#x20;
+Now that we have provisioned our simulated enterprise environment, we need a way to simulate our adversary based on our threat model (ie. if you are a financial institution, emulate FIN groups instead of groups that target OT / ICS sectors).
 
 One tool I have used is called Caldera, which a free software developed by MITRE that allows for automated threat emulation:
 
 {% embed url="https://github.com/mitre/caldera" %}
 
-Alternatively, red teams can do this manually if desired (but automated just saves loads of time).&#x20;
+Alternatively, red teams can do this manually if desired (but automated just saves loads of time).
 
 Caldera is a software that contains a C2 server with a REST API and web interface, as well as various plugins that include agents, reporting, collection of existing TTPs and much more. For example, Sandcat is one of the plugins, which provides a Golang based beacon to create agents on hosts:
 
@@ -112,4 +112,4 @@ Will include:
 
 ## Documentation
 
-Open-Source Vectr (how to please upper management with clear documentation lol).&#x20;
+Open-Source Vectr (how to please upper management with clear documentation lol).

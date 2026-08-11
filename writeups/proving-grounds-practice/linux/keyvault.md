@@ -48,7 +48,7 @@ PORT     STATE SERVICE VERSION
 |_http-title: KeyVault - Password Manager
 ```
 
-There was a `.git` repository which we could enumerate later.&#x20;
+There was a `.git` repository which we could enumerate later.
 
 ### Web + Git Enum
 
@@ -100,9 +100,9 @@ We are required to submit a `h`, `host` and `token` variable to this website. Th
 
 {% embed url="https://www.securify.nl/blog/spot-the-bug-challenge-2018-warm-up/" %}
 
-The above resources details a similar exploit, where they submit `token[]=` to trigger an error within PHP to make the value of `$security` obsolete. Thus, the second `hash_hmac` would just produce the SHA-256 hash of `host`, allowing attackers to just specify a `host` and using the SHA-256 value of `host` as `h`.&#x20;
+The above resources details a similar exploit, where they submit `token[]=` to trigger an error within PHP to make the value of `$security` obsolete. Thus, the second `hash_hmac` would just produce the SHA-256 hash of `host`, allowing attackers to just specify a `host` and using the SHA-256 value of `host` as `h`.
 
-&#x20;We can use their parameters to bypass this check:
+We can use their parameters to bypass this check:
 
 <figure><img src="../../../.gitbook/assets/image (3928).png" alt=""><figcaption></figcaption></figure>
 
@@ -167,7 +167,7 @@ blib-dynload/_decimal.cpython-38-x86_64-linux-gnu.so
 pydata
 ```
 
-Because there's Python data, this might be a Python compiled binary. We can use a Python Decompiler to extract the modules that are within this.&#x20;
+Because there's Python data, this might be a Python compiled binary. We can use a Python Decompiler to extract the modules that are within this.
 
 {% embed url="https://github.com/extremecoders-re/pyinstxtractor/tree/master" %}
 

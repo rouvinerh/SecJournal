@@ -110,7 +110,7 @@ Now there's an error saying there's no file or directory triggered by the newlin
 
 ### Werkzeug PIN Calculation -> RCE
 
-Since we have LFI on the Werkzeug server, we can actually calculate the PIN required.&#x20;
+Since we have LFI on the Werkzeug server, we can actually calculate the PIN required.
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/werkzeug" %}
 
@@ -153,7 +153,7 @@ L2V0Yy9tYWNoaW5lLWlk
 
 <figure><img src="../../../.gitbook/assets/image (1990).png" alt=""><figcaption></figcaption></figure>
 
-The machine ID needed some service name appended to the back of it, which we can get from reading `/proc/self/cgroup`.&#x20;
+The machine ID needed some service name appended to the back of it, which we can get from reading `/proc/self/cgroup`.
 
 <figure><img src="../../../.gitbook/assets/image (1265).png" alt=""><figcaption></figcaption></figure>
 
@@ -179,7 +179,7 @@ private_bits = [
 
 <figure><img src="../../../.gitbook/assets/image (712).png" alt=""><figcaption></figcaption></figure>
 
-From here, we can easily get a reverse shell on our machine.&#x20;
+From here, we can easily get a reverse shell on our machine.
 
 <figure><img src="../../../.gitbook/assets/image (3050).png" alt=""><figcaption></figcaption></figure>
 

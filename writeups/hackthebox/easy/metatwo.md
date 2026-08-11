@@ -16,15 +16,15 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-FTP doesn't support anonymous logins, so let's move on to port 80. We have to add `metapress.htb` to access it.&#x20;
+FTP doesn't support anonymous logins, so let's move on to port 80. We have to add `metapress.htb` to access it.
 
-### Metapress -> SQLI -> XXE&#x20;
+### Metapress -> SQLI -> XXE
 
 The website was a blog of some sorts:
 
 <figure><img src="../../../.gitbook/assets/image (2371).png" alt=""><figcaption></figcaption></figure>
 
-Reading a bit of the page source reveals this is a Wordpress site, so let's use `wpscan` with the API token to enumerate plugins and the version.&#x20;
+Reading a bit of the page source reveals this is a Wordpress site, so let's use `wpscan` with the API token to enumerate plugins and the version.
 
 ```
 $ wpscan --api-token FQVv71ka5LaR9z8xOr4saXCg0vAMyKKD4VQS2eOymUQ --enumerate p,t,u --url http://metapress.htb/ --plugins-detection aggressive
@@ -135,7 +135,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 ```
 {% endcode %}
 
-There were 2 hashes, and one of them could be cracked.&#x20;
+There were 2 hashes, and one of them could be cracked.
 
 <figure><img src="../../../.gitbook/assets/image (2485).png" alt=""><figcaption></figcaption></figure>
 
@@ -145,7 +145,7 @@ Now that we have credentials, we can run the authenticated XXE injection.
 
 How this exploit works is by using the credentails to make the Wordpress site requests for a `.dtd` file. This is done by uploading a malicious `.wav` file via New Media, making the site request and execute the `.dtd` file. This would allow us to get LFI on the machine.
 
-Following the PoC from the repo above, I was able to replicate it.&#x20;
+Following the PoC from the repo above, I was able to replicate it.
 
 <figure><img src="../../../.gitbook/assets/image (3745).png" alt=""><figcaption></figcaption></figure>
 
@@ -184,7 +184,7 @@ drwxr-xr-x   4 metapress.htb metapress.htb     4096 Oct  5  2022 PHPMailer
 -rw-r--r--   1 metapress.htb metapress.htb     1126 Jun 22  2022 send_email.php
 ```
 
-Within the `send_email.php` file, there are some credentials for `jnelson`.&#x20;
+Within the `send_email.php` file, there are some credentials for `jnelson`.
 
 ```php
 $mail->Host = "mail.metapress.htb";
@@ -238,7 +238,7 @@ dr-xr-x--- 3 jnelson jnelson 4096 Oct 25  2022 ..
 
 {% embed url="https://github.com/marcwebbie/passpie" %}
 
-The `.keys` directory contains a PGP key pair, which I'm assuming is used to decrypt the `root.pass` file. I took the private key from the `.keys` file, and cracked it using `gpg2john` > `john`.&#x20;
+The `.keys` directory contains a PGP key pair, which I'm assuming is used to decrypt the `root.pass` file. I took the private key from the `.keys` file, and cracked it using `gpg2john` > `john`.
 
 <figure><img src="../../../.gitbook/assets/image (2391).png" alt=""><figcaption></figcaption></figure>
 

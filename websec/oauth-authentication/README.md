@@ -19,7 +19,7 @@ There are 3 parties in OAuth:
 OAuth allows for multiple ways for its authentication process to be implemented, in the form of 'flows'. How the process for authorization works is:
 
 1. Client application requests for some user's data, specifying exactly what they want and the permissions they have over it (ie. some websites can post on your behalf).
-2. User would login to their social media account and give consent for the access.&#x20;
+2. User would login to their social media account and give consent for the access.
 3. Client application would receive **a unique access token** that proves they have permission to access the data. (Method depends on flow type)
 4. Client application then uses this token to make API calls to the resource server to retrieve the data needed.
 
@@ -35,7 +35,7 @@ The second is the **Implicit Flow Type:**
 
 Between the two, the implicit flow is easier. It does not need to obtain an authorization code, thus there's no need to have an access token to exchange for. The client token simply receives an access token immediately and the user can log in.
 
-That being said, anything 'implicit' means 'more insecure'. If the traffic is intercepted and followed, the user's access token and data are more exposed. Thus, this method is more suited for simpler applications that do not have the infrastructure to store information on the back-end.&#x20;
+That being said, anything 'implicit' means 'more insecure'. If the traffic is intercepted and followed, the user's access token and data are more exposed. Thus, this method is more suited for simpler applications that do not have the infrastructure to store information on the back-end.
 
 ## Enumeration
 
@@ -46,7 +46,7 @@ Since there's an API involved, one can probe that to find useful information abo
 Some vulnerabilities include:
 
 * XSS in redirect parameters
-* Account takeover / hijacking using /callback&#x20;
+* Account takeover / hijacking using /callback
 * Truncating the authentication flow to be granted access immediately
 * Leaking of client secret token or any other information
 * SSRF through abusing certain parameters

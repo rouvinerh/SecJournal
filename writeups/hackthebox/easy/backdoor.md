@@ -30,7 +30,7 @@ I ran linpeas as early enumeration to see what was going on. Linpeas flagged out
 
 <figure><img src="../../../.gitbook/assets/image (1051).png" alt=""><figcaption></figcaption></figure>
 
-`screen` is a software that allows for us to run multiple screens on a single terminal. Root running this means that the root user has multiple screens that are running some processes currently. The attack in this case would be to attach ourselves to this process.&#x20;
+`screen` is a software that allows for us to run multiple screens on a single terminal. Root running this means that the root user has multiple screens that are running some processes currently. The attack in this case would be to attach ourselves to this process.
 
 In this machine's case, what it is doing is creating a folder in the S-root directory with a session ID whenever it runs. This would allow us to find the specific process that we want to attach ourselves to.
 

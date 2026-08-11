@@ -137,7 +137,7 @@ Grab the user flag.
 -rw-r--r--. 1 michael root 1162 Jun 22  2021 /etc/passwd
 ```
 
-Using this, we can easily create a new root user.&#x20;
+Using this, we can easily create a new root user.
 
 <figure><img src="../../../.gitbook/assets/image (3978).png" alt=""><figcaption></figcaption></figure>
 

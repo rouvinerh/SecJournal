@@ -32,7 +32,7 @@ The website was running Best Practical Request Tracker (RT) 4.4.4, which is quit
 
 <figure><img src="../../.gitbook/assets/image (51).png" alt=""><figcaption></figcaption></figure>
 
-There is 1 ticket present, and it's an issue regarding Keepass (with the box name being an obvious hint).&#x20;
+There is 1 ticket present, and it's an issue regarding Keepass (with the box name being an obvious hint).
 
 <figure><img src="../../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
 
@@ -173,7 +173,7 @@ Notes: PuTTY-User-Key-File-3: ssh-rsa
        <TRUNCATED>
 ```
 
-This is a Putty User Key File, which can be converted back to an `ssh` key.&#x20;
+This is a Putty User Key File, which can be converted back to an `ssh` key.
 
 {% embed url="https://superuser.com/questions/232362/how-to-convert-ppk-key-to-openssh-key-under-linux" %}
 
@@ -189,4 +189,4 @@ After running `chmod 600` on it, we can use this private key to `ssh` in as `roo
 
 <figure><img src="../../.gitbook/assets/image (46).png" alt=""><figcaption></figcaption></figure>
 
-`dotnet run` saves loads of time transferring files to a Windows machine. Rooted!&#x20;
+`dotnet run` saves loads of time transferring files to a Windows machine. Rooted!

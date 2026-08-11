@@ -43,7 +43,7 @@ Port 8080 hosted a Secure Web Browser application:
 
 <figure><img src="../../../.gitbook/assets/image (3366).png" alt=""><figcaption></figcaption></figure>
 
-This looks vulnerable to SSRF, and it is.&#x20;
+This looks vulnerable to SSRF, and it is.
 
 <figure><img src="../../../.gitbook/assets/image (500).png" alt=""><figcaption></figcaption></figure>
 
@@ -123,7 +123,7 @@ d-r---        5/28/2021   3:53 AM                Public
 d-----        9/14/2021   8:27 AM                svc_apache$
 ```
 
-To abuse this, we can use `GMSAPasswordReader.exe` to read the password.&#x20;
+To abuse this, we can use `GMSAPasswordReader.exe` to read the password.
 
 ```
 *Evil-WinRM* PS C:\Users\enox\desktop> .\gmsapasswordreader.exe --AccountName 'svc_apache$'
@@ -193,4 +193,4 @@ Just press the button on the bottom right, and it will spawn a SYSTEM shell:
 
 <figure><img src="../../../.gitbook/assets/image (2099).png" alt=""><figcaption></figcaption></figure>
 
-If you want to get a proper shell, then we can just add `enox` to the Domain Admins and Administrators groups with `net.exe`. Rooted!&#x20;
+If you want to get a proper shell, then we can just add `enox` to the Domain Admins and Administrators groups with `net.exe`. Rooted!

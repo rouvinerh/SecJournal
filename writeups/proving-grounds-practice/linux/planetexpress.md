@@ -30,7 +30,7 @@ Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-09 22:31 +08
 9000/tcp open  cslistener?
 ```
 
-Port 8000 was running Pico CMS, which does have some exploits.&#x20;
+Port 8000 was running Pico CMS, which does have some exploits.
 
 ### Web Enum -> PHPInfo
 
@@ -66,7 +66,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /config               (Status: 301) [Size: 319] [--> http://192.168.183.205/config/]
 ```
 
-Using the PicoCMS Github repository, we can view more about these directories.&#x20;
+Using the PicoCMS Github repository, we can view more about these directories.
 
 {% embed url="https://github.com/picocms/Pico/tree/master" %}
 
@@ -115,7 +115,7 @@ Using `passthru` and the document root directory allows us to get RCE:
 
 <figure><img src="../../../.gitbook/assets/image (1215).png" alt=""><figcaption></figcaption></figure>
 
-We can then get a reverse shell via the `mkfifo` one-liner.&#x20;
+We can then get a reverse shell via the `mkfifo` one-liner.
 
 {% code overflow="wrap" %}
 ```

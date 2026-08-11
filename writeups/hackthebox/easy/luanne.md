@@ -103,7 +103,7 @@ Interactions with this instance revealed that it was similar to the weather API 
 
 <figure><img src="../../../.gitbook/assets/image (1450).png" alt=""><figcaption></figcaption></figure>
 
-However, no command injection seems to work here. Perhaps this was a patched version of the script.&#x20;
+However, no command injection seems to work here. Perhaps this was a patched version of the script.
 
 In the command, we can see that the creator of the box used `httpd -u`, which makes the root directory of the script accessible. This means that we should be able to read the files of the `r.michaels` user. I attempted to read his SSH keys with our credentials, and it worked!
 

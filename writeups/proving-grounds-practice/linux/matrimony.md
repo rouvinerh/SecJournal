@@ -46,7 +46,7 @@ matrimony.off.          604800  IN      SOA     matrimony.off. root.matrimony.of
 ;; XFR size: 6 records (messages 1, bytes 226)
 ```
 
-It also finds another subdomain at `prod99`.&#x20;
+It also finds another subdomain at `prod99`.
 
 ### Matrimonial Website -> RCE
 

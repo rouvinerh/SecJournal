@@ -20,7 +20,7 @@ The web page only shows this:
 
 <figure><img src="../../../.gitbook/assets/image (1143).png" alt=""><figcaption></figcaption></figure>
 
-I checked for `robots.txt`, which is quite common for old machines.&#x20;
+I checked for `robots.txt`, which is quite common for old machines.
 
 ```
 $ curl http://10.129.1.185/robots.txt
@@ -112,7 +112,7 @@ $ wpscan --api-token <TOKEN> --url http://10.129.1.185/webservices/wp/ --enumera
 ```
 {% endcode %}
 
-We can search for exploits for these two plugins.&#x20;
+We can search for exploits for these two plugins.
 
 ```
 $ searchsploit gwolle                 
@@ -162,11 +162,11 @@ define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 ```
 
-However, the database has nothing to offer and the hashed passwords cannot be cracked.&#x20;
+However, the database has nothing to offer and the hashed passwords cannot be cracked.
 
 ### Sudo Privileges
 
-Checking `sudo` privileges, it seems we can run `tar` as the user `onuma`.&#x20;
+Checking `sudo` privileges, it seems we can run `tar` as the user `onuma`.
 
 ```
 www-data@TartarSauce:/var/www/html/webservices/wp$ sudo -l
@@ -186,7 +186,7 @@ sudo -u onuma tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exe
 
 <figure><img src="../../../.gitbook/assets/image (610).png" alt=""><figcaption></figcaption></figure>
 
-We can now grab the user flag.&#x20;
+We can now grab the user flag.
 
 ### Backuperer
 
@@ -316,4 +316,4 @@ drwxr-xr-x 3 onuma onuma  4096 May  2 11:30 ..
 -rwsr-xr-x 1 root root 15020 May  2 11:32 suid
 ```
 
-Then just execute it and it we would get a `root` shell. Rooted!&#x20;
+Then just execute it and it we would get a `root` shell. Rooted!

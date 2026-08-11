@@ -16,7 +16,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 ```
 
-DNS being open was the most interesting one.&#x20;
+DNS being open was the most interesting one.
 
 ### Login Credentials
 
@@ -28,7 +28,7 @@ When we add `bank.htb` to our `/etc/hosts` file and revisit it, it loads a login
 
 <figure><img src="../../../.gitbook/assets/image (432).png" alt=""><figcaption></figcaption></figure>
 
-There was no SQL Injection or anything on this, and default credentials don't work. I did a `gobuster` scan next to enumerate the possible endpoints.&#x20;
+There was no SQL Injection or anything on this, and default credentials don't work. I did a `gobuster` scan next to enumerate the possible endpoints.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/directory-list-lowercase-2.3-medium.txt -u http://bank.htb -t 100      
@@ -61,7 +61,7 @@ When sorting by size, there was one outlier.
 
 <figure><img src="../../../.gitbook/assets/image (965).png" alt=""><figcaption></figcaption></figure>
 
-When viewed, it revealed some credentials.&#x20;
+When viewed, it revealed some credentials.
 
 <figure><img src="../../../.gitbook/assets/image (3097).png" alt=""><figcaption></figcaption></figure>
 
@@ -135,4 +135,4 @@ else:
         close()
 ```
 
-Rooted!&#x20;
+Rooted!

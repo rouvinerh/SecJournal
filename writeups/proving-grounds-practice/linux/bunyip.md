@@ -23,7 +23,7 @@ Port 80 had a website that looked rather static with nothing interesting about i
 
 <figure><img src="../../../.gitbook/assets/image (1833).png" alt=""><figcaption></figcaption></figure>
 
-All of the links led to Lorem Ipsum related stuff, which is definitely not the exploit path we are looking for.&#x20;
+All of the links led to Lorem Ipsum related stuff, which is definitely not the exploit path we are looking for.
 
 On the other hand, port 8000 contained something more interesting:
 
@@ -38,10 +38,10 @@ I viewed the traffic in Burpsuite, and when we press the 'submit' button for the
 The `sig` part is obviously the signature being used, and the `code` part is our Javascript code in `base64`. This looks to be a cryptography based challenge, and let's gather the facts we know:
 
 * MD5 is the hash signature used.
-* Users control the `CODE` portion of the plaintext.&#x20;
-* Since we control the `CODE` portion, we definitely would know the length of the second part of the plaintext.&#x20;
+* Users control the `CODE` portion of the plaintext.
+* Since we control the `CODE` portion, we definitely would know the length of the second part of the plaintext.
 * We cannot get the API Key in anyway.
-* Based on the example API-key that they gave us, it is 37 characters long and in the exact same format. So we also know the length and format of the API key from the example alone. Also, it is computationally infeasible to brute force the API-key since there are 37 characters and is too long.&#x20;
+* Based on the example API-key that they gave us, it is 37 characters long and in the exact same format. So we also know the length and format of the API key from the example alone. Also, it is computationally infeasible to brute force the API-key since there are 37 characters and is too long.
 * We know the correct signature generated from the default code generated when we load the page.
 
 This combination of facts makes this application vulnerable to a hash extension attack.
@@ -312,7 +312,7 @@ $ python3 hash.py
 
 ## Privilege Escalation
 
-The shell can be uploaded by dropping our SSH public key into the `authorized_keys` folder of `arnold`.&#x20;
+The shell can be uploaded by dropping our SSH public key into the `authorized_keys` folder of `arnold`.
 
 ```bash
 mkdir ~/.ssh

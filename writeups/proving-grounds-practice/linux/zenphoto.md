@@ -17,7 +17,7 @@ PORT     STATE SERVICE
 3306/tcp open  mysql
 ```
 
-Of all things, Telnet is open.&#x20;
+Of all things, Telnet is open.
 
 ### Web Enum -> ZenPhoto RCE
 

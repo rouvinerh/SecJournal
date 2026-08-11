@@ -21,7 +21,7 @@ PORT      STATE SERVICE
 50000/tcp open  ibm-db2
 ```
 
-Lots of ports. FTP allows for anonymous access, but just hangs.&#x20;
+Lots of ports. FTP allows for anonymous access, but just hangs.
 
 ### Web Enumeration -> Python Code Injection
 
@@ -50,7 +50,7 @@ Not too sure what to do with that token. However, we notice that this is running
 
 <figure><img src="../../../.gitbook/assets/image (3207).png" alt=""><figcaption></figcaption></figure>
 
-Since this was running a Python based server, we can try some Python code injection.&#x20;
+Since this was running a Python based server, we can try some Python code injection.
 
 <figure><img src="../../../.gitbook/assets/image (3557).png" alt=""><figcaption></figcaption></figure>
 

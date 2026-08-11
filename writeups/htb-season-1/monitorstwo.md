@@ -15,7 +15,7 @@ PORT      STATE    SERVICE
 80/tcp    open     http
 ```
 
-Another web-based exploit.&#x20;
+Another web-based exploit.
 
 ### Cacti
 
@@ -33,7 +33,7 @@ This has to do with the polling of Cacti, and we just need to modify the exploit
 
 ## Privilege Escalation
 
-We got a shell on the docker, so the next step is to escape it.&#x20;
+We got a shell on the docker, so the next step is to escape it.
 
 ### MySQL Passwords
 
@@ -133,7 +133,7 @@ Security Team
 ```
 {% endcode %}
 
-The first 2 vulnerabilities are not relevant, but the last one was rather interesting.&#x20;
+The first 2 vulnerabilities are not relevant, but the last one was rather interesting.
 
 {% embed url="https://nvd.nist.gov/vuln/detail/CVE-2021-41091" %}
 
@@ -163,7 +163,7 @@ id
 uid=0(root) gid=0(root) groups=0(root),33(www-data)
 ```
 
-Great! Now we are root on the docker. Now, we can find the mounted point of this docker from the main machine, and we can create a `bash` SUID binary to get a shell.&#x20;
+Great! Now we are root on the docker. Now, we can find the mounted point of this docker from the main machine, and we can create a `bash` SUID binary to get a shell.
 
 First we need to find the mount point using `df`:
 
@@ -182,9 +182,9 @@ overlay          7054840 4451424   2513656  64% /var/lib/docker/overlay2/c41d585
 shm                65536       0     65536   0% /var/lib/docker/containers/50bca5e748b0e547d000ecb8a4f889ee644a92f743e129e52f7a37af6c62e51e/mounts/shm
 ```
 
-At`/var/lib/docker/overlay2/c41d5854e43bd996e128d647cb526b73d04c9ad6325201c85f73fdba372cb2f1/merged` would bring us to the file system of the docker container. Then, using our root shell on docker, we can just use `chmod u+s /bin/bash` to spawn a SUID binary for the main machine to use.&#x20;
+At`/var/lib/docker/overlay2/c41d5854e43bd996e128d647cb526b73d04c9ad6325201c85f73fdba372cb2f1/merged` would bring us to the file system of the docker container. Then, using our root shell on docker, we can just use `chmod u+s /bin/bash` to spawn a SUID binary for the main machine to use.
 
-This works because of the CVE allowing for us to create SUID binaries across machines.&#x20;
+This works because of the CVE allowing for us to create SUID binaries across machines.
 
 We can see the SUID `bash` binary here:
 

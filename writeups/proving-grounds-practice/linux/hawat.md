@@ -24,7 +24,7 @@ PORT      STATE SERVICE
 50080/tcp open  unknown
 ```
 
-Did a detailed scan on the non HTTP ports.&#x20;
+Did a detailed scan on the non HTTP ports.
 
 ```
 $ sudo nmap -p 17445,30455,50080 -sC -sV --min-rate 4000 192.168.157.147
@@ -108,7 +108,7 @@ Port 17445 had some kind of ticket creator:
 
 <figure><img src="../../../.gitbook/assets/image (3548).png" alt=""><figcaption></figcaption></figure>
 
-Default creds didn't work, so let's move on. Port 30445 just didn't load for me for some reason.&#x20;
+Default creds didn't work, so let's move on. Port 30445 just didn't load for me for some reason.
 
 Port 50080 shows a Pizza website:
 
@@ -196,7 +196,7 @@ Normally, this should be rather easy to write a webshell using a payload like th
 ' union select '<?php system($_REQUEST['cmd']); ?>' into outfile '/srv/http/cmd.php' -- -
 ```
 
-However I don't know the document root, and `sqlmap` brute force doesn't seem to work. I took a hint and realised that port 30445 was supposed to host `phpinfo.php`, but it was unresponsive.&#x20;
+However I don't know the document root, and `sqlmap` brute force doesn't seem to work. I took a hint and realised that port 30445 was supposed to host `phpinfo.php`, but it was unresponsive.
 
 I read the walkthrough and it shows that `/srv/http` is the document root taken from `phpinfo.php`, which would allow me to write a webshell to port 30445.
 

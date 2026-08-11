@@ -6,7 +6,7 @@ Nmap scan results:
 
 <figure><img src="../../../.gitbook/assets/image (3154).png" alt=""><figcaption></figcaption></figure>
 
-Take note of port 3000, it will be important later!&#x20;
+Take note of port 3000, it will be important later!
 
 ### Overwrite for RCE
 
@@ -88,9 +88,9 @@ By using `git log`, I was able to find some credentials for anotehr application 
 
 <figure><img src="../../../.gitbook/assets/image (952).png" alt=""><figcaption></figcaption></figure>
 
-Earlier, we found port 3000 to be inaccessible from our host. From the docker however, it could be accessed. I downloaded `chisel` onto the container and forwarded port 3000.&#x20;
+Earlier, we found port 3000 to be inaccessible from our host. From the docker however, it could be accessed. I downloaded `chisel` onto the container and forwarded port 3000.
 
-### Gitea&#x20;
+### Gitea
 
 When this port was accessed, it was a Gitea instance:
 
@@ -120,7 +120,7 @@ Every minute or so, it seems that this git repository is being updated on the Gi
 
 ### Git Hooks Abuse
 
-To abuse this, first we need to create a quick script for a reverse shell.&#x20;
+To abuse this, first we need to create a quick script for a reverse shell.
 
 ```bash
 #!/bin/bash

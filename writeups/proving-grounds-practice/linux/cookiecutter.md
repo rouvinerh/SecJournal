@@ -128,7 +128,7 @@ for passw in f:
 	print(data)
 ```
 
-Eventually, it would find the correct password of `cookie1`.&#x20;
+Eventually, it would find the correct password of `cookie1`.
 
 ```
 Trying b'cookie1'...

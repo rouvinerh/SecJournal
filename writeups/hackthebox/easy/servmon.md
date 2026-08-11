@@ -66,7 +66,7 @@ Nadine
 ```
 {% endcode %}
 
-Great!&#x20;
+Great!
 
 ### LFI
 
@@ -105,7 +105,7 @@ IfH3s4b0Utg0t0H1sH0me
 Gr4etN3w5w17hMySk1Pa5$
 ```
 
-With this, we can run a `crackmapexec` to brute force the possible passwords.&#x20;
+With this, we can run a `crackmapexec` to brute force the possible passwords.
 
 ```
 ./cme smb 10.129.227.77 -u /home/kali/htb/servmon/users -p /home/kali/htb/servmon/passwords
@@ -185,13 +185,13 @@ password = ew2x6SsGTxjRwXOT
 allowed hosts = 127.0.0.1
 ```
 
-So we need to do some port forwarding using `ssh`.&#x20;
+So we need to do some port forwarding using `ssh`.
 
 ```
 ssh nadine@10.129.227.77 -L 8443:127.0.0.1:8443
 ```
 
-Then we can access the site and continue.&#x20;
+Then we can access the site and continue.
 
 <figure><img src="../../../.gitbook/assets/image (1046).png" alt=""><figcaption></figcaption></figure>
 

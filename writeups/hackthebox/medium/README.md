@@ -1,3 +1,3 @@
 # Medium
 
-Medium-rated machines.&#x20;
+Medium-rated machines.

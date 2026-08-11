@@ -6,7 +6,7 @@ Unix based machines is just a name for machines that rely on the Command Line In
 
 For Linux, the main language used here is called **Bourne Again SHell**, otherwise known as **Bash** for short. Bash is a scripting language that can be used for many purposes and is very fast to use.
 
-Compared to using a Graphical User Interface (GUI), this is much faster if you know what you're doing. For security mains, we **must know how to interact with these CLIs and work fast in the terminal**.&#x20;
+Compared to using a Graphical User Interface (GUI), this is much faster if you know what you're doing. For security mains, we **must know how to interact with these CLIs and work fast in the terminal**.
 
 ### Environment Variables (PATH)
 
@@ -30,7 +30,7 @@ Using this PATH variable, we can do things like run python3 scripts from the CLI
 
 <figure><img src="../../../.gitbook/assets/image (1029).png" alt=""><figcaption></figcaption></figure>
 
-In Windows, there is also a PATH variable, but it would have to be manually configured. It also can do the same things as the Linux one, albeit a bit less straightforward.&#x20;
+In Windows, there is also a PATH variable, but it would have to be manually configured. It also can do the same things as the Linux one, albeit a bit less straightforward.
 
 <figure><img src="../../../.gitbook/assets/image (2239).png" alt=""><figcaption></figcaption></figure>
 
@@ -38,7 +38,7 @@ Anyways, when we install all our tools and binaries in Linux, they would basical
 
 ### Bash
 
-As said earlier, Bash is a scripting language that is used for many purposes in security. There are a lot of tools in Bash that would automate a lot of tasks, such as finding all files within a system that have a certain name, or renaming entire directories.&#x20;
+As said earlier, Bash is a scripting language that is used for many purposes in security. There are a lot of tools in Bash that would automate a lot of tasks, such as finding all files within a system that have a certain name, or renaming entire directories.
 
 Since Bash is a language, it too comes with its own set of logic, like functions, variables, loops and so on.
 
@@ -90,17 +90,17 @@ From here, we can set the permissions using the `chmod` command, with numbers th
 * Write = 2
 * Execute = 1
 
-When we do `chmod 777 hello.txt`this would make it such that our file would have full permissions across all 3 groups.&#x20;
+When we do `chmod 777 hello.txt`this would make it such that our file would have full permissions across all 3 groups.
 
 <figure><img src="../../../.gitbook/assets/image (2051).png" alt=""><figcaption></figcaption></figure>
 
-Similarly, we can adjust this depending on what the file requires.&#x20;
+Similarly, we can adjust this depending on what the file requires.
 
 Another thing to take note of is that **Linux treats everything as a file.** This is just an underlying architecture of the OS to make things more convenient. Long story short, the files, directories, binaries, pipes, sockets and everything is represented by a file descriptor within the kernel.
 
 Basically, everything here is a stream of bytes, and hence has permissions for it.
 
-We can see in the picture above that `.` and `..` are considered files, although they are noted as directories.&#x20;
+We can see in the picture above that `.` and `..` are considered files, although they are noted as directories.
 
 ## Powershell
 
@@ -148,7 +148,7 @@ Unlike Linux, which has permissions and stuff, Powershell has policies that dict
 
 <figure><img src="../../../.gitbook/assets/image (3037).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;This command would basically tell the program whether or not to let a certain script execute.
+This command would basically tell the program whether or not to let a certain script execute.
 
 ### Scripts
 
@@ -190,7 +190,7 @@ Documentation and StackOverflow are your best friends when trying to make Powers
 
 ## Shell
 
-A shell is basically because it wraps the OS and allows us to interact with the OS through a command line interface (CLI).&#x20;
+A shell is basically because it wraps the OS and allows us to interact with the OS through a command line interface (CLI).
 
 <figure><img src="../../../.gitbook/assets/image (2318).png" alt=""><figcaption></figcaption></figure>
 
@@ -234,7 +234,7 @@ Below is an example of a blind RCE.
 
 Not really an exploit per se, but rather a network protocol that allows for data to be exchanged using a secure channel between 2 networked devices. This is rather common in Unix based systems. The Secure in SSH means that communication is encrypted between the host and the recipient, and that it cannot be decrypted.
 
-The predecessor of SSH is something called Telnet, which does the same thing, **but it is not encrypted.** Telnet is the worst because hackers can intercept packets and be able to view what you are doing exactly without trouble (more on sniffing later).&#x20;
+The predecessor of SSH is something called Telnet, which does the same thing, **but it is not encrypted.** Telnet is the worst because hackers can intercept packets and be able to view what you are doing exactly without trouble (more on sniffing later).
 
 <figure><img src="../../../.gitbook/assets/image (3518).png" alt=""><figcaption><p><em>SSH Tunnel</em></p></figcaption></figure>
 

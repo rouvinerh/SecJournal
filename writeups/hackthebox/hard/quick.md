@@ -102,7 +102,7 @@ PORT    STATE         SERVICE
 443/udp open|filtered https
 ```
 
-So to access this, we can use a custom `curl` binary.&#x20;
+So to access this, we can use a custom `curl` binary.
 
 {% embed url="https://curl.se/docs/http3.html" %}
 
@@ -168,9 +168,9 @@ Afterwards, when viewing the PDFs, we find some credentials in the Connectivity 
 
 <figure><img src="../../../.gitbook/assets/image (3000).png" alt=""><figcaption></figcaption></figure>
 
-Cool! This also tells us that there might be a Docker container present. Now, we need to guess the email address. Earlier, we saw a bunch of testimonials with countries. I assumed that this was a hint to guess the email somehow.&#x20;
+Cool! This also tells us that there might be a Docker container present. Now, we need to guess the email address. Earlier, we saw a bunch of testimonials with countries. I assumed that this was a hint to guess the email somehow.
 
-Since there's a country, I assumed that it would end in something like `.fr` for France or something. Then, we can take the company name and construct a company email.&#x20;
+Since there's a country, I assumed that it would end in something like `.fr` for France or something. Then, we can take the company name and construct a company email.
 
 For example, here's some possibilities:
 
@@ -184,7 +184,7 @@ tim@QConsulting.Ltd.co.uk
 tim@QConsulting.co.uk
 ```
 
-After some brute forcing via `hydra` and guessing the right email, I found that `elisa@wink.co.uk` was the right email to use with this password.&#x20;
+After some brute forcing via `hydra` and guessing the right email, I found that `elisa@wink.co.uk` was the right email to use with this password.
 
 ### Ticketing System
 
@@ -262,7 +262,7 @@ Our listener port would then receive a shell:
 
 <figure><img src="../../../.gitbook/assets/image (2928).png" alt=""><figcaption></figcaption></figure>
 
-We can grab the user flag now.&#x20;
+We can grab the user flag now.
 
 ## Privilege Escalation
 
@@ -327,7 +327,7 @@ $conn = new mysqli("localhost","db_adm","db_p4ss","quick");
 ?>
 ```
 
-Now, we can access the SQL database and find the password hash for the printer service.&#x20;
+Now, we can access the SQL database and find the password hash for the printer service.
 
 ```
 mysql> select * from users\g
@@ -363,7 +363,7 @@ if(isset($_POST["email"]) && isset($_POST["password"]))
 <TRUNCATED>
 ```
 
-So this first takes the password and then passes it to `crypt`, then `md5`. We know both the cleartext and hashed password of `elisa`, so we can reverse engineer this. The passing to `crypt` indicates why we cannot just crack this normally, because it's not just the MD5 of an encrypted password.&#x20;
+So this first takes the password and then passes it to `crypt`, then `md5`. We know both the cleartext and hashed password of `elisa`, so we can reverse engineer this. The passing to `crypt` indicates why we cannot just crack this normally, because it's not just the MD5 of an encrypted password.
 
 We can just create a quick PHP script that brute forces for us:
 
@@ -464,7 +464,7 @@ AP1UWD26CAaDy4J7B2f5M/o5XEYIZeR+KKSh+mD//FOy+O3sqIX37anFqqvhJQ6D
 ```
 {% endcode %}
 
-Worked! Now we can use this private key to gain access to `srvadm`.&#x20;
+Worked! Now we can use this private key to gain access to `srvadm`.
 
 ```
 srvadm@quick:~$ id
@@ -483,7 +483,7 @@ srvadm@quick:/usr$ locate cups
 /usr/lib/x86_64-linux-gnu/libcups.so.2
 ```
 
-We see some in the home directory of the user.&#x20;
+We see some in the home directory of the user.
 
 ```
 srvadm@quick:~/.cache/conf.d$ ls -la

@@ -20,7 +20,7 @@ Registering an account and trying to do stuff with it was useless and had no fun
 
 <figure><img src="../../../.gitbook/assets/image (2185).png" alt=""><figcaption></figcaption></figure>
 
-We can use the default credentials of `admin:admin`.&#x20;
+We can use the default credentials of `admin:admin`.
 
 <figure><img src="../../../.gitbook/assets/image (506).png" alt=""><figcaption></figcaption></figure>
 
@@ -107,7 +107,7 @@ www-data@october:/dev/shm$ ldd /usr/local/bin/ovrflw | grep libc
         libc.so.6 => /lib/i386-linux-gnu/libc.so.6 (0xb7567000)
 ```
 
-So, we can set up a `bash` script to keep looping until we get a successful exploit.&#x20;
+So, we can set up a `bash` script to keep looping until we get a successful exploit.
 
 {% code overflow="wrap" %}
 ```bash

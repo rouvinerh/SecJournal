@@ -81,7 +81,7 @@ Then, we can `ssh` in:
 
 ### Fail2ban -> Root
 
-The user is able to edit the `fail2ban` configuration files to execute commands as `root` since `fox` is part of that group.&#x20;
+The user is able to edit the `fail2ban` configuration files to execute commands as `root` since `fox` is part of that group.
 
 We just need to create a malicious `iptables-multiport.conf` file like this:
 
@@ -138,7 +138,7 @@ actionunban = <iptables> -D f2b-<name> -s <ip> -j <blocktype>
 
 ```
 
-Afterwards, replace the actual file with our malicious one, where the `actionban` has been edited.&#x20;
+Afterwards, replace the actual file with our malicious one, where the `actionban` has been edited.
 
 ```
 fox@fail:/etc/fail2ban/action.d$ rm iptables-multiport.conf

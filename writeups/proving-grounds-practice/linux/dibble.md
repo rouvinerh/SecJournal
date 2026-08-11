@@ -18,7 +18,7 @@ PORT      STATE SERVICE
 27017/tcp open  mongod
 ```
 
-FTP accepts anonymous logins but there's nothing within it.&#x20;
+FTP accepts anonymous logins but there's nothing within it.
 
 ### Web Enum -> Admin Takeover
 

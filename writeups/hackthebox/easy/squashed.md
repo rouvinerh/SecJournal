@@ -68,11 +68,11 @@ Notice how the permissions have changed! We can now access the /var/www/html dir
 
 <figure><img src="../../../.gitbook/assets/image (3778).png" alt=""><figcaption></figcaption></figure>
 
-From here, we can move a webshell into this directory and confirm we have RCE on this website.&#x20;
+From here, we can move a webshell into this directory and confirm we have RCE on this website.
 
 <figure><img src="../../../.gitbook/assets/image (887).png" alt=""><figcaption></figcaption></figure>
 
-With this, we can easily get a reverse shell as this alex user.&#x20;
+With this, we can easily get a reverse shell as this alex user.
 
 <figure><img src="../../../.gitbook/assets/image (3571).png" alt=""><figcaption></figcaption></figure>
 
@@ -100,7 +100,7 @@ Because this was a remote session, the .Xauthority files were particularly inter
 
 So I learnt Xauthority files are used to store credentials to authenticate to a display. Basically, we can use this thing to take a snapshot of the image of ross's screen!
 
-Firstly, we can transfer the file to the alex user via Base64.&#x20;
+Firstly, we can transfer the file to the alex user via Base64.
 
 <figure><img src="../../../.gitbook/assets/image (1683).png" alt=""><figcaption></figcaption></figure>
 

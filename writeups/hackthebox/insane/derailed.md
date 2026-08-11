@@ -42,7 +42,7 @@ Earlier, we saw some form of clipnote function. Testing it shows us that each ti
 
 <figure><img src="../../../.gitbook/assets/image (917).png" alt=""><figcaption></figcaption></figure>
 
-&#x20;Using the **/clipnotes/raw/:id** format, I was able to view the first clipnote, submitted by a user called Alice. Visiting anything other than 1 was not possible.
+Using the **/clipnotes/raw/:id** format, I was able to view the first clipnote, submitted by a user called Alice. Visiting anything other than 1 was not possible.
 
 <figure><img src="../../../.gitbook/assets/image (2852).png" alt=""><figcaption></figcaption></figure>
 
@@ -64,7 +64,7 @@ When looking at the POST request for the report, we can see that it sends this a
 
 However, the cookies have been set to HttpOnly, meaning that stealing cookies is pointless in this case. XSS on the administrator could either allow us to enumerate more about the /administration page, or simply to steal his cookie and impersonate him.
 
-Because this is clearly an XSS challenge, I thought of first finding a potential XSS entry.&#x20;
+Because this is clearly an XSS challenge, I thought of first finding a potential XSS entry.
 
 ### Finding XSS Point
 
@@ -80,7 +80,7 @@ The reason I did this was because I am aware that there is a potential limit to 
 
 The overflow kind of worked, managed to remove the last portion about the created bit. I then went to try various different payloads including \<img> tags and stuff. DIdn't really work. I then suspected this has to do with some kind of CVE that was released recently (usual pattern of HTB, uses CVEs from 2022), and went hunting for Ruby + XSS related exploits that came out recently.
 
-I eventually found CVE-2022-32209, which was a XSS exploit for Rails::Html::Sanitizer. &#x20;
+I eventually found CVE-2022-32209, which was a XSS exploit for Rails::Html::Sanitizer. 
 
 {% embed url="https://groups.google.com/g/rubyonrails-security/c/ce9PhUANQ6s?pli=1" %}
 
@@ -102,7 +102,7 @@ Now, we just need to find a way to exploit this XSS.
 
 Understanding that we now have XSS, I was thinking of using CSRF in order to retrieve more information about the /administration page. The reason CSRF is used is because **CSRF tokens do not protect against XSS.** We had a simple rails cookie that was HttpOnly, so XSS needs to do something else.
 
-Since we can basically execute basic web requests using our username, we need to think of how to redirect the user somewhere. We can abuse the **eval** function to inject malicious JS code.&#x20;
+Since we can basically execute basic web requests using our username, we need to think of how to redirect the user somewhere. We can abuse the **eval** function to inject malicious JS code.
 
 First, I made a simple script that would callback to our machine.
 
@@ -120,7 +120,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<select<style/><img src='http://
 ```
 {% endcode %}
 
-Base64 Encoding did not work, so I tried with Char Coding instead. What Char Coding does is basically translate all the characters within my script to become ASCII letters.&#x20;
+Base64 Encoding did not work, so I tried with Char Coding instead. What Char Coding does is basically translate all the characters within my script to become ASCII letters.
 
 The payload becomes this:
 
@@ -134,7 +134,7 @@ This payload worked! I was able to retrieve two callbacks after creating the cli
 
 <figure><img src="../../../.gitbook/assets/image (3918).png" alt=""><figcaption></figcaption></figure>
 
-Now we can use a script from Hacktricks to steal the page content of the administration panel.&#x20;
+Now we can use a script from Hacktricks to steal the page content of the administration panel.
 
 ```javascript
 var url = "http://derailed.htb:3000/administration";
@@ -385,7 +385,7 @@ This password was rather useless.
 
 ### Toby Credentials
 
-WIthin the config file, we can find another password.&#x20;
+WIthin the config file, we can find another password.
 
 <figure><img src="../../../.gitbook/assets/image (3741).png" alt=""><figcaption></figcaption></figure>
 
@@ -421,7 +421,7 @@ Open Media Vault is a network-attahced storage system, and I wanted to take a lo
 
 I couldn't find the creds for this to login, so I was unable to exploit it.
 
-### OMV Config&#x20;
+### OMV Config
 
 I took a look at the config files that we had access to. There was one portion that was interesting.
 

@@ -79,7 +79,7 @@ I decided to look into the page source for the Login, Register and Forgot Passwo
 
 <figure><img src="../../../.gitbook/assets/image (1523).png" alt=""><figcaption></figcaption></figure>
 
-We can then login as the admin email and password of `it0jNc6L/r090Q==`.&#x20;
+We can then login as the admin email and password of `it0jNc6L/r090Q==`.
 
 ### More Page Source Reading -> RCE
 
@@ -122,7 +122,7 @@ drwxr-xr-x 15 kathleen kathleen 4096 Nov  4  2020 forum
 -rw-------  1 kathleen kathleen   33 Jul 15 04:08 local.txt
 ```
 
-I read the `.bashrc` file which had a large string within it.&#x20;
+I read the `.bashrc` file which had a large string within it.
 
 ```
 [kathleen@nappa ~]$ cat .bashrc

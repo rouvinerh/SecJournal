@@ -8,7 +8,7 @@ Nmap scan:
 
 IRC is open on this machine, and it's running UnrealIRCd, which is something that I don't see often.
 
-### IRC Hint&#x20;
+### IRC Hint
 
 The website shows an image and a hint to use IRC.
 
@@ -36,7 +36,7 @@ This part took me ages to find out. In the user `djmardov` directory, we find th
 
 <figure><img src="../../../.gitbook/assets/image (1468).png" alt=""><figcaption></figcaption></figure>
 
-Steg was the hint here, and it seems that we have to find an image to retrieve a password from. I spent a long time trying out different images.&#x20;
+Steg was the hint here, and it seems that we have to find an image to retrieve a password from. I spent a long time trying out different images.
 
 Then I realised the website had one image on it as well, and so I tried using extracting the password from that using `steghide`.
 

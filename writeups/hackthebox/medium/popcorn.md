@@ -58,9 +58,9 @@ Here, we can find the PHP version that is running on the server.
 
 <figure><img src="../../../.gitbook/assets/image (3219).png" alt=""><figcaption></figcaption></figure>
 
-PHP version 5.2.10 is insecure by today's standards, however without access to the `cgi-bin`, we cannot exploit this.&#x20;
+PHP version 5.2.10 is insecure by today's standards, however without access to the `cgi-bin`, we cannot exploit this.
 
-`/torrent` revealed a BitTorrent instance.&#x20;
+`/torrent` revealed a BitTorrent instance.
 
 <figure><img src="../../../.gitbook/assets/image (507).png" alt=""><figcaption></figcaption></figure>
 
@@ -86,11 +86,11 @@ Interestingly, the owner was able to upload a torrent file with **screenshots**.
 
 <figure><img src="../../../.gitbook/assets/image (3884).png" alt=""><figcaption></figcaption></figure>
 
-I then tried to download a torrent file from the Kali Linux official website (because nowhere else offered non-shady torrent files to download). This worked in the uploading. Afterwards, I can see that we are able to 'Edit this torrent'&#x20;
+I then tried to download a torrent file from the Kali Linux official website (because nowhere else offered non-shady torrent files to download). This worked in the uploading. Afterwards, I can see that we are able to 'Edit this torrent'
 
 <figure><img src="../../../.gitbook/assets/image (1148).png" alt=""><figcaption></figcaption></figure>
 
-Clicking created a pop-up where I was allowed to upload a screenshot.&#x20;
+Clicking created a pop-up where I was allowed to upload a screenshot.
 
 <figure><img src="../../../.gitbook/assets/image (2366).png" alt=""><figcaption></figcaption></figure>
 
@@ -137,7 +137,7 @@ This was a really old machine, so obviously kernel exploits for this work.
 Linux version 2.6.31-14-generic-pae (buildd@rothera) (gcc version 4.4.1 (Ubuntu 4.4.1-4ubuntu8) ) #48-Ubuntu SMP Fri Oct 16 15:22:42 UTC 2009
 ```
 
-The Linux version of 2.6.31 was vulnerable to the Dirty Cow exploit, which is not the intended method but still works.&#x20;
+The Linux version of 2.6.31 was vulnerable to the Dirty Cow exploit, which is not the intended method but still works.
 
 ### Path 2: Motd Exploit
 
@@ -220,15 +220,15 @@ su -c "sed -i '/toor:/d' /etc/{passwd,shadow}; chown root: /etc/{passwd,shadow};
   chgrp shadow /etc/shadow; nscd -i passwd >/dev/null 2>&1; bash" toor
 ```
 
-The vulnerability exploited here is how permissions of files changes depending on who is spawning the SSH process. For this machine, if we were to SSH in as `www-data`, a `.cache` file would be created that is owned by `www-data`. Afterwards, we can simply delete this file and replace it with a symlink to another file.&#x20;
+The vulnerability exploited here is how permissions of files changes depending on who is spawning the SSH process. For this machine, if we were to SSH in as `www-data`, a `.cache` file would be created that is owned by `www-data`. Afterwards, we can simply delete this file and replace it with a symlink to another file.
 
-A subsequent login would cause the permissions of the symlinked file to be owned by `www-data`.&#x20;
+A subsequent login would cause the permissions of the symlinked file to be owned by `www-data`.
 
 Here's what the script is doing:
 
 1. Create a new SSH key and move it to the `~` directory, which is at the `/var/www` directory for `www-data`.
 2. Make a backup of the key (which failed actually).
-3. Next, spawn an SSH process as `www-data`. When this is triggered, a `.cache` file is generated in `/var/www` owned by `www-data`.&#x20;
-4. The `.cache` file is then deleted. A symlink called `.cache`is created to another file (for this script it is `/etc/passwd` first).&#x20;
-5. A subsequent SSH process again then forces the `/etc/passwd` permissions to change and be owned by `www-data`.&#x20;
-6. Afterwards, the script appends another root user with a known password to generate the root shell.&#x20;
+3. Next, spawn an SSH process as `www-data`. When this is triggered, a `.cache` file is generated in `/var/www` owned by `www-data`.
+4. The `.cache` file is then deleted. A symlink called `.cache`is created to another file (for this script it is `/etc/passwd` first).
+5. A subsequent SSH process again then forces the `/etc/passwd` permissions to change and be owned by `www-data`.
+6. Afterwards, the script appends another root user with a known password to generate the root shell.

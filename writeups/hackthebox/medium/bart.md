@@ -18,7 +18,7 @@ I checked the page source, and found a unique bit here. Seems like there was a u
 
 <figure><img src="../../../.gitbook/assets/image (2189).png" alt=""><figcaption></figcaption></figure>
 
-harvey is the user we probably need to access.&#x20;
+harvey is the user we probably need to access.
 
 We can fuzz subdomains using the `bart.htb` domain to find more places to visit.
 
@@ -30,7 +30,7 @@ We can visit this to see that it's running PHP Server Monitor v3.2.1.
 
 <figure><img src="../../../.gitbook/assets/image (896).png" alt=""><figcaption></figcaption></figure>
 
-`harvey:potter` works as credentials to let us log in. There, we would view an internal chat instance.&#x20;
+`harvey:potter` works as credentials to let us log in. There, we would view an internal chat instance.
 
 <figure><img src="../../../.gitbook/assets/image (564).png" alt=""><figcaption></figcaption></figure>
 
@@ -46,7 +46,7 @@ There's a login page within the new page. Our previous credentials of `harvey:po
 
 <figure><img src="../../../.gitbook/assets/image (3388).png" alt=""><figcaption></figcaption></figure>
 
-However, what's interesting was the URL of the website, at `http://internal-01.bart.htb/simple_chat/login_form.php`. Googling around, we can find the exact simple\_chat PHP application being used as it is a open-source project.&#x20;
+However, what's interesting was the URL of the website, at `http://internal-01.bart.htb/simple_chat/login_form.php`. Googling around, we can find the exact simple\_chat PHP application being used as it is a open-source project.
 
 {% embed url="https://github.com/magkopian/php-ajax-simple-chat'" %}
 

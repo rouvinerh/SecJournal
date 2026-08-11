@@ -48,7 +48,7 @@ Port 8080 shows a blog page:
 
 <figure><img src="../../../.gitbook/assets/image (1303).png" alt=""><figcaption></figcaption></figure>
 
-There wasn't much functionality within this website, so I moved on to port 1337 instead. There was a sign in, but we don't have any credentials yet.&#x20;
+There wasn't much functionality within this website, so I moved on to port 1337 instead. There was a sign in, but we don't have any credentials yet.
 
 ### Port 1337 IIS -> Hidden Files
 
@@ -109,7 +109,7 @@ The dashboard can be accessed at `/admin`.
 
 <figure><img src="../../../.gitbook/assets/image (1934).png" alt=""><figcaption></figcaption></figure>
 
-However, I could not find any exploitable feature of this at all. There also wasn't any public exploits related to LFI, RCE or anything I could work with. So I went back to the file found earlier.&#x20;
+However, I could not find any exploitable feature of this at all. There also wasn't any public exploits related to LFI, RCE or anything I could work with. So I went back to the file found earlier.
 
 The name of the file was a little strange, and also the credentials aren't valid when used to login to the MSSQL service:
 
@@ -243,7 +243,7 @@ SMB         10.129.77.179   445    MANTIS           [+] htb.local\james:J@m3s_P@
 
 I initially tried to gather more information about the domain via `bloodhound` to see if this user had privileges over other users.
 
-First we need to find the domain name by scanning port 389.&#x20;
+First we need to find the domain name by scanning port 389.
 
 {% code overflow="wrap" %}
 ```
@@ -327,16 +327,16 @@ OS Version:                6.1.7601 Service Pack 1 Build 7601
 <TRUNCATED>
 ```
 
-So this was running a severely outdated version of Windows Server. **It should also be noted that this machine does not contain the Hotfix `KB3011780` which fixes this exploit.**&#x20;
+So this was running a severely outdated version of Windows Server. **It should also be noted that this machine does not contain the Hotfix `KB3011780` which fixes this exploit.**
 
 Kerberos has something called Privileged Attribute Certificate (PAC) which contains information about the ticket being used, which is mainly the user's current privileges, group memberships, SID History and what not. Only recently in Nov 2021 did Microsoft include the `PAC_ATTRIBUTES_INFO` and `PAC_REQUESTOR` fields.
 
-PAC Signature Validation is the function that checks the PAC via a checksum. In an earlier version, MS11-013 allows for attackers to basically spoof the PAC to request tickets as the administrator.&#x20;
+PAC Signature Validation is the function that checks the PAC via a checksum. In an earlier version, MS11-013 allows for attackers to basically spoof the PAC to request tickets as the administrator.
 
 <figure><img src="../../../.gitbook/assets/image (3858).png" alt=""><figcaption></figcaption></figure>
 
 The current exploit MS014-68 does include a bit more checks, but not enough. The exploit comes about because the DC fails to check for valid checksums for the PAC field, thus allowing us attackers to spoof the PAC to impersonate an administrator requesting for a TGT.
 
-The DC validates our TGT-REQ because it sees us as the administrator, and thus returns the admin's TGT, **which is a golden ticket that can be used to do anything on the domain**.&#x20;
+The DC validates our TGT-REQ because it sees us as the administrator, and thus returns the admin's TGT, **which is a golden ticket that can be used to do anything on the domain**.
 
-Normally, getting a golden ticket (without administrator access) would involve getting the NTLM hash of the `krbtgt` account, which is really hard because we can't dump credentials using `mimikatz` or something since we don't have any privileges.&#x20;
+Normally, getting a golden ticket (without administrator access) would involve getting the NTLM hash of the `krbtgt` account, which is really hard because we can't dump credentials using `mimikatz` or something since we don't have any privileges.

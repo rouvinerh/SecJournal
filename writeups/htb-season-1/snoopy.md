@@ -47,7 +47,7 @@ ID           Response   Lines    Word       Chars       Payload
 000000582:   200        0 L      141 W      3132 Ch     "mm"
 ```
 
-Interesting. Since DNS is open, and there is already a hint for DNS being in play somehow, we can enumerate that using `dig`.&#x20;
+Interesting. Since DNS is open, and there is already a hint for DNS being in play somehow, we can enumerate that using `dig`.
 
 ```
 $ dig axfr @10.129.85.79 snoopy.htb
@@ -72,9 +72,9 @@ snoopy.htb.             86400   IN      SOA     ns1.snoopy.htb. ns2.snoopy.htb. 
 ;; XFR size: 11 records (messages 1, bytes 325)
 ```
 
-It seems that `mm` stands for MatterMost. There's another `provisions` and `postgres` subdomain that is present on the local network within the machine, which I probably need to enumerate after gaining a foothold. It appears that `snoopy.htb` and `mm.snoopy.htb` are on the same IP address, while the others are not, meaning that we cannot access the others yet probably.&#x20;
+It seems that `mm` stands for MatterMost. There's another `provisions` and `postgres` subdomain that is present on the local network within the machine, which I probably need to enumerate after gaining a foothold. It appears that `snoopy.htb` and `mm.snoopy.htb` are on the same IP address, while the others are not, meaning that we cannot access the others yet probably.
 
-The last thing is that `mail.snoopy.htb` is not present within the records and is indeed offline.&#x20;
+The last thing is that `mail.snoopy.htb` is not present within the records and is indeed offline.
 
 We can visit the `mm` subdomain to verify that it is running:
 
@@ -174,7 +174,7 @@ if __name__ == '__main__':
 
 <figure><img src="../../.gitbook/assets/image (3720).png" alt=""><figcaption></figcaption></figure>
 
-This made enumeration a lot easier. Now, we can proceed with enumeration of the file system and other sensitive files. We can start with `/etc/nginx/sites-available/default`.&#x20;
+This made enumeration a lot easier. Now, we can proceed with enumeration of the file system and other sensitive files. We can start with `/etc/nginx/sites-available/default`.
 
 ```
 root /var/www/html;
@@ -207,7 +207,7 @@ root /var/www/html;
 
 There's nothing much here. Earlier we found that `bind` was running on the server. `bind` is a nameserver program that assigns the domain names to IP addresses. In this case, since the mail server is offline as DNS records are being migrated, we might be able to exploit this by making the machine resolve `mail.snoopy.htb` to our machine and then using it to **reset passwords on MatterMost.**
 
-Quick googling reveals that the `/etc/bind/named.conf` folder contains the configuration for it.&#x20;
+Quick googling reveals that the `/etc/bind/named.conf` folder contains the configuration for it.
 
 ```
 // This is the primary configuration file for the BIND DNS server named.
@@ -311,9 +311,9 @@ Anyways, after filling in the fields and clicking submit, we get this weird thin
 
 <figure><img src="../../.gitbook/assets/image (3315).png" alt=""><figcaption></figcaption></figure>
 
-I thought that it would be a shell and hence ran `id`, but it quickly closed. In this case, I took a look at the traffic within `wireshark` but wasn't able to find out much. I tried out a few methods from the SSH page of Hacktricks, and found `ssh-mitm`.&#x20;
+I thought that it would be a shell and hence ran `id`, but it quickly closed. In this case, I took a look at the traffic within `wireshark` but wasn't able to find out much. I tried out a few methods from the SSH page of Hacktricks, and found `ssh-mitm`.
 
-This was a program that would intercept SSH traffic and find a password, similar to what `responder` does.&#x20;
+This was a program that would intercept SSH traffic and find a password, similar to what `responder` does.
 
 {% embed url="https://docs.ssh-mitm.at/" %}
 
@@ -430,7 +430,7 @@ Afterwards, just run the `sudo` command on the `/tmp/diff` file. This would put 
 
 Grab the user flag.
 
-### Sudo Clamscan -> Root&#x20;
+### Sudo Clamscan -> Root
 
 When checking `sudo` privileges again, I found that we can run `clamscan` as `root`.
 
@@ -453,7 +453,7 @@ Based on the documentation, since we can run this as `root`, we should be able t
 
 <figure><img src="../../.gitbook/assets/image (3396).png" alt=""><figcaption></figcaption></figure>
 
-Then, we can simply read the private SSH key of `root` located at `/root/.ssh/id_rsa`.&#x20;
+Then, we can simply read the private SSH key of `root` located at `/root/.ssh/id_rsa`.
 
 <figure><img src="../../.gitbook/assets/image (3578).png" alt=""><figcaption></figcaption></figure>
 

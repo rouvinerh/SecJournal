@@ -27,7 +27,7 @@ Within each branch, small and big, there would be administrators there to make s
 
 <figure><img src="../.gitbook/assets/image (2720).png" alt=""><figcaption></figcaption></figure>
 
-I like to think of AD as a company having multiple computers and users all under a domain like `company.com`.&#x20;
+I like to think of AD as a company having multiple computers and users all under a domain like `company.com`.
 
 ## AD Terms
 
@@ -71,6 +71,6 @@ Additionally, AD networks also have something called a **Domain Controller** whi
 
 Windows in general makes use of something called NTLM hashes. What NTLM hashes are is basically a hash format, of which the password is taken through a **one-way function that produces a string of text** where there is no way to reverse the functio&#x6E;**.**
 
-The traditional method of authentication on Windows is using NTLM hashes, which are considered more insecure due to their own set of vulnerabilities. Since the hash cannot be reversed, what an attacker can do is instead make use of dictionary attacks, which would basically use common passwords in a wordlist (typically from data leaks of any kind and found online), hash them and compare it one by one. Many tools, websites and even services provide allow for dictionary attacks, and **hashes of common passwords are cracked almost instantly.**&#x20;
+The traditional method of authentication on Windows is using NTLM hashes, which are considered more insecure due to their own set of vulnerabilities. Since the hash cannot be reversed, what an attacker can do is instead make use of dictionary attacks, which would basically use common passwords in a wordlist (typically from data leaks of any kind and found online), hash them and compare it one by one. Many tools, websites and even services provide allow for dictionary attacks, and **hashes of common passwords are cracked almost instantly.**
 
 So to cirumvent this, AD uses something called Kerberos, which is more 'secure' than NTLM due to using a two-way function, including a third party authorisation, as well as stronger encryption.
