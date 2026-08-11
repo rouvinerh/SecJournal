@@ -42,7 +42,6 @@ Visiting brings me to a login page:
 
 Before going into the services, I took a look at the URLs via a tool called `whatweb` to gain some basic knowledge on it, such as where the server is based and what kind of backend services it runs on.
 
-{% code overflow="wrap" %}
 
 ```bash
 $ whatweb https://coalitiontechnologies.com   
@@ -53,7 +52,6 @@ http://shop.coalitiontechnologies-job01.com/ [301 Moved Permanently] Country[UNI
 https://shop.coalitiontechnologies-job01.com/ [200 OK] Country[UNITED STATES][US], HTML5, HTTPServer[nginx], IP[216.83.44.123], Script, Strict-Transport-Security[max-age=31536000], Title[app], X-UA-Compatible[IE=edge], nginx
 ```
 
-{% endcode %}
 
 There are a few key differences here:
 * Both the sites were running on different backends, which on its own is not enough to safely say that this is a scam.

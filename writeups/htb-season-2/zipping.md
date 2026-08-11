@@ -35,17 +35,17 @@ We don't need to add a domain to visit this site. I still added `zipping.htb` as
 
 The website was a watch store:
 
-<figure><img src="../../.gitbook/assets/image (4170).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4170).png>)
 
 There is a shop feature located on the site, which was rather uninteresting except for the URL itself:
 
-<figure><img src="../../.gitbook/assets/image (4173).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4173).png>)
 
 The `page` parameter was a really obvious LFI. The page is based in PHP, so I assumed that this was loading `products.php`. If we can figure out how to upload a shell on the machine like `rev.php`, it would potentially have to be triggered using this. All theory here, I have no source code yet.
 
 The 'Work with Us' part was rather interesting:
 
-<figure><img src="../../.gitbook/assets/image (4171).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4171).png>)
 
 This is quite specific in terms of requirements, and while there is technically a CVE out there for this (CVE-2023-38831), I think it's a bit too new for this box which just came out.
 
@@ -62,7 +62,7 @@ zip -r --symlinks test.zip test.pdf
 
 This would generate a file for us:
 
-<figure><img src="../../.gitbook/assets/image (4172).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4172).png>)
 
 It should be noted that the hash in the URL is just the MD5 hash of the `test.zip` file.
 
@@ -73,7 +73,7 @@ $ md5sum test.zip
 
 However, visiting it shows an empty page. When the requests are viewed through Burp however, it shows that it worked!
 
-<figure><img src="../../.gitbook/assets/image (4176).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4176).png>)
 
 ### SQL Injection Fail
 
@@ -118,7 +118,6 @@ Using this, we can read whatever file we want. The first thing I want to read is
 
 The next thing to read is the code for the shop.
 
-{% code overflow="wrap" %}
 ```php
 <?php
 session_start();
@@ -131,7 +130,6 @@ $page = isset($_GET['page']) && file_exists($_GET['page'] . '.php') ? $_GET['pag
 include $page . '.php';
 ?>
 ```
-{% endcode %}
 
 There's an LFI above with an auto `.php` extension includer. The `include` function is also used, which would execute PHP code if it exists. This opens up the door to RCE exploits via a PHP file.
 
@@ -150,7 +148,6 @@ function pdo_connect_mysql() {
 
 This password does not work for `ssh` however. Reading `home.php` also had a bit of interesting stuff:
 
-{% code overflow="wrap" %}
 ```php
 <?php
 // Get the 4 most recently added products
@@ -181,13 +178,12 @@ $recently_added_products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </div>
 ```
-{% endcode %}
 
 The above does not have any input validation for the `id` parameter, which is user-controlled.
 
 When we attempt SQL Injection via `'` character within the shop and render it in Burp, we see this:
 
-<figure><img src="../../.gitbook/assets/image (4177).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4177).png>)
 
 This confirms that SQL Injection works. This, combined with the LFI trigger through `includes`, gives us a clear exploit path. However, I wanted to enumerate where the `id` parameter was being processed. Running a quick `gobuster` scan shows that `product.php` exists:
 
@@ -271,7 +267,7 @@ The only check present is the `pathinfo` function, of which it can be bypassed.
 
 {% embed url="https://forums.hak5.org/topic/39958-bypassing-pathinfo-or-getimagesize-php-shell-upload/" %}
 
-<figure><img src="../../.gitbook/assets/image (4179).png" alt=""><figcaption><p>From PayloadAllTheThings</p></figcaption></figure>
+![From PayloadAllTheThings](<../../.gitbook/assets/image%20(4179).png>)
 
 To exploit this, we need to somehow append a null byte to the contents of the zip file, since we cannot just include it in the name of the file. I took a PHP reverse shell and zipped it to find that the file name is included in the strings of a the zip file.
 
@@ -283,15 +279,15 @@ rev.phpUT
 
 Perhaps we could directly put the null byte within the zip file. Using `hexeditor`, I was able to edit it to this:
 
-<figure><img src="../../.gitbook/assets/image (4180).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4180).png>)
 
 This would include the null byte needed to bypass the `pathinfo` function. When uploaded, this is what we see:
 
-<figure><img src="../../.gitbook/assets/image (4181).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4181).png>)
 
 We can then visit that site and get a shell (without the `.pdf` at the end):
 
-<figure><img src="../../.gitbook/assets/image (4182).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4182).png>)
 
 ## Privilege Escalation
 
@@ -434,6 +430,6 @@ gcc -shared -fPIC -nostartfiles -o libcounter.so exploit.c
 
 Then, we can run `stock` to get a `root` shell:
 
-<figure><img src="../../.gitbook/assets/image (4183).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4183).png>)
 
 Rooted!

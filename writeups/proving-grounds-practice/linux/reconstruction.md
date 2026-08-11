@@ -55,56 +55,54 @@ TODO: remove leftover passwords from testing
 
 Most of the PCAP files contained traffic generated from brute forcing the site, so it was pretty tedious looking through all of them. The `30.04.2020` PCAP file contained a lot of brute force attempts, while `1.05.2020` contained very few:
 
-<figure><img src="../../../.gitbook/assets/image (2080).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2080).png>)
 
 And within that PCAP file, we can find a request that has a password that seems to work:
 
-<figure><img src="../../../.gitbook/assets/image (2213).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2213).png>)
 
 ### Web Enum -> LFI
 
 Port 8000 hosted the same Flask application:
 
-<figure><img src="../../../.gitbook/assets/image (579).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(579).png>)
 
 With the password we found earlier, we can login:
 
-<figure><img src="../../../.gitbook/assets/image (2585).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2585).png>)
 
 Attempting to view the 'Hello World' blog entry results in an error from Flask:
 
-<figure><img src="../../../.gitbook/assets/image (2081).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2081).png>)
 
 There's a feature within this kind of web application that allows us to access the console to run Python code, but this one is protected by the PIN:
 
-<figure><img src="../../../.gitbook/assets/image (3963).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3963).png>)
 
 I ran a directory scan using `wfuzz`:
 
-{% code overflow="wrap" %}
 ```
 $ wfuzz -c -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt --hc=308,404 -t 100 http://192.168.183.103:8080/FUZZ/
 000000182:   302        3 L      24 W       253 Ch      "data"                      
 000001225:   200        66 L     126 W      2011 Ch     "logout"                    
 000001387:   302        3 L      24 W       257 Ch      "create"
 ```
-{% endcode %}
 
 There were just these 3 directories. `create` is pretty obvious in what it does, but `data` was not. Visiting it just shows this:
 
-<figure><img src="../../../.gitbook/assets/image (930).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(930).png>)
 
 Testing any directories with this shows the same page, but with a new header:
 
-<figure><img src="../../../.gitbook/assets/image (2777).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2777).png>)
 
 The `X-Error` showing `Incorrect Padding` is present, and when googled the first thing that comes up is `base64`:
 
-<figure><img src="../../../.gitbook/assets/image (2126).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2126).png>)
 
 If we use the `base64` encoded string of `/etc/passwd`, we get another unique error:
 
-<figure><img src="../../../.gitbook/assets/image (939).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(939).png>)
 
 Now there's an error saying there's no file or directory triggered by the newline character. This means we have LFI on the server if we use `echo -n`!
 
@@ -123,7 +121,7 @@ $ echo -n '/proc/net/arp' | base64
 L3Byb2MvbmV0L2FycA==
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3924).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3924).png>)
 
 `ens160` is the interface name needed to find the ARP address:
 
@@ -132,7 +130,7 @@ $ echo -n '/sys/class/net/ens160/address' | base64
 L3N5cy9jbGFzcy9uZXQvZW5zMTYwL2FkZHJlc3M=
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2144).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2144).png>)
 
 Convert this to decimal using `python`:
 
@@ -151,15 +149,15 @@ $ echo -n '/etc/machine-id' | base64
 L2V0Yy9tYWNoaW5lLWlk
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1990).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1990).png>)
 
 The machine ID needed some service name appended to the back of it, which we can get from reading `/proc/self/cgroup`.
 
-<figure><img src="../../../.gitbook/assets/image (1265).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1265).png>)
 
 We also need the user that started the application, which can be found in `/proc/self/environ`:
 
-<figure><img src="../../../.gitbook/assets/image (1984).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1984).png>)
 
 Afterwards, I tested it a few times, varying the public bits and testing the machine ID with and without `blog.service` appended to the end of it and eventually got it:
 
@@ -177,11 +175,11 @@ private_bits = [
 ]
 ```
 
-<figure><img src="../../../.gitbook/assets/image (712).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(712).png>)
 
 From here, we can easily get a reverse shell on our machine.
 
-<figure><img src="../../../.gitbook/assets/image (3050).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3050).png>)
 
 We cannot read the user flag yet.
 
@@ -198,7 +196,7 @@ ADMIN_PASSWORD = '1edfa9b54a7c0ec28fbc25babb50892e'
 
 We can `su` to `jack` using the commented password.
 
-<figure><img src="../../../.gitbook/assets/image (1769).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1769).png>)
 
 ### Powershell -> Root Creds
 
@@ -226,4 +224,4 @@ exit
 
 This password can be used to `su` to `root`:
 
-<figure><img src="../../../.gitbook/assets/image (1006).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1006).png>)

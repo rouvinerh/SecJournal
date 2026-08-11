@@ -6,7 +6,7 @@ The main goal of information security is **risk management**!
 
 Generally, there has 2 distinct teams, **the red team and the blue team.**
 
-<figure><img src="../.gitbook/assets/red-team-blue-team.jpg" alt=""><figcaption><p><em>Summary of Teams</em></p></figcaption></figure>
+![Summary of Teams](../.gitbook/assets/red-team-blue-team.jpg)
 
 Red Team = Adversary, Blue Team = Defenders.
 

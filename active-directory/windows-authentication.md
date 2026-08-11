@@ -61,13 +61,13 @@ As mentioned earlier, LSA allows Windows to act as both the client and authentic
 
 How it works is illustrated in this diagram here (taken from ATTL4S):
 
-<figure><img src="../.gitbook/assets/image (3929).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3929).png>)
 
 #### SSP
 
 Microsoft provides an Interface for the SSPs (SSPI) to integrate applications with this authentication system.
 
-<figure><img src="../.gitbook/assets/image (2131).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2131).png>)
 
 There are 4 major categories for the functions provided:
 
@@ -104,7 +104,7 @@ There are 2 main types of sessions that are created:
 
 Interactive sessions are what happens when we login normally through our login page. The user credentials are cached within the memory of the LSA process, called the Local Security Authority Subsystem Service (LSASS). In specific, it is cached in `lsass.exe`. Cached credentials allow for Windows to provide for a Single Sign-On (SSO) service to users.
 
-<figure><img src="../.gitbook/assets/image (3972).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3972).png>)
 
 #### Non-Interactive
 
@@ -112,13 +112,13 @@ These are sessions that leverage the cached credentials on behalf of a user. Whe
 
 This leverages the use of the SSPI to work.
 
-<figure><img src="../.gitbook/assets/image (2769).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2769).png>)
 
 For example, a non-interactive session can grant us access to the file system of another device and do `ls \\dc\c$` using cached credentials.
 
 After a user successfully authenticates, a new **logon session** is created regardless of what type of authentication is used. The cached credentials in the AP are tied to logon sessions. Logon sessions are not limited to the 2 types listed above:
 
-<figure><img src="../.gitbook/assets/image (3075).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3075).png>)
 
 We can verify a logon session with `Get-LogonSession` from Powerview.
 
@@ -126,11 +126,11 @@ We can verify a logon session with `Get-LogonSession` from Powerview.
 
 The information that is returned to LSA after creating the logon session is used to create an access token. An access token is a protected object that contains the **local security context** of an authenticated user. The security context is defined as the **privileges and permissions a user has on a specific workstation and across the network.**
 
-<figure><img src="../.gitbook/assets/image (1085).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1085).png>)
 
 Every single logon session is identifiable by a 64-bit locally unique identifier (LUID), otherwise known as the logon ID. This access token contains an Authentication ID (AuthID) that identifies the logon session via the LUID.
 
-<figure><img src="../.gitbook/assets/image (299).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(299).png>)
 
 The access token caches a number of attributes that determine its security context such as the user SID, group memberships, privileges and logon ID that references the origin logon session. In the above image, we can see that the Integrity is set to Medium. But what if we use the 'Run as Administrator' option and run `cmd.exe`?
 
@@ -159,7 +159,7 @@ One use case is the listing of shares via remote authentication. If a user `user
 
 There are different types of impersonation levels:
 
-<figure><img src="../.gitbook/assets/image (3241).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3241).png>)
 
 Creating a security context requires credentials, while hijacking a security context (via stealing tokens) requires privileges.
 
@@ -184,7 +184,7 @@ There are 2 common ways of which token exploits happen:
 
 `runas.exe` is a binary that allows us to create processes using alternate credentials. When running `runas.exe`, it would ask for credentials, which are verified by the LSA in a similar process to how Interactive Sessions are created.
 
-<figure><img src="../.gitbook/assets/image (865).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(865).png>)
 
 If we attempt to use credentials from a user that is not known by the system, then it would just fail. This is because starting a process on the local system as an unknown user obviously doesn't work. When we run `runas.exe` and give the correct credentials, then it spawns a **local level process.**
 
@@ -192,13 +192,13 @@ This is where the `/netonly` flag comes in. This flag indicates that the credent
 
 Here's how it works:
 
-<figure><img src="../.gitbook/assets/image (4063).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(4063).png>)
 
 This reason is what leads to tickets and NTLM hashes being cached on the system. How `runas.exe` works is actually using the Win32 API **CreateProcessWithLogon** function, which is in charge of the creation of new processes with the new security context.
 
 The `/netonly` flag uses the **LOGON\_NETCREDENTIALS\_ONLY** logon option, which creates and uses a new logon session, but using the original token.
 
-<figure><img src="../.gitbook/assets/image (1346).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1346).png>)
 
 In most tools like Metasploit and Cobalt Strike, they have their own version of `runas`. This provides some additional functionality:
 
@@ -235,11 +235,11 @@ This is done using the `mimikatz.exe sekurlsa::pth` function. This allows us to 
 
 Basically, injecting credentials into the logon session.
 
-<figure><img src="../.gitbook/assets/image (2935).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2935).png>)
 
 A similar thing happens when we use the Overpass The Hash exploit to request for tickets:
 
-<figure><img src="../.gitbook/assets/image (286).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(286).png>)
 
 #### Non-LSA Way
 
@@ -262,7 +262,7 @@ Windows provides functionality for Kerberos tickets, and we can import TGTs or S
 
 If we have the ticket from another user, we can importing the ticket into an attacker-controlled logon session and act on behalf of another user in the network.
 
-<figure><img src="../.gitbook/assets/image (3023).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3023).png>)
 
 The cool thing about this is the the Kerberos LSA API **does not require administrative privileges to interact with**. How `mimikatz.exe` and `Rubeus.exe` do this is via the **LsaCallAuthenticationPackage** function. This function enables apps to talk to Windows APs, and is done through messages which have a specific structure.
 
@@ -281,6 +281,6 @@ We can also move laterally to **other machines using a user's security context**
 
 Using the `sc.exe` native tool, we can use our new security context to create services on the remote device to execute payloads like beacons. The `sc_start.x64.o` file can be used to start a service remotely.
 
-<figure><img src="../.gitbook/assets/image (670).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(670).png>)
 
 This is the basics of how Windows authenticates users!

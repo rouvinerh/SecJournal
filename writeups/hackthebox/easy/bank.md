@@ -22,11 +22,11 @@ DNS being open was the most interesting one.
 
 Port 80 reveals a defualt Apache2 Ubuntu page:
 
-<figure><img src="../../../.gitbook/assets/image (3961).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3961).png>)
 
 When we add `bank.htb` to our `/etc/hosts` file and revisit it, it loads a login page:
 
-<figure><img src="../../../.gitbook/assets/image (432).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(432).png>)
 
 There was no SQL Injection or anything on this, and default credentials don't work. I did a `gobuster` scan next to enumerate the possible endpoints.
 
@@ -55,15 +55,15 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The last one was the most interesting. That directory just contained a bunch of `.acc` files.
 
-<figure><img src="../../../.gitbook/assets/image (1797).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1797).png>)
 
 When sorting by size, there was one outlier.
 
-<figure><img src="../../../.gitbook/assets/image (965).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(965).png>)
 
 When viewed, it revealed some credentials.
 
-<figure><img src="../../../.gitbook/assets/image (3097).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3097).png>)
 
 These don't work for SSH, but using this we can login!
 
@@ -71,23 +71,23 @@ These don't work for SSH, but using this we can login!
 
 Once logged in, we can see a dashboard forbank transfers.
 
-<figure><img src="../../../.gitbook/assets/image (1081).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1081).png>)
 
 The Support section allows us to send messages and upload files:
 
-<figure><img src="../../../.gitbook/assets/image (4052).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4052).png>)
 
 Also, reading the page source reveals another hint.
 
-<figure><img src="../../../.gitbook/assets/image (2909).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2909).png>)
 
 Using this, we can upload a PHP webshell as `cmd.htb`. Then, we can use `curl` to confirm we have RCE.
 
-<figure><img src="../../../.gitbook/assets/image (2634).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2634).png>)
 
 Using a `bash` one-liner, we can get a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (3025).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3025).png>)
 
 Grab the user flag.
 
@@ -106,7 +106,7 @@ I ran a LinPEAS scan to enumerate everything, and found this SUID present on the
 
 For some reason, when I run this binary, it gives me a `root` shell.
 
-<figure><img src="../../../.gitbook/assets/image (3561).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3561).png>)
 
 Turns out, the source code for the script is here (and it is super unrealistic):
 

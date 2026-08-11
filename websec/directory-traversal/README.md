@@ -13,7 +13,7 @@ The difference between the two is that **arbitrary read is only used to READ fil
 
 {% endhint %}
 
-<figure><img src="../../.gitbook/assets/image (125).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+![Taken from PortSwigger Web Security Academy](<../../.gitbook/assets/image%20(125).png>)
 
 ## ../
 
@@ -30,7 +30,7 @@ http://example.com?url=http://google.com
 http://example.com?url=file://../../../../../../../etc/passwd
 ```
 
-<figure><img src="../../.gitbook/assets/image (1694).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1694).png>)
 
 Naturally, this is dangerous since it gives attackers access to files that could have sensitive information (like SSH private keys).
 

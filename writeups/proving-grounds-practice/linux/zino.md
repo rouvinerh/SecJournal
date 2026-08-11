@@ -69,7 +69,7 @@ Apr 28 08:39:01 zino systemd[1]: Set application password "adminadmin"
 
 The only web port was port 8003, and it led us to this login page:
 
-<figure><img src="../../../.gitbook/assets/image (2046).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2046).png>)
 
 There are some exploits for this:
 
@@ -86,11 +86,11 @@ Booked Scheduler 2.7.7 - Authenticated Directory Traversal | php/webapps/48428.t
 
 We can use the credentials we got earlier to have RCE:
 
-<figure><img src="../../../.gitbook/assets/image (2045).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2045).png>)
 
 We can then get a reverse shell through `nc`:
 
-<figure><img src="../../../.gitbook/assets/image (510).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(510).png>)
 
 ## Privilege Escalation
 
@@ -98,7 +98,7 @@ We can then get a reverse shell through `nc`:
 
 I downloaded `linpeas.sh` onto the machine and ran a scan. It found a cronjob we could hijack:
 
-<figure><img src="../../../.gitbook/assets/image (2034).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2034).png>)
 
 We can write to this file:
 
@@ -129,4 +129,4 @@ echo 'import os;os.system("chmod u+s /bin/bash")' > cleanup.py
 
 Then we can just wait for a bit for the script to execute.
 
-<figure><img src="../../../.gitbook/assets/image (3424).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3424).png>)

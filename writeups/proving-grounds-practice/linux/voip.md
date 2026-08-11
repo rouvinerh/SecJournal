@@ -20,21 +20,21 @@ PORT     STATE SERVICE
 
 Port 80 had a login page:
 
-<figure><img src="../../../.gitbook/assets/image (4088).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4088).png>)
 
 We didn't have any credentials, and weak credentials don't work, so we can move on first.
 
 Port 8000 had another login page:
 
-<figure><img src="../../../.gitbook/assets/image (3782).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3782).png>)
 
 `admin:admin` worked for this one, and we were brought to a IP Phone instance, which matches the name of the box being Voice over IP:
 
-<figure><img src="../../../.gitbook/assets/image (3589).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3589).png>)
 
 Within the logs tab, we can see that there were some calls being logged:
 
-<figure><img src="../../../.gitbook/assets/image (3447).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3447).png>)
 
 Within the Configuration tab, there was some XML looking output. Here's it below:
 
@@ -146,25 +146,25 @@ Using this worked and we managed to get a hashed password:
 $ python3 sipdigestleak.py -i 192.168.152.156
 ```
 
-<figure><img src="../../../.gitbook/assets/image (261).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(261).png>)
 
 This hash cracks easily:
 
-<figure><img src="../../../.gitbook/assets/image (1905).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1905).png>)
 
 With this, we can login to port 80 as `adm_sip`.
 
-<figure><img src="../../../.gitbook/assets/image (3780).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3780).png>)
 
 ### Audio File -> SSH Creds
 
 We can view the CDR (Call Data Records) and find that one of them is raw, which allows us to download it:
 
-<figure><img src="../../../.gitbook/assets/image (493).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(493).png>)
 
 This is a raw audio file, and we need to convert it using `sox`. We can find the exact configurations required in the Stream Rates tab on the left:
 
-<figure><img src="../../../.gitbook/assets/image (2039).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2039).png>)
 
 Then, we can convert this to a `wav` file:
 
@@ -182,7 +182,7 @@ Your password has been changed to Password1234 where the P is capital.
 
 Interesting. We have a username, but not a password. This was the part I got stuck at for a long time. I tried some usernames like `voip`, `zoiper`, and `voiper` because those were popular softwares used with VoIP, and `voiper` worked:
 
-<figure><img src="../../../.gitbook/assets/image (1991).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1991).png>)
 
 ## Privilege Escalation
 
@@ -199,6 +199,6 @@ User voiper may run the following commands on VOIP:
     (ALL : ALL) ALL
 ```
 
-<figure><img src="../../../.gitbook/assets/image (4085).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4085).png>)
 
 Rooted!

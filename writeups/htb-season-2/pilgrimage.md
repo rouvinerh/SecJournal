@@ -22,11 +22,11 @@ We have to add `pilgrimage.htb` to our `/etc/hosts` file to view the web applica
 
 The website offers a service to shrink images.
 
-<figure><img src="../../.gitbook/assets/image (1717).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1717).png>)
 
 If we upload an image, we would get back a URL:
 
-<figure><img src="../../.gitbook/assets/image (536).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(536).png>)
 
 Interesting! This image is probably being passed somewhere into a command line instance. Anyways, before going that route, I did a directory and subdomain enumeration first using `gobuster` and `wfuzz`.
 
@@ -178,17 +178,15 @@ $ identify -verbose ~/Downloads/64980052771c0.png
 
 If we convert this to text, we would get the `/etc/passwd` file, meaning it worked:
 
-<figure><img src="../../.gitbook/assets/image (1392).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1392).png>)
 
 Now we can replace the file with `/var/db/pilgrimage`. This would give us a humongous hex output, and after removing the irrelevant parts, we can convert it using `xxd` to get a SQLite file.
 
-{% code overflow="wrap" %}
 ```
 $ cat output| xxd -r -p > db
 $ file db
 db: SQLite 3.x database, last written using SQLite version 3034001, file counter 69, database pages 5, cookie 0x4, schema 4, UTF-8, version-valid-for 69
 ```
-{% endcode %}
 
 We can use `sqlite3` to view the file and find some credentials:
 
@@ -199,7 +197,7 @@ emily|abigchonkyboi123
 
 Then, we can `ssh` as the user `emily`.
 
-<figure><img src="../../.gitbook/assets/image (990).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(990).png>)
 
 ## Privilege Escalation
 
@@ -271,6 +269,6 @@ You can now rename and share binwalk_exploit and start your local netcat listene
 
 Afterwards, we can download this file to the `/var/www/pilgrimage.htb/shrunk` folder as anything. If you monitor `pspy64` output, this would cause the `malwarescan.sh` script to be run, and our listener port would have a reverse shell!
 
-<figure><img src="../../.gitbook/assets/image (2697).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2697).png>)
 
 Rooted!

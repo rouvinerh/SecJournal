@@ -10,7 +10,7 @@ description: >-
 
 As usual, we begin with our enumeration process.
 
-<figure><img src="../../../.gitbook/assets/image (3905).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3905).png>)
 
 Loads of ports open as per a normal AD machine. Nothing about the SMB shares was found.
 
@@ -18,13 +18,13 @@ Loads of ports open as per a normal AD machine. Nothing about the SMB shares was
 
 When viewing the website, we can see the bottom of the page to get a possible domain.
 
-<figure><img src="../../../.gitbook/assets/image (2623).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2623).png>)
 
 With this, we could fuzz out some hidden vhosts on the machine with gobuster. Turns out there is a `school.flight.htb` present. We can add both of these into our hosts file and proceed to enumerate the school website.
 
-<figure><img src="../../../.gitbook/assets/image (1486).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1486).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2895).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2895).png>)
 
 ### Responder Hash
 
@@ -32,29 +32,29 @@ When clicking the about us page, we can see the URL and find that it might conta
 
 
 
-<figure><img src="../../../.gitbook/assets/image (961).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(961).png>)
 
 We can set up a quick Python server and check this URL to find that we can receive a hit from the server.
 
-<figure><img src="../../../.gitbook/assets/image (433).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(433).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3673).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3673).png>)
 
 Since this is a AD machine, perhaps we can get some shares and intercept the response using Responder.
 
-<figure><img src="../../../.gitbook/assets/image (1562).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1562).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2003).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2003).png>)
 
 We can crack this easily using John.
 
-<figure><img src="../../../.gitbook/assets/image (3414).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3414).png>)
 
 ### SMB Shares
 
 With these credentials, we can view the shares that are present on this machine.
 
-<figure><img src="../../../.gitbook/assets/image (1909).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1909).png>)
 
 The ones to investigate are Users, Web and Shared.
 
@@ -62,7 +62,7 @@ The ones to investigate are Users, Web and Shared.
 
 In users, we can find that there is C.Bum user.
 
-<figure><img src="../../../.gitbook/assets/image (2589).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2589).png>)
 
 ### Desktop.ini
 
@@ -78,7 +78,7 @@ As such, the next step was to replace this file with our own malicious file to m
 
 Based on that, we can create our own malicious .ini file and replace the one that is in the Shared share.
 
-<figure><img src="../../../.gitbook/assets/image (3910).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3910).png>)
 
 However, I cannot put this file on the directory using svc\_apache, so we would need to enumerate some other users first.
 
@@ -86,29 +86,29 @@ However, I cannot put this file on the directory using svc\_apache, so we would 
 
 Crackmapexec can enumerate users using the credentials we found.
 
-<figure><img src="../../../.gitbook/assets/image (1545).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1545).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2459).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2459).png>)
 
 Then we can gather these users into a file and brute force, checking for any password re-use. We can find that the S.Moon user seems to work.
 
-<figure><img src="../../../.gitbook/assets/image (872).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(872).png>)
 
 ### Retrieving Hash
 
 Now, we can upload our file as S.Moon and proceed to retrieve the hash.
 
-<figure><img src="../../../.gitbook/assets/image (2168).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2168).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3653).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3653).png>)
 
 Cracking, the hash, we get C.Bum's password.
 
-<figure><img src="../../../.gitbook/assets/image (3289).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3289).png>)
 
 We still cannot evil-winrm in, so we need to find another way. In the meantime, one can capture the flag using the c.bum credentials to access his desktop.
 
-<figure><img src="../../../.gitbook/assets/image (2058).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2058).png>)
 
 ### Gaining Shell
 
@@ -116,23 +116,23 @@ Since we do have another share called Web, perhaps we can upload a simple web sh
 
 I tried this method using a cmd.php basic web shell.
 
-<figure><img src="../../../.gitbook/assets/image (2199).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2199).png>)
 
 This works in getting me a shell as svc\_apache.
 
-<figure><img src="../../../.gitbook/assets/image (1958).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1958).png>)
 
 I guess we can just get a reverse shell as svc\_apache. Use whatever method you'd like, I decided for the lazy nc.exe method.
 
-<figure><img src="../../../.gitbook/assets/image (1141).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1141).png>)
 
 As this user, because we have credentials for another user, we can use the runas.exe binary to gain RCE as C.Bum and proceed from there.
 
-<figure><img src="../../../.gitbook/assets/image (1674).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1674).png>)
 
 We would receive a shell as c.bum on whatever port we are on.
 
-<figure><img src="../../../.gitbook/assets/image (1369).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1369).png>)
 
 {% embed url="https://github.com/antonioCoco/RunasCs" %}
 
@@ -142,11 +142,11 @@ Now that we are c.bum, we can look around this machine.
 
 Within the C:\inetpub directory, there's an interesting folder called development.
 
-<figure><img src="../../../.gitbook/assets/image (2350).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2350).png>)
 
 This was interesting as it suggested that perhaps there was another port listening on the localhost.  Sure enough, there was a service listening on port 8000 that was not detected by nmap earlier.
 
-<figure><img src="../../../.gitbook/assets/image (2111).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2111).png>)
 
 When curled, it reveals a webpage tha matches the index.html file in the development server. For now, we can do some port forwarding to access it.
 
@@ -154,31 +154,31 @@ When curled, it reveals a webpage tha matches the index.html file in the develop
 
 For this machine, I used chisel to tunnel and we can access the website on 127.0.0.1:8000.
 
-<figure><img src="../../../.gitbook/assets/image (1229).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1229).png>)
 
 When viewing the web service, we can see that there are errors because there is no default configuration for this IIS server.
 
-<figure><img src="../../../.gitbook/assets/image (1287).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1287).png>)
 
 Since this is an IIS server, we can actually generate a aspx reverse shell using MSFVenom and upload it to that directory to gain another reverse shell.
 
 ### ASP Shell
 
-<figure><img src="../../../.gitbook/assets/image (356).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(356).png>)
 
 Then, upload this to the website through wget and put it within the C:\inetpub\development directory which can be accessed through the chisel server.
 
-<figure><img src="../../../.gitbook/assets/image (956).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(956).png>)
 
 Afterwards, we would receive a shell as another service account.
 
-<figure><img src="../../../.gitbook/assets/image (881).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(881).png>)
 
 ### JuicyPotato
 
 A quick check on the privileges of this user reveals we have the SeImpersonatePrivilege.
 
-<figure><img src="../../../.gitbook/assets/image (2977).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2977).png>)
 
 There are no printers on this machine, so we have to go with JuicyPotato to impersonate the administrator and finish this machine. The usage of PrintSpoofer does not work on this machine.
 
@@ -188,6 +188,6 @@ For this machine, I used JuicyPotatoNG, which is sort of a faster version of the
 
 Then, we can easily become the administrator!
 
-<figure><img src="../../../.gitbook/assets/image (2439).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2439).png>)
 
 This machine was really long, but really interesting as well. Simple exploits that required a bit more enumeration and time then the average.

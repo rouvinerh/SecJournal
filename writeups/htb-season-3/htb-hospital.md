@@ -339,7 +339,6 @@ I tried to login as `drwilliams@hospital.htb` on the webmail instance on port 44
 
 There was one email, and it contained this:
 
-{% code overflow="wrap"%}
 ```
 Dear Lucy,
 
@@ -355,7 +354,6 @@ Chris Brown.
 😃
 ```
 
-{% endcode %}
 
 `.eps` and GhostScript signifies that I might have to send a phishing email to gain RCE as another user.
 

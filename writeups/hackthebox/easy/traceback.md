@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (988).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(988).png>)
 
 ### Finding Backdoor
 
 Going to the website revealed that this website has some sort of backdoor left on it.
 
-<figure><img src="../../../.gitbook/assets/image (467).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(467).png>)
 
 Reading the page source gave another hint:
 
-<figure><img src="../../../.gitbook/assets/image (1879).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1879).png>)
 
 For this, we can google 'Some of the best web shells that you might need' and be directed to this repository:
 
@@ -22,15 +22,15 @@ For this, we can google 'Some of the best web shells that you might need' and be
 
 From there, we can create a wordlist of all the possible shells that are available, and use `gobuster` on the website. We would find that `smevk.php` is on the website.
 
-<figure><img src="../../../.gitbook/assets/image (3511).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3511).png>)
 
 We can login with `admin:admin` and then find a functioning PHP web shell.
 
-<figure><img src="../../../.gitbook/assets/image (551).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(551).png>)
 
 Using the Execute part, we can gain a reverse shell on the machine as the `webadmin` user.
 
-<figure><img src="../../../.gitbook/assets/image (167).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(167).png>)
 
 ## Privilege Escalation
 
@@ -38,21 +38,21 @@ Using the Execute part, we can gain a reverse shell on the machine as the `webad
 
 We can first check our sudo privileges.
 
-<figure><img src="../../../.gitbook/assets/image (3324).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3324).png>)
 
 There's also a message left behind by the `sysadmin` user.
 
-<figure><img src="../../../.gitbook/assets/image (1063).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1063).png>)
 
 `luvit` is a CLI tool that can be used to execute LUA code. Since we can use sudo on it, we can simply spawn in another shell using `os.execute()`.
 
-<figure><img src="../../../.gitbook/assets/image (2219).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2219).png>)
 
 ### Motd-d
 
 When running LinPEAS, we can find that there are some interesting files we can write to:
 
-<figure><img src="../../../.gitbook/assets/image (3790).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3790).png>)
 
 To exploit this, we would need to trigger the message to be displayed through SSH. As such, we can create a public key and echo it into the `authorized_keys` file for `sysadmin`. Afterwards, we need to execute this command:
 
@@ -62,4 +62,4 @@ echo "cp /bin/bash /home/sysadmin/bash && chmod u+s /home/sysadmin/bash" >> 00-h
 
 This would create a `bash` SUID binary for us to escalate privileges. This 00-header file would need to be placed within the `/etc/update-motd.d/` file and then we can SSH in. Afterwards, spawning a root shell is simple.
 
-<figure><img src="../../../.gitbook/assets/image (1987).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1987).png>)

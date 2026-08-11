@@ -24,7 +24,7 @@ We have to add `academy.htb` to our `/etc/hosts` file to visit the HTTP site.
 
 This box was created to introduce HTB Academy I think:
 
-<figure><img src="../../../.gitbook/assets/image (2731).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2731).png>)
 
 There is a Login and Register page. We can try to register a user since we don't have credentials. While intercepting responses, we can see the HTTP request for registering:
 
@@ -50,7 +50,7 @@ uid=test123&password=test123&confirm=test123&roleid=0
 
 There's a `roleid` parameter which we can change to 1 and see what happens. When logged in, it shows a lot of HTB Academy related content:
 
-<figure><img src="../../../.gitbook/assets/image (458).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(458).png>)
 
 This was a PHP site, so I started a `gobuster` scan to enumerate the possible directories:
 
@@ -101,7 +101,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Because of the changed `roleid` parameter earlier, we can access the `admin.php` page:
 
-<figure><img src="../../../.gitbook/assets/image (867).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(867).png>)
 
 There was another subdomain present on the site.
 
@@ -109,11 +109,11 @@ There was another subdomain present on the site.
 
 When we visit the new domain, we are greeted with a Laravel debuggin issue:
 
-<figure><img src="../../../.gitbook/assets/image (749).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(749).png>)
 
 On this page, we can find a load of information, even the APP\_KEY used for the website:
 
-<figure><img src="../../../.gitbook/assets/image (2226).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2226).png>)
 
 Googling the term 'Laravel exploit with APP\_KEY' returned this Github Repo:
 
@@ -121,11 +121,11 @@ Googling the term 'Laravel exploit with APP\_KEY' returned this Github Repo:
 
 This CVE works!
 
-<figure><img src="../../../.gitbook/assets/image (2041).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2041).png>)
 
 We can then get an easy reverse shell as `www-data`.
 
-<figure><img src="../../../.gitbook/assets/image (623).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(623).png>)
 
 ## Privilege Escalation
 
@@ -205,12 +205,10 @@ apache2/error.log
 
 The `audit` directory is not an original Linux log file. Within the `audit.log` file, I found that the user `mrb3n` was executing commands:
 
-{% code overflow="wrap" %}
 ```
 type=USER_AUTH msg=audit(1612880436.217:92): pid=964 uid=0 auid=4294967295 ses=4294967295 msg='op=PAM:authentication grantors=pam_permit,pam_cap acct="mrb3n" exe="/usr/bin/login" hostname=academy addr=? terminal=/dev/tty1 res=success'
 type=CRED_REFR msg=audit(1612880564.412:120): pid=1353 uid=0 auid=1001 ses=1 msg='op=PAM:setcred grantors=pam_permit,pam_cap acct="mrb3n" exe="/usr/bin/sudo" hostname=academy addr=? terminal=/dev/tty1 res=success
 ```
-{% endcode %}
 
 There are also some commands that are encoded in hex for some reason. While looking at `audit.log.3`, I found this command:
 
@@ -250,6 +248,6 @@ echo '{"scripts":{"x":"/bin/sh -i 0<&3 1>&3 2>&3"}}' >$TF/composer.json
 sudo composer --working-dir=$TF run-script x
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1361).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1361).png>)
 
 Rooted!

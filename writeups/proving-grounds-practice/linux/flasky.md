@@ -40,21 +40,21 @@ Based on the box name, we are likely dealing with a Flask application here.
 
 Port 5555 just shows us a login page:
 
-<figure><img src="../../../.gitbook/assets/image (280).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(280).png>)
 
 We don't have any credentials, so let's move on for now.
 
 Port 20202 shows us another login page:
 
-<figure><img src="../../../.gitbook/assets/image (183).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(183).png>)
 
 We can use the guest access to view the dashboard, and hints towards abusing JWT:
 
-<figure><img src="../../../.gitbook/assets/image (215).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(215).png>)
 
 We can take a look at the cookie value assigned to us:
 
-<figure><img src="../../../.gitbook/assets/image (758).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(758).png>)
 
 We can easily change this to exploit it. I also ran a `gobuster` scan and found an admin directory:
 
@@ -80,11 +80,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Visiting it just shows us this:
 
-<figure><img src="../../../.gitbook/assets/image (210).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(210).png>)
 
 Running scans against both of these directories show nothing. I checked the requests in Burp, and there are some allowed methods:
 
-<figure><img src="../../../.gitbook/assets/image (1639).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1639).png>)
 
 We can send POST and OPTIONS requests to this, but we first need to modify our cookie. The JWT cookie has 3 parts, the encryption type, the actual data and the signature. Since we know there's a problem with the JWT, we can abuse this by replacing the encryption type and the payload:
 
@@ -97,11 +97,9 @@ eyJpZCI6ICIwIiwiZ3Vlc3QiOiAiZmFsc2UiLCJhZG1pbiI6IHRydWV9
 
 For the signature, since we did not specify an algorithm, we can leave it blank. The full token is thus:
 
-{% code overflow="wrap" %}
 ```
 eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJpZCI6ICIwIiwiZ3Vlc3QiOiAiZmFsc2UiLCJhZG1pbiI6IHRydWV9.
 ```
-{% endcode %}
 
 We can then send an empty login request to generate a POST request in Burpsuite, and then modify it to include our JWT token:
 
@@ -127,17 +125,17 @@ username=wwwwww&password=w
 
 When we load the request in a Browser, we would see the admin dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (3997).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3997).png>)
 
 ### Config -> SSH Creds
 
 At the bottom, we can see users making posts about the configuration files:
 
-<figure><img src="../../../.gitbook/assets/image (1623).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1623).png>)
 
 This step took forever, but I eventually found the config file at `cisco_config`.
 
-<figure><img src="../../../.gitbook/assets/image (3831).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3831).png>)
 
 These are Cisco Type 7 passwords, which can be decrypted here:
 
@@ -147,7 +145,7 @@ We can then try each password with `ssh`, finding that `john:NezukoCh@n` works.
 
 
 
-<figure><img src="../../../.gitbook/assets/image (1640).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1640).png>)
 
 ## Privilege Escalation
 
@@ -232,7 +230,7 @@ eyJsb2dnZWRfaW4iOnRydWV9.ZLI_rA.WmTcl0Wa5jOy8ajsJvWhn6npDKA
 
 This allows us to access the calculator application:
 
-<figure><img src="../../../.gitbook/assets/image (1274).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1274).png>)
 
 The source code uses `eval` to calculate the results, which is vulnerable to RCE. We can just inject Python code like this:
 
@@ -258,6 +256,6 @@ value1=os.system("chmod+u%2bs+/bin/bash")&value2=1
 
 Then, we can become `root`:
 
-<figure><img src="../../../.gitbook/assets/image (363).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(363).png>)
 
 Rooted!

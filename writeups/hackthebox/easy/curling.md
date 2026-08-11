@@ -19,15 +19,15 @@ PORT      STATE    SERVICE
 
 The page was some type of blog.
 
-<figure><img src="../../../.gitbook/assets/image (1690).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1690).png>)
 
 In one of the posts, there's a user called `floris`.
 
-<figure><img src="../../../.gitbook/assets/image (2975).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2975).png>)
 
 The page source also had a hidden file:
 
-<figure><img src="../../../.gitbook/assets/image (3757).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3757).png>)
 
 Within it, it had a base64-encoded string. We can pipe the output and decode it:
 
@@ -77,21 +77,21 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Loads of directories. The `/administrator` directory had a Joomla login:
 
-<figure><img src="../../../.gitbook/assets/image (4089).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4089).png>)
 
 We can login using `floris:Curling2018!`.
 
-<figure><img src="../../../.gitbook/assets/image (153).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(153).png>)
 
 We can follow the instructions from Hacktrikcs to get RCE on this website by creating new PHP Templates.
 
 {% embed url="https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/joomla#rce" %}
 
-<figure><img src="../../../.gitbook/assets/image (700).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(700).png>)
 
 Then we can get a reverse shell using a `bash` one-liner.
 
-<figure><img src="../../../.gitbook/assets/image (403).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(403).png>)
 
 ## Privilege Escalation
 
@@ -123,7 +123,7 @@ www-data@curling:/home/floris$ cat password_backup
 
 It appears that the `hexdump` of the original file was taken and this is what is left. We can reverse this with `xxd -r`.
 
-<figure><img src="../../../.gitbook/assets/image (1249).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1249).png>)
 
 This file turns out to be loads of zip files, so we have to do `bunzip2` and `gunzip` twice and `tar` once. Eventually, we will end up with this file:
 
@@ -134,7 +134,7 @@ $ cat password.txt
 
 We can use this to `su` to `floris`.
 
-<figure><img src="../../../.gitbook/assets/image (3594).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3594).png>)
 
 ### To Root
 
@@ -201,6 +201,6 @@ output = "/etc/passwd"
 
 After the machine has downloaded the file, we can just `su` to our new user.
 
-<figure><img src="../../../.gitbook/assets/image (1836).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1836).png>)
 
 Rooted!

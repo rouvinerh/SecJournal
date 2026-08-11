@@ -25,7 +25,7 @@ This is supposed to be an AD machine, so seeing such few ports is kinda new.
 
 Port 80 has a corporate page of some hosting service company thing:
 
-<figure><img src="../../../.gitbook/assets/image (1009).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1009).png>)
 
 Most of the text is just placeholder text. I added `gigantichosting.com` to my `/etc/hosts` file. Running `gobuster` and `wfuzz` for directory and subdomain searches return nothing of interest. I think we'll come back to this later.
 
@@ -272,7 +272,7 @@ SOFTWARE\GiganticHostingManagementSystem\
 
 Then, we can `evil-winrm` in:
 
-<figure><img src="../../../.gitbook/assets/image (1337).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1337).png>)
 
 ## Privilege Escalation
 
@@ -298,13 +298,11 @@ Windows Defender was also active on this machine because my `winpeas.exe` was de
 
 I enumerated this machine manually because Defender was present. There was a Powershell History file present:
 
-{% code overflow="wrap" %}
 ```
 *Evil-WinRM* PS C:\Users\henry.vinson_adm\APPDATA\Roaming\Microsoft\Windows\Powershell\PSReadline> cat ConsoleHost_history.txt
 $Cred = get-credential administrator
 invoke-command -credential $Cred -computername localhost -scriptblock {Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" lmcompatibilitylevel -Type DWORD -Value 2 -Force}
 ```
-{% endcode %}
 
 This command basically states that NTLMv1 is enabled on this machine instead of the more secure NTLMv2. This opens up the potential for NTLM stealing.
 
@@ -320,7 +318,7 @@ Scan starting...
 CmdTool: Failed with hr = 0x80508023. Check C:\Users\HENRY~2.VIN\AppData\Local\Temp\MpCmdRun.log for more information
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1470).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1470).png>)
 
 We now have an NTLMv1 hash! Googling how to crack this leads me to this site:
 
@@ -340,6 +338,6 @@ Administrator:500:aad3b435b51404eeaad3b435b51404ee:c370bddf384a691d811ff3495e8a7
 
 Afterwards, we can use this hash to `evil-winrm` into the machine.
 
-<figure><img src="../../../.gitbook/assets/image (364).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(364).png>)
 
 A unique machine that was rather difficult for me. I definitely needed to use a writeup for this one, or I would still be stuck at the RPC part. Rooted!

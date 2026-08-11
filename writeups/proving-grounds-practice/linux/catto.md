@@ -68,39 +68,38 @@ PORT      STATE SERVICE VERSION
 
 Port 8080 shows a portfolio page:
 
-<figure><img src="../../../.gitbook/assets/image (1761).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1761).png>)
 
 It was rather static, so I moved to port 30330. This page had some book reviews:
 
-<figure><img src="../../../.gitbook/assets/image (3843).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3843).png>)
 
 This page looked more dynamic, so I ran a directory scan with `feroxbuster`, which found nothing of interest. Since we couldn't find anything with wordlists, I took a look through the local files:
 
 There were a few interesting folders:
 
-<figure><img src="../../../.gitbook/assets/image (483).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(483).png>)
 
 There wasn't much within the folders. On the 'Using Typescript' page, there was a link to documentation:
 
-<figure><img src="../../../.gitbook/assets/image (1525).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1525).png>)
 
 {% embed url="https://www.gatsbyjs.com/docs/how-to/custom-configuration/typescript/" %}
 
 On the documentation page, there was mention of GraphQL being used, and sure enough `/__graphql` was a valid directory on the website as per the documentation:
 
-<figure><img src="../../../.gitbook/assets/image (3582).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3582).png>)
 
 The left had some queries already valid, so I checked those out. Using the `allSitePage` reveals all directories, including a hidden one:
 
-<figure><img src="../../../.gitbook/assets/image (901).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(901).png>)
 
 Visiting it reveals a password:
 
-<figure><img src="../../../.gitbook/assets/image (1768).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1768).png>)
 
 This was a password to a Minecraft server. We didn't have a user, but the Minecraft page had some that we could try:
 
-{% code overflow="wrap" %}
 ```
 Minecraft: The Island by Max Brooks, #1 New York Times bestselling author of World War Z, is the first official Minecraft novel. In the tradition of iconic stories like Robinson Crusoe and Treasure Island, Minecraft: The Island will tell the story of a new hero stranded in the world of Minecraft, who must survive the harsh, unfamiliar environment and unravel the secrets of the island.
 
@@ -108,7 +107,6 @@ We loved this book so much that created a server. Already invited and added kera
 
 Good luck everybody!
 ```
-{% endcode %}
 
 We can gather all the usernames into one wordlist:
 
@@ -141,7 +139,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2023-07-12 15:20:
 
 We can then `ssh` in as `marcus`:
 
-<figure><img src="../../../.gitbook/assets/image (1770).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1770).png>)
 
 ## Privilege Escalation
 
@@ -188,4 +186,4 @@ SortMentionLeast269
 
 We can then `su` to `root`:
 
-<figure><img src="../../../.gitbook/assets/image (2591).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2591).png>)

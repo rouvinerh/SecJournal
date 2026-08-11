@@ -4,11 +4,11 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (4046).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4046).png>)
 
 An Nmap vuln scan reveals there is a `robots.txt` file on port 80.
 
-<figure><img src="../../../.gitbook/assets/image (2243).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2243).png>)
 
 We can head to that directly.
 
@@ -16,19 +16,19 @@ We can head to that directly.
 
 The robots.txt file gave us the `/admin-dir` directory.
 
-<figure><img src="../../../.gitbook/assets/image (2397).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2397).png>)
 
 However, visiting it gives us a 403.
 
-<figure><img src="../../../.gitbook/assets/image (2116).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2116).png>)
 
 I used `gobuster` on this directory and found a `credentials.txt` file.
 
-<figure><img src="../../../.gitbook/assets/image (1739).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1739).png>)
 
 We can view this file to find some FTP credentials.
 
-<figure><img src="../../../.gitbook/assets/image (829).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(829).png>)
 
 Then, we can login to FTP.
 
@@ -36,23 +36,23 @@ Then, we can login to FTP.
 
 Within FTP, we can find a backup of the website.
 
-<figure><img src="../../../.gitbook/assets/image (251).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(251).png>)
 
 When we extract this file and unzip it, we would be able to find a few directories of use.
 
-<figure><img src="../../../.gitbook/assets/image (1011).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1011).png>)
 
 There are 2 directories, the `utility-scripts` and `w4ld0s` stuff. The secret directory revealed one more credential.
 
-<figure><img src="../../../.gitbook/assets/image (2552).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2552).png>)
 
 The utility-scripts folder revealed some database credentials.
 
-<figure><img src="../../../.gitbook/assets/image (219).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(219).png>)
 
 The `index.php` folder also revealed some credentials.
 
-<figure><img src="../../../.gitbook/assets/image (761).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(761).png>)
 
 Afterwards, I was stumped here because I did not find any place to work on this. I understood that there was some kind of admirer-sounding application running somewhere, but gobuster was revealing nothing. Then, googling loads led me to the Adminer software, which was accessible on this website at `adminer.php`.
 
@@ -60,7 +60,7 @@ Afterwards, I was stumped here because I did not find any place to work on this.
 
 So far, none of the credentials work with FTP or SSH. The next logical step is to take a look at this directory to find an Adminer instance at `/utility-scripts/adminer.php`.
 
-<figure><img src="../../../.gitbook/assets/image (1898).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1898).png>)
 
 Adminer is a tool for managing MySQL databases within the machine. There is one specific LFI that can be exploited here:
 
@@ -95,7 +95,7 @@ This credential works with SSH as waldo.
 
 It seems that we have permission to set the environment variables for this script.
 
-<figure><img src="../../../.gitbook/assets/image (2434).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2434).png>)
 
 This was the script:
 
@@ -250,7 +250,6 @@ Afterwards, we need to find a directory that works. For some reason, the `/home/
 
 A quick Python script to echo our public key into the authorized\_key folder AND create a SUID binary should work:
 
-{% code overflow="wrap" %}
 ```python
 #!/usr/bin/python3
 
@@ -262,12 +261,11 @@ def make_archive(a,b,c):
 os.system("mkdir -p /root/.ssh; echo '<KEY>' >> /root/.ssh/authorized_keys")
 os.system('cp /bin/bash /var/tmp/.user; chown root:root /var/tmp/.user; chmod 4755 /var/tmp/.user')
 ```
-{% endcode %}
 
 Afterwards, we can change the PYTHONPATH used for the script.
 
-<figure><img src="../../../.gitbook/assets/image (1603).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1603).png>)
 
 Then, we can SSH in as root using the key we have.
 
-<figure><img src="../../../.gitbook/assets/image (3723).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3723).png>)

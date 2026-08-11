@@ -121,13 +121,11 @@ alex
 
 The first username might need some permutation, so I included some combinations in my username list. We can then use `impacket-GetNPUsers` since we have a username list:
 
-{% code overflow="wrap" %}
 ```
 $ impacket-GetNPUsers -dc-ip LicorDeBellota.htb -usersfile users -outputfile hashes LicorDeBellota.htb/
 $ cat hashes    
 $krb5asrep$23$Kaorz@LICORDEBELLOTA.HTB:2df046b679a372879de71bc55877ee5a$af8417e1369a1eff28a23fddbb66829fc7ffea53b61ba17e1d016a6f4ed97d98e18cce9b7111a8d78d987d2e1e7b46bfb059f3c8e0006f79647044b6cc5ac9ccc034c4b9df370913173c4abe6343c12bd2cc6e06fe9051f9d7c27354932dc438cdbc853ba6f64597b400071a17a76259d9608229c6143876b520fed634d1c0dfdcda4f67c590e3413dda42c0457f7cc79245297762a556c76f242b2b62f868522ac0df5b8d252389d7c2d7b7522f6e0b3d5b9d60f89bcdfcce838e471f1a454cc95a1260c50ed1fee9e11f24faa0f1203d47f5f0ab6693deeec655fe185c9991e77fa5705a7166bbfca60a886d7346820fc183a5c576359f
 ```
-{% endcode %}
 
 This works! The hash can be easily cracked using `john`.
 
@@ -228,11 +226,11 @@ INFO: Done in 00M 02S
 
 Afterwards, start `neo4j` and `bloodhound`. The names of the box are in Spanish, so take note of that. However, the `bloodhound` graph showcased nothing of interest for our current user and we have no privileges. When looking at all domain users, we find a `svc_mssql` user present:
 
-<figure><img src="../../../.gitbook/assets/image (1949).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1949).png>)
 
 The `nmap` scan earlier shows that port 1433 is indeed open. Checking this user's group memberships shows that it is part of the WinRM group, which is in turn part of the Remote Administration Group (I think).
 
-<figure><img src="../../../.gitbook/assets/image (4059).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4059).png>)
 
 The steps are rather clear, we need to somehow reverse engineer that `.exe` file to gain a shell as the `svc_mssql` user.
 
@@ -240,28 +238,26 @@ The steps are rather clear, we need to somehow reverse engineer that `.exe` file
 
 I transferred this over to my Windows VM. Running it seems to do nothing oddly:
 
-<figure><img src="../../../.gitbook/assets/image (2382).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2382).png>)
 
 I took a look at the logs created using Sysmon, and found some weird commands being executed. Firstly, this thing created a `.bat` file:
 
-<figure><img src="../../../.gitbook/assets/image (785).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(785).png>)
 
 Afterwards, it used it ot do something else:
 
-<figure><img src="../../../.gitbook/assets/image (431).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(431).png>)
 
 It also seems that this file is being destroyed by the binary after running. To catch this file, we would have to use a Powershell infinite loop that would keep checking for both directories and the `.bat` file being created, and then read the output of it.
 
 It was rather difficult to catch this `.bat` file for some reason, and I took a lot of runs before being able to. I used a simple Powershell loop that reads the file:
 
-{% code overflow="wrap" %}
 ```powershell
 Get-ChildItem -Path C:\users\user\AppData\Local\Temp\ -Recurse -Filter *.bat | ForEach-Object { copy $_.fullname .\$_name ; echo $_.name }
 
 ## in another PS shell
 while ($true) { .\Restart-OracleService.exe }
 ```
-{% endcode %}
 
 Afterwards, I was able to copy the file and view its contents. It's rather long, so I'll truncate it a bit:
 
@@ -321,11 +317,11 @@ PS C:\ProgramData> .\restart-service.exe
 
 It doesn't generate any logs of interest in Sysmon, so we have to delve deeper into the processes spawned. In this case, I used API Monitor to do this. When I ran the binary within API monitor, it generated quite a lot of stuff. I disabled the filter to view everything:
 
-<figure><img src="../../../.gitbook/assets/image (233).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(233).png>)
 
 I tried searching for 'Password' and found it here!
 
-<figure><img src="../../../.gitbook/assets/image (1131).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1131).png>)
 
 ### MS-SQL Access -> PrintSpoof Fail
 
@@ -335,15 +331,14 @@ The password was contained both `oracle` and `2010`. I was stuck here for a long
 
 Anyways, we can then access the database as the `sa` user.
 
-<figure><img src="../../../.gitbook/assets/image (1618).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1618).png>)
 
 Next, we can check whether we have `xp_cmdshell` access.
 
-<figure><img src="../../../.gitbook/assets/image (2413).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2413).png>)
 
 We do! I looked around the file system to find some interesting stuff. First, I checked the users:
 
-{% code overflow="wrap" %}
 ```
 08/08/2020  19:46    <DIR>          .                                                                                                                                                                                                                             
 08/08/2020  19:46    <DIR>          ..                                                                                                                                                                                                                            
@@ -356,7 +351,6 @@ We do! I looked around the file system to find some interesting stuff. First, I 
 08/08/2020  19:22    <DIR>          superfume                                                                                                                                                                                                                     
 08/08/2020  19:45    <DIR>          svc_mssql
 ```
-{% endcode %}
 
 I cannot access any of these files as my current user, which is quite annoying. The next thing to check would be our privileges, since we are in fact, a service account user. This means that we can potentially have the `SeImpersonatePrivilege` enabled, which we do!
 
@@ -381,11 +375,11 @@ When googling for MSSQL Shells with upload capabilities, I came across this:
 
 This shell works after changing the credentials:
 
-<figure><img src="../../../.gitbook/assets/image (2384).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2384).png>)
 
 Now, we can upload `PrintSpoofer.exe` to the machine.
 
-<figure><img src="../../../.gitbook/assets/image (3853).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3853).png>)
 
 However, this just doesn't work for some reason. I think the author must've patched the usage of PrintSpoofer, because in theory it would lead to an automatic root shell.
 
@@ -421,11 +415,11 @@ In this case, we would have to proxy our traffic using the MSSQL instance someho
 
 We can download the compiled DLLs and modified `mssqslclient.py` file onto our Kali machine. Then, we can use our UPLOAD shell to upload the `reciclador.dll` file:
 
-<figure><img src="../../../.gitbook/assets/image (2908).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2908).png>)
 
 Then we can install the `assembly.dll` file (which has been renamed).
 
-<figure><img src="../../../.gitbook/assets/image (3307).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3307).png>)
 
 Then we can runthe same command using `-start -reciclador 'C:\Windows\Temp\reciclador.dll`.
 
@@ -518,7 +512,7 @@ Notes:
 
 Then, we can finally access the user here:
 
-<figure><img src="../../../.gitbook/assets/image (546).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(546).png>)
 
 ## Privilege Escalation
 
@@ -526,11 +520,11 @@ Then, we can finally access the user here:
 
 Now that we have a new user to play with, we should take a look at the Bloodhound output again. Here, we find that our current user has `GenericAll` privileges over some other users:
 
-<figure><img src="../../../.gitbook/assets/image (3595).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3595).png>)
 
 Only the `Dr.Zaiuss` has a file in `C:\Users`, so that's the next step. We also find that this user has control over `superfume`, which in turn is part of the Developers group:
 
-<figure><img src="../../../.gitbook/assets/image (348).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(348).png>)
 
 Those are the next obvious steps.
 
@@ -549,11 +543,11 @@ Since `dr.zaiuss` is not part of the SSH group, we have to port forward via `ssh
 $ sshpass -p 'Gu4nCh3C4NaRi0N!23' ssh -L 5985:127.0.0.1:5985 3V4Si0N@LicorDeBellota.htb
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1452).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1452).png>)
 
 Then, we can upload PowerView.ps1 and run the same commands with `superfume` this time. Since `superfume` is also not part of the SSH group, we can just use `evil-winrm` again:
 
-<figure><img src="../../../.gitbook/assets/image (3057).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3057).png>)
 
 ### Developer RE -> Creds
 
@@ -706,19 +700,19 @@ It appears we have another Reverse Engineering to do. There are some credentials
 
 Since they provided the source code in C#, I opened this binary up in `dnSpy`. In this, we see the completed program with the correct cipher:
 
-<figure><img src="../../../.gitbook/assets/image (1031).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1031).png>)
 
 We can set a breakpoint at the `Console.WriteLine` function, which is right after the `Decrypt` function. Then, within the local variables, we would see this part here:
 
-<figure><img src="../../../.gitbook/assets/image (2369).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2369).png>)
 
 The `array` variable contains the decoded password, and we can convert all of this to text.
 
-<figure><img src="../../../.gitbook/assets/image (3330).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3330).png>)
 
 We can then grab access to the user `jari.`
 
-<figure><img src="../../../.gitbook/assets/image (3504).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3504).png>)
 
 ### ForceChangePassword  -> Account Operators
 
@@ -756,13 +750,13 @@ Miembros del grupo global                  *Usuarios del dominio
 
 Going back to Bloodhound, we see that the new user `jari` has `ForceChangePassword` privilege over two other users, with one being a bit more important than the other:
 
-<figure><img src="../../../.gitbook/assets/image (3678).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3678).png>)
 
 The `gibdeon` user is part of the Account Operations group (after translation). We can first reset the user's password using the same commands as the other password resets `gibdeon` user is not part of either SSH or WinRM groups, so we probably use remote Powershell scriptblocks to abuse this.
 
 The Account Operators group has `GenericAll` privileges over the `LAPS READ` group, and can also create new non-administrator accounts within the domain (in-built AD privilege).
 
-<figure><img src="../../../.gitbook/assets/image (3036).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3036).png>)
 
 Since we basically have access to all groups in this domain, we can just add our `jari` user to both `LAPS READ` and `LAPS ADM`.
 
@@ -815,6 +809,6 @@ socketz                  sshd                     StooormQ
 superfume                svc_mssql                v1s0r
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1015).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1015).png>)
 
 The `root.txt` flag is located within `C:\Users\cybervaca\desktop`. Doing CRTO and reading about Windows Auth helped a lot for this machine. Rooted!

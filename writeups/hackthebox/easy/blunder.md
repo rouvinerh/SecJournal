@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (755).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(755).png>)
 
 Not too sure why FTP was reported. Anyways, we can head to the webpage to enumerate.
 
@@ -12,31 +12,31 @@ Not too sure why FTP was reported. Anyways, we can head to the webpage to enumer
 
 Page was just full of placeholder text that didn't mean much.
 
-<figure><img src="../../../.gitbook/assets/image (3879).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3879).png>)
 
 I ran a directory brute force search to find an `/admin` panel.
 
-<figure><img src="../../../.gitbook/assets/image (3705).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3705).png>)
 
 The `/admin` panel requires credentials to access. Default weak credentials do not work here.
 
-<figure><img src="../../../.gitbook/assets/image (2236).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2236).png>)
 
 We also found some other text files that were also of interest.
 
-<figure><img src="../../../.gitbook/assets/image (2706).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2706).png>)
 
 The `todo.txt` file contained this:
 
-<figure><img src="../../../.gitbook/assets/image (3739).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3739).png>)
 
 The `install.php` file also contained some other hidden information about the CMS on the administrator panel.
 
-<figure><img src="../../../.gitbook/assets/image (1316).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1316).png>)
 
 So `fergus` is the administrator of the website, and Bludit is installed on it. Fergus needs to upload some type of image onto the website. We can check the page source for the version of Bludit that is running.
 
-<figure><img src="../../../.gitbook/assets/image (3825).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3825).png>)
 
 Bludit CMS 3.9.2 is vulnerable to an authenticated RCE exploit. We can use the exploit from this repository on the box
 
@@ -48,19 +48,19 @@ Now, we need to find some credentials to log in as the administrator.
 
 Initially, I brute forced the login page for the admin panel, but it didn't work out. I tried using `cewl` to create a custom wordlist using the website. Afterwards, using a Auth bruteforce Bypass exploit for Bludit, we can brute force the login and find the correct password.
 
-<figure><img src="../../../.gitbook/assets/image (1648).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1648).png>)
 
-<figure><img src="../../../.gitbook/assets/image (704).png" alt=""><figcaption><p><br></p></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(704).png>)
 
 We would eventually find the right credentials.
 
-<figure><img src="../../../.gitbook/assets/image (1226).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1226).png>)
 
 Then, we can use the exploit we found earlier to gain a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (2179).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2179).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1003).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1003).png>)
 
 ## Privilege Escalation
 
@@ -70,21 +70,21 @@ First thing I look for are databases or configuration files within this Bludit i
 
 Within the Bludit-3.10.0a directory, the config files contained credentials for a `hugo` user.
 
-<figure><img src="../../../.gitbook/assets/image (337).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(337).png>)
 
 This hash can be cracked.
 
-<figure><img src="../../../.gitbook/assets/image (3692).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3692).png>)
 
 Then we can `su` to Hugo.
 
-<figure><img src="../../../.gitbook/assets/image (635).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(635).png>)
 
 ### Sudo Exploit
 
 When we check `sudo` privileges, we can see that this one is a bit different.
 
-<figure><img src="../../../.gitbook/assets/image (4051).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4051).png>)
 
 The `!root` bit means that we cannot run `/bin/bash` as root, but we can run it as any other user. Googling for `sudo !root` bypasses led me to this exploit.
 
@@ -92,4 +92,4 @@ The `!root` bit means that we cannot run `/bin/bash` as root, but we can run it 
 
 We can run it and gain a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (2721).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2721).png>)

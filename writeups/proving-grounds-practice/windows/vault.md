@@ -96,7 +96,7 @@ $ mv '\192.168.240.172DocumentsShare\fuxiylyrbv.url' test.url
 
 Afterwards, we can place this file within the share and start a `responder` instance, which would immediately capture a hash:
 
-<figure><img src="../../../.gitbook/assets/image (3404).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3404).png>)
 
 This can be cracked almost instantly:
 
@@ -114,7 +114,7 @@ Session completed.
 
 Then, we can `evil-winrm` in:
 
-<figure><img src="../../../.gitbook/assets/image (2018).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2018).png>)
 
 ## Privilege Escalation
 
@@ -180,6 +180,6 @@ sc.exe start VMTools
 
 A SYSTEM shell would spawn on a listener port:
 
-<figure><img src="../../../.gitbook/assets/image (2539).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2539).png>)
 
 Rooted!

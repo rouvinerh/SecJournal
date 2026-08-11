@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 
 The website was a corporate page for a threat analytics company:
 
-<figure><img src="../../../.gitbook/assets/image (2028).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2028).png>)
 
 If we click `Google about us`, it redirects us using this URL:
 
@@ -29,11 +29,10 @@ http://10.129.246.167/redirect/?url=google.com
 
 This might be vulnerable to SSRF, but let's first add `hackmedia.htb` to our `/etc/hosts` file and register a user on the site. Upon accessing the dashboard, we see that we have a few functions:
 
-<figure><img src="../../../.gitbook/assets/image (1940).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1940).png>)
 
 When the request is viewed in Burp, we can see it uses a JWT token:
 
-{% code overflow="wrap" %}
 ```http
 GET /dashboard/ HTTP/1.1
 Host: 10.129.246.167
@@ -47,11 +46,10 @@ Cookie: auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImprdSI6Imh0dHA6Ly9oYWNrbWVkaWE
 Upgrade-Insecure-Requests: 1
 
 ```
-{% endcode %}
 
 When decoded on [jwt.io](https://jwt.io/), we can see that it contains the username field and is signed via RSA.
 
-<figure><img src="../../../.gitbook/assets/image (1903).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1903).png>)
 
 Interesting! There's also a `jku` field with a URL to the site. When viewed, it appears to contain the public key of the JWT token:
 
@@ -85,7 +83,7 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out pkcs
 
 Afterwards, we can head back to jwt.io and create a new token with a new URL. Since there's a `redirect` functionality available, I'll just use that to make it request the `jwks.json` file to our machine. Then, we can also change the username to `admin`.
 
-<figure><img src="../../../.gitbook/assets/image (3708).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3708).png>)
 
 Then we need to create the `jwks.json` file. This can be done by first downloading the format from the machine, and then replacing the values in it with our own key pair's.
 
@@ -127,7 +125,7 @@ ibKvbpl741G0GgAM4sDorsKsa9P1q4gmKMSVtIs=
 
 When we refresh the page, we get a hit on our HTTP server for the `jwks.json` file and that the dashboard is different:
 
-<figure><img src="../../../.gitbook/assets/image (3261).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3261).png>)
 
 ### Unicode LFI
 
@@ -139,7 +137,7 @@ http://10.129.246.167/display/?page=monthly.pdf
 
 This looks vulnerable to LFI, so I tried to view the `/etc/passwd` file but it didn't work.
 
-<figure><img src="../../../.gitbook/assets/image (2389).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2389).png>)
 
 Looks like it isn't processing. Now because this box was literally named Unicode, we might have to use Unicode characters to make this work. When we use this payload, the LFI works:
 
@@ -147,7 +145,7 @@ Looks like it isn't processing. Now because this box was literally named Unicode
 http://10.129.246.167/display/?page=%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/etc/passwd
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2747).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2747).png>)
 
 Now with an LFI, let's try to read the `nginx` configuration files since this was an Nginx server.
 
@@ -184,7 +182,7 @@ mysql_db: "user"
 
 Using this password, we can login as `code` using `ssh`.
 
-<figure><img src="../../../.gitbook/assets/image (869).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(869).png>)
 
 ## Privilege Escalation
 
@@ -204,7 +202,6 @@ User code may run the following commands on code:
 
 Running a quick `file` and `strings` reveals this is a compiled Python script.
 
-{% code overflow="wrap" %}
 ```
 code@code:~$ file /usr/bin/treport
 /usr/bin/treport: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=f6af5bc244c001328c174a6abf855d682aa7401b, for GNU/Linux 2.6.32, stripped
@@ -217,7 +214,6 @@ blib-dynload/_codecs_cn.cpython-38-x86_64-linux-gnu.so
 blib-dynload/_codecs_hk.cpython-38-x86_64-linux-gnu.so
 <TRUNCATED>
 ```
-{% endcode %}
 
 So we can download this binary back to our machine for reverse engineering. First, we can use `pyinstxtractor` to convert this to bytecode, and then `pycdc` to convert it to a script.
 
@@ -359,6 +355,6 @@ The `ip` variable is passed into a shell command, and it uses `curl`. However, t
 
 We can use this to read files like the `id_rsa` of root.
 
-<figure><img src="../../../.gitbook/assets/image (3765).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3765).png>)
 
 We can transfer this to our machine and begin to convert it to the correct format and then use it to `ssh` in as `root`. I admit, I got a bit lazy and just read the root flag.

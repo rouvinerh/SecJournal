@@ -21,7 +21,7 @@ When a source code file is assembled, the resulting file is called an **object f
 
 The process is outlined below:
 
-<figure><img src="../../.gitbook/assets/image (2354).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2354).png>)
 
 Once the assembler creates the .obj file, a **linker** is needed to create the executable file. Linkers take one or more object files and combine them together. An example of an object file is a Dynamic Link Library file (.dll) used to create a .exe file together.
 
@@ -35,7 +35,7 @@ I use Immunity Debugger a lot for Vanilla BOFs (for OSCP) and it's really handy 
 
 Here's how Immunity Debugger would look when a binary is loaded.
 
-<figure><img src="../../.gitbook/assets/image (2850).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2850).png>)
 
 The windows are as follows:
 
@@ -60,7 +60,7 @@ Some popular decompilers I use are `ghidra` and `dnspy`, for Linux and Windows r
 
 Here's an example of `ghidra` output:
 
-<figure><img src="../../.gitbook/assets/image (1473).png" alt=""><figcaption><p><em>Taken from HTB 0xDiablos</em></p></figcaption></figure>
+![Taken from HTB 0xDiablos](<../../.gitbook/assets/image%20(1473).png>)
 
 Not exactly translated back into C, but very close.
 
@@ -68,7 +68,7 @@ Not exactly translated back into C, but very close.
 
 Here's another example of dnSpy decompiling code:
 
-<figure><img src="../../.gitbook/assets/image (3390).png" alt=""><figcaption><p><em>Taken from HTB Support</em></p></figcaption></figure>
+![Taken from HTB Support](<../../.gitbook/assets/image%20(3390).png>)
 
 This tool tends to do a better job at decompiling it very close to the actual code written.
 

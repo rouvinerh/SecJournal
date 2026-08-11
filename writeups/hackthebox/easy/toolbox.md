@@ -56,23 +56,23 @@ I don't know what this is for, but we'll keep this in mind for now.
 
 The HTTPS page shows a freight corporate page:
 
-<figure><img src="../../../.gitbook/assets/image (1888).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1888).png>)
 
 I took a look at the certificate, and found another subdomain.
 
-<figure><img src="../../../.gitbook/assets/image (2501).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2501).png>)
 
 Heading to `admin.megalogistic.com` reveals a login page:
 
-<figure><img src="../../../.gitbook/assets/image (498).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(498).png>)
 
 Sending a single `'` reveals an SQL error.
 
-<figure><img src="../../../.gitbook/assets/image (3495).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3495).png>)
 
 So this is vulnerable to SQL Injection, and we can use `'OR 1=1 -- -` to bypass the login. On the admin dashboard, we see some stuff regarding credentials:
 
-<figure><img src="../../../.gitbook/assets/image (2339).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2339).png>)
 
 There wasn't much within the administrator panel for us to use, so let's go back to the SQL Injection and see if we can get a webshell via `sqlmap`.
 
@@ -86,7 +86,7 @@ command standard output: 'uid=102(postgres) gid=104(postgres) groups=104(postgre
 
 This works, and we can get a webshell. The weird part is, this is a Windows machine and I ran `id` out of instinct. This means that the website and database are probably run within a Docker container. Anyways, we can get a reverse shell via a `bash` one-liner.
 
-<figure><img src="../../../.gitbook/assets/image (2694).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2694).png>)
 
 I found the user flag within the `/var/lib/postgresql` folder:
 
@@ -143,7 +143,7 @@ While Googling for `docker-toolbox` and `ssh`, I came across this StackOverflow 
 
 I tried the password and username he specified (which looked default to me) and it worked:
 
-<figure><img src="../../../.gitbook/assets/image (1654).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1654).png>)
 
 On the docker, we can run `sudo su` to become `root`.
 
@@ -183,4 +183,4 @@ drwxrwxrwx    1 docker   staff            0 Feb 19  2020 .ssh
 
 Within the `.ssh` file, we can find an `id_rsa` private key. Using that, we can `ssh` in as `administrator` on the main machine.
 
-<figure><img src="../../../.gitbook/assets/image (845).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(845).png>)

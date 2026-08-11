@@ -25,11 +25,11 @@ PORT     STATE SERVICE
 
 I wanted to see what Port 9001 had for us, but I didn't get very far because it required credentials to access.
 
-<figure><img src="../../../.gitbook/assets/image (1576).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1576).png>)
 
 Default credentials of `admin:admin` worked! Then, we were able to view the Supervisor program running on it.
 
-<figure><img src="../../../.gitbook/assets/image (2343).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2343).png>)
 
 When clicking on the processes, I was able to find quite a few that were rather interesting:
 
@@ -45,29 +45,29 @@ Most notably, we can see that the `_httpd` user was running some kind of .lua sc
 
 When viewing the page, we get a 401 Unauthorized code because we don't have any credentials. Default and weak credentials don't work here.
 
-<figure><img src="../../../.gitbook/assets/image (2864).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2864).png>)
 
-<figure><img src="../../../.gitbook/assets/image (806).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(806).png>)
 
 I ran a `gobuster` scan on port 80 in the hopes that I would find something else, and I did find a `robots.txt`.
 
-<figure><img src="../../../.gitbook/assets/image (897).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(897).png>)
 
 Viewing `robots.txt` revealed this file:
 
-<figure><img src="../../../.gitbook/assets/image (2808).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2808).png>)
 
 I ran another `gobuster` on this `/weather` directory and found another hidden endpoint.
 
-<figure><img src="../../../.gitbook/assets/image (3080).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3080).png>)
 
 When interacting with this endpoint, we get some instructions on parameters to send.
 
-<figure><img src="../../../.gitbook/assets/image (1621).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1621).png>)
 
 We can interact with this API and it will return certain bits of information to us about the weather forecasts in cities.
 
-<figure><img src="../../../.gitbook/assets/image (248).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(248).png>)
 
 ### RCE Discovery
 
@@ -77,11 +77,11 @@ Initially, I thought that there was an LFI within this, and that the city names 
 
 I tried a few of the `os.execute()` payloads, and it worked!
 
-<figure><img src="../../../.gitbook/assets/image (2596).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2596).png>)
 
 We now have RCe, and we can easily use a `mkfifo` shell to gain a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (370).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(370).png>)
 
 ## Privilege Escalation
 
@@ -89,46 +89,46 @@ We now have RCe, and we can easily use a `mkfifo` shell to gain a reverse shell.
 
 Afterwards, I found the `.htpasswd` file for the webpage I was blocked from earlier.
 
-<figure><img src="../../../.gitbook/assets/image (3866).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3866).png>)
 
 With this, I was able to crack the hash to give `iamthebest` as the password and login to the service on port 80. We can view the `Authorization` header here.
 
-<figure><img src="../../../.gitbook/assets/image (3715).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3715).png>)
 
 With this, I enumerated the users on the machine, of which there was just `r.michaels`. I enumerated the processes he was running, and found that he was running a similar process to the `_httpd` user, but on port 3001 instead.
 
-<figure><img src="../../../.gitbook/assets/image (1035).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1035).png>)
 
 Interactions with this instance revealed that it was similar to the weather API we found earlier.
 
-<figure><img src="../../../.gitbook/assets/image (1450).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1450).png>)
 
 However, no command injection seems to work here. Perhaps this was a patched version of the script.
 
 In the command, we can see that the creator of the box used `httpd -u`, which makes the root directory of the script accessible. This means that we should be able to read the files of the `r.michaels` user. I attempted to read his SSH keys with our credentials, and it worked!
 
-<figure><img src="../../../.gitbook/assets/image (4069).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4069).png>)
 
 With this, we can SSH inas the `r.michaels` user.
 
-<figure><img src="../../../.gitbook/assets/image (2240).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2240).png>)
 
 ### Tar Backup -> doas
 
 Within the user's directory, we would find a `devel` backup file.
 
-<figure><img src="../../../.gitbook/assets/image (690).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(690).png>)
 
 Since this was a BSD machine, the commands and binaries are a little different. I searched for all the binaries within this machine (since `gpg` was not available) and found that `netpgp` was downloaded. With `netpgp`, we can decrypt this file.
 
-<figure><img src="../../../.gitbook/assets/image (2040).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2040).png>)
 
 Then, we can decrypt this file and find another `.htpasswd` file.
 
-<figure><img src="../../../.gitbook/assets/image (1119).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1119).png>)
 
 The hash would crack to give `littlebear`. I wanted to check whether this was the root user's password, but this machine does not have `sudo`. Instead, it has `doas` and this password works in spawning a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (4070).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4070).png>)
 
 Rooted!

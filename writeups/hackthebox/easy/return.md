@@ -48,11 +48,11 @@ PORT      STATE SERVICE
 
 There is a HTTP port open, and when viewed, it shows a Printer Admin Panel:
 
-<figure><img src="../../../.gitbook/assets/image (3167).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3167).png>)
 
 When we view the settings, this is what we see:
 
-<figure><img src="../../../.gitbook/assets/image (1257).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1257).png>)
 
 This looks poisanable since we can control the server address. As such, I started `responder`.
 
@@ -65,7 +65,7 @@ LDAP] Cleartext Client   : 10.129.95.241
 
 We now have some credentials. We can use these to login with `evil-winrm`.
 
-<figure><img src="../../../.gitbook/assets/image (3470).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3470).png>)
 
 We can grab the user flag.
 
@@ -106,7 +106,7 @@ download system
 
 Afterwards, we can dump hashes:
 
-<figure><img src="../../../.gitbook/assets/image (1678).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1678).png>)
 
 However, when trying to pass the hash, it seems that this doesn't work.
 
@@ -194,4 +194,4 @@ I wasn't too sure how they got to using this. Anyways, we can configure it like 
 
 This would create a reverse shell on our listener port:
 
-<figure><img src="../../../.gitbook/assets/image (2367).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2367).png>)

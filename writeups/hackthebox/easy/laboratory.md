@@ -22,7 +22,7 @@ We have to add `laboratory.htb` to our `/etc/hosts` file to access the web ports
 
 The website is some kind of company page for coding services:
 
-<figure><img src="../../../.gitbook/assets/image (570).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(570).png>)
 
 The background animated thing is pretty cool honestly. Anyways, this looked pretty static, so I did a subdomain and directory scan on the site, and found one `git` subdomain.
 
@@ -44,19 +44,19 @@ ID           Response   Lines    Word       Chars       Payload
 
 When we visit this subdomain, it reveals a GitLab instance.
 
-<figure><img src="../../../.gitbook/assets/image (415).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(415).png>)
 
 When trying to create a user, it appears we have to have a specific email domain being used.
 
-<figure><img src="../../../.gitbook/assets/image (3649).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3649).png>)
 
 Using `laboratory.htb` works as the email domain, then we can view the dashbaord:
 
-<figure><img src="../../../.gitbook/assets/image (1775).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1775).png>)
 
 Interestingly, this was running GitLab 12.8.1, which is an outdated version of the software.
 
-<figure><img src="../../../.gitbook/assets/image (2901).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2901).png>)
 
 This version is vulnerable to an LFI.
 
@@ -185,15 +185,15 @@ Enqueued ActionMailer::DeliveryJob (Job ID: b987cd5d-e2e4-4558-a5ed-31339c1046f4
 
 Afterwards, we can sign in as `dexter` and view his projects:
 
-<figure><img src="../../../.gitbook/assets/image (3724).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3724).png>)
 
 'Some personal stuff' in the SecureDocker project. Turns out that refers to his private SSH key that was left on the project!
 
-<figure><img src="../../../.gitbook/assets/image (1289).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1289).png>)
 
 Using this, we can `ssh` in as the user and grab the user flag:
 
-<figure><img src="../../../.gitbook/assets/image (2690).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2690).png>)
 
 ### Ghidra -> SUID Exploit
 
@@ -216,7 +216,7 @@ dexter@laboratory:/$
 
 I downloaded a copy of this binary to my Kali machine because it looks custom and I could not find any other software online matching this. Then, I opened up a copy in Ghidra. The program is really simple:
 
-<figure><img src="../../../.gitbook/assets/image (907).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(907).png>)
 
 The funny thing is that the binary is using the full path for the target file, but `chmod` itself doesn't have the full path specified. All we have to do is create an program that is called `chmod` which executes a command as `root`:
 
@@ -228,6 +228,6 @@ dexter@laboratory:/tmp$ export PATH=/tmp:$PATH
 
 Then, we can just run `docker-security` to get a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (3902).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3902).png>)
 
 Rooted!

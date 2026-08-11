@@ -206,19 +206,19 @@ DevT3st@123 (for ldap)
 
 Port 80 just shows an IIS Server. Port 8443 uses TLS and redirects me a login at `/pwm/private/login`:
 
-<figure><img src="../../.gitbook/assets/image (1742).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1742).png>)
 
 We have the credentials for this, so let's try to edit the configurations. WIthin the LDAP config, we can change the LDAP URL:
 
-<figure><img src="../../.gitbook/assets/image (1749).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1749).png>)
 
 This looks vulnerable to some hash capturing via `responder`. I replaced the LDAP URL with `ldap://10.10.14.9:389` and then clicked on 'Test LDAP Profile', and `responder` captured a hash:
 
-<figure><img src="../../.gitbook/assets/image (1773).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1773).png>)
 
 With this, we can `evil-winrm` in to the machine:
 
-<figure><img src="../../.gitbook/assets/image (1710).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1710).png>)
 
 ## Privilege Escalation
 
@@ -368,6 +368,6 @@ Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation
 [*] Successfully changed administrator password to: R08Fv3VKaSyyI1tJ1FYi1mAEGklJvWFy
 ```
 
-<figure><img src="../../.gitbook/assets/image (1741).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1741).png>)
 
 Rooted!

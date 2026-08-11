@@ -8,7 +8,7 @@ Structured Query Language (SQL) is a language used to communicate and interact w
 
 SQL Injection on the other hand, is the injection of SQL queries to manipulate the database into executing queries to extract data or even achieve command execution.
 
-<figure><img src="../../.gitbook/assets/image (2254).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+![Taken from PortSwigger Web Security Academy](<../../.gitbook/assets/image%20(2254).png>)
 
 ## Basic Injection
 
@@ -80,7 +80,7 @@ A query with the correct number of columns would be processed without errors. Th
 
 The reason for using `NULL` is because it is **convertible to every commonly used data type**. This means it's kind of compatible with all of them.
 
-<figure><img src="../../.gitbook/assets/image (2955).png" alt=""><figcaption><p><em>Usage of SQL Injection in URL to retrieve all user information</em></p></figcaption></figure>
+![Usage of SQL Injection in URL to retrieve all user information](<../../.gitbook/assets/image%20(2955).png>)
 
 ## Blind Injection
 
@@ -101,12 +101,10 @@ I normally test this using one guaranteed false and true query, and then checkin
 
 From here, one can retrieve data character by character:
 
-{% code overflow="wrap" %}
 ```sql
 # start to guess possible usernames from a table
 AND SUBSTRING((SELECT password from users where username = 'Administrator'), 1, <num>) =/>a/<' s
 ```
-{% endcode %}
 
 The SUBSTRING command, which would each character position indicated by `<num>` until a 'true' condition is returned.
 
@@ -116,9 +114,7 @@ Now, suppose that the website does not have a visual difference on true or false
 
 The `sleep` function within SQL Databases can be used. A `true` condition would call `sleep()`, and one can measure the amount of time taken for the response to be returned:
 
-{% code overflow="wrap" %}
 ```sql
 SELECT CASE WHEN (SUBSTRING(password,1,1)='1') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM users WHERE (username='administrator')--
 # if true, sleep 10 seconds, otherwise none.
 ```
-{% endcode %}

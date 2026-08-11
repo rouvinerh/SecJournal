@@ -23,11 +23,11 @@ We can add `snoopy.htb` to our `/etc/hosts` file as per standard HTB practice.
 
 This was a corporate page that provides DevSecOps services:
 
-<figure><img src="../../.gitbook/assets/image (1481).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1481).png>)
 
 Looking around, there's another subdomain present in the form of a mail server.
 
-<figure><img src="../../.gitbook/assets/image (873).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(873).png>)
 
 It syas that the DNS records are being migrated to another domain and that their email server is offline. We can run both a `gobuster` directory and `wfuzz` subdomain scan first. The subdomain scan reveals a `mm` subdomain present.
 
@@ -78,15 +78,15 @@ The last thing is that `mail.snoopy.htb` is not present within the records and i
 
 We can visit the `mm` subdomain to verify that it is running:
 
-<figure><img src="../../.gitbook/assets/image (3120).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3120).png>)
 
 We don't have any credentials, but there is a Password Reset in use here that requires an email address:
 
-<figure><img src="../../.gitbook/assets/image (849).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(849).png>)
 
 Lastly, there are some emails present:
 
-<figure><img src="../../.gitbook/assets/image (3281).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3281).png>)
 
 ### Download LFI -> DNS Vuln
 
@@ -107,11 +107,11 @@ Upgrade-Insecure-Requests: 1
 
 The `announcement.pdf` file had nothing interesting itself, but this looks vulnerable to LFI. Inital testing reveals this isn't vulnerable at first:
 
-<figure><img src="../../.gitbook/assets/image (444).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(444).png>)
 
 After using `....//` instead, we can see that a file is generated:
 
-<figure><img src="../../.gitbook/assets/image (376).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(376).png>)
 
 When the file is downloaded and viewed, we see that it works!
 
@@ -172,7 +172,7 @@ if __name__ == '__main__':
 	main()
 ```
 
-<figure><img src="../../.gitbook/assets/image (3720).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3720).png>)
 
 This made enumeration a lot easier. Now, we can proceed with enumeration of the file system and other sensitive files. We can start with `/etc/nginx/sites-available/default`.
 
@@ -277,15 +277,13 @@ b'wn9adntaawingkbho8ctcyzfscm51zjjey7ayx5nzsaxstg7g89ganb8res )'
 
 The token has some weird signs in the middle of it, which is not normal actually. Although the link is valid, the token is not. In the above's case, we can ignore all the `=` and `3D` parts, so the correct link is:
 
-{% code overflow="wrap" %}
 ```
 http://mm.snoopy.htb/reset_password_complete?token=b4akcwn9adntaawingkbho8ctcyzfscm51zjjey7ayx5nzsaxstg7g89ganb8res
 ```
-{% endcode %}
 
 Afterwards, we can reset the password and see that it works here:
 
-<figure><img src="../../.gitbook/assets/image (1159).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1159).png>)
 
 Then we can login.
 
@@ -293,23 +291,23 @@ Then we can login.
 
 When we login, we can see a ton of chat logs:
 
-<figure><img src="../../.gitbook/assets/image (2484).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2484).png>)
 
 It talks about ClamAV being used as the anti-virus, and also about some provisioning server. We can view the different commands present on this:
 
 There was a weird command `/server_provision` without any description. When run, it opens up a UI that seems to spawn a server:
 
-<figure><img src="../../.gitbook/assets/image (1936).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1936).png>)
 
 We can fill it in to have our credentials and required details. It appears that Windows is disabled too:
 
-<figure><img src="../../.gitbook/assets/image (2441).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2441).png>)
 
-<figure><img src="../../.gitbook/assets/image (1904).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1904).png>)
 
 Anyways, after filling in the fields and clicking submit, we get this weird thing on a listener port:
 
-<figure><img src="../../.gitbook/assets/image (3315).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3315).png>)
 
 I thought that it would be a shell and hence ran `id`, but it quickly closed. In this case, I took a look at the traffic within `wireshark` but wasn't able to find out much. I tried out a few methods from the SSH page of Hacktricks, and found `ssh-mitm`.
 
@@ -352,7 +350,7 @@ listen interfaces 0.0.0.0 and :: on port 2222
 
 We have a credential! With this, we can `ssh` in as the user `cbrown`:
 
-<figure><img src="../../.gitbook/assets/image (3454).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3454).png>)
 
 ## Privilege Escalation
 
@@ -378,7 +376,6 @@ We can run commands as `sbrown` using `git apply *`. This means using a `diff` o
 
 Then, we can use `diff` on a random folder and this folder. We can use the `.bash_history` file of `cbrown` because it has nothing within it:
 
-{% code overflow="wrap" %}
 ```
 cbrown@snoopy:/home$ git diff cbrown/.bash_history cbrown/.ssh/authorized_keys 
 diff --git a/cbrown/.bash_history b/cbrown/.bash_history
@@ -397,13 +394,11 @@ index 0000000..8e881d1
 @@ -0,0 +1 @@
 +ssh-rsa KEY kali@kali
 ```
-{% endcode %}
 
 Then, we can redirect the above to another file like `/tmp/diff`. Afterwards, we need to change the target file (the one below) to `sbrown/.ssh/authorized_keys` in order to write the key within it.
 
 Here's the final `diff` file I used:
 
-{% code overflow="wrap" %}
 ```
 cbrown@snoopy:/home$ cat /tmp/diff
 diff --git a/cbrown/.bash_history b/cbrown/.bash_history
@@ -422,11 +417,10 @@ index 0000000..8e881d1
 @@ -0,0 +1 @@
 +ssh-rsa KEY kali@kali
 ```
-{% endcode %}
 
 Afterwards, just run the `sudo` command on the `/tmp/diff` file. This would put our public key within the `sbrown` directory since we are running the command as `sbrown`. Then, we can `ssh` in.
 
-<figure><img src="../../.gitbook/assets/image (2127).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2127).png>)
 
 Grab the user flag.
 
@@ -451,14 +445,14 @@ User sbrown may run the following commands on snoopy:
 
 Based on the documentation, since we can run this as `root`, we should be able to read files like `/etc/shadow`. This can be done using the `-f` flag and it works as shown:
 
-<figure><img src="../../.gitbook/assets/image (3396).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3396).png>)
 
 Then, we can simply read the private SSH key of `root` located at `/root/.ssh/id_rsa`.
 
-<figure><img src="../../.gitbook/assets/image (3578).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3578).png>)
 
 After some tidying up, we can `ssh` in as `root`.
 
-<figure><img src="../../.gitbook/assets/image (390).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(390).png>)
 
 Rooted!

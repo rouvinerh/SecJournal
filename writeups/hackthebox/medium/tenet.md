@@ -21,11 +21,11 @@ Another web-based exploit. We have to add `tenet.htb` to our `/etc/hosts` file t
 
 The machine has a blog-like website:
 
-<figure><img src="../../../.gitbook/assets/image (226).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(226).png>)
 
 This is a Wordpress based site if we view the page source. If we view some of the comments within the pages, we can see this comment that points us towards another file:
 
-<figure><img src="../../../.gitbook/assets/image (3351).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3351).png>)
 
 Visiting `sator.php` won't do anything. Instead, visit`http://<IP>/sator.php.bak`, and it would download file to our machine. Then, we can view the file contents:
 
@@ -94,7 +94,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 Just spawn a reverse shell using a basic `bash` shell next.
 
-<figure><img src="../../../.gitbook/assets/image (740).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(740).png>)
 
 ## Privilege Escalation
 
@@ -179,10 +179,10 @@ done
 
 After a while, we should get an error like this:
 
-<figure><img src="../../../.gitbook/assets/image (3612).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3612).png>)
 
 Then we can just SSH to `root`.
 
-<figure><img src="../../../.gitbook/assets/image (2205).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2205).png>)
 
 Rooted!

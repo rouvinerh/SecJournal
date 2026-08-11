@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (1832).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1832).png>)
 
 We can add the `trick.htb` domain as per usual HTB practice.
 
@@ -12,7 +12,7 @@ We can add the `trick.htb` domain as per usual HTB practice.
 
 All the ports yield nothing of interest and port 80 was just a corporate website with nothing to interact with. However, when attempting a zone transfer, we would get another domain here:
 
-<figure><img src="../../../.gitbook/assets/image (3706).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3706).png>)
 
 The `preprod-payroll` subdomain was new, and I headed there.
 
@@ -20,11 +20,11 @@ The `preprod-payroll` subdomain was new, and I headed there.
 
 The page revealed some kind of application used to manage employee salary tracking.
 
-<figure><img src="../../../.gitbook/assets/image (2520).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2520).png>)
 
 Initially, I assumed that there would be some kind of public exploit for this Employee Record system, and found quite a few.
 
-<figure><img src="../../../.gitbook/assets/image (2259).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2259).png>)
 
 However, none of the exploits worked here and I was stuck.
 
@@ -34,25 +34,25 @@ The whole payroll bit was a rabbit hole, and I could not make anything work. As 
 
 I then tried to fuzz with the `preprod-` bit prefixed, and found a new domain:
 
-<figure><img src="../../../.gitbook/assets/image (3857).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3857).png>)
 
 ### LFI for SSH Keys
 
 The new page contained a load of rubbish information, and when clicking on the different tabs, we can see this `page` parameter pop up.
 
-<figure><img src="../../../.gitbook/assets/image (857).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(857).png>)
 
 We can test this for a simple directory traversal exploit. Using the standard `../../../` did not work, but `....//....//....//` worked instead.
 
-<figure><img src="../../../.gitbook/assets/image (3273).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3273).png>)
 
 With this, I attempted to read the private SSH keys of the user `michael`.
 
-<figure><img src="../../../.gitbook/assets/image (906).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(906).png>)
 
 Afterwards, we can simply SSH in as michael using this key.
 
-<figure><img src="../../../.gitbook/assets/image (452).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(452).png>)
 
 ## Privilege Escalation
 
@@ -60,11 +60,11 @@ Afterwards, we can simply SSH in as michael using this key.
 
 When enumerating the user's permissions, we can see that he's part of the security group.
 
-<figure><img src="../../../.gitbook/assets/image (1624).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1624).png>)
 
 Additionally, we are allowed to run `fail2ban restart` as root using `sudo`.
 
-<figure><img src="../../../.gitbook/assets/image (2315).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2315).png>)
 
 Fail2ban is a service that would block an IP address after many failed attempts to connect. The conf file for this is within the `/etc/fail2ban/action.d/iptables-multiport.conf` file. Upon detecting a bannable action, a script would run to block the IP address.
 
@@ -74,8 +74,8 @@ This repo made is easy to exploit:
 
 {% embed url="https://github.com/rvizx/fail2ban/blob/main/fail2ban" %}
 
-<figure><img src="../../../.gitbook/assets/image (598).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(598).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2247).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2247).png>)
 
 Rooted.

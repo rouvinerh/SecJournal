@@ -6,12 +6,12 @@ description: My first box!
 
 ## Nmap Scan:
 
-<figure><img src="../../../.gitbook/assets/image (2919).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2919).png>)
 
 ## EternalBlue
 
 Nmap Vuln Scan:
 
-<figure><img src="../../../.gitbook/assets/image (2161).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2161).png>)
 
 We can use the Metasploit module for EternalBlue to exploit this to gain a root shell as the administrator.

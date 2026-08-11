@@ -76,10 +76,10 @@ exploit
 
 This would give us a meterpreter shell.
 
-<figure><img src="../../../.gitbook/assets/image (2463).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2463).png>)
 
 For some reason, `whoami` does not work on the machine. We can use the `whoami.exe` binary that is within Kali at `/usr/share/windows-resources/binaries` and run it via SMB.
 
-<figure><img src="../../../.gitbook/assets/image (658).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(658).png>)
 
 Rooted!

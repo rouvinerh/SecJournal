@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2813).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2813).png>)
 
 ### Website Hints
 
 On port 80, we can find some interesting information.
 
-<figure><img src="../../../.gitbook/assets/image (1806).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1806).png>)
 
 The user page tells us how to use SSH to get into the machine.
 
-<figure><img src="../../../.gitbook/assets/image (4038).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4038).png>)
 
 So our IP address is our username and password for this machine. Interesting.
 
@@ -24,7 +24,7 @@ I found it rather interesting that there was a LDAP service running on this Linu
 
 First, we can SSH using our IP address as the username and password. We can view other users on the machine.
 
-<figure><img src="../../../.gitbook/assets/image (3680).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3680).png>)
 
 The most interesting part was the within the `/etc/passwd` file, a completely new user was being created for each IP address.
 
@@ -34,11 +34,11 @@ I was stuck here for a long time because I could not find anything of interest o
 
 I found it really odd that LDAP was listening on the machine and I did not know what it was doing. As a last resort, I sniffed the traffic of LDAP using `tcpdump` on port 389. Surprisingly, I found some credentials in plaintext.
 
-<figure><img src="../../../.gitbook/assets/image (3403).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3403).png>)
 
 We can `su` as `ldapuser2` using this plaintext credential (it's the hash).
 
-<figure><img src="../../../.gitbook/assets/image (652).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(652).png>)
 
 ## Privilege Escalation
 
@@ -46,15 +46,15 @@ We can `su` as `ldapuser2` using this plaintext credential (it's the hash).
 
 Within the new user's directory, we can find a backup file.
 
-<figure><img src="../../../.gitbook/assets/image (790).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(790).png>)
 
 It was password encrypted, but that's no issue for `john`.
 
-<figure><img src="../../../.gitbook/assets/image (1845).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1845).png>)
 
 Then, we can extract the files using `7z e`. Within the `status.php` file, we find another set of credentials.
 
-<figure><img src="../../../.gitbook/assets/image (560).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(560).png>)
 
 We can now access `ldapuser1`.
 
@@ -62,7 +62,7 @@ We can now access `ldapuser1`.
 
 Within the user directory, we can find that there some binaries present.
 
-<figure><img src="../../../.gitbook/assets/image (935).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(935).png>)
 
 The `openssl` and `tcpdump` binaries are identical to the normal ones, but checking the permissions reveals something different.
 
@@ -78,22 +78,22 @@ openssl =ep
 
 We can use this to capture the root flag:
 
-<figure><img src="../../../.gitbook/assets/image (2819).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2819).png>)
 
 But that's not good enough for OSCP. So, I decided to overwrite the `root` user's hash in `/etc/shadow`. This allows me to `su` as `root` using a password of my choosing.
 
 First, we need to generate a new hash.
 
-<figure><img src="../../../.gitbook/assets/image (3143).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3143).png>)
 
 Then, we can get a copy the `/etc/shadow` file into the `ldapuser1` user directory.
 
-<figure><img src="../../../.gitbook/assets/image (1499).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1499).png>)
 
 Then we can replace the root hash with our own.
 
-<figure><img src="../../../.gitbook/assets/image (1058).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1058).png>)
 
 Afterwards, we can overwrite the `/etc/shadow` file with the edited version, then `su` to get a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (2881).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2881).png>)

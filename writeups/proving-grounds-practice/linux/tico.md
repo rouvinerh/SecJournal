@@ -37,7 +37,7 @@ ftp> ls
 
 We can view the traffic within this file using `wireshark`. There was only 1 TCP stream to follow, and I didn't quite understand it.
 
-<figure><img src="../../../.gitbook/assets/image (276).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(276).png>)
 
 There was some mention of the MongoDB instance and a few GCC compiler flags, but it doesn't seem to be useful now.
 
@@ -45,7 +45,7 @@ There was some mention of the MongoDB instance and a few GCC compiler flags, but
 
 Port 80 had a Markdown Editor:
 
-<figure><img src="../../../.gitbook/assets/image (365).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(365).png>)
 
 Again, there was nothing interesting with this. We could try XSS injection or something, but there's no hint that a user is viewing this.
 
@@ -53,7 +53,7 @@ Again, there was nothing interesting with this. We could try XSS injection or so
 
 Port 8080 had a NodeBB instance:
 
-<figure><img src="../../../.gitbook/assets/image (720).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(720).png>)
 
 There are some exploits that are available for NodeBB:
 
@@ -69,21 +69,21 @@ NodeBB Plugin Emoji 3.2.1 - Arbitrary File Write           | multiple/webapps/49
 
 The first one looks applicable, and it involves an administrator account takeover that we can try. First, we need to register a user. Afterwards, we can head to the password reset page:
 
-<figure><img src="../../../.gitbook/assets/image (3363).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3363).png>)
 
 Intercept this response to see a JSON request being sent:
 
-<figure><img src="../../../.gitbook/assets/image (3022).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3022).png>)
 
 Replace the `uid` value with '1', and then let the requests pass through. We can then login as `admin` with the new password I set.
 
-<figure><img src="../../../.gitbook/assets/image (3365).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3365).png>)
 
 ### Arbitrary File Write -> Root
 
 We can access the admin dashboard to see the plugins:
 
-<figure><img src="../../../.gitbook/assets/image (1897).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1897).png>)
 
 This confirms that the Emoji plugin is installed, and we can try the other exploit. The public expoit attempts to write our SSH public key into the `authorized_keys` folder of `root`.
 
@@ -96,6 +96,6 @@ $ python3 49813.py
 
 Afterwards, we can just `ssh` into `root`:
 
-<figure><img src="../../../.gitbook/assets/image (3360).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3360).png>)
 
 Rooted!

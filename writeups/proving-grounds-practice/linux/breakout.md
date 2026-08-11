@@ -20,7 +20,7 @@ PORT      STATE    SERVICE
 
 Port 80 reveals a Gitlab instance:
 
-<figure><img src="../../../.gitbook/assets/image (2899).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2899).png>)
 
 I tried registering a user, but it wasn't allowed since the Gitlab administrator needed to approve first. I ran a `feroxbuster` scan to enumerate directories.
 
@@ -45,7 +45,7 @@ There wasn't much from this though. I searched for Gitlab enumeration, hoping to
 
 I tried their PoC of accessing Gitlab using `/-/graphql-explorer`, and it worked:
 
-<figure><img src="../../../.gitbook/assets/image (1538).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1538).png>)
 
 ### GraphQL User Enum  -> User Login
 
@@ -55,17 +55,17 @@ The CVE above mentions that this allows us to enumerate users using this query:
 {users{nodes{id name username}}}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1528).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1528).png>)
 
 We have 2 new users, `coaran` and `michelle`. Then, we can login with `michelle:michelle`:
 
-<figure><img src="../../../.gitbook/assets/image (2130).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2130).png>)
 
 ### Gitlab RCE
 
 Using this user, we can enumerate the version of Gitlab running:
 
-<figure><img src="../../../.gitbook/assets/image (1309).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1309).png>)
 
 This is vulnerable to the Gitlab Exiftool RCE exploit.
 
@@ -79,7 +79,7 @@ Successfully Authenticated
 [3] Creating Snippet and Uploading
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3240).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3240).png>)
 
 ## Privilege Escalation
 
@@ -110,13 +110,12 @@ NhAAAAAwEAAQAAAYEA4eDGWPfq/wKo4whXeFRr8Dq+wgoCClqpJmxRajPmCaSrULo/uPad
 
 We know that there are 2 users on the machine, and I tested with both. Using this key, we can `ssh` in as `coaron`:
 
-<figure><img src="../../../.gitbook/assets/image (3590).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3590).png>)
 
 ### Pspy -> Symlink Exploit
 
 `linpeas.sh` didn't reveal much, so I ran a `pspy64` instead. I found some interesting processes involving zip files:
 
-{% code overflow="wrap" %}
 ```
 2023/07/12 07:46:01 CMD: UID=0    PID=320345 | bash /opt/backups/backup.sh 
 2023/07/12 07:46:01 CMD: UID=0    PID=320346 | /usr/bin/zip -r /opt/backups/log_backup.zip /srv/gitlab/logs/alertmanager /srv/gitlab/logs/gitaly /srv/gitlab/logs/gitlab-exporter /srv/gitlab/logs/gitlab-rails /srv/gitlab/logs/gitlab-shell /srv/gitlab/logs/gitlab-workhorse /srv/gitlab/logs/grafana /srv/gitlab/logs/logrotate /srv/gitlab/logs/nginx /srv/gitlab/logs/postgres-exporter /srv/gitlab/logs/postgresql /srv/gitlab/logs/prometheus /srv/gitlab/logs/puma /srv/gitlab/logs/reconfigure /srv/gitlab/logs/redis /srv/gitlab/logs/redis-exporter /srv/gitlab/logs/sidekiq /srv/gitlab/logs/sshd
@@ -124,7 +123,6 @@ We know that there are 2 users on the machine, and I tested with both. Using thi
 coaran@breakout:/tmp$ cat /opt/backups/backup.sh 
 /usr/bin/zip -r /opt/backups/log_backup.zip /srv/gitlab/logs/*
 ```
-{% endcode %}
 
 Since this is being run by root, we can create a symlink here that points towards the `root` user's private SSH key. However, we cannot view the files or write to it as `coaron`, but it seems the `git` user can on the Docker container its in.
 
@@ -185,6 +183,6 @@ NhAAAAAwEAAQAAAYEAzAu+X5sUIUBGFen/rkbr6M09cLPZvlsrphqkjcZQ48zivybhHMIJ
 
 We can then use this key to `ssh` in as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (2601).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2601).png>)
 
 Rooted!

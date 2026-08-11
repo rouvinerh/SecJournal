@@ -36,27 +36,27 @@ FTP doesn't accept anonymous logins and RDP is open for this machine.
 
 Port 80 was weird:
 
-<figure><img src="../../../.gitbook/assets/image (502).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(502).png>)
 
 Port 8089 was slightly weirder:
 
-<figure><img src="../../../.gitbook/assets/image (1057).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1057).png>)
 
 Clicking on any of these would send requests to an IP address on port 33333:
 
-<figure><img src="../../../.gitbook/assets/image (273).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(273).png>)
 
 Meanwhile on port 33333, we needed a token of some sorts:
 
-<figure><img src="../../../.gitbook/assets/image (1915).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1915).png>)
 
 And this is all the information we have. I experimented with sending POST requests instead of GET requests, and it actually returned something from port 33333.
 
-<figure><img src="../../../.gitbook/assets/image (277).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(277).png>)
 
 This was different from the Not Found errors. I changed around the directory it sent requests to, and the `list-running-procs` returned something interesting:
 
-<figure><img src="../../../.gitbook/assets/image (2061).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2061).png>)
 
 If we scroll down, we can see this:
 
@@ -71,7 +71,7 @@ NowiseSloopTheory139
 
 This was a password for a user `ariah`, which works:
 
-<figure><img src="../../../.gitbook/assets/image (3357).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3357).png>)
 
 ## Privilege Escalation
 
@@ -89,7 +89,7 @@ There was a `C:\ftp` directory that looked interesting:
 
 We can transfer this back to our machine via `smbserver.py` and then view it.
 
-<figure><img src="../../../.gitbook/assets/image (2535).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2535).png>)
 
 There was a temporary command point, and I enumerated it from the machine:
 
@@ -143,6 +143,6 @@ The command completed successfully.
 
 Then, we can relogin and view the flag:
 
-<figure><img src="../../../.gitbook/assets/image (2605).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2605).png>)
 
 Rooted!

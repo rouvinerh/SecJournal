@@ -25,11 +25,11 @@ PORT     STATE SERVICE
 
 Port 80 reveals a basic login page:
 
-<figure><img src="../../../.gitbook/assets/image (1291).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1291).png>)
 
 Port 2290 was also a HTTP port, and it returned something simple:
 
-<figure><img src="../../../.gitbook/assets/image (1400).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1400).png>)
 
 C? When we view the page source, there's also this part here:
 
@@ -46,11 +46,11 @@ C? When we view the page source, there's also this part here:
 
 There's a commented ciphertext, and there's also something which takes a parameter. We can try putting this ciphertext as the parameter requested.
 
-<figure><img src="../../../.gitbook/assets/image (1004).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1004).png>)
 
 If we remove some characters, then it loads something else.
 
-<figure><img src="../../../.gitbook/assets/image (2893).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2893).png>)
 
 That's literally all of the enumeration that is possible to do.
 
@@ -66,11 +66,9 @@ Of course, to exploit this we will leverage on automated methods since it involv
 
 {% embed url="https://github.com/mpgn/Padding-oracle-attack" %}
 
-{% code overflow="wrap" %}
 ```bash
 $ python3 exploit.py -c 4358b2f77165b5130e323f067ab6c8a92312420765204ce350b1fbb826c59488 -l 16 --host 192.168.233.119:2290 -u /?c= --error '<span id="MyLabel">0</span>' --method GET
 ```
-{% endcode %}
 
 This would brute force every single character out. Here's the output of it:
 
@@ -120,7 +118,7 @@ We get a password! SSH is not open on the machine, but RDP is. `xfreerdp` can be
 $ xfreerdp /u:victor /p:WormAloeVat7 /v:192.168.233.119
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1952).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1952).png>)
 
 We can then grab the user flag.
 
@@ -130,10 +128,10 @@ We can then grab the user flag.
 
 I downloaded and ran `winPEASx64.exe` on the machine, and found this output:
 
-<figure><img src="../../../.gitbook/assets/image (1778).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1778).png>)
 
 It's pretty trivial to get an administrator shell from this.
 
-<figure><img src="../../../.gitbook/assets/image (1278).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1278).png>)
 
 Rooted!

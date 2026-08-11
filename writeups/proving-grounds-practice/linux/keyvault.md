@@ -54,15 +54,15 @@ There was a `.git` repository which we could enumerate later.
 
 Port 80 hosted a website for a Password Manager:
 
-<figure><img src="../../../.gitbook/assets/image (3945).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3945).png>)
 
 The site was rather static and had nothing interesting. Port 8080 had a login page:
 
-<figure><img src="../../../.gitbook/assets/image (293).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(293).png>)
 
 Default credentials work, but we are redirected to this cryptic site:
 
-<figure><img src="../../../.gitbook/assets/image (302).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(302).png>)
 
 Let's take a look at the `.git` repository files. The logs of the website reveal that there's a `hmac.php` which mentions a bit more about the crypto used:
 
@@ -104,15 +104,15 @@ The above resources details a similar exploit, where they submit `token[]=` to t
 
 We can use their parameters to bypass this check:
 
-<figure><img src="../../../.gitbook/assets/image (3928).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3928).png>)
 
 Visiting `index.php`with the same parameters will show us a page with a password:
 
-<figure><img src="../../../.gitbook/assets/image (1181).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1181).png>)
 
 We can then `ssh` in as `ray`:
 
-<figure><img src="../../../.gitbook/assets/image (674).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(674).png>)
 
 ## Privilege Escalation
 
@@ -120,14 +120,12 @@ We can then `ssh` in as `ray`:
 
 Within the `/opt` directory, there's this file present:
 
-{% code overflow="wrap" %}
 ```
 ray@keyvault:/opt$ ls
 apache-restart
 ray@keyvault:/opt$ file apache-restart 
 apache-restart: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=ac40f3d3f795f9ee657f59a09fbedea23c4d7e25, for GNU/Linux 2.6.32, stripped
 ```
-{% endcode %}
 
 I ran the `binary` and on another `ssh` session, used `pspy64` to see the processes being run:
 
@@ -224,6 +222,6 @@ Mypetdognameisjack909
 
 Using this, we can `su` to `root`:
 
-<figure><img src="../../../.gitbook/assets/image (3955).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3955).png>)
 
 Rooted!

@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2253).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2253).png>)
 
 We can add `monitors.htb` to our `/etc/hosts` file.
 
@@ -12,39 +12,39 @@ We can add `monitors.htb` to our `/etc/hosts` file.
 
 Port 80 hosts a Wordpress site.
 
-<figure><img src="../../../.gitbook/assets/image (668).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(668).png>)
 
 We can run `wpscan` to enumerate the plugins and version, and this finds that **wp-with-spritz** is being used.
 
-<figure><img src="../../../.gitbook/assets/image (841).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(841).png>)
 
 This version is vulnerable to RFI.
 
-<figure><img src="../../../.gitbook/assets/image (1738).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1738).png>)
 
 We can confirm this by viewing the `/etc/passwd` file.
 
-<figure><img src="../../../.gitbook/assets/image (569).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(569).png>)
 
 After further enumeration, there's nothing else that I could find. So we probably need to read more files within this machine. I could not read any user files, so I tried to check some configuration files for the server at `/etc/apache2/sites-enabled/000-default.conf`.
 
-<figure><img src="../../../.gitbook/assets/image (2096).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2096).png>)
 
 We can find a new domain at `cacti-admin.monitors.htb`. Afterwards, I also read the Wordpress configuration files at `/var/www/wordpress/wp-config.php` to find a password.
 
-<figure><img src="../../../.gitbook/assets/image (2871).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2871).png>)
 
 ### Cacti
 
 Upon visting this separate domain, we are greeted by another login page:
 
-<figure><img src="../../../.gitbook/assets/image (549).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(549).png>)
 
 This version of Cacti is old and vulnerable to loads of exploits. We can login with the credentials for Wordpress. Afterwards, we can use an exploit that uses SQL injection to gain a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (3771).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3771).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3230).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3230).png>)
 
 We now have remote access as the user `marcus` and can capture the user flag.
 
@@ -54,15 +54,15 @@ We now have remote access as the user `marcus` and can capture the user flag.
 
 In the user's directory, we find a `note.txt` file that points towards a docker image being present.
 
-<figure><img src="../../../.gitbook/assets/image (672).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(672).png>)
 
 I read the configuration files at `/etc/containerd`, and found that the `root` user was running the image.
 
-<figure><img src="../../../.gitbook/assets/image (2488).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2488).png>)
 
 We can check the open ports of this machine via `netstat -tulpn` to see other open ports.
 
-<figure><img src="../../../.gitbook/assets/image (2638).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2638).png>)
 
 Port 8443 was open and we could access it. The next step is port forwarding.
 
@@ -70,15 +70,15 @@ Port 8443 was open and we could access it. The next step is port forwarding.
 
 I used `ssh -L 8443:localhost:8443 marcus@monitors.htb` to port forward after dropping my public key in the `authorized_keys` folder. Then, I used `gobuster` to find hidden directories present:
 
-<figure><img src="../../../.gitbook/assets/image (2328).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2328).png>)
 
 Visting any of these would redirect us to `/content/control/main`, where there is a login page present.
 
-<figure><img src="../../../.gitbook/assets/image (1352).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1352).png>)
 
 The bottom of the page shows that this is running Apache OFBiz Release 17.12.01, which is vulnerable to loads of exploits, including an RCE one.
 
-<figure><img src="../../../.gitbook/assets/image (2787).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2787).png>)
 
 We can follow the PoC here to execute it:
 
@@ -86,7 +86,7 @@ We can follow the PoC here to execute it:
 
 Then, we would gain a shell as root in the container.
 
-<figure><img src="../../../.gitbook/assets/image (1225).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1225).png>)
 
 ### Sys Module Exploit
 
@@ -132,4 +132,4 @@ clean:
 
 Get them both into the root directory and start listening on a port. Afterwards, we can run `make` and `insmod reverse-shell.ko`. This would trigger the reverse shell, and give us a shell as `root`.
 
-<figure><img src="../../../.gitbook/assets/image (811).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(811).png>)

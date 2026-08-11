@@ -20,29 +20,27 @@ PORT     STATE SERVICE
 
 Port 80 shows a simple quiz application:
 
-<figure><img src="../../../.gitbook/assets/image (1629).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1629).png>)
 
 If we click any of the buttons, we are shown a very obvious LFI.
 
-<figure><img src="../../../.gitbook/assets/image (194).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(194).png>)
 
 Attempting to do anything with it results in being blocked by a WAF.
 
-<figure><img src="../../../.gitbook/assets/image (1560).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1560).png>)
 
 We can confirm that the website runs on PHP by visiting `index.php` and being shown the same page. Then, I experimented with some PHP Filter LFI exploits for the `blackdeath` page.
 
-<figure><img src="../../../.gitbook/assets/image (198).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(198).png>)
 
 The WAF is easily bypassed as long as we include it within the `page` parameter. We can read the code of `index.php` by visiting:
 
-{% code overflow="wrap" %}
 ```
 http://192.168.183.173/index.php?page=php://filter/convert.base64-encode/resource=blackdeath/../../../../../var/www/html/index
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3152).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3152).png>)
 
 Here's the PHP code:
 
@@ -117,11 +115,11 @@ $ curl "http://192.168.183.173:8080/index.php?values_submit=O:7:%22MyClass%22:2:
 
 Then, we can verify that we have RCE:
 
-<figure><img src="../../../.gitbook/assets/image (1060).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1060).png>)
 
 Getting reverse shell using the usual `bash` one-liner is easy:
 
-<figure><img src="../../../.gitbook/assets/image (1870).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1870).png>)
 
 ## Privilege Escalation
 
@@ -149,6 +147,6 @@ hacker:$1$wsCz0GNf$0S8e55RreE.iCJIyEr3jP.:0:0::/root:/bin/sh
 
 Then, host the new `passwd` file on a HTTP server and `curl` it, directing the output to `/etc/passwd`. Afterwards, `su` to the new user to get `root`:
 
-<figure><img src="../../../.gitbook/assets/image (3415).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3415).png>)
 
 Rooted!

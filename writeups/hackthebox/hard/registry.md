@@ -22,19 +22,19 @@ Both the websites point towards a nginx default page.
 
 I ran a `gobuster` scan on both of these, and found an `/install` directory with some random characters.
 
-<figure><img src="../../../.gitbook/assets/image (222).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(222).png>)
 
 There was also a `/bolt` endpoint that shows a basic sample site.
 
-<figure><img src="../../../.gitbook/assets/image (3979).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3979).png>)
 
 Bolt CMS was a possibility of exploitation here. A `feroxbuster` search reveals this is the case:
 
-<figure><img src="../../../.gitbook/assets/image (1345).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1345).png>)
 
 Based on the Bolt CMS Repo, we can check `changelog.md` to see the version and find that this is Bolt 3.6.4.
 
-<figure><img src="../../../.gitbook/assets/image (1197).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1197).png>)
 
 This was a rather old machine, so there were RCE exploits available if I could find the credentials for the administrator. However, there were no credentials for me to exploit, and I could not do much with this. I was clearly missing something.
 
@@ -121,7 +121,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 When trying to access it, it requested for credentials:
 
-<figure><img src="../../../.gitbook/assets/image (1010).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1010).png>)
 
 Using `admin:admin` worked. I was forwarded to what looked like a web API. I didn't have any commands to use, so doing some basic research for Docker Registry API commands was the next step. As usual, Hacktricks had some commands.
 
@@ -132,7 +132,6 @@ $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/
 
 So we have one repository here. We can pass the credentials we used earlier to view more information.
 
-{% code overflow="wrap" %}
 ```
 $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/bolt-image/manifests/latest -L
 {
@@ -174,7 +173,6 @@ $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/
    ],
 <TRUNCATED>
 ```
-{% endcode %}
 
 This confirms that we can download one of the blobs and perhaps find some files in it.
 
@@ -199,7 +197,7 @@ interact
 
 I downloaded the other files to see if there were any other interesting things. Eventually, I did find a SSH private key
 
-<figure><img src="../../../.gitbook/assets/image (3069).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3069).png>)
 
 ```bash
 $ curl -H 'Authorization: Basic YWRtaW46YWRtaW4=' http://docker.registry.htb/v2/bolt-image/blobs/sha256:2931a8b44e495489fdbe2bccd7232e99b182034206067a364553841a1f06f791 -L -o blob3.tar
@@ -213,7 +211,7 @@ Host registry
 
 With these, we can SSH in as `bolt`.
 
-<figure><img src="../../../.gitbook/assets/image (1332).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1332).png>)
 
 ## Privilege Escalation
 
@@ -241,7 +239,7 @@ sqlite> SELECT * from bolt_users;
 
 We have a hash here that is cracked to give `strawberry`.
 
-<figure><img src="../../../.gitbook/assets/image (3266).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3266).png>)
 
 Now, we can login to the `bolt` CMS and continue our enumeration.
 
@@ -249,13 +247,13 @@ Now, we can login to the `bolt` CMS and continue our enumeration.
 
 We can login with `admin:strawberry` to the admin dashboard.
 
-<figure><img src="../../../.gitbook/assets/image (3666).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3666).png>)
 
 Great! Within the password hash, we saw another hint in the form of `shell.php`. As the administrator for bolt, we can actually create PHP files in the File Management tab. We can drop in a webshell and easily get an RCE as the next user.
 
 Originally, this is not allowed since `.php` files are not included in the allowed types of files. However, as the administrator, we can change the `config.yml` file in Configuration > Main Configuration.
 
-<figure><img src="../../../.gitbook/assets/image (3699).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3699).png>)
 
 Then we can upload whatever files we want.
 
@@ -272,7 +270,7 @@ The first reverse shell using a simple `bash` one-liner did not work for some re
 
 To circumvent this, we can simply have the reverse shell connect back to a listener port on localhost using the SSH shell we got earlier.
 
-<figure><img src="../../../.gitbook/assets/image (3014).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3014).png>)
 
 ### Restic
 
@@ -386,6 +384,6 @@ MIIEowIBAAKCAQEAmiGiXpswTyHhjgC55jHRWlGX1asEMyDFfkVwhuNohv/4cQKm
 
 Then we can SSH in as `root`.
 
-<figure><img src="../../../.gitbook/assets/image (2420).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2420).png>)
 
 Cool machine. Really good despite being like 3 years old.

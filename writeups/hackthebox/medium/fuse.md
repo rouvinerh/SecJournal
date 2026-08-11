@@ -39,11 +39,11 @@ Loads of ports available.
 
 When we visit the website hosted, we need to add `fuse.fabricorp.local` to our `/etc/hosts` file. I also added `fabricorp.local` in case. The wesbite was some sort of printing service.
 
-<figure><img src="../../../.gitbook/assets/image (3138).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3138).png>)
 
 When we view the CSV files of each printing log, we can the user that printed them.
 
-<figure><img src="../../../.gitbook/assets/image (783).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(783).png>)
 
 We have 5 users in total:
 
@@ -71,7 +71,7 @@ cewl http://fuse.fabricorp.local/papercut/logs/html/index.htm --with-numbers > p
 
 Afterwards, we can run `crackmapexec` to brute force the passwords. Out of all the failures, one stood out.
 
-<figure><img src="../../../.gitbook/assets/image (3628).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3628).png>)
 
 Seems that we have a valid expired credential here. To change passwords, we can use `smbpasswd`.
 
@@ -128,7 +128,6 @@ index: 0x1095 RID: 0x642 acb: 0x00020010 Account: tlavel        Name: (null)    
 
 We can add these users to our username file. When enumerate printers, we see this:
 
-{% code overflow="wrap" %}
 ```
 rpcclient $> enumprinters
         flags:[0x800000]
@@ -136,15 +135,14 @@ rpcclient $> enumprinters
         description:[\\10.10.10.193\HP-MFT01,HP Universal Printing PCL 6,Central (Near IT, scan2docs password: $fab@s3Rv1ce$1)]
         comment:[]
 ```
-{% endcode %}
 
 We now have more credentials! With this, we can try brute forcing the possible passwords with the username list we updated earlier.
 
-<figure><img src="../../../.gitbook/assets/image (516).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(516).png>)
 
 We can test the credentials, and find that we are able to `evil-winrm` into the machine.
 
-<figure><img src="../../../.gitbook/assets/image (2285).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2285).png>)
 
 Grab the user flag!
 
@@ -263,6 +261,6 @@ NTSTATUS: c0000033, WinError: 0
 
 Then, we would trigger a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (1829).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1829).png>)
 
 Rooted!

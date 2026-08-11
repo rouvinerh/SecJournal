@@ -4,13 +4,13 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3949).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3949).png>)
 
 ### YAML Parser
 
 Port 8080 was running an application that handles YAML input.
 
-<figure><img src="../../../.gitbook/assets/image (1325).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1325).png>)
 
 This was obviously a deserialisation exploit, where the application handles user input without sanitsation and it can lead to code execution. Googling for this led me to this repository.
 
@@ -28,7 +28,7 @@ Based on the PoC, we can first test whether the parser is able to send requests 
 
 And it does indeed work.
 
-<figure><img src="../../../.gitbook/assets/image (1625).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1625).png>)
 
 We then need to use this bit of code here to make the machine download a reverse shell and execute it.
 
@@ -122,7 +122,7 @@ jar -cvf AwesomeScriptingEngineFactory.jar -C src/ .
 
 This would create a JAR file. Then, we can make the machine download the JAR file using the same method as above to receive callback. This would trigger the command and our listener port would receive a reverse shell as `tomcat`.
 
-<figure><img src="../../../.gitbook/assets/image (1638).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1638).png>)
 
 ## Privilege Escalation
 
@@ -130,17 +130,17 @@ This would create a JAR file. Then, we can make the machine download the JAR fil
 
 Since we are `tomcat`, we should look into the configurations for the Tomcat interface. This can be found within `~/conf/tomcat-users.xml`.
 
-<figure><img src="../../../.gitbook/assets/image (1924).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1924).png>)
 
 We can try an `su` to the `admin` user and find that it works with this password.
 
-<figure><img src="../../../.gitbook/assets/image (2715).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2715).png>)
 
 ### Sudo Privileges
 
 Since we have the password, we can check for `sudo` privileges.
 
-<figure><img src="../../../.gitbook/assets/image (2165).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2165).png>)
 
 Seems that we can run `go` on a certain script:
 
@@ -200,10 +200,10 @@ export function info():int {
 
 The above code seems to do nothing but return 0, so we need to change that 0 to a 1. We can count the bytes and change the byte accordingly using `dd`.
 
-<figure><img src="../../../.gitbook/assets/image (1216).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1216).png>)
 
 Afterwards, we can create a `deploy.sh` file that adds our public key into the `/root/.ssh/authorized_key` folder and run the `sudo` command.
 
 This would allow us to SSH in as `root`.
 
-<figure><img src="../../../.gitbook/assets/image (2263).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2263).png>)

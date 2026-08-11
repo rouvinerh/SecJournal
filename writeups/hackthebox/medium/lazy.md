@@ -35,11 +35,11 @@ Since only port 80 is open, we can proxy the traffic through Burpsuite.
 
 The website shows a really basic company website:
 
-<figure><img src="../../../.gitbook/assets/image (4155).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4155).png>)
 
 I created a user and logged in to view the same thing:
 
-<figure><img src="../../../.gitbook/assets/image (4156).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4156).png>)
 
 In Burp, there appears to be a custom cookie being sent to the website called `auth`:
 
@@ -59,7 +59,7 @@ Upgrade-Insecure-Requests: 1
 
 Although the website was written in PHP, this cookie was not the default PHP session cookie that was used. I tried to change a few parameters for it and found that the application returned a unique error:
 
-<figure><img src="../../../.gitbook/assets/image (4157).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4157).png>)
 
 This is an obvious hint that we have to somehow use the **paddling oracle attack** for this. This attack basically gives us a computationally feasible way to brute force the plaintext byte by byte using the error. Here's a pretty good video from college that I used:
 
@@ -138,7 +138,7 @@ Block 1 Results:
 
 When we access the website with this cookie, it tells us we are logged in as the administrator:
 
-<figure><img src="../../../.gitbook/assets/image (4158).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4158).png>)
 
 It also gives us a private SSH key to `ssh` in as the `mitsos` user as indicated by the URL:
 
@@ -146,7 +146,7 @@ It also gives us a private SSH key to `ssh` in as the `mitsos` user as indicated
 mysshkeywithnamemitsos
 ```
 
-<figure><img src="../../../.gitbook/assets/image (4159).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4159).png>)
 
 ## Privilege Escalation
 
@@ -177,7 +177,6 @@ drwxrwxr-x 2 mitsos mitsos 4096 Dec  7  2021 .ssh
 
 When used, it prints out the `/etc/shadow` contents:
 
-{% code overflow="wrap" %}
 ```
 mitsos@LazyClown:~$ ./backup 
 root:$6$v1daFgo/$.7m9WXOoE4CKFdWvC.8A9aaQ334avEU8KHTmhjjGXMl0CTvZqRfNM5NO2/.7n2WtC58IUOMvLjHL0j4OsDPuL0:17288:0:99999:7:::
@@ -206,16 +205,13 @@ mitsos:$6$LMSqqYD8$pqz8f/.wmOw3XwiLdqDuntwSrWy4P1hMYwc2MfZ70yA67pkjTaJgzbYaSgPlf
 mysql:!:17288:0:99999:7:::
 sshd:*:17288:0:99999:7:::
 ```
-{% endcode %}
 
 The hashes in this are normally not crackable, and I don't think the creator would be so kind to give us the `root` hash directly. The file was an ELF binary:
 
-{% code overflow="wrap" %}
 ```
 mitsos@LazyClown:~$ file backup
 backup: setuid, setgid ELF 32-bit LSB  executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=33d6b5bec96c44e630f37ff41cc1c4a8b2813b6b, not stripped
 ```
-{% endcode %}
 
 I used `ltrace` to see the functions used:
 
@@ -241,6 +237,6 @@ export PATH=/tmp:$PATH
 /home/mitsos/backup
 ```
 
-<figure><img src="../../../.gitbook/assets/image (4161).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4161).png>)
 
 Rooted!

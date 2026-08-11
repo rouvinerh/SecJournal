@@ -122,7 +122,7 @@ We can see that there's an `azure.xml` file here. It contains a user credential:
 
 I also noticed that this uses Azure to do stuff, so let's keep that in mind for now. Anyways, we can login via `evil-winrm` with `mhope` and this password.
 
-<figure><img src="../../../.gitbook/assets/image (641).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(641).png>)
 
 ## Privilege Escalation
 
@@ -179,10 +179,10 @@ Since Azure AD Connect was present, it means that there's a database of which th
 
 We just need to transfer the `AdDecrypt.exe` file along with `mcrypt.dll` to the machine. Then, following the PoC, we need to run this within `C:\Program Files\Microsoft Azure AD Sync\Bin`.
 
-<figure><img src="../../../.gitbook/assets/image (4079).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4079).png>)
 
 Then, using this password, we can login via `evil-winrm`.
 
-<figure><img src="../../../.gitbook/assets/image (3760).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3760).png>)
 
 Rooted!

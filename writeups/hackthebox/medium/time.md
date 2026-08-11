@@ -20,19 +20,17 @@ PORT   STATE SERVICE
 
 Port 80 was running a JSON Beautifier:
 
-<figure><img src="../../../.gitbook/assets/image (683).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(683).png>)
 
 This would accept JSON inputs, but I had no idea what kind of engine this was using. There were 2 modes to this: Beautify and Validate, of which the latter was in Beta. I tried sending some random input and managed to trigger an error:
 
-<figure><img src="../../../.gitbook/assets/image (2506).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2506).png>)
 
 We can view the rest of this error either in Burp or by examining the page source.
 
-{% code overflow="wrap" %}
 ```
 Validation failed: Unhandled Java exception: com.fasterxml.jackson.databind.exc.MismatchedInputException: Unexpected token (START_OBJECT), expected START_ARRAY: need JSON Array to contain As.WRAPPER_ARRAY type information for class java.lang.Object
 ```
-{% endcode %}
 
 So this was using a software called Jackson to validate JSON input. Googling for exploits led me to some deserialisation related exploits where we could achieve RCE. Here's the PoC I used:
 
@@ -61,7 +59,7 @@ Afterwards, we need to send this input to the application to be parsed:
 
 When we send this, it would download the file and give us a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (1791).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1791).png>)
 
 ## Privilege Escalation
 
@@ -90,6 +88,6 @@ This looks like something that the `root` user would have on a cronjob. As such,
 pericles@time:/usr/bin$ echo 'chmod u+s /bin/bash' >> timer_backup.sh
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2674).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2674).png>)
 
 Easy root!

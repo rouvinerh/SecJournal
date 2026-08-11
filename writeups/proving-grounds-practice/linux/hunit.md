@@ -97,11 +97,11 @@ PORT      STATE SERVICE     VERSION
 
 Port 8080 shows a Haiku page:
 
-<figure><img src="../../../.gitbook/assets/image (2121).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2121).png>)
 
 If we read go to the first Haiku's page and view the page source, we find this:
 
-<figure><img src="../../../.gitbook/assets/image (2112).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2112).png>)
 
 We can enumerate the API page using `curl`.
 
@@ -181,7 +181,7 @@ $ curl http://192.168.183.125:8080/api/user/? --silent | jq
 
 We can then login using the credentials for `dademola`:
 
-<figure><img src="../../../.gitbook/assets/image (3600).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3600).png>)
 
 ## Privilege Escalation
 
@@ -293,4 +293,4 @@ To 192.168.183.125:/git-server
 
 Then, we can just wait for the `cronjob` to execute our reverse shell as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (1000).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1000).png>)

@@ -22,7 +22,7 @@ We have to add `shoppy.htb` to our `/etc/hosts` file.
 
 Port 80 reveals a count down to the release of a website.
 
-<figure><img src="../../../.gitbook/assets/image (2643).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2643).png>)
 
 Doing a `gobuster` scan reveals a few directories:
 
@@ -52,7 +52,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 There's a login page.
 
-<figure><img src="../../../.gitbook/assets/image (2180).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2180).png>)
 
 I tested SQL Injection, but it didn't seem to work. We can still fuzz subdomains using `wfuzz`, and I did find one:
 
@@ -77,7 +77,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 The sub-domain brought me to another login page.
 
-<figure><img src="../../../.gitbook/assets/image (2272).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2272).png>)
 
 Directory scanning and searching for public exploits returned nothing useful, so let's come back to this later.
 
@@ -89,11 +89,11 @@ On the main `shoppy.htb` website, I tried NoSQL Injection using both regular HTT
 username=admin'||'1=1&password=pass
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2556).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2556).png>)
 
 With this, we can login to the admin dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (1160).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1160).png>)
 
 There was a Search for Users function, and since this application is already vulnerable to NoSQL Injection, we can use a similar payload to see what we get:
 
@@ -103,19 +103,19 @@ There was a Search for Users function, and since this application is already vul
 
 Then we can download the export to see some credentials:
 
-<figure><img src="../../../.gitbook/assets/image (1725).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1725).png>)
 
 The hash for `josh` cracks.
 
-<figure><img src="../../../.gitbook/assets/image (1526).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1526).png>)
 
 Using that, we can login to Mattermost and see that there are credentials on the screen!
 
-<figure><img src="../../../.gitbook/assets/image (713).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(713).png>)
 
 We can use this to `ssh` in as the user.
 
-<figure><img src="../../../.gitbook/assets/image (130).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(130).png>)
 
 ## Privilege Escalation
 
@@ -149,7 +149,7 @@ Access denied! This incident will be reported !
 
 We can transfer this back to my machine and decompile it with `ghidra`. When opened, we can see the master password it is compared to.
 
-<figure><img src="../../../.gitbook/assets/image (289).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(289).png>)
 
 We can use this to get the real password:
 
@@ -187,4 +187,4 @@ uid=0(root) gid=0(root) groups=0(root),1(bin),2(daemon),3(sys),4(adm),6(disk),10
 
 With this, we can go to `/mnt/root/root.txt` to read the root flag. We can also drop our public SSH key into the `authorized_keys` file or make `/bin/bash` an SUID binary.
 
-<figure><img src="../../../.gitbook/assets/image (4065).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4065).png>)

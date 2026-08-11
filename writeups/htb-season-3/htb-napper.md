@@ -94,19 +94,15 @@ This page contained some exclusive information about the website, including some
 
 TLDR, here are the interesting parts:
 
-{% code overflow="wrap"%}
 ```
 [...] HTTP listener written in C#, which we refer to as NAPLISTENER. Consistent with SIESTAGRAPH and other malware families developed or used by this threat, NAPLISTENER appears designed to evade network-based forms of detection.  [...]
 ```
-{% endcode %}
 
-{% code overflow="wrap" %}
 
 ```
 This means that any web request to /ews/MsExgHealthCheckd/ that contains a base64-encoded .NET assembly in the sdafwe3rwe23 parameter will be loaded and executed in memory. It's worth noting that the binary runs in a separate process and it is not associated with the running IIS server directly.
 ```
 
-{% endcode %}
 
 So, I needed a `base64` encoded .NET binary to run here. The references were pretty important to read as well:
 

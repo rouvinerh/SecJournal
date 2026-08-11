@@ -66,11 +66,11 @@ Let's move on for now, we might need this later.
 
 This just shows a GIF of bacon sizzling:
 
-<figure><img src="../../../.gitbook/assets/image (1883).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1883).png>)
 
 When viewing the page source, this is located at the `/images` directory, which we don't have access to. However, it does tell us this is an IIS server based on the error page:
 
-<figure><img src="../../../.gitbook/assets/image (2750).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2750).png>)
 
 ### SMB Shares Enumeration
 
@@ -230,7 +230,7 @@ Created file 'test' in directory: /home/kali/htb/sizzle/mnt/ZZ_ARCHIVE
 
 So I could also write to that Public file. I copied the `test.scf` file there and `responder` captured a hash!
 
-<figure><img src="../../../.gitbook/assets/image (1302).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1302).png>)
 
 We can crack this hash easily with `john`:
 
@@ -269,23 +269,23 @@ $ smbmap -u amanda -p Ashare1972 -H 10.129.73.156
 
 Now the CertEnroll share is available. CertEnroll is a reference to an ADCS service that provides a web platform to enroll certificates. This means that `/certsrv` is probably present on the web server, and visiting it requires credentials:
 
-<figure><img src="../../../.gitbook/assets/image (2360).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2360).png>)
 
 Using the credentials we have, we can access it:
 
-<figure><img src="../../../.gitbook/assets/image (3656).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3656).png>)
 
 We can try to request a certificate, and this presents us with 2 options:
 
-<figure><img src="../../../.gitbook/assets/image (3352).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3352).png>)
 
 Clicking on User Certificate brings us to a page requesting its key strength:
 
-<figure><img src="../../../.gitbook/assets/image (1755).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1755).png>)
 
 For some reason, I cannot specify the key strength in this, so we probably aren't supposed to have this functionality. In this case, we can check the advanced request form:
 
-<figure><img src="../../../.gitbook/assets/image (614).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(614).png>)
 
 It appears we have to create a certificate ourselves, then use it to submit a request to be approved. I know that certificates can be used for authentication purposes, and this service is used to signed the certificates to 'make them legit'. As such, we can create a Certificate Signing Request (CSR) via `openssl`.
 
@@ -295,11 +295,11 @@ $ openssl req -new -newkey rsa:2048 -nodes -keyout user.key -out user.csr
 
 Then, we can grab the `.csr` contents and paste it into the box:
 
-<figure><img src="../../../.gitbook/assets/image (1676).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1676).png>)
 
 When submitted, we would get the option to download the certificate:
 
-<figure><img src="../../../.gitbook/assets/image (905).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(905).png>)
 
 This would download a `.cer` file to our machine. Using this, we can try to get a shell. Googling online led me to someone's OSCP notes, and it appears it is possible to get a WinRM shell using this certificate with some Ruby code:
 
@@ -307,7 +307,7 @@ This would download a `.cer` file to our machine. Using this, we can try to get 
 
 Using this, we can get a shell as Amanda:
 
-<figure><img src="../../../.gitbook/assets/image (3279).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3279).png>)
 
 ## Privilege Escalation
 
@@ -321,11 +321,11 @@ $ bloodhound-python -d HTB.local -u amanda -p Ashare1972 -c all -ns 10.129.101.1
 
 Then, start `bloodhound` and `neo4j`, then upload the data required. I found that the user `amanda` has no privileges at all. Checking the Kerberoastable accounts, we find that `mrlky` is a possible target.
 
-<figure><img src="../../../.gitbook/assets/image (1373).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1373).png>)
 
 Checking the privileges of this user, we can see that they have DCSync privileges over the forest.
 
-<figure><img src="../../../.gitbook/assets/image (2455).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2455).png>)
 
 So that's the attack path. Normally, I would aim to Kerberoast remotely for both OPSEC reasons and also because `impacket` is just so easy to use. However, in our initial `nmap` scan, port 88 is not public facing. This means that we **have** to Kerberoast on the machine itself using `rubeus.exe`.
 
@@ -333,7 +333,7 @@ So that's the attack path. Normally, I would aim to Kerberoast remotely for both
 
 I tried to download and execute Rubeus, but this is the error I get due to AppLocker:
 
-<figure><img src="../../../.gitbook/assets/image (333).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(333).png>)
 
 Other tools like `PowerView.ps1` don't work as well. The current shell that I have is extremely limited in  We can check the Execution Context to confirm this:
 
@@ -348,7 +348,7 @@ There are 2 methods of exploitation here. One is we could run a Kerberoast Power
 
 All we need to do is specify that we want to use Powershell Version 2:
 
-<figure><img src="../../../.gitbook/assets/image (1168).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1168).png>)
 
 Using this method, we can run some scripts using this. However, its even better if we can get a CLM Bypassed shell. To do so, we can simply download the `Invoke-PowerShellTcp` shell to the machine, and then run this command:
 
@@ -356,7 +356,7 @@ Using this method, we can run some scripts using this. However, its even better 
 powershell -version 2 -nop -nop -noexit -exec bypass -c '.\shell.ps1'
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3860).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3860).png>)
 
 Great! Now we have a fully functioning shell.
 
@@ -366,7 +366,6 @@ Since we have a full shell, we don't actually need Rubeus anymore as there are p
 
 However, trying to run this gives me a weird error:
 
-{% code overflow="wrap" %}
 ```
 PS C:\Users\amanda\Documents>. .\Invoke-Kerberoast.ps1
 PS C:\Users\amanda\Documents> Invoke-Kerberoast
@@ -379,7 +378,6 @@ At C:\Users\amanda\Documents\shell.ps1:127 char:21
     + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,Invoke-PowerShell 
    Tcp
 ```
-{% endcode %}
 
 We can follow the PowerSploit documentation to resolve this.
 
@@ -401,7 +399,7 @@ $Cred = New-Object System.Management.Automation.PSCredential('htb\amanda', $SecP
 
 After running this, a hash for the user is given to us:
 
-<figure><img src="../../../.gitbook/assets/image (3228).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3228).png>)
 
 Transfer this to our machine, and we can crack it easily with `john`:
 
@@ -421,10 +419,10 @@ Session completed.
 
 Earlier, we saw that this user had DCSync privileges over the domain, so we can easily use `secretsdump.py` to dump the administrator hash:
 
-<figure><img src="../../../.gitbook/assets/image (3347).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3347).png>)
 
 Then, we can use `smbexec.py` to pass the hash and get an administrator shell.
 
-<figure><img src="../../../.gitbook/assets/image (2225).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2225).png>)
 
 Then we can capture both the flags!

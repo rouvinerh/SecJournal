@@ -76,11 +76,11 @@ Port 5132 seems to have loads of errors, asking for a username and password.
 
 Port 80 just shows this page:
 
-<figure><img src="../../../.gitbook/assets/image (3142).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3142).png>)
 
 When we read the page source, we find this:
 
-<figure><img src="../../../.gitbook/assets/image (2004).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2004).png>)
 
 There's a GraphQL instance on port 8433 that we can investigate. It also seems to be a login of some sort. We can first query all the different types being used:
 
@@ -90,7 +90,7 @@ There's a GraphQL instance on port 8433 that we can investigate. It also seems t
 
 Using this, we can find two interesting functions:
 
-<figure><img src="../../../.gitbook/assets/image (3464).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3464).png>)
 
 The first one just gives us usernames:
 
@@ -105,7 +105,7 @@ $ curl --silent http://192.168.157.170:8433/graphql?query=%7BlistUsers%7D | jq
 
 The second one takes a user as input. We can get a password for `peter` using this method:
 
-<figure><img src="../../../.gitbook/assets/image (3730).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3730).png>)
 
 Using this, we can interact with the service on port 5132. The creds also don't work with SSH.
 
@@ -142,7 +142,6 @@ $ list
 
 If we read 234, we find a password:
 
-{% code overflow="wrap" %}
 ```
 $ read 234
 Message No: #234
@@ -151,11 +150,10 @@ Hey, Please change your password ASAP. You know the password policy, using weak 
 
 Attachment: none
 ```
-{% endcode %}
 
 We aren't allowed to read any message. Anyways, using this password we can `ssh` in:
 
-<figure><img src="../../../.gitbook/assets/image (2773).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2773).png>)
 
 ## Privilege Escalation
 
@@ -298,7 +296,6 @@ admin:password
 
 This would allow us to read message 0:
 
-{% code overflow="wrap" %}
 ```
 $ read 0
 Message No: #0
@@ -307,6 +304,5 @@ Hey, Seriously this is getting out of hand. Your new password is 9>XsS+&=Zn#AS9-
 
 Attachment: none
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (2776).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2776).png>)

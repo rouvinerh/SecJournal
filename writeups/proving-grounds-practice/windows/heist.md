@@ -41,11 +41,11 @@ This is an AD machine. There were no null credentials accepted by any service. A
 
 Port 8080 hosted a Secure Web Browser application:
 
-<figure><img src="../../../.gitbook/assets/image (3366).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3366).png>)
 
 This looks vulnerable to SSRF, and it is.
 
-<figure><img src="../../../.gitbook/assets/image (500).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(500).png>)
 
 We can view the exact request this is sending:
 
@@ -62,7 +62,7 @@ Host: 192.168.45.216
 
 This might be poisanable with `responder`, and I tested it:
 
-<figure><img src="../../../.gitbook/assets/image (3237).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3237).png>)
 
 This hash can be cracked instantly:
 
@@ -80,7 +80,7 @@ Session completed.
 
 We can then `evil-winrm` into the box:
 
-<figure><img src="../../../.gitbook/assets/image (2482).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2482).png>)
 
 ## Privilege Escalation
 
@@ -100,11 +100,11 @@ $ bloodhound-python -d heist.offsec -u enox -p california -c all -ns 192.168.240
 
 After the data is uploaded, we can see that `enox` is part of the Web Admins group:
 
-<figure><img src="../../../.gitbook/assets/image (3239).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3239).png>)
 
 This group has the ReadGMSAPassword privilege over the DC:
 
-<figure><img src="../../../.gitbook/assets/image (3227).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3227).png>)
 
 There is one service account present on the domain, and it is `svc_apache`:
 
@@ -148,7 +148,7 @@ Calculating hashes for Current Value
 
 We can then `evil-winrm` in as this user:
 
-<figure><img src="../../../.gitbook/assets/image (3017).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3017).png>)
 
 ### SeRestorePrivilege -> RDP Shell
 
@@ -170,7 +170,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
 
 To exploit this, we can follow the methodology on PayloadAllTheThings:
 
-<figure><img src="../../../.gitbook/assets/image (2533).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2533).png>)
 
 We can execute these commands:
 
@@ -191,6 +191,6 @@ $ rdesktop -d heist.offsec -u enox -p california heist.offsec
 
 Just press the button on the bottom right, and it will spawn a SYSTEM shell:
 
-<figure><img src="../../../.gitbook/assets/image (2099).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2099).png>)
 
 If you want to get a proper shell, then we can just add `enox` to the Domain Admins and Administrators groups with `net.exe`. Rooted!

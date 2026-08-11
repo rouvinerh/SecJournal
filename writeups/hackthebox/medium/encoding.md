@@ -24,11 +24,11 @@ PORT   STATE SERVICE
 
 Here's the web page:
 
-<figure><img src="../../../.gitbook/assets/image (574).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(574).png>)
 
 There's some API documentations available for us to read.
 
-<figure><img src="../../../.gitbook/assets/image (3789).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3789).png>)
 
 Interesting, and there's definitely some exploit available with this. However, just to be sure, I did a `gobuster` scan of the website with the php extension. Didn't manage to find much on the main website, but on the API domain I found something interesting.
 
@@ -60,13 +60,13 @@ There was a `utils.php` file, which could be something. Also there were lots of 
 
 On the main page, there were the type of conversions available, which were **string, integer and images**. The image one was the most suspicious.
 
-<figure><img src="../../../.gitbook/assets/image (430).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(430).png>)
 
 This was the only page that didn't have any API endpoint to use. When checking out `/v2` and `/v1`, it just tells me the page is under construction due to security issues.
 
 I decided to enumerate for subhosts with `wfuzz` because I had to find something to do with images for this machine. I managed to find another subdomain at `image.haxtables.htb`.
 
-<figure><img src="../../../.gitbook/assets/image (2468).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2468).png>)
 
 This was the only request that led to a 403, which means it exists on the machine. I proceeded to attempt to scan for files on that domain using `feroxbuster`. Nothing found though.
 
@@ -192,7 +192,7 @@ This functio was taking the JSON data and checking for SSRF (poorly). It only ch
 
 I was stuck here for a while, as I was unable to enumerate any subdomain without getting rejected and I didn't know what other files existed on the server. I began testing random directories using the LFI I had found and just tried `/.git/HEAD` to see if it existed, and it did!
 
-<figure><img src="../../../.gitbook/assets/image (2677).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2677).png>)
 
 So, now I know that there was a Git repository on this website, but the question was how to get it out. We could use `gitdumper.py`, but it would have to get the files out rather uniquely through the LFI and decode it from hex. Using this one-liner in bash, we could do just that:
 
@@ -246,11 +246,11 @@ $url = 'http://api.haxtables.htb' . $uri_path . '/index.php';
 
 We can truncate this using the @ symbol. The @ symbol would make the website think that the first part of the URL are credentials, and since the website does not require credentials, it would ignore it completely.
 
-<figure><img src="../../../.gitbook/assets/image (2736).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2736).png>)
 
 Then we can use this to generate a shorthand line cf code to test our RCE ability. Shorthand PHP is used because the command for our shell is really long, so we need to make it as short as possible or the server might not process it due to size.
 
-<figure><img src="../../../.gitbook/assets/image (1996).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1996).png>)
 
 Afterwards, we just send this POST request and our RCE works!
 
@@ -271,7 +271,7 @@ Content-Length: 6715
 "uri_path":"test@image.haxtables.htb/actions/action_handler.php?page=[OUTPUT]
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2581).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2581).png>)
 
 Now, we can use `curl` to get the machine to download and execute a bash script. I created a script named `g` with the `nc mkfifo` shell. Then, I used this line of code:
 
@@ -281,7 +281,7 @@ Now, we can use `curl` to get the machine to download and execute a bash script.
 
 Afterwards, I sent the exploit and got a shell.
 
-<figure><img src="../../../.gitbook/assets/image (2812).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2812).png>)
 
 ## Privilege Escalation
 
@@ -328,7 +328,7 @@ git config filter.indent.clean /tmp/lol
 sudo -u svc /var/www/image/scripts/git-commit.sh
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1800).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1800).png>)
 
 The creator left a private SSH key in the directory for this new user, which was really useful.
 
@@ -370,7 +370,6 @@ drwxrwxr-x+  22 root root 4096 Jan 30 15:39 system
 
 Following GTFOBins, we can create a small conf file for PE.
 
-{% code title="gg.service" %}
 ```
 [Service]
 Type=oneshot
@@ -380,8 +379,7 @@ WantedBy=multi-user.target
 
 afterwards run sudo systemctl restart gg
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1414).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1414).png>)
 
 Rooted!

@@ -46,7 +46,7 @@ For this particular machine, Port 8080 and 1433 are both public facing. Also, th
 
 Port 8080 shows a blog page:
 
-<figure><img src="../../../.gitbook/assets/image (1303).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1303).png>)
 
 There wasn't much functionality within this website, so I moved on to port 1337 instead. There was a sign in, but we don't have any credentials yet.
 
@@ -54,7 +54,7 @@ There wasn't much functionality within this website, so I moved on to port 1337 
 
 This port just shows the default IIS server page:
 
-<figure><img src="../../../.gitbook/assets/image (147).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(147).png>)
 
 I ran a directory scan on both of these websites, and found that the service hosted on port 1337 contained one hidden directory:
 
@@ -80,7 +80,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The directory contained an encrypted file:
 
-<figure><img src="../../../.gitbook/assets/image (1144).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1144).png>)
 
 The file contained a lot of lines which I removed:
 
@@ -99,7 +99,7 @@ SQL Server sa credentials file namez
 
 This is just the password in binary, which can be converted online:
 
-<figure><img src="../../../.gitbook/assets/image (624).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(624).png>)
 
 With this, we can login as the administrator using `admin:@dm!n_P@ssW0rd!` on the blog service on port 8080.
 
@@ -107,7 +107,7 @@ With this, we can login as the administrator using `admin:@dm!n_P@ssW0rd!` on th
 
 The dashboard can be accessed at `/admin`.
 
-<figure><img src="../../../.gitbook/assets/image (1934).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1934).png>)
 
 However, I could not find any exploitable feature of this at all. There also wasn't any public exploits related to LFI, RCE or anything I could work with. So I went back to the file found earlier.
 
@@ -147,16 +147,13 @@ SQL>
 
 We aren't allowed to execute `xp_cmdshell` in this instance:
 
-{% code overflow="wrap" %}
 ```
 SQL> exec xp_cmdshell 'whoami'
 [-] ERROR(MANTIS\SQLEXPRESS): Line 1: The EXECUTE permission was denied on the object 'xp_cmdshell', database 'mssqlsystemresource', schema 'sys'.
 ```
-{% endcode %}
 
 So let's just take a look at the database itself. We can first find the databases present:
 
-{% code overflow="wrap" %}
 ```
 SQL> SELECT name FROM master..sysdatabases;
 name                                                                                                                               
@@ -167,11 +164,9 @@ model
 msdb                                                                                                                               
 orcharddb 
 ```
-{% endcode %}
 
 The `orcharddb` looks the most interesting, so let's enumerate that one. There were a lot of tables present, but the one that stood out was the Users table:
 
-{% code overflow="wrap" %}
 ```
 SQL> SELECT table_name FROM information_schema.tables;
 table_name
@@ -184,11 +179,9 @@ blog_Orchard_Users_UserPartRecord
 blog_Orchard_Roles_PermissionRecord
 <TRUNCATED>
 ```
-{% endcode %}
 
 Then, we can find the columns present from this table and get both the usernames and passwords from it:
 
-{% code overflow="wrap" %}
 ```
 SQL> select column_name FROM information_schema.columns where table_name ='blog_Orchard_Users_UserPartRecord '
 column_name
@@ -227,7 +220,6 @@ admin                                                                           
 
 James                                                                                                                                                                                                                                                             J@m3s_P@ssW0rd!
 ```
-{% endcode %}
 
 Great! Now we have this user. However, this user doesn't seem to be part of any remote management group, but his credentials are valid.
 
@@ -245,7 +237,6 @@ I initially tried to gather more information about the domain via `bloodhound` t
 
 First we need to find the domain name by scanning port 389.
 
-{% code overflow="wrap" %}
 ```
 $ sudo nmap -p 389 -sC -sV -O -T4 10.129.77.179        
 [sudo] password for kali: 
@@ -256,7 +247,6 @@ Host is up (0.0075s latency).
 PORT    STATE SERVICE VERSION
 389/tcp open  ldap    Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
 ```
-{% endcode %}
 
 Add this domain to our `/etc/hosts` file, and then run `bloodhound-python`. We would also need to add `mantis.htb.local` after an initial collection resulted in some errors.
 
@@ -282,11 +272,11 @@ INFO: Done in 00M 01S
 
 After uploading the data to Bloodhound, we find that the user `james` can RDP into the machine:
 
-<figure><img src="../../../.gitbook/assets/image (2415).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2415).png>)
 
 That's rather unique, but port 3389 is not open on the machine, meaning we need to do something else. There wasn't any other users on the domain as well:
 
-<figure><img src="../../../.gitbook/assets/image (2512).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2512).png>)
 
 I was stuck here for a while...
 
@@ -310,7 +300,7 @@ Also, while researching for exploitation methods, I found that the Impacket suit
 
 We can then run `impacket-goldenPac` to get a SYSTEM shell.
 
-<figure><img src="../../../.gitbook/assets/image (4034).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4034).png>)
 
 Rooted!
 
@@ -333,7 +323,7 @@ Kerberos has something called Privileged Attribute Certificate (PAC) which conta
 
 PAC Signature Validation is the function that checks the PAC via a checksum. In an earlier version, MS11-013 allows for attackers to basically spoof the PAC to request tickets as the administrator.
 
-<figure><img src="../../../.gitbook/assets/image (3858).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3858).png>)
 
 The current exploit MS014-68 does include a bit more checks, but not enough. The exploit comes about because the DC fails to check for valid checksums for the PAC field, thus allowing us attackers to spoof the PAC to impersonate an administrator requesting for a TGT.
 

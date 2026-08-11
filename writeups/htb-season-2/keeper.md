@@ -22,27 +22,27 @@ We can start proxying traffic through Burpsuite.
 
 Visiting the website itself shows a domain we need to add:
 
-<figure><img src="../../.gitbook/assets/image (49).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(49).png>)
 
 After adding to the `/etc/hosts` file, it brings us to a login page:
 
-<figure><img src="../../.gitbook/assets/image (50).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(50).png>)
 
 The website was running Best Practical Request Tracker (RT) 4.4.4, which is quite outdated. A bit of research reveals that `root:password` is the default password, which works here:
 
-<figure><img src="../../.gitbook/assets/image (51).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(51).png>)
 
 There is 1 ticket present, and it's an issue regarding Keepass (with the box name being an obvious hint).
 
-<figure><img src="../../.gitbook/assets/image (42).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(42).png>)
 
 The attachment has been removed. There's also mention of another user named `lnorgaard`. When we use the Admin panel to view all Users, there's a password located within the user's comments:
 
-<figure><img src="../../.gitbook/assets/image (43).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(43).png>)
 
 Using these creds, we can `ssh` in as the user:
 
-<figure><img src="../../.gitbook/assets/image (44).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(44).png>)
 
 ## Privilege Escalation
 
@@ -112,7 +112,7 @@ Combined: ●{,, l, `, -, ', ], A, I, :, =, _, c, M}<REDACTEDSTRING>
 
 This would produce a string at the end with some non-printable characters. Googling part of the string reveals a certain Danish dessert (based on the username of the user):
 
-<figure><img src="../../.gitbook/assets/image (45).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(45).png>)
 
 Using the name of the dessert, we can access the passwords within the `.kdbx` file:
 
@@ -187,6 +187,6 @@ MIIEowIBAAKCAQEAp1arHv4TLMBgUULD7AvxMMsSb3PFqbpfw/K4gmVd9GW3xBdP
 
 After running `chmod 600` on it, we can use this private key to `ssh` in as `root`:
 
-<figure><img src="../../.gitbook/assets/image (46).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(46).png>)
 
 `dotnet run` saves loads of time transferring files to a Windows machine. Rooted!

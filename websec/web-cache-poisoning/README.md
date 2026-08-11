@@ -8,7 +8,7 @@ Caches were developed in order to reduce the workload of servers when handling l
 
 It is faster to store a copy on a cache server for frequently requested pages / resources:
 
-<figure><img src="../../.gitbook/assets/image (341).png" alt=""><figcaption><p><em>Taken from PortSwigger Web Security Academy</em></p></figcaption></figure>
+![Taken from PortSwigger Web Security Academy](<../../.gitbook/assets/image%20(341).png>)
 
 The web cache technology uses a 'cache key' to fingerprint requests. The key is typically a set of request attributes, like cookies, headers or parameters that a web cache uses. If the cache does have a response stored using the same key, then it simply serves the stored response instead of going to the origin server to get a fresh response.
 

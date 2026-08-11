@@ -47,7 +47,7 @@ We can add `muddy.ugc` to our `/etc/hosts` file.
 
 Port 80 hosted a static looking site:
 
-<figure><img src="../../../.gitbook/assets/image (1382).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1382).png>)
 
 I did a directory scan for this and found some wordpress content, and a `/webdav` directory:
 
@@ -76,11 +76,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Visiting `/webdav` required credentials:
 
-<figure><img src="../../../.gitbook/assets/image (1381).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1381).png>)
 
 Weak credentials don't work, so let's come back to this later. Port 8888 hosted Ladon Service Catalog:
 
-<figure><img src="../../../.gitbook/assets/image (1420).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1420).png>)
 
 There are exploits for this:
 
@@ -130,7 +130,7 @@ xmlns:urn=\"urn:helloService\"><soapenv:Header/>
 
 I verified that the exploit works:
 
-<figure><img src="../../../.gitbook/assets/image (3163).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3163).png>)
 
 Since we have LFI, we can locate the `passwd.dav` file to find the password required for `/webdav`. I found that it was within the `/var/www/html/webdav` file:
 
@@ -181,7 +181,7 @@ Session completed.
 
 Afterwards, we can login to the `/webdav` instance:
 
-<figure><img src="../../../.gitbook/assets/image (2314).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2314).png>)
 
 ### Webdav Upload Shell
 
@@ -215,11 +215,11 @@ Uploading cmd.php to `/webdav/cmd.php':
 Progress: [=============================>] 100.0% of 34 bytes succeeded.
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2304).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2304).png>)
 
 We can then get a reverse shell easily:
 
-<figure><img src="../../../.gitbook/assets/image (1871).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1871).png>)
 
 ## Privilege Escalation
 
@@ -227,7 +227,7 @@ We can then get a reverse shell easily:
 
 I ran a `linpeas.sh` to enumerate possible escalation vectors, and it picked up on this:
 
-<figure><img src="../../../.gitbook/assets/image (2340).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2340).png>)
 
 The SYSTEM PATH variable has a writeable directory as its first directory, and the cronjob executed by `root` does not specify the full PATH for `netstat` and `service`. As such, we can just create a `netstat` script like so:
 
@@ -240,6 +240,6 @@ chmod 777 netstat
 
 After waiting for a bit, we can become `root`:
 
-<figure><img src="../../../.gitbook/assets/image (1873).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1873).png>)
 
 Rooted!

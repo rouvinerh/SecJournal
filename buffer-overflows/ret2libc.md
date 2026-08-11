@@ -12,7 +12,7 @@ To gain RCE, we would need to find the `system()` function, which lives in the `
 
 Basically, we would force a program to call `system("/bin/sh")` through manipulation of the EIP. Here's a visual representation of how it works:
 
-<figure><img src="../.gitbook/assets/image (2704).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2704).png>)
 
 In general:
 
@@ -34,51 +34,51 @@ This is an example of a ret2libc attack from HTB Frolic, which contains this exp
 
 Firstly, we would find a binary named `rop` that is left behind for us, and it has the SUID binary set, meaning that when we run it, we are running it as the `root` user. We can download a copy back to our machine for further testing (either using netcat or base64 to do so).
 
-<figure><img src="../.gitbook/assets/image (1111).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1111).png>)
 
 ### Enumeration and Offset
 
 First, we need to use `checksec` on the binary to see what we can and cannot do:
 
-<figure><img src="../.gitbook/assets/image (998).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(998).png>)
 
 Breaking down the output, we notice that ASLR is disabled, RELRO is partial (meaning we have some space for writing code) and most importantly, NX is enabled. The stack is non executable, meaning that shellcode cannot be injected here.
 
 Then, we can run the binary and see what it does. I used `ltrace` to enumerate what library calls and functions are being used.
 
-<figure><img src="../.gitbook/assets/image (1028).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1028).png>)
 
 So first, we notice that the program takes **an unsanitised input from the user.** The 'Hello!' portion is user-supplied, and then it uses `strcpy`, which is a dangerous function vulnerable to BOF since it does not check for the length of input, and copes it to another place in memory.
 
 So we now we know the vulnerable parameter is probably the `main()` function's `argv[1]` call. We can generate an offset using `pattern_create.rb` of length 100 first, and then run the program in `gdb` to see how it responds to our payload.
 
-<figure><img src="../.gitbook/assets/image (3149).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(3149).png>)
 
 Then, we can use `pattern_offset.rb` to find the offset.
 
-<figure><img src="../.gitbook/assets/image (1103).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1103).png>)
 
 ### Finding Addresses
 
 Now, within the **Frolic machine**, we would need to find the libraries it has. It has to be the machine itself because we want the RCE to work there to give us a root shell. We can use `ldd` to find the **address of which the libc.so file is loaded**.
 
-<figure><img src="../.gitbook/assets/image (2252).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2252).png>)
 
 So this binary loads the `libc.so.6` file in virtual memory. The base address is at `0xb7e19000`, and all other addresses we find are **offsets**, meaning we have to **add the addresses together** to find the specific address it is loaded at.
 
 I first found the `/bin/sh` address using `strings -a -t x /lib/i386-linux-gnu/libc.so.6 | grep "/bin/sh"`
 
-<figure><img src="../.gitbook/assets/image (2665).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2665).png>)
 
 The offset is `0x0015ba0b`, and when added to the base address found earlier, we would get `0xb7f74a0b`. So `/bin/sh` is there.
 
 Then, we need to find the `system()` function. I did so using `objdump` .
 
-<figure><img src="../.gitbook/assets/image (1858).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1858).png>)
 
 Adding the offset, we would get `0xb7e53da0`. Lastly, we need `exit()` , which is found using the same manner.
 
-<figure><img src="../.gitbook/assets/image (2651).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2651).png>)
 
 `0xb7e479d0` is where `exit()` lives.
 
@@ -111,4 +111,4 @@ print buffer
 
 Now, we just need to feed the output from this script into `rop`. This would spawn a root shell for us and we can finish the machine.
 
-<figure><img src="../.gitbook/assets/image (1426).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(1426).png>)

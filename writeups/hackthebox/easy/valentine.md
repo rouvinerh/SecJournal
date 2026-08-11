@@ -20,7 +20,7 @@ PORT    STATE SERVICE
 
 Both the HTTP and HTTPS ports just show this image:
 
-<figure><img src="../../../.gitbook/assets/image (3833).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3833).png>)
 
 This is a direct hint to use the Heartbleed exploit (the symbol is literally right there!). This exploit takes advantage of the OpenSSL library, allowing attackers to steal information from the memory of the target server.
 
@@ -80,11 +80,11 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Found a `/dev` endpoint.
 
-<figure><img src="../../../.gitbook/assets/image (2271).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2271).png>)
 
 The first directory contains a lot of hex characters. We can download this to a file and convert it from hex to string. This would give a private SSH key:
 
-<figure><img src="../../../.gitbook/assets/image (1176).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1176).png>)
 
 Since we have a password, we can attempt to write decode the key via `openssl`.
 

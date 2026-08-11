@@ -37,7 +37,7 @@ ident-user-enum v1.0 ( http://pentestmonkey.net/tools/ident-user-enum )
 
 `eleanor` was one of the users. I just tried some weak credentials, and it turns out `eleanor` was the SSH password.
 
-<figure><img src="../../../.gitbook/assets/image (1270).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1270).png>)
 
 ## Privilege Escalation
 
@@ -61,7 +61,7 @@ eleanor@peppo:~$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 
 However, we can use `ed` to spawn a better shell and change this.
 
-<figure><img src="../../../.gitbook/assets/image (3084).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3084).png>)
 
 ### Docker Group -> Root
 
@@ -76,4 +76,4 @@ postgres            latest              adf2b126dda8        3 years ago         
 
 I'll use `redmine` for the exploit to spawn a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (3101).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3101).png>)

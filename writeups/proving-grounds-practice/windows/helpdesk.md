@@ -24,11 +24,11 @@ RDP is available.
 
 Port 8080 hosts a really vulnerable looking software:
 
-<figure><img src="../../../.gitbook/assets/image (572).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(572).png>)
 
 Default creds of `administrator:administrator` works in logging us in:
 
-<figure><img src="../../../.gitbook/assets/image (1955).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1955).png>)
 
 There are loads of vulnerabilities with this software.
 
@@ -77,4 +77,4 @@ msf6 exploit(multi/http/manageengine_auth_upload) > exploit
 
 This would give us a Meterpreter shell as the SYSTEM user:
 
-<figure><img src="../../../.gitbook/assets/image (283).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(283).png>)

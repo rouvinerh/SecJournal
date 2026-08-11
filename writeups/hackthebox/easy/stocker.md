@@ -23,7 +23,7 @@ There was nothing of interest on the website. `gobuster` scans and default enume
 
 I decided to use `wfuzz` to fuzz the possible subdomains present on the website, and actually found one at `dev.stocker.htb`.
 
-<figure><img src="../../../.gitbook/assets/image (3412).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3412).png>)
 
 Interesting.
 
@@ -31,7 +31,7 @@ Interesting.
 
 At the dev site, all we see is one login page:
 
-<figure><img src="../../../.gitbook/assets/image (3524).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3524).png>)
 
 I tested out `sqlmap` or other SQL injections but it didn't work. It seems that we have to bypass this login to carry on with the machine. Proxying the traffic via Burp gave me a clearer picture on the error received when I entered wrong credentials:
 
@@ -59,23 +59,23 @@ There was a `connect.sid` endpoint, indicating that this was some type of Expres
 {"username": {"$ne": "foo"}, "password": {"$ne": "bar"} }
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2691).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2691).png>)
 
 The website was some ordering website where we could place orders for items.
 
-<figure><img src="../../../.gitbook/assets/image (2279).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2279).png>)
 
 ### Stock LFI
 
 I added some items and attemted to checkout from the website.
 
-<figure><img src="../../../.gitbook/assets/image (735).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(735).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2792).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2792).png>)
 
 Viewing the purchase order brought us to a PDF page.
 
-<figure><img src="../../../.gitbook/assets/image (473).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(473).png>)
 
 I downloaded the PDF and used `exiftool` on it to find that Skia is used to generate this PDF from Chromium.
 
@@ -131,19 +131,19 @@ I attempted this exploit using the `file:///` wrapper to read the `/etc/passwd` 
 <iframe src='file:///etc/passwd' width=500px height=1000px ></iframe>
 ```
 
-<figure><img src="../../../.gitbook/assets/image (227).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(227).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1557).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1557).png>)
 
 We find that the user is called `angoose`. I attempted to read more files such as the private SSH key of the user, but it seems that I either could not read it or it did not exist.
 
 Remembering that this was an Express website, perhaps there was a Javascript file that I could read to find some credentials, particularly those used to access this server in the first place. WIthin  the `/var/www/dev/index.js` file, I managed to find some credentials.
 
-<figure><img src="../../../.gitbook/assets/image (1072).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1072).png>)
 
 With this password, we can `ssh` in as `angoose`.
 
-<figure><img src="../../../.gitbook/assets/image (1993).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1993).png>)
 
 ## Privilege Escalation
 

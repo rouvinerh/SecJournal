@@ -8,7 +8,7 @@ description: World Cup Finals!
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2100).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2100).png>)
 
 We would need to add `soccer.htb` to our `/etc/hosts` file to browser on port 80.
 
@@ -16,11 +16,11 @@ We would need to add `soccer.htb` to our `/etc/hosts` file to browser on port 80
 
 The website is an average soccer related page.
 
-<figure><img src="../../../.gitbook/assets/image (1813).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1813).png>)
 
 Doing a directory enumeration with feroxbuster reveals a few extra directories:
 
-<figure><img src="../../../.gitbook/assets/image (2963).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2963).png>)
 
 We can head to the `/tiny` endpoint to find another application running.
 
@@ -28,15 +28,15 @@ We can head to the `/tiny` endpoint to find another application running.
 
 On this directory, H3K Tiny File Manager is running and requires credentials to log in:
 
-<figure><img src="../../../.gitbook/assets/image (1584).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1584).png>)
 
 When googling online for exploits, I found quite a few that lead to RCE using default admin credentials of `admin:admin@123`, which worked when trying to login.
 
-<figure><img src="../../../.gitbook/assets/image (3796).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3796).png>)
 
 Here, we  can confirm the version of the software running in the help page.
 
-<figure><img src="../../../.gitbook/assets/image (2190).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2190).png>)
 
 There was one exploit for this on Github with a script:
 
@@ -46,27 +46,27 @@ To exploit this manually, we just need to upload a PHP web shell to this machine
 
 Anyways, I uploaded the script to the `uploads` directory and it seems to work. I uploaded via URL by hosting the `cmd.php` file on a Python HTTP Server.
 
-<figure><img src="../../../.gitbook/assets/image (3927).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3927).png>)
 
 From here, we can get RCE on the machine easily.
 
-<figure><img src="../../../.gitbook/assets/image (885).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(885).png>)
 
 Then, we can use this to spawn a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (3332).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3332).png>)
 
 ## Privilege Escalation
 
 We can find another user called `player`.
 
-<figure><img src="../../../.gitbook/assets/image (1822).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1822).png>)
 
 ### soc-player.soccer.htb
 
 When checking `netstat`, we find that port 3000 has a service running on it.
 
-<figure><img src="../../../.gitbook/assets/image (3271).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3271).png>)
 
 `/etc/hosts` file on the machine also presents another domain:
 

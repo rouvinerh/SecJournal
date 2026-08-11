@@ -6,7 +6,7 @@ Metasploit has a Pro version, which you need to pay for, as well as a free versi
 
 **Take note, if you are doing the Offensive Security Certified Professional, Metasploit is considered an auto-exploiter and is hence banned.**
 
-<figure><img src="../../../.gitbook/assets/metasploit-framework-logo.svg" alt=""><figcaption><p><em>Metasploit Framework</em></p></figcaption></figure>
+![Metasploit Framework](../../../.gitbook/assets/metasploit-framework-logo.svg)
 
 ## Modules
 
@@ -41,25 +41,25 @@ Here's an example of a Metasploit exploitation on a vulnerable system from Scrip
 
 Say we have enumerated that the system is vulnerable from a certain exploit. (using searchsploit)
 
-<figure><img src="../../../.gitbook/assets/image (1174).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1174).png>)
 
 We can launch Metasploit by using the `msfconsole` command. Most of the time it loads some cool ASCII art. We can cirumvent this using `msfconsole -q`.
 
-<figure><img src="../../../.gitbook/assets/image (298).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(298).png>)
 
 We would be presented with a form of command line that is has bash integrated into it, so we can still do commands within this.
 
-<figure><img src="../../../.gitbook/assets/image (1665).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1665).png>)
 
 Anyways, we can first search for the exploit using some keywords. For the example, we can use `Metasploit apk exploit` as one of the keywords.
 
 This can be done using the `search` command.
 
-<figure><img src="../../../.gitbook/assets/image (340).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(340).png>)
 
 Afterwards, we just pick the one we want using the `use` command. For this, I want to use the exploit #1, so I just type `use 1` . In other cases, we can just copy and paste the name of the module and use `use <name>.`
 
-<figure><img src="../../../.gitbook/assets/image (916).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(916).png>)
 
 Once we are here, we need to configure the exploit to use the correct payload and options before launching it.
 
@@ -71,13 +71,13 @@ We can check options using the `options` command, and set them using the `set <o
 
 Once the options have been set, we can simply run `exploit` to make the exploit run.
 
-<figure><img src="../../../.gitbook/assets/image (1543).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1543).png>)
 
 For this exploit, we can see that it creates a `msf.apk`file for us to use.
 
 We can then go about using the exploit according to the exploit instructions.
 
-<figure><img src="../../../.gitbook/assets/image (3899).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3899).png>)
 
 Now we can see how we have received a reverse shell on port 6666, as specified in Metasploit.
 
@@ -89,11 +89,11 @@ Meterpreter can be accessed through the use of meterpreter payloads. There are m
 
 `exploit/multi/handler` module in Metasploit needs to be used and it's basically the equivalent of a listening port and configured in the same manner.
 
-<figure><img src="../../../.gitbook/assets/image (2650).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2650).png>)
 
 We would see something like this if we were successful in executing our payload. For this, we can see how I spawned a shell using the `shell` command.
 
-<figure><img src="../../../.gitbook/assets/image (2719).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2719).png>)
 
 ### Migrating Processes
 
@@ -101,7 +101,7 @@ Migrating processes in Meterpreter helps to hide the process of the shell, gain 
 
 After getting in, we would need to use the `pid` and `migrate <pid>` commands to migrate to whatever process there is. Again, I recommend explorer.exe to prevent any anti-viruses from shutting you down.
 
-<figure><img src="../../../.gitbook/assets/image (3226).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3226).png>)
 
 ### Meterpreter Modules
 
@@ -109,9 +109,9 @@ There are tons of modules that can be used by meterpreter, one of them is called
 
 Usage of these modules is also pretty simple to understand.
 
-<figure><img src="../../../.gitbook/assets/image (3476).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3476).png>)
 
-<figure><img src="../../../.gitbook/assets/image (975).png" alt=""><figcaption><p><em>Screenshot captured (Acute HTB)</em></p></figcaption></figure>
+![Screenshot captured (Acute HTB)](<../../../.gitbook/assets/image%20(975).png>)
 
 There are other modules, such as being able to load **mimikatz** through the `load kiwi` module and proceed to dump credentials from the domain.
 
@@ -123,13 +123,13 @@ MSFVenom is sort of a payload generator that wouldn't require the usage of msfco
 
 This is how we generate a payload:
 
-<figure><img src="../../../.gitbook/assets/image (1553).png" alt=""><figcaption><p><em>Generate .war file</em></p></figcaption></figure>
+![Generate .war file](<../../../.gitbook/assets/image%20(1553).png>)
 
 There are many types of payloads in msfvenom, like linux/shell/reverse\_tcp, which is a Linux reverse shell.
 
 Apart from that, MSFVenom can also be used to generate encoded shellcode for building our own custom scripts.
 
-<figure><img src="../../../.gitbook/assets/image (168).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(168).png>)
 
 MSFVenom is a really powerful and fast payload generator for exploits and file uploads.
 

@@ -412,13 +412,11 @@ I noticed that there was a `.zip` file created.
 
 When I invoked my function, it would do a few more commands that were pretty long.
 
-{% code overflow="wrap"%}
 
 ```
 2024/03/17 11:31:31 CMD: UID=0    PID=568    | /bin/sh -c CONTAINER_ID="$(docker create -i   -e DOCKER_LAMBDA_USE_STDIN="$DOCKER_LAMBDA_USE_STDIN" -e LOCALSTACK_HOSTNAME="$LOCALSTACK_HOSTNAME" -e EDGE_PORT="$EDGE_PORT" -e _HANDLER="$_HANDLER" -e AWS_LAMBDA_FUNCTION_TIMEOUT="$AWS_LAMBDA_FUNCTION_TIMEOUT" -e AWS_LAMBDA_FUNCTION_NAME="$AWS_LAMBDA_FUNCTION_NAME" -e AWS_LAMBDA_FUNCTION_VERSION="$AWS_LAMBDA_FUNCTION_VERSION" -e AWS_LAMBDA_FUNCTION_INVOKED_ARN="$AWS_LAMBDA_FUNCTION_INVOKED_ARN" -e AWS_LAMBDA_COGNITO_IDENTITY="$AWS_LAMBDA_COGNITO_IDENTITY" -e NODE_TLS_REJECT_UNAUTHORIZED="$NODE_TLS_REJECT_UNAUTHORIZED"   --rm "lambci/lambda:nodejs12.x" "index.handler")";docker cp "/tmp/localstack/zipfile.924d85b0/." "$CONTAINER_ID:/var/task"; docker start -ai "$CONTAINER_ID";
 ```
 
-{% endcode %}
 
 The above simply created a Docker container in a subshell, and I was looknig for things ICould control. `index.handler` was the one input I could change.
 

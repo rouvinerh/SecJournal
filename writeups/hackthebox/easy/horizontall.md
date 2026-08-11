@@ -21,19 +21,17 @@ Add `horizontall.htb` to our `/etc/hosts` file to view the website.
 
 This is a typical corporate website advertising a product:
 
-<figure><img src="../../../.gitbook/assets/image (1868).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1868).png>)
 
 Viewing the page source, we can see a small interesting bit here:
 
-{% code overflow="wrap" %}
 ```markup
 <body><noscript><strong>We're sorry but horizontall doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="/js/chunk-vendors.0e02b89e.js"></script><script src="/js/app.c68eb462.js"></script></body>
 ```
-{% endcode %}
 
 I don't usually come across this, and it appears to be intentionally left there by the creator because the message is customised. We can try to view the JS code that's within this, and perhaps we would find something new. I searched for the box name, and found a new subdomain within the `app.js` file:
 
-<figure><img src="../../../.gitbook/assets/image (1137).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1137).png>)
 
 Interesting! We can add that to our `hosts` file and view it.
 
@@ -41,11 +39,11 @@ Interesting! We can add that to our `hosts` file and view it.
 
 This is what we see when we visit that page:
 
-<figure><img src="../../../.gitbook/assets/image (229).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(229).png>)
 
 When we head to the `/reviews` directory, we would see some JSON
 
-<figure><img src="../../../.gitbook/assets/image (2756).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2756).png>)
 
 I ran `gobuster` to scan the directories present on this website and check if we can find anything new.
 
@@ -72,7 +70,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Viewing `/admin` would bringus to a `strapi` login page:
 
-<figure><img src="../../../.gitbook/assets/image (252).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(252).png>)
 
 Googling for exploits pertaining to `strapi` shows this:
 
@@ -80,11 +78,11 @@ Googling for exploits pertaining to `strapi` shows this:
 
 Running the script would spawn a "terminal" for us and also reset the administrator password.
 
-<figure><img src="../../../.gitbook/assets/image (2416).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2416).png>)
 
 Great! We have RCE. Now, we can easily get a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (1664).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1664).png>)
 
 Grab the user flag within the `developer` user home directory.
 
@@ -130,7 +128,7 @@ Then we can visit the page!
 
 The website just has the default Laravel page:
 
-<figure><img src="../../../.gitbook/assets/image (2991).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2991).png>)
 
 We can run a directory scan to see what's available.
 
@@ -155,7 +153,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Interesting. Viewing the `/profiles` leads to a 500 error and brings us to a debug page.
 
-<figure><img src="../../../.gitbook/assets/image (2094).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2094).png>)
 
 This application enabled the Debug mode and also had Laravel v8 running. It appears to be vulnerable to an older exploit that allows RCE through Laravel Debug mode.
 

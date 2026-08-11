@@ -24,7 +24,7 @@ Lots of HTTP ports it seems.
 
 Typical corporate page:
 
-<figure><img src="../../../.gitbook/assets/image (861).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(861).png>)
 
 I tried enumerating, but I could not find much here. The only thing was the Download Now button, which downloaded an APK file to my machine. Interesting, but we can move on.
 
@@ -32,23 +32,23 @@ I tried enumerating, but I could not find much here. The only thing was the Down
 
 Port 3000 was a Gitea instance:
 
-<figure><img src="../../../.gitbook/assets/image (2814).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2814).png>)
 
 No repositories present, but tehre was one user:
 
-<figure><img src="../../../.gitbook/assets/image (3714).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3714).png>)
 
 Nothing much there. However, Gitea does have an API present at the bottom, and clicking it loads an empty page:
 
-<figure><img src="../../../.gitbook/assets/image (3043).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3043).png>)
 
 Check the page source, it seems that there's a subdomain that needs to be added:
 
-<figure><img src="../../../.gitbook/assets/image (1911).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1911).png>)
 
 Once added to the `/etc/hosts` file, we can see that the page loads some documentation:
 
-<figure><img src="../../../.gitbook/assets/image (1210).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1210).png>)
 
 Still, nothing much.
 
@@ -56,7 +56,7 @@ Still, nothing much.
 
 On port 5000, there was another application, and this time with a login page:
 
-<figure><img src="../../../.gitbook/assets/image (1105).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1105).png>)
 
 Default credentials don't work...so there's again nothing here.
 
@@ -64,11 +64,11 @@ Default credentials don't work...so there's again nothing here.
 
 On port 8000, there was an incident reporter, kind of like a SIEM or something:
 
-<figure><img src="../../../.gitbook/assets/image (2536).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2536).png>)
 
 Attempting to visit the dashboard revealed that this is running Cachet:
 
-<figure><img src="../../../.gitbook/assets/image (179).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(179).png>)
 
 Cachet DID have some vulnerabilities present (finally!). Most notably, there is an information leak and a RCE exploit possible:
 
@@ -88,7 +88,7 @@ We can use the online version for ourselves:
 
 We can upload the APK file we downloaded and let it analyse it for us. What's great about this is that it also checks for secrets and passwords alike. At the bottom of the page, we would see these tokens:
 
-<figure><img src="../../../.gitbook/assets/image (976).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(976).png>)
 
 I didn't really know what to do even if I had Gitea access, so let's exploit the Let's Chat Token
 
@@ -176,11 +176,11 @@ In the SonarLink blog, it is stated that we could potentially leak the configura
 
 Following the PoC, we can use `${DB_USERNAME}` and `${DB_PASSWORD}` within Settings > Mail in the Mail Host and Mail From Address fields.
 
-<figure><img src="../../../.gitbook/assets/image (128).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(128).png>)
 
 When we reload the page, this would appear:
 
-<figure><img src="../../../.gitbook/assets/image (3751).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3751).png>)
 
 Great! Testing this with `ssh` reveals that this is indeed the password of the user `will`. Skipped the RCE!
 

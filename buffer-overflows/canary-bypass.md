@@ -6,7 +6,7 @@ Stack canaries are used to detect a stack buffer overflow before execution of an
 
 We can illustrate how it works through analysing the stack contents:
 
-<figure><img src="../.gitbook/assets/image (2493).png" alt=""><figcaption></figcaption></figure>
+![](<../.gitbook/assets/image%20(2493).png>)
 
 When the binary runs, it checks the canary and ensures that it does not change. If altered, the execution would end immediately.
 

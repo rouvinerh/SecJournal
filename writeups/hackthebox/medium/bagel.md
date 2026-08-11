@@ -30,7 +30,7 @@ $ sudo nmap -p 22,5000,8000 -sC -sV -O -T4 10.129.150.229
 
 Port 8000 hosted a web application selling bagels.
 
-<figure><img src="../../../.gitbook/assets/image (3633).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3633).png>)
 
 The interesting parameter here was the URL, which was `http://bagel.htb/?page=index.html`. LFI works here and I can view the `/etc/passwd` file.
 
@@ -83,7 +83,7 @@ order #3 address: Warsaw. 437 Radomska., client name: A.Kowalska, details: [93 b
 
 Not too sure what to make of the orders, but at least we have an LFI. `gobuster` revealed no other directories of interest. Since we have no other information of the file system in the machine, we can view the `/proc/self/cmdline` file to view the processes that are running.
 
-<figure><img src="../../../.gitbook/assets/image (1724).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1724).png>)
 
 Now we can download the source code and begin enumerating possible vulnerabilities.
 
@@ -91,7 +91,6 @@ Now we can download the source code and begin enumerating possible vulnerabiliti
 
 Here's the code for the application:
 
-{% code overflow="wrap" %}
 ```python
 from flask import Flask, request, send_file, redirect, Response
 import os.path
@@ -130,7 +129,6 @@ def order(): # don't forget to run the order app first with "dotnet <path to .dl
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=8000)
 ```
-{% endcode %}
 
 So there's a DLL file somewhere that is used to read orders from an `orders.txt` file. Websockets are used to connect to port 5000. We should find this DLL file, but I don't know where to look as of now. Instead, we can try writing a script to connect to this WebSocket and abuse it somehow as it does not seem to take any user input.
 
@@ -171,7 +169,6 @@ dotnet/opt/bagel/bin/Debug/net6.0/bagel.dll  PID => 921
 
 Now, I can download the DLL file and port it over to Windows for analysis with DnSpy. When opened, we find the code for 3 Order functions, 1 ReadFile function and the deserialize function I found.
 
-{% code overflow="wrap" %}
 ```csharp
 public object RemoveOrder { get; set; }		
 public string WriteOrder
@@ -223,7 +220,6 @@ public object Deserialize(string json)
 	return result;
 }
 ```
-{% endcode %}
 
 TypeNameHandling = 4 means this:
 
@@ -233,7 +229,7 @@ TypeNameHandling = 4 means this:
 
 I also found some credentials here:
 
-<figure><img src="../../../.gitbook/assets/image (2260).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2260).png>)
 
 From the 3 main functions, it seems that ReadOrder does check for LFI, so that's not exploitable. WriteOrder does not seem to do much, but RemoveOrder is suspiciously short and does nothing. For our JSON deserialisation exploit, perhaps we should use this as the main function for exploitataion. We know from the main function of the DLL that the code **always deserializes the input we give it no matter what**.
 
@@ -269,15 +265,15 @@ result = ws.recv()
 print(result)
 ```
 
-<figure><img src="../../../.gitbook/assets/image (812).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(812).png>)
 
 This works! Now, we can attempt to read the user flag and the private SSH key of the user `phil`.
 
-<figure><img src="../../../.gitbook/assets/image (287).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(287).png>)
 
 Then we can SSH in as `phil`.
 
-<figure><img src="../../../.gitbook/assets/image (1751).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1751).png>)
 
 ## Privilege Escalation
 
@@ -285,13 +281,13 @@ Then we can SSH in as `phil`.
 
 With the credentials we found within the DLL file, we can `su` to become the `developer` user.
 
-<figure><img src="../../../.gitbook/assets/image (3200).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3200).png>)
 
 ### Sudo Dotnet
 
 As the `developer` user, we can run `/usr/bin/dotnet` as the `root` user.
 
-<figure><img src="../../../.gitbook/assets/image (166).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(166).png>)
 
 Since we can run this, we can simply run `dotnet fsi`, which would open up an interactive interpreter we can use to make `/bin/bash` a SUID binary.
 
@@ -308,6 +304,6 @@ process.Start();
 
 Then, either in the same shell or another, we can run `/bin/bash -p` to become root.
 
-<figure><img src="../../../.gitbook/assets/image (463).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(463).png>)
 
 Rooted!

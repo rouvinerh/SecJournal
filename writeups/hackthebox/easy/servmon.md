@@ -53,7 +53,6 @@ ftp> ls
 
 We can find 2 files, one `Confidential.txt` and a `Notes to do.txt`. Reading the confidential one highlights that there is a password file somewhere:
 
-{% code overflow="wrap" %}
 ```
 $ cat Confidential.txt 
 Nathan,
@@ -64,7 +63,6 @@ Regards
 
 Nadine
 ```
-{% endcode %}
 
 Great!
 
@@ -72,7 +70,7 @@ Great!
 
 On port 80 and port 8443, there are HTTP and HTTPS sites presents respectively. Looking at port 80, we see this is running NVMS-1000:
 
-<figure><img src="../../../.gitbook/assets/image (1740).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1740).png>)
 
 There are public exploits for these:
 
@@ -91,7 +89,7 @@ Shellcodes: No Results
 
 Following the PoC, we can see it works:
 
-<figure><img src="../../../.gitbook/assets/image (637).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(637).png>)
 
 Great! Now, we can read the `password.txt` file that we found hints of earlier. Here are the passwords retrieved:
 
@@ -125,7 +123,7 @@ SMB         10.129.227.77   445    SERVMON          [+] ServMon\nadine:L1k3B1gBu
 
 This would find that the credentials of `nadine:L1k3B1gBut7s@W0rk` is the right one. With these credentials, we can SSH into the machine as the `nmap` scan found earlier showed port 22 was open.
 
-<figure><img src="../../../.gitbook/assets/image (529).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(529).png>)
 
 Then grab the user flag.
 
@@ -135,7 +133,7 @@ Then grab the user flag.
 
 Earlier, I mentioned that port 8443 was running a HTTPS site and we have not enumerated it yet. This port had NSClient++ running on it:
 
-<figure><img src="../../../.gitbook/assets/image (1983).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1983).png>)
 
 None of the functions work. Searching for public exploits works however:
 
@@ -193,7 +191,7 @@ ssh nadine@10.129.227.77 -L 8443:127.0.0.1:8443
 
 Then we can access the site and continue.
 
-<figure><img src="../../../.gitbook/assets/image (1046).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1046).png>)
 
 Login using the administrator password we found earlier. There are automated PoCs for this:
 
@@ -205,6 +203,6 @@ We can run it like so after downloading the relevant files onto the machine:
 python3 pe.py -t 127.0.0.1 -P 8443 -p 'ew2x6SsGTxjRwXOT' -c "c:\Windows\Tasks\evil.bat"
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3624).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3624).png>)
 
 Rooted!

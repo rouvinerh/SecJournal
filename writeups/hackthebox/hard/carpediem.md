@@ -19,7 +19,7 @@ PORT   STATE SERVICE
 
 Port 80 hosted a website that had a countdown to a domain being launched.
 
-<figure><img src="../../../.gitbook/assets/image (941).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(941).png>)
 
 There was nothing interesting about this website. The search there is static. We can do a `gobuster` directory and `wfuzz` subdomain scan. `gobuster` only picked up on static site files, but `wfuzz` picked up on a `portal` endpoint:
 
@@ -43,15 +43,14 @@ ID           Response   Lines    Word       Chars       Payload
 
 This was running some motorcycle store portal:
 
-<figure><img src="../../../.gitbook/assets/image (2186).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2186).png>)
 
 We can create an account with the site. After registering, we can update our profile:
 
-<figure><img src="../../../.gitbook/assets/image (2426).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2426).png>)
 
 This is the request generated:
 
-{% code overflow="wrap" %}
 ```http
 POST /classes/Master.php?f=update_account HTTP/1.1
 Host: portal.carpediem.htb
@@ -71,19 +70,18 @@ Cookie: PHPSESSID=23b68a0603f55733b3d5172c5121111a
 
 id=25&login_type=2&firstname=test&lastname=test&contact=test&gender=Male&address=test123&username=test123&password=
 ```
-{% endcode %}
 
 There's a `login_type` parameter set at 2, so let's change that to 1 and we might become an administrator. I tested this by visiting `/admin` and it worked:
 
-<figure><img src="../../../.gitbook/assets/image (732).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(732).png>)
 
 When looking around, we can see there's a Quartely Sales Report part hwhere we can upload files:
 
-<figure><img src="../../../.gitbook/assets/image (3331).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3331).png>)
 
 The upload functions still being in development might mean this is vulnerable. I tried clicking on Add, but it did nothing. When inspecting the traffic, we can see it making POST requests to `/classes/users.php?f=upload`.
 
-<figure><img src="../../../.gitbook/assets/image (875).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(875).png>)
 
 This accepts form-data and also is a PHP-based website (as from X-Powered-By), so let's try to upload a PHP webshell. I took some requests I had from other machines / scripts that also uploaded form-data.
 
@@ -113,7 +111,7 @@ Content-Type: text/html
 
 The above request works and it will be uploaded:
 
-<figure><img src="../../../.gitbook/assets/image (442).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(442).png>)
 
 Now we can try to upload a PHP webshell using an image in `Content-Type` because there's a check for that.
 
@@ -152,7 +150,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 Then, we can get an easy reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (660).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(660).png>)
 
 ## Docker Escape
 
@@ -288,7 +286,7 @@ Since we are still pivoting, we can enumerate the other services. We just need t
 
 On 172.17.0.2, there's a `backdrop.carpediem.htb` site:
 
-<figure><img src="../../../.gitbook/assets/image (1643).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1643).png>)
 
 There's also a FTP server that accepts anonymous credentials, but we can't do much with it as it just hangs. Not much for this host in general.
 
@@ -330,7 +328,7 @@ This was interesting, and we'll keep this in mind for now.
 
 This host was running Trudesk on port 8118 (which is exactly what the MongoDB instance is for). We can directly add `trudesk.carpediem.htb` and access it on port 80 (without proxychains).
 
-<figure><img src="../../../.gitbook/assets/image (2412).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2412).png>)
 
 We don't have valid credentials (yet), so we can't login.
 
@@ -345,11 +343,11 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
 This would reset the admin password to 'hello'. Then we can login to Trudesk. Here, we can read the tickets that are present:
 
-<figure><img src="../../../.gitbook/assets/image (4045).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4045).png>)
 
 Horace Flaccus is a new user present in the fictional company, and when we see the ticket, it hints that we have to use `zoiper` to call something to get the password.
 
-<figure><img src="../../../.gitbook/assets/image (3355).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3355).png>)
 
 Interesting! We can download Zoiper from here:
 
@@ -359,31 +357,29 @@ Interesting! We can download Zoiper from here:
 
 We can download and install Zoiper via `sudo dpkg -i <zoiper>.deb`. Then, we can run `zoiper5` to launch it:
 
-<figure><img src="../../../.gitbook/assets/image (1030).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1030).png>)
 
 We can continue as a free user, and enter these to 'login'.
 
-<figure><img src="../../../.gitbook/assets/image (2006).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2006).png>)
 
 We can skip the proxy part, and it seesms that both IAX UDP and SIP UDP works for this box:
 
-<figure><img src="../../../.gitbook/assets/image (3122).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3122).png>)
 
 Then, we can call `*62` to get the voicemail.
 
-<figure><img src="../../../.gitbook/assets/image (3893).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3893).png>)
 
 When it asks for a Password, type `2022`. Then press `1`. The voicemail should play and here's the contents:
 
-{% code overflow="wrap" %}
 ```
 Hey Horance, welcome aboard! We certainly needed more network engineers to assist with the infrastructure. Your account is ready to go. Your password is AuRj4pxq9qPk. Please reset it at your earliest convenience, as well as your phone pin code. Let me know if you have any issues. Robert
 ```
-{% endcode %}
 
 Using this, we can easily SSH in as `hflaccus`.
 
-<figure><img src="../../../.gitbook/assets/image (746).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(746).png>)
 
 ## Privilege Escalation
 
@@ -391,7 +387,6 @@ Using this, we can easily SSH in as `hflaccus`.
 
 I ran a LinPEAS scan on the machine, there's some interesting output:
 
-{% code overflow="wrap" %}
 ```
 [+] Can I sniff with tcpdump?
 [i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#sniffing                                            
@@ -403,7 +398,6 @@ You can sniff with tcpdump!
 /usr/sbin/tcpdump = cap_net_admin,cap_net_raw+eip
 /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
 ```
-{% endcode %}
 
 For some reason, we can sniff all traffic on the host. Using this, I just sniffed traffic on the Docker subnet and left it for a few minutes. After a while, we can download the `.pcap` file back to our machine:
 
@@ -415,7 +409,7 @@ Then, we can take a look at this within `wireshark`. There's some traffic betwee
 
 Instead, we can take a look at all the TLS traffic to the `backdrop.carpediem.htb` host. Within the Server Hello messages, TLS decides on the protocol that is to be used. In this case, the machine uses this:
 
-<figure><img src="../../../.gitbook/assets/image (2242).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2242).png>)
 
 A bit of Googling shows that this is a Weak Cipher Suite:
 
@@ -427,7 +421,7 @@ This cipher does not provide Perfect Forward Secrecy, meaning that we can decryp
 
 Within the `/etc/ssl/certs` file, we can find some keys that look out of place:
 
-<figure><img src="../../../.gitbook/assets/image (3747).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3747).png>)
 
 We can download this back to our machine. Then we can use `wireshark` to decrypt the TLS traffic.
 
@@ -435,15 +429,14 @@ We can download this back to our machine. Then we can use `wireshark` to decrypt
 
 We can dd the `.key` file here:
 
-<figure><img src="../../../.gitbook/assets/image (3836).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3836).png>)
 
 After that, save the changes and we would see some of the traffic become unencrypted HTTP:
 
-<figure><img src="../../../.gitbook/assets/image (3090).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3090).png>)
 
 We can foloow the HTTP stream to see this:
 
-{% code overflow="wrap" %}
 ```http
 POST /?q=user/login HTTP/1.1
 Host: backdrop.carpediem.htb:8002
@@ -459,7 +452,6 @@ Content-Length: 128
 
 name=jpardella&pass=tGPN6AmJDZwYWdhY&form_build_id=form-rXfWvmvOz0ihcfyBBwhTF3TzC8jkPBx4LvUBrdAIsU8&form_id=user_login&op=Log+in
 ```
-{% endcode %}
 
 We have new credentials! We can use this to login to `backdrop.carpediem.htb` and enumerate.
 
@@ -467,7 +459,7 @@ We have new credentials! We can use this to login to `backdrop.carpediem.htb` an
 
 We can login using the credentials we found:
 
-<figure><img src="../../../.gitbook/assets/image (1208).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1208).png>)
 
 There is an RCE for this that involves CSRF, but since I'm the administrator, I don't need to do CSRF. I can directly do the RCE.
 
@@ -490,7 +482,7 @@ uid=33(www-data) gid=33(www-data) groups=33(www-data)
 
 Then, we can get another reverse shell on this Docker container.
 
-<figure><img src="../../../.gitbook/assets/image (3552).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3552).png>)
 
 There's no Python on this, so we have to use `script /dev/null -c bash` to upgrade our shell.
 
@@ -508,7 +500,6 @@ drwxr-xr-x 1 root root 4096 May 11 06:05 ..
 
 Here's its contents:
 
-{% code overflow="wrap" %}
 ```bash
 #!/bin/bash
 #Run a site availability check every 10 seconds via cron
@@ -523,7 +514,6 @@ if [[ "$?" != 0 ]]; then
         cp /root/index.php /var/www/html/backdrop/index.php
 fi
 ```
-{% endcode %}
 
 This script is being contunously run, and it seems to make run `backdrop.sh` using `php`. It also cehcks for the integrity of `backdrop.sh`, so we cannot change that script. Also, it seems to restore `index.php` file when something goes wrong.
 
@@ -531,7 +521,7 @@ The rest of the command executed seems to execute the root page in PHP, which is
 
 First, drop a reverse shell as `/tmp/shell.sh`, then append the `/var/www/html/backdrop/index.php` page with `system("bash /tmp/shell.sh");` and wait for execution.
 
-<figure><img src="../../../.gitbook/assets/image (3384).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3384).png>)
 
 ### CVE-2022-0492 -> Rooted!
 
@@ -552,6 +542,6 @@ umount: /tmp/testcgroup: target is busy.
 
 Afterwards, we can `ssh` back into the main machine and get a `root` shell easily:
 
-<figure><img src="../../../.gitbook/assets/image (730).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(730).png>)
 
 Fun machine, really long though!

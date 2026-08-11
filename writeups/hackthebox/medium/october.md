@@ -4,7 +4,7 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3095).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3095).png>)
 
 We don't need to add anything into the hosts file.
 
@@ -12,17 +12,17 @@ We don't need to add anything into the hosts file.
 
 The website was running OctoberCMS and appears to have a default look:
 
-<figure><img src="../../../.gitbook/assets/image (3263).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3263).png>)
 
 Registering an account and trying to do stuff with it was useless and had no functionalities. So instead, we can abuse the fact that OctoberCMS is an open-source project. A quick Google search reveals that the backend of this is at `/backend`:
 
 {% embed url="https://octobercms.com/forum/post/how-do-i-access-the-backend" %}
 
-<figure><img src="../../../.gitbook/assets/image (2185).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2185).png>)
 
 We can use the default credentials of `admin:admin`.
 
-<figure><img src="../../../.gitbook/assets/image (506).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(506).png>)
 
 OctoberCMS has quite a few exploits:
 
@@ -30,11 +30,11 @@ OctoberCMS has quite a few exploits:
 
 We can use one of them to upload a `cmd.php5` file to execute on the server, as `php5` is not blocked on the server:
 
-<figure><img src="../../../.gitbook/assets/image (1250).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1250).png>)
 
 We can confirm we have RCE via `curl`.
 
-<figure><img src="../../../.gitbook/assets/image (2870).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2870).png>)
 
 Getting a reverse shell is then trivial.
 
@@ -44,11 +44,11 @@ Getting a reverse shell is then trivial.
 
 I ran a LinPEAS scan on the machine, and found this weird SUID binary called `overflw`:
 
-<figure><img src="../../../.gitbook/assets/image (1339).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1339).png>)
 
 I opened it up in Ghidra to view what it does:
 
-<figure><img src="../../../.gitbook/assets/image (205).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(205).png>)
 
 It appears we have a classic BOF expliot to do here. The `strcpy` function is vulnerable, and the buffer is pretty short. Doing a `checksec` reveals that NX is enabled but PIE is disabled:
 
@@ -63,11 +63,11 @@ RELRO     : Partial
 
 In this case, we can go for a Ret2Libc attack. First, we find the buffer size:
 
-<figure><img src="../../../.gitbook/assets/image (3970).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3970).png>)
 
 Fixed at 112 it appears (same as length of `local_74`). Now, we can use `ldd` to find the address where `libc` is loaded on the machine:
 
-<figure><img src="../../../.gitbook/assets/image (3935).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3935).png>)
 
 Then we can simply execute the following commands to get the addresses we need
 
@@ -78,11 +78,9 @@ strings -a -t x /lib/i386-linux-gnu/libc-2.27.so | grep "/bin/sh"
 
 Afterwards, we can use a python one-liner to print the contents of the payload:
 
-{% code overflow="wrap" %}
 ```python
 python2 -c 'print"\x90" * 112 + "\x10\x83\x62\xb7" + "\x60\xb2\x61\xb7" + "\xac\xab\x74\xb7"'
 ```
-{% endcode %}
 
 When run however, it didn't work on the machine. Turns out, the machine itself already had ASLR enabled, and this can be verified in `/proc/sys/kernel/randomize_va_space`. Also, when checking the addresses, it seems to randomly shift each time.
 
@@ -109,12 +107,10 @@ www-data@october:/dev/shm$ ldd /usr/local/bin/ovrflw | grep libc
 
 So, we can set up a `bash` script to keep looping until we get a successful exploit.
 
-{% code overflow="wrap" %}
 ```bash
 while true; do /usr/local/bin/ovrflw $(python -c 'print "\x90"*112 + "\x10\x83\x63\xb7" + "\x60\xb2\x62\xb7" + "\xac\xab\x75\xb7"'); done
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (3418).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3418).png>)
 
 Rooted!

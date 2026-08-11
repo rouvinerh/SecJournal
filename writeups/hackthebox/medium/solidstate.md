@@ -4,17 +4,17 @@
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (2699).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2699).png>)
 
 ### JAMES Server
 
 SMTP is open, which is rather suspicious. I connected via `nc` and tested some default credentials, and found that `root:root` worked.
 
-<figure><img src="../../../.gitbook/assets/image (2958).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2958).png>)
 
 Now that we are logged in, we can read some emails:
 
-<figure><img src="../../../.gitbook/assets/image (1056).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1056).png>)
 
 With this, we can SSH in as `mindy`.
 
@@ -22,11 +22,11 @@ With this, we can SSH in as `mindy`.
 
 When in the user's directory, we find a restricted shell where we cannot execute a lot:
 
-<figure><img src="../../../.gitbook/assets/image (4073).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4073).png>)
 
 I researched a bit on how to escape this shell, and found that appending `-t "bash --noprofile"` works:
 
-<figure><img src="../../../.gitbook/assets/image (1201).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1201).png>)
 
 ## Privilege Escalation
 
@@ -34,12 +34,12 @@ I researched a bit on how to escape this shell, and found that appending `-t "ba
 
 We can run `pspy32` on this machine to view processes:
 
-<figure><img src="../../../.gitbook/assets/image (2177).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2177).png>)
 
 I found that we have write access over this file, so we can just append a reverse shell to it:
 
-<figure><img src="../../../.gitbook/assets/image (3126).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3126).png>)
 
 After waiting for a bit, we would catch a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (927).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(927).png>)

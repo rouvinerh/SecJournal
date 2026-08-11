@@ -69,11 +69,11 @@ ftp> ls
 
 We can download this `.exe` file to a Windows machine for some reverse engineering.
 
-<figure><img src="../../../.gitbook/assets/image (3567).png" alt=""><figcaption><p><em>Old IP from Old Writeup</em></p></figcaption></figure>
+![Old IP from Old Writeup](<../../../.gitbook/assets/image%20(3567).png>)
 
 When we check the listening ports on our Windows machine, we would see that `malbec.exe` opens port 7138:
 
-<figure><img src="../../../.gitbook/assets/image (1062).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1062).png>)
 
 This machine thus becomes a classic buffer overflow exploit as per OSCP. For this particular binary, there weren't any bad characters (other than the NULL byte) and it was just a matter of fuzzing the offset required.
 
@@ -127,7 +127,7 @@ Sending evil buffer...
 Done!
 ```
 
-<figure><img src="../../../.gitbook/assets/image (2766).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2766).png>)
 
 ## Privilege Escalation
 
@@ -135,7 +135,7 @@ Done!
 
 I ran a `linpeas.sh` scan on the machine, and it found a few interesting things.  Firstly, `root` is running `ldconfig` periodically:
 
-<figure><img src="../../../.gitbook/assets/image (4032).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4032).png>)
 
 The next was this SUID binary that I didn't recognise:
 
@@ -145,7 +145,7 @@ The next was this SUID binary that I didn't recognise:
 
 The last was a misconfiguration of the `ld.so` files:
 
-<figure><img src="../../../.gitbook/assets/image (3234).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3234).png>)
 
 This was interesting, because it appears that the user's home directory is the part of the configuration, meaning that `.so` files are executed from this directory. We can run `ldd` for the `messenger` binary to check where it loads its shared object files.
 
@@ -161,7 +161,6 @@ So it appears that `libmalbec.so` is not found, and it loads it from `/home/carl
 
 Here's the source code I took from HackTricks:
 
-{% code overflow="wrap" %}
 ```c
 #include <stdio.h>
 #include <unistd.h>
@@ -176,7 +175,6 @@ void malbec(){ # the
     system("/bin/sh",NULL,NULL);
 }
 ```
-{% endcode %}
 
 We just need to compile this and transfer it to the machine:
 
@@ -200,4 +198,4 @@ carlos@malbec:/home/carlos$ ldd /usr/bin/messenger
 
 Then, we can just execute `messenger` to get a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (2502).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2502).png>)

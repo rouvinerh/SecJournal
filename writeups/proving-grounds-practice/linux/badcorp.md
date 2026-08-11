@@ -20,11 +20,11 @@ PORT   STATE SERVICE
 
 The website was a corporate website:
 
-<figure><img src="../../../.gitbook/assets/image (3956).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3956).png>)
 
 First thing I noticed was the **phone numbers**. Normally machines, I see numbers like +12 345 678. This was the first box I saw that included unique phone numbers. I took a look at their team:
 
-<figure><img src="../../../.gitbook/assets/image (3878).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3878).png>)
 
 Again, phone numbers are unique here. This made me think about every little detail in the website, including the names of the users.
 
@@ -105,7 +105,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session completed. 
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1178).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1178).png>)
 
 ## Privilege Escalation
 
@@ -113,7 +113,6 @@ Session completed.
 
 I searched for SUID binaries within the machine and found one that stood out:
 
-{% code overflow="wrap" %}
 ```
 hoswald@badcorp:~$ find / -perm -u=s -type f  2>/dev/null
 /usr/local/bin/backup
@@ -124,7 +123,6 @@ USAGE: backup <password>
 hoswald@badcorp:~$ /usr/local/bin/backup test
 Wrong Password !!!
 ```
-{% endcode %}
 
 I didn't recognise this `backup` binary, so I downloaded it back to my machine and opened it up in `ghidra`.
 
@@ -171,15 +169,15 @@ puts("Wrong Password !!!"Wrong Password !!!
 
 The bad characters don't include '$' and '()', opening up the possibility of command injection. Moving to `ghidra`, this binary prompts for a password before running the `check()` function to see if the password is correct, and then `copy()` if it is right:
 
-<figure><img src="../../../.gitbook/assets/image (3484).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3484).png>)
 
 The `copy()` function takes an encrypted password and XOR's it with `0xc`:
 
-<figure><img src="../../../.gitbook/assets/image (3482).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3482).png>)
 
 We can first grab the `pw` global variable from the binary:
 
-<figure><img src="../../../.gitbook/assets/image (3116).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3116).png>)
 
 And then we can create a script in Python to decrypt this.
 
@@ -209,7 +207,7 @@ ALL FILE COPYED IN /var/logs/hoswald/
 
 We can move on to the `copy()` function now:
 
-<figure><img src="../../../.gitbook/assets/image (1315).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1315).png>)
 
 All the binaries use their full path values, so no path hijacks here. However, this seems to use directories within `/var/logs` and `/home/FTP`. I was already thinking of command injection using subshells, and it seems that this is the exploit needed.
 
@@ -226,12 +224,12 @@ local: $(id) remote: $(id)
 
 This works!
 
-<figure><img src="../../../.gitbook/assets/image (3716).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3716).png>)
 
 I then placed a file named `$(bash)` within the FTP directory, and it gave me a shell:
 
-<figure><img src="../../../.gitbook/assets/image (3939).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3939).png>)
 
 This shell was pretty limited and couldn't give me any output. However, we can simply run `chmod u+s /bin/bash`. In another shell, we can then get a proper `root` shell easily:
 
-<figure><img src="../../../.gitbook/assets/image (3491).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3491).png>)

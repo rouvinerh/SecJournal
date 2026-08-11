@@ -8,7 +8,7 @@ aining Access
 
 Nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (1370).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1370).png>)
 
 Web exploitation time.
 
@@ -16,29 +16,29 @@ Web exploitation time.
 
 The website was some type of Incident Response site, from E Corp.
 
-<figure><img src="../../../.gitbook/assets/image (2115).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2115).png>)
 
 I tried logging in with some random password, and intercepted the response in Burpsuite to see how the login was handled. Found the `/api` endpoint.
 
-<figure><img src="../../../.gitbook/assets/image (2847).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2847).png>)
 
 I tried playing around with the website by sending JSON objects, and found that setting the `password` parameter to `true` would let us login.
 
-<figure><img src="../../../.gitbook/assets/image (3398).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3398).png>)
 
 ### Home Directory Backup
 
 Once we were in, we could view these files:
 
-<figure><img src="../../../.gitbook/assets/image (3099).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3099).png>)
 
 We can grab the user flag and also the `homedirectory.zip` file. Upon running an `exiftool` for it, we can see that the file name was `.bash_logout`. All of the files were encrypted with a password, and cracking it was not possible.
 
-<figure><img src="../../../.gitbook/assets/image (1136).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1136).png>)
 
 When attempting to unzip the file, we can find some SSH keys within it.
 
-<figure><img src="../../../.gitbook/assets/image (387).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(387).png>)
 
 At this point, I began enumerating possible ZIP file exploits that were used. One command we could use was `7z l -slt` which would list out the files and show the technical information for the files:
 
@@ -88,27 +88,27 @@ This attack is made possible due to legacy encryption being used, and this form 
 
 Because this was simply a home directory with common files like `.bash_logout`, we can easily create another zip file with our machine's `.bash_logout` file and then find the keys using `bkcrack`.
 
-<figure><img src="../../../.gitbook/assets/image (1284).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1284).png>)
 
 We can then retrieve the keys for the ZIP file:
 
-<figure><img src="../../../.gitbook/assets/image (2020).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2020).png>)
 
 Afterwards, the ZIP file and its contents can be copied to another ZIP file with a known password that we can decrypt.
 
-<figure><img src="../../../.gitbook/assets/image (2537).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2537).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3607).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3607).png>)
 
 Then we can SSH in as the `htb` user.
 
-<figure><img src="../../../.gitbook/assets/image (3891).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3891).png>)
 
 ## Privilege Escalation
 
 I ran a LinPEAS to find more information, and it enumerated out a potential password for a `mysql` instance:
 
-<figure><img src="../../../.gitbook/assets/image (318).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(318).png>)
 
 However, the machine does not have any database running. However, the presence of the other APP related environment variables highlighted that the `/srv/prod` directory had the files for the website we exploited earlier.
 
@@ -118,4 +118,4 @@ We would be looking for some type of config files, or a method as to how the aut
 
 Within the `/srv/prod/app/Http/Controllers/AuthController.php` file, I found the root password:
 
-<figure><img src="../../../.gitbook/assets/image (591).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(591).png>)

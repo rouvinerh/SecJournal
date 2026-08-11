@@ -69,15 +69,15 @@ There was some config files and what not, but there's nothing in it at all. Movi
 
 Port 80 was a ForumOnRails instance:
 
-<figure><img src="../../../.gitbook/assets/image (3088).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3088).png>)
 
 I registered a user and looked through the posts made by the admin, and found his email.
 
-<figure><img src="../../../.gitbook/assets/image (3085).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3085).png>)
 
 I decided to look into the page source for the Login, Register and Forgot Password pages. Within the Register page, there's a password within the page source:
 
-<figure><img src="../../../.gitbook/assets/image (1523).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1523).png>)
 
 We can then login as the admin email and password of `it0jNc6L/r090Q==`.
 
@@ -85,21 +85,21 @@ We can then login as the admin email and password of `it0jNc6L/r090Q==`.
 
 The administrator had access to the `/serverinfo` page:
 
-<figure><img src="../../../.gitbook/assets/image (1535).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1535).png>)
 
 Again, there were some interesting comments in the page source:
 
-<figure><img src="../../../.gitbook/assets/image (2561).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2561).png>)
 
 We can edit the HTML such that the `cmd` box appears:
 
-<figure><img src="../../../.gitbook/assets/image (1271).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1271).png>)
 
 Then, we can send stuff to this to get a request within Burp, which can give us a reverse shell:
 
-<figure><img src="../../../.gitbook/assets/image (2568).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(2568).png>)
 
-<figure><img src="../../../.gitbook/assets/image (3744).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3744).png>)
 
 ## Privilege Escalation
 
@@ -157,4 +157,4 @@ b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABlwAAAAdzc2gtcn
 
 We can then use this to `ssh` in as `root`:
 
-<figure><img src="../../../.gitbook/assets/image (3169).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3169).png>)

