@@ -30,13 +30,6 @@
   * [OSEP / PEN-300 Review](blogs/my-blogs/reviews/osep-review.md)
   * [GCIH / SEC504 Review](blogs/my-blogs/reviews/gcih-review.md)
 
-## 🔐 What is Security <a href="#infosec" id="infosec"></a>
-
-* [Information Security](what-is-security/information-security.md)
-* [Getting Started](what-is-security/getting-started/README.md)
-  * [CTFs](what-is-security/getting-started/ctfs.md)
-  * [Hacking](what-is-security/getting-started/hacking.md)
-
 ## 🖱️ Website Security <a href="#websec" id="websec"></a>
 
 * [Bug Bounties](websec/bug-bounty/README.md)
@@ -102,31 +95,6 @@
   * [Portswigger Labs](websec/http-request-smuggling/portswigger-writeup.md)
 * [OAuth Authentication](websec/oauth-authentication/README.md)
   * [Portswigger Labs](websec/oauth-authentication/portswigger-writeup.md)
-
-## 👀 Buffer Overflows <a href="#bof" id="bof"></a>
-
-* [Buffer Overflows](buffer-overflows/prior-knowledge/README.md)
-  * [System Architecture](buffer-overflows/prior-knowledge/system-architecture.md)
-  * [Compilers, Assemblers, Debuggers and Decompilers](buffer-overflows/prior-knowledge/compilers-assemblers-debuggers-and-decompilers.md)
-  * [Binary Security](buffer-overflows/prior-knowledge/binary-security.md)
-  * [Address Manipulation](buffer-overflows/prior-knowledge/buffer-overflow.md)
-* [OSCP BOF (OUTDATED)](buffer-overflows/oscp-bof.md)
-* [Ret2Libc](buffer-overflows/ret2libc.md)
-* [ROP Chaining](buffer-overflows/rop-chaining.md)
-* [Canary Bypass](buffer-overflows/canary-bypass.md)
-* [ASLR Bypass](buffer-overflows/aslr-bypass.md)
-
-## 🖥️ Active Directory <a href="#a-d" id="a-d"></a>
-
-* [Active Directory](active-directory/ad.md)
-* [Tools](active-directory/tools.md)
-* [Windows Authentication](active-directory/windows-authentication.md)
-* [Kerberos](active-directory/kerberos/README.md)
-  * [Delegation](active-directory/kerberos/delegation.md)
-  * [Attacking Kerberos](active-directory/kerberos/attacking-kerberos.md)
-* [ACLs and GPOs](active-directory/acls-and-gpos/README.md)
-  * [Abusing ACLs and GPOs](active-directory/acls-and-gpos/abusing-acls-and-gpos.md)
-* [LDAP](active-directory/ldap.md)
 
 ## ✍️ Writeups
 
@@ -467,15 +435,3 @@
     * [XposedAPI](writeups/proving-grounds-practice/linux/xposedapi.md)
     * [ZenPhoto](writeups/proving-grounds-practice/linux/zenphoto.md)
     * [Zino](writeups/proving-grounds-practice/linux/zino.md)
-
-## 🐍 Evasion
-
-* [Evasion](evasion/README.md)
-  * [Windows Fundamentals](evasion/evasion-windows-fundamentals.md)
-  * [Detection](evasion/evasion-detection.md)
-  * [Malware Techniques](evasion/evasion-techniques.md)
-
-## 🔺 Adversary Emulation
-
-* [Red Teaming](adversary-emulation/emulation/README.md)
-  * [Adversary Emulation](adversary-emulation/emulation/emulation.md)
