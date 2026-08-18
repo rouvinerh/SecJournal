@@ -33,6 +33,7 @@
 ## 🖱️ Website Security <a href="#websec" id="websec"></a>
 
 * [Bug Bounties](websec/bug-bounty/README.md)
+  * [First Year in Bug Bounty](websec/bug-bounty/first-year.md)
   * [AEM Misconfigurations](websec/bug-bounty/aem-misconfig.md)
   * [Dutch Government - wkhtmltopdf LFI](websec/bug-bounty/pdf-lfi.md)
   * [Dutch Government - wkhtmltopdf Blind SSRF](websec/bug-bounty/blind-ssrf.md)
