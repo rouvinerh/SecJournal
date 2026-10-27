@@ -2,9 +2,7 @@
 
 ## TL;DR
 
-I chose not to focus much on the course material and went straight into the labs. This was due to the way I prepared for my OSCP, where I went from having no knowledge of coding to eventually earning the certification. I wrote about that journey, including my failures and exam attempts, in detail here:
-
-{% embed url="https://medium.com/@rouvin/how-i-tried-harder-6eb22fb6cf48" %}
+I chose not to focus much on the course material and went straight into the labs. This was due to the way I prepared for my OSCP. I went from having no knowledge of coding to eventually earning the certification! 
 
 It took me two attempts to pass, finally clearing it on my second try with 80 points. The exam has changed since then, and a new "OSCP+" is available. If I take that in the future, I’ll update this review.
 
