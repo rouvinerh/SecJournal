@@ -1,87 +1,23 @@
----
-cover: >-
-  https://images.unsplash.com/photo-1514168757508-07ffe9ae125b?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHw5fHxoYWNraW5nfGVufDB8fHx8MTY4MzgyMzE1NXww&ixlib=rb-4.0.3&q=85
-coverY: 28
----
+# SecJournal archive
 
-# Hello
+This GitBook is now an archive and will no longer be updated.
 
-## What's This?
+I've kept my old CTF writeups and course reviews here in case they're useful. These were written a while ago, so some details may be out of date.
 
-This is my notebook where I document all my security-related experiences, from HackTheBox writeups, to bug bounty findings, and personal blogs about random security topics.
+New writing will live on [my website](https://rouvinerh.github.io/).
 
-{% hint style="warning" %}
-**What am I doing now?** I have decided to spend a year on bug bounties to learn and see what I can learn and find.
-{% endhint %}
+## Course reviews
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/websec/disclosed-bugs" %}
+My thoughts on the courses I've taken, including what helped and what I thought of the exams.
 
-## Content
+[Read the course reviews](blogs/my-blogs/reviews/README.md)
 
-### `whoami`
+## CTF writeups
 
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/welcome/about-me" %}
+Old writeups from HackTheBox and Proving Grounds Practice.
 
-### Blogs
-
-I (try) to write some blogs about cybersecurity and anything interesting I find, which are viewable on the left under the 'Blogs' section.
-
-### Starting in InfoSec
-
-My take on how to get into cybersecurity, about CTFs and hacking:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/infosec/getting-started" %}
-
-### Web Vulnerabilities
-
-Stuff about MVC, web vulnerabilities, Portswigger Web Security Academy Labs writeups with exploit scripts and disclosed bugs:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/websec/web-vulnerabilities" %}
-
-### Buffer Overflows
-
-Buffer overflows and some variations of it:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/bof/prior-knowledge" %}
-
-### Active Directory
-
-Kerberos, Microsoft AD hacking, moving around a simulated corporate network:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/ad/ad" %}
-
-### Writeups
-
-Writeups from HTB and PGP make up the majority of this Gitbook.
-
-#### HackTheBox
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox" %}
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-3" %}
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-2" %}
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/htb-season-1" %}
-
-#### Proving Grounds Practice
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/proving-grounds-practice" %}
-
-### Defence Evasion
-
-Stuff about OS fundamentals, malware detection mechanisms and techniques to evade them I picked up for fun:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/evasion/" %}
-
-### Adversary Emulation
-
-Adversary emulation and red teaming knowledge:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/adversary-emulation/emulation" %}
-
-## Disclaimer
-
-I do not claim to be the most correct, the best, or even remotely good at security. I'm just a guy that is really into security and wants to learn as much as possible.
-
-I do not condone any illegal activity done using any methods in this notebook. All of the concepts listed here are for **educational purposes** only. What you decide to do with these skills is on you (basically, you can't sue me, not that I was using ground-breaking techniques anyway).
+* [HackTheBox](writeups/hackthebox/README.md)
+* [HackTheBox Season 3](writeups/htb-season-3/README.md)
+* [HackTheBox Season 2](writeups/htb-season-2/README.md)
+* [HackTheBox Season 1](writeups/htb-season-1/README.md)
+* [Proving Grounds Practice](writeups/proving-grounds-practice/README.md)

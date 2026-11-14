@@ -1,4 +1,0 @@
-# Portswigger Writeups
-
-WIP!
-

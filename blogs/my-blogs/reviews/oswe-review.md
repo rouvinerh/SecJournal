@@ -24,10 +24,6 @@ I also suggest being comfortable with penetration testing concepts before starti
 
 For scripting, being familiar with Python’s `requests` module and basic HTML parsing using `BeautifulSoup` or regex is enough. I prepared by scripting a large portion of the labs from PortSwigger's Web Academy. This included automated CSRF token extraction, file uploads, sending different request types, and using BurpSuite as a proxy to debug scripts.
 
-Some of the scripting I have done can be found here:
-
-{% embed url="https://rouvin.gitbook.io/ibreakstuff/website-security/sql-injection/sql-injection-portswigger-writeup" %}
-
 I also solved some Insane machines on HTB, such as CrossFit and Fulcrum. The exam required no-click exploits to be created, so learning to write JavaScript for XSS, and even setting up Python HTTP Servers to handle callbacks was useful. I also got familiar with using the `socket` module in case the course required it. The writeups and scripts for these machines can be found here:
 
 {% embed url="https://rouvin.gitbook.io/ibreakstuff/writeups/hackthebox/insane/htb-fulcrum" %}
