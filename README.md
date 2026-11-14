@@ -4,7 +4,9 @@ This GitBook is now an archive and will no longer be updated.
 
 I've kept my old CTF writeups and course reviews here in case they're useful. These were written a while ago, so some details may be out of date.
 
-New writing will live on [my website](https://rouvinerh.github.io/).
+New writing will live on my website:
+
+{% embed url="https://rouvinerh.github.io/" %}
 
 ## Course reviews
 
