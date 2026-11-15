@@ -1,5 +1,9 @@
 # OSWE Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 I enjoyed the course and found that learning source code review was genuinely useful, making me more confident when conducting internal web application testing. The exam itself was straightforward and fair, based on the material covered. PortSwigger's Web Security Academy complemented the course extremely well, allowing me to practice exploiting specific vulnerabilities. I personally feel the course is both useful and worth the price for anyone interested in application security. I took it to clear the OSCE3 certification before I graduate from university.

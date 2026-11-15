@@ -1,5 +1,9 @@
 # CRTO Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 It was a great introduction to red teaming, and playing around with Cobalt Strike was fun.  As for the exam, I found it required external research beyond the course notes and was not as straightforward as expected. The course does not really go through everything in detail, as students are expected to figure it out. Understanding why each attack works and under what conditions is essential.

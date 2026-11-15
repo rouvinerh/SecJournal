@@ -1,5 +1,9 @@
 # OSED Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 I personally feel that this course is a decent introduction to binary exploitation for Windows machines. I have a love-hate relationship with binary exploitation. Sometimes I hate it because of how tedious it can be, but seeing a ROP chain work to achieve remote code execution will always feel satisfying. The exam was extremely tedious, but the majority of the content was well covered in the course. Writing the report was also exhausting due to the amount of detail required. I took this course to clear the OSCE3 certification before graduating from university.

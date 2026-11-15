@@ -4,6 +4,10 @@ description: HP JetDirect SNMP exploits followed by some
 
 # Antique
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## Gaining Access
 
 An Nmap scan reveals that there is only one port open:

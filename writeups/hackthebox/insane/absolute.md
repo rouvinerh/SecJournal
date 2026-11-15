@@ -4,6 +4,10 @@ description: Tough enumeration...
 
 # Absolute
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 This is an AD machine, so first we can begin with a port scan, and then go through the usual AD methodology for finding a weakpoint for this system.
 
 ## Gaining Access

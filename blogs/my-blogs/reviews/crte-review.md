@@ -1,5 +1,9 @@
 # CRTE Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 The lab itself was impressively large and packed with things to explore. The exam itself was alright, and the course does a fantastic job covering the requirements. Overall, a great course.

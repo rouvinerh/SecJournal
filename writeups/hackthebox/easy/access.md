@@ -7,6 +7,10 @@ description: >-
 
 # Access
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## Gaining Access
 
 As usual, we do an Nmap scan to find the services and ports that are running on the machine.

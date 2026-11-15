@@ -1,5 +1,9 @@
 # OSCP Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 I chose not to focus much on the course material and went straight into the labs. This was due to the way I prepared for my OSCP. I went from having no knowledge of coding to eventually earning the certification! 

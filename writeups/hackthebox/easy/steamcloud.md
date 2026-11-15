@@ -4,6 +4,10 @@ description: Focused a lot on Kubernetes exploits, something I don't see often.
 
 # SteamCloud
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## Gaining Access
 
 We start with an Nmap scan to see what's running:

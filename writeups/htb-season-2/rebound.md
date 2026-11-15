@@ -4,6 +4,10 @@ description: Active Directory! Had some help after it ended.
 
 # Rebound
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## Gaining Access
 
 Nmap scan:

@@ -1,5 +1,9 @@
 # OSEP Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 Overall, the course was fun, but I have somewhat mixed feelings about it, hence the longer review. I divided it into 3 sections: client-side attacks, defence evasion, and lateral movement. The client-side portion feels slightly outdated, focusing on macros and JScript, along with reflective PowerShell execution which was more relevant. The defence evasion section introduces foundational techniques such as process injection and hollowing in C#, which are not new and well documented. The lateral movement portion is the most interesting to me, covering Active Directory abuses, SQL Server exploitation, and post-exploitation methods. I feel the course provides a structured overview of defence evasion and advanced penetration testing and is great for people coming straight from the OSCP, but much of the material can be found in cheaper courses or is outdated. I took this course to complete the OSCE3 certification before graduating from university.

@@ -1,10 +1,10 @@
 # SecJournal archive
 
-This GitBook is now an archive and will no longer be updated.
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
 
-I've kept my old CTF writeups and course reviews here in case they're useful. These were written a while ago, so some details may be out of date.
-
-New writing will live on my website:
+This GitBook is an archive and will no longer be updated. Some details in these older posts may be out of date.
 
 {% embed url="https://rouvinerh.github.io/" %}
 

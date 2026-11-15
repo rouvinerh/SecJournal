@@ -1,5 +1,9 @@
 # Zino
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ```
 $ nmap -p- --min-rate 3000 -Pn 192.168.157.64 
 Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-16 09:52 +08

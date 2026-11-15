@@ -1,5 +1,9 @@
 # GCIH / SEC504 Review
 
+{% hint style="info" %}
+I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+{% endhint %}
+
 ## TL;DR
 
 This was my first SANS course, and I was honestly satisfied with the experience. Having Jon Gorenflo fly over to teach SEC504 was amazing. He conveyed the material in an engaging way, and his stories made the classes genuinely enjoyable.
