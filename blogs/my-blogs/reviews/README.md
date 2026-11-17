@@ -1,7 +1,7 @@
 # Certification Reviews
 
 {% hint style="info" %}
-I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+I now write on [my blog](https://rouvin.dev/). My old CTF writeups and course reviews will stay here.
 {% endhint %}
 
 I realised I rely on certification reviews written by other users. As such, I've opted to write reviews of the certificates I have to help others. Each review will have a TL;DR version on top, followed by more detailed review below. I hope this helps anyone that chances upon it!

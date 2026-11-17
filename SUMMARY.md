@@ -1,7 +1,7 @@
 # Table of contents
 
 * [Archive](README.md)
-* [New blog](https://rouvinerh.github.io/)
+* [New blog](https://rouvin.dev/)
 
 ## Course reviews
 

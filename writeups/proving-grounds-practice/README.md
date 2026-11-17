@@ -1,7 +1,7 @@
 # Proving Grounds Practice
 
 {% hint style="info" %}
-I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+I now write on [my blog](https://rouvin.dev/). My old CTF writeups and course reviews will stay here.
 {% endhint %}
 
 Proving Grounds Practice writeups written here, separated into Linux and Windows machines. These machines are generally less 'CTF-ish' relative to HTB machines and they feel similar to OSCP exam machines. They are also a lot shorter.

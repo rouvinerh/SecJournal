@@ -1,12 +1,12 @@
 # SecJournal archive
 
 {% hint style="info" %}
-I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+I now write on [my blog](https://rouvin.dev/). My old CTF writeups and course reviews will stay here.
 {% endhint %}
 
 This GitBook is an archive and will no longer be updated. Some details in these older posts may be out of date.
 
-{% embed url="https://rouvinerh.github.io/" %}
+{% embed url="https://rouvin.dev/" %}
 
 ## Course reviews
 

@@ -5,7 +5,7 @@ description: One of the first few boxes I've done!
 # Legacy
 
 {% hint style="info" %}
-I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+I now write on [my blog](https://rouvin.dev/). My old CTF writeups and course reviews will stay here.
 {% endhint %}
 
 ## Gaining Access

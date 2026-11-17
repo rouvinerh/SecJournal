@@ -5,7 +5,7 @@ description: Challenging Windows machine with unique docker escape!
 # Extension
 
 {% hint style="info" %}
-I now write on [my blog](https://rouvinerh.github.io/). My old CTF writeups and course reviews will stay here.
+I now write on [my blog](https://rouvin.dev/). My old CTF writeups and course reviews will stay here.
 {% endhint %}
 
 ## Gaining Access
